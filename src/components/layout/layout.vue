@@ -2,7 +2,7 @@
   <div class="layout">
     <Apptopbar></Apptopbar>
     <div class="container">
-      <div class="sider_bar">
+      <div class="sider_bar app-wrapper" :class="{hideSidebar:!sidebar}">
         <div class="mc_l_mc">
           <Appsiderbar class="sidebar-container"></Appsiderbar>
         </div>
@@ -26,6 +26,11 @@ export default {
   components: {
     Apptopbar,
     Appsiderbar
+  },
+  computed: {
+    sidebar () {
+      return !this.$store.state.layout.sidberIsCollapse
+    }
   },
   data () {
     return {}
