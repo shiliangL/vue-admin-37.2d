@@ -1,18 +1,33 @@
 <template>
   <div class="apptopbar">
-    <div class="isCollapse">
+    <div class="isCollapse" @click="toggleSideBar">
       <i class="el-icon-tickets"></i>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'Apptopbar',
   props: {},
   components: {},
   data () {
     return {}
+  },
+  computed: {
+    ...mapGetters([
+      'getSidberIsCollapse'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'setSidberIsCollapse'
+    ]),
+    toggleSideBar () {
+      this.setSidberIsCollapse(!this.getSidberIsCollapse)
+    }
   }
 }
 </script>

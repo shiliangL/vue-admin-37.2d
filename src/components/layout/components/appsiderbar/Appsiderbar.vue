@@ -20,7 +20,13 @@
     </el-menu-item> -->
 
   <div class="appsiderbar">
-    <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#fff" text-color="#333" active-text-color="#1976d2">
+    <el-menu default-active="1"
+      @open="handleOpen"
+      @close="handleClose"
+      :collapse="getSidberIsCollapse"
+      background-color="#fff"
+      text-color="#333"
+      active-text-color="#1976d2">
       <el-menu-item index="2">
         <i class="el-icon-menu"></i>
         <span slot="title">导航二</span>
@@ -38,6 +44,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'Appsiderbar',
   props: {
@@ -48,6 +55,9 @@ export default {
       type: Boolean,
       default: false
     }
+  },
+  computed: {
+    ...mapGetters(['getSidberIsCollapse'])
   },
   methods: {
     handleOpen (key, keyPath) {
