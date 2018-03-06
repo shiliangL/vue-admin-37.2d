@@ -1,6 +1,8 @@
 <template>
   <div class="apptopbar">
-      头部
+    <div class="isCollapse">
+      <i class="el-icon-tickets"></i>
+    </div>
   </div>
 </template>
 
@@ -8,9 +10,7 @@
 export default {
   name: 'Apptopbar',
   props: {},
-  components: {
-
-  },
+  components: {},
   data () {
     return {}
   }
@@ -29,5 +29,18 @@ export default {
   background: #1976d2;
   color: #fff;
   height: 60px;
+  display: flex;
+  align-items: center;
+  .isCollapse {
+    cursor: pointer;
+    font-size: 26px;
+    width: 70px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    &:hover {
+      background: #0a63bb;
+    }
+  }
 }
 </style>

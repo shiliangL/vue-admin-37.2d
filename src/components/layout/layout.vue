@@ -53,11 +53,11 @@ body {
 
 .sider_bar {
   position: fixed;
-  top: 64px;
+  top: 60px;
   bottom: 0;
   left: 0;
   padding: 0;
-  background-color: #fafafa;
+  background-color: #fff;
   box-shadow: 6px 0 6px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
 }
@@ -78,7 +78,7 @@ body {
 </style>
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "src/styles/mixin.scss";
-.app-wrapper {
+.layout {
   @include clearfix;
   position: relative;
   height: 100%;
