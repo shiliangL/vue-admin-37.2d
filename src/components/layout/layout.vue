@@ -1,8 +1,8 @@
 <template>
   <div class="layout">
     <Apptopbar></Apptopbar>
-    <div class="container">
-      <div class="sider_bar app-wrapper" :class="{hideSidebar:!sidebar}">
+    <div class="container" :class="{hideSidebar:!sidebar}">
+      <div class="sider_bar app-wrapper scroll-container sidebar-container">
         <div class="mc_l_mc">
           <Appsiderbar class="sidebar-container"></Appsiderbar>
         </div>
@@ -54,6 +54,7 @@ body {
   width: 100%;
   height: 100%;
   background: #e8e8e8;
+  display: flex;
 }
 
 .sider_bar {
@@ -79,6 +80,9 @@ body {
 .view_content_inner {
   padding-top: 60px;
   overflow-y: auto;
+}
+.hideSidebar .el-tooltip{
+  padding: 0 6px!important;
 }
 </style>
 <style rel="stylesheet/scss" lang="scss" scoped>
