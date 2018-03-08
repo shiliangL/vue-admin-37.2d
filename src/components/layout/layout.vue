@@ -83,11 +83,10 @@ export default {
     background: rgb(235, 184, 184);
   }
   .small {
-    transition-property: width;
-    transition-duration: 0.28s;
+    margin-left: 40px;
+    transition-duration: 0.25s;
     transition-timing-function: initial;
     transition-delay: initial;
-    margin-left: 40px;
   }
   .view_content .view_content_inner {
     padding-top: 60px;
