@@ -9,6 +9,9 @@
       </div>
       <div class="view_content">
         <div class="view_content_inner">
+          <div class="tags-view-wrapper">
+            <a href="" class="tags-view-item"> <i class="tag-type"></i> 导航栏 <i class="btn-close"> × </i></a>
+          </div>
           <h1>TEST</h1>
 
         </div>
@@ -73,23 +76,71 @@ export default {
 
   .view_content {
     height: 100%;
-    width: 100%;;
+    width: 100%;
     transform: translate3d(0px, 0px, 0px);
-    background: rgb(235, 184, 184);
   }
+
   .small {
     margin-left: 40px;
     transition-duration: 0.25s;
     transition-timing-function: initial;
     transition-delay: initial;
   }
+
   .view_content .view_content_inner {
     padding-top: 60px;
     overflow-y: auto;
+    .tags-view-wrapper {
+      padding: 0 16px;
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      background: azure;
+      .tags-view-item {
+        position: relative;
+        display: inline-block;
+        font-size: 12px;
+        height: 32px;
+        line-height: 32px;
+        border: 1px solid #e9eaec !important;
+        color: #495060 !important;
+        background: #fff !important;
+        padding: 0 20px 0px 10px;
+        border-radius: 4px 4px;
+        .tag-type {
+          display: inline-block;
+          width: 12px;
+          height: 12px;
+          margin-right: 8px;
+          border-radius: 50%;
+          background:#1a75d2;
+          position: relative;
+          top: 1px;
+        }
+        .btn-close {
+          position: absolute;
+          display: inline-block;
+          opacity: .35;
+          top: -4px;
+          right: -10px;
+          line-height: 10px;
+          width: 18px;
+          height: 18px;
+          border-radius: 14px;
+          font-size: 20px;
+          transition: all .2s ease;
+          &:hover {
+            color: #333;
+            transform: scale(1.25);
+            cursor: pointer;
+          }
+        }
+      }
+    }
   }
 
   .hideSidebar .el-tooltip {
-    padding: 0 6px!important;
+    padding: 0 6px !important;
   }
 </style>
 
