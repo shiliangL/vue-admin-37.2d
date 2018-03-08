@@ -7,7 +7,7 @@
           <Appsiderbar class="sidebar-container"></Appsiderbar>
         </div>
       </div>
-      <div class="view_content" :class="{small:!sidebar}">
+      <div class="view_content">
         <div class="view_content_inner">
           <h1>TEST</h1>
 
@@ -61,11 +61,7 @@ export default {
   }
 
   .sider_bar {
-    position: fixed;
-    top: 60px;
-    bottom: 0;
-    left: 0;
-    padding: 0;
+    padding-top: 60px;
     background-color: #fff;
     box-shadow: 6px 0 6px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
@@ -76,9 +72,8 @@ export default {
   }
 
   .view_content {
-    margin-left: 186px;
-    margin-right: 0px;
     height: 100%;
+    width: 100%;;
     transform: translate3d(0px, 0px, 0px);
     background: rgb(235, 184, 184);
   }

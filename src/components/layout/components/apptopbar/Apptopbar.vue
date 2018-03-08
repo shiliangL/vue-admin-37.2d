@@ -63,7 +63,7 @@ export default {
   top: 0;
   right: 0;
   left: 0;
-  z-index: 10;
+  z-index: 9999999999;
   padding: 0 16px 0 0;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
   background: #1976d2;
