@@ -7,7 +7,7 @@
           <Appsiderbar class="sidebar-container"></Appsiderbar>
         </div>
       </div>
-      <div class="view_content">
+      <div class="view_content" :class="{small:!sidebar}">
         <div class="view_content_inner">
           <h1>TEST</h1>
 
@@ -19,7 +19,10 @@
 </template>
 
 <script>
-import { Apptopbar, Appsiderbar } from './components/index.js'
+import {
+  Apptopbar,
+  Appsiderbar
+} from './components/index.js'
 export default {
   name: 'layout',
   props: {},
@@ -39,58 +42,69 @@ export default {
 </script>
 
 <style lang="scss">
-* {
-  margin: 0;
-  padding: 0;
-}
+  * {
+    margin: 0;
+    padding: 0;
+  }
 
-html,
-body {
-  width: 100%;
-  height: 100%;
-}
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+  }
 
-.container {
-  width: 100%;
-  height: 100%;
-  background: #e8e8e8;
-  display: flex;
-}
+  .container {
+    width: 100%;
+    height: 100%;
+    background: #e8e8e8;
+    display: flex;
+  }
 
-.sider_bar {
-  position: fixed;
-  top: 60px;
-  bottom: 0;
-  left: 0;
-  padding: 0;
-  background-color: #fff;
-  box-shadow: 6px 0 6px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
-}
-.sider_bar::-webkit-scrollbar {
+  .sider_bar {
+    position: fixed;
+    top: 60px;
+    bottom: 0;
+    left: 0;
+    padding: 0;
+    background-color: #fff;
+    box-shadow: 6px 0 6px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+  }
+
+  .sider_bar::-webkit-scrollbar {
     display: none;
-}
-.view_content {
-  margin-left: 186px;
-  margin-right: 0px;
-  height: 100%;
-  transform: translate3d(0px, 0px, 0px);
-  background: rgb(235, 184, 184);
-}
-.view_content_inner {
-  padding-top: 60px;
-  overflow-y: auto;
-}
-.hideSidebar .el-tooltip{
-  padding: 0 6px!important;
-}
+  }
+
+  .view_content {
+    margin-left: 186px;
+    margin-right: 0px;
+    height: 100%;
+    transform: translate3d(0px, 0px, 0px);
+    background: rgb(235, 184, 184);
+  }
+  .small {
+    transition-property: width;
+    transition-duration: 0.28s;
+    transition-timing-function: initial;
+    transition-delay: initial;
+    margin-left: 40px;
+  }
+  .view_content .view_content_inner {
+    padding-top: 60px;
+    overflow-y: auto;
+  }
+
+  .hideSidebar .el-tooltip {
+    padding: 0 6px!important;
+  }
 </style>
+
 <style rel="stylesheet/scss" lang="scss" scoped>
-@import "src/styles/mixin.scss";
-.layout {
-  @include clearfix;
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
+  @import "src/styles/mixin.scss";
+  .layout {
+    @include clearfix;
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
 </style>

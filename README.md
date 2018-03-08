@@ -35,3 +35,24 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 > 开发总结
 
 - layout 组件
+
+
+
+
+> vue 生命周期
+
+- beforeCreate
+```
+
+```
+- created
+```
+created的时候数据已经和data属性进行绑定（放在data中的属性当值发生改变的同时，视图也会改变）。
+注意看下：此时还是没有el选项
+```
+- beforeMount
+- mounted
+- beforeUpdate
+- updated
+- beforeDestroy
+- destroyed
