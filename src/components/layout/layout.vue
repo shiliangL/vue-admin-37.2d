@@ -10,7 +10,11 @@
       <div class="view_content">
         <div class="view_content_inner">
           <div class="tags-view-wrapper">
-            <a href="" class="tags-view-item"> <i class="tag-type"></i> 导航栏 <i class="btn-close"> × </i></a>
+            <div class="tags-view-item">
+              <span class="tag-radius"></span>
+              <span class="tag-text"> 导航栏 </span>
+              <span class="tag-close"> <i class="el-icon-close"></i> </span>
+            </div>
           </div>
           <h1>TEST</h1>
 
@@ -91,46 +95,46 @@ export default {
     padding-top: 60px;
     overflow-y: auto;
     .tags-view-wrapper {
-      padding: 0 16px;
       width: 100%;
       height: 40px;
-      line-height: 40px;
+      display: flex;
+      align-items: center;
       background: azure;
       .tags-view-item {
-        position: relative;
-        display: inline-block;
+        display: flex;
+        align-items: center;
         font-size: 12px;
         height: 32px;
-        line-height: 32px;
-        border: 1px solid #e9eaec !important;
-        color: #495060 !important;
-        background: #fff !important;
-        padding: 0 20px 0px 10px;
         border-radius: 4px 4px;
-        .tag-type {
+        border: 1px solid #e9eaec!important;
+        color: #495060!important;
+        background: #fff!important;
+        cursor: pointer;
+        padding: 0 12px;
+        .tag-radius {
           display: inline-block;
           width: 12px;
           height: 12px;
           margin-right: 8px;
           border-radius: 50%;
-          background:#1a75d2;
+          background: #e9eaec;
           position: relative;
           top: 1px;
         }
-        .btn-close {
-          position: absolute;
-          display: inline-block;
-          opacity: .35;
-          top: -4px;
-          right: -10px;
-          line-height: 10px;
+        .tag-close {
+          font-size: 12px;
+          margin-left: 10px;
+          color: #333;
+          opacity: .55;
           width: 18px;
           height: 18px;
+          line-height: 18px;
           border-radius: 14px;
-          font-size: 20px;
           transition: all .2s ease;
           &:hover {
             color: #333;
+            opacity: 1;
+            font-weight: bold;
             transform: scale(1.25);
             cursor: pointer;
           }
