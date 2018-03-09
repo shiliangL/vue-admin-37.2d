@@ -1,12 +1,11 @@
 
 <template>
-
-      <!-- <el-submenu v-if="item.children && item.children.length" :index="navIndex">
-         创建父级菜单
-        <template slot="title">
-            <i class="anticon anticon-bar-chart"></i>
-            <span slot="title">{{ item.text }}</span>
-        </template>
+  <!-- <el-submenu v-if="item.children && item.children.length" :index="navIndex">
+                 创建父级菜单
+                <template slot="title">
+                    <i class="anticon anticon-bar-chart"></i>
+                    <span slot="title">{{ item.text }}</span>
+</template>
          创建子菜单
         <menuList
             v-for="(subItem,subIndex) in item.children"
@@ -27,10 +26,12 @@
       background-color="#fff"
       text-color="#333"
       active-text-color="#1976d2">
-      <el-menu-item index="2">
-        <i class="el-icon-menu"></i>
-        <span slot="title">导航二</span>
-      </el-menu-item>
+      <router-link to="/layout/deviceMonitoring">
+          <el-menu-item index="2">
+            <i class="el-icon-menu"></i>
+            <span slot="title"> 地图测试 </span>
+          </el-menu-item>
+      </router-link>
       <el-menu-item index="3">
         <i class="el-icon-document"></i>
         <span slot="title">导航三</span>
@@ -44,7 +45,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import {
+  mapGetters
+} from 'vuex'
 export default {
   name: 'Appsiderbar',
   props: {

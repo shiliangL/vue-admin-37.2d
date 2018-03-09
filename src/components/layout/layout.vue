@@ -16,8 +16,9 @@
               <span class="tag-close"> <i class="el-icon-close"></i> </span>
             </div>
           </div>
-          <h1>TEST</h1>
-
+          <div class="app-main">
+             <router-view></router-view>
+          </div>
         </div>
       </div>
     </div>
