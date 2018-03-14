@@ -3,7 +3,7 @@
   .main-container {
     min-height: 100%;
     transition: margin-left 0.28s;
-    margin-left: 180px;
+    padding-left: 180px;
   } // 侧边栏
   .sidebar-container {
     transition: width 0.28s;
@@ -28,8 +28,7 @@
   }
   .hideSidebar {
     .sidebar-container,.sidebar-container .el-menu {
-      width: 36px!important;
-      // overflow: inherit;
+      width: 40px!important;
     }
     .main-container {
       margin-left: 36px;

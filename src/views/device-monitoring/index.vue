@@ -1,18 +1,10 @@
 <template>
   <div class="deviceMonitoring">
-    <!-- <h1>测试产品地图</h1> -->
-    <div class="test" @wheel.prevent="handleScroll" :style="{top: top + 'px'}">
+    <h1>测试产品地图</h1>
+    <!-- <div class="test" @wheel.prevent="handleScroll" :style="{top: top + 'px'}">
       <div> 测试 </div>
       <div> 测试 </div>
-      <div> 测试 </div>
-      <div> 测试 </div>
-      <div> 测试 </div>
-      <div> 测试 </div>
-      <div> 测试 </div>
-      <div> 测试 </div>
-      <div> 测试 </div>
-      <div> 测试 </div>
-    </div>
+    </div> -->
   </div>
 </template>
 

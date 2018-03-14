@@ -1,63 +1,24 @@
 
 <template>
-  <!-- <el-submenu v-if="item.children && item.children.length" :index="navIndex">
-                 创建父级菜单
-                <template slot="title">
-                    <i class="anticon anticon-bar-chart"></i>
-                    <span slot="title">{{ item.text }}</span>
-</template>
-         创建子菜单
-        <menuList
-            v-for="(subItem,subIndex) in item.children"
-            :key="navIndex+'-'+subIndex"
-            :navIndex="navIndex+'-'+subIndex"
-            :item="subItem" >
-        </menuList>
-    </el-submenu>
-    <el-menu-item v-else :index="navIndex">
-        <span slot="title">{{ item.text }}</span>
-    </el-menu-item> -->
-
   <div class="appsiderbar">
-    <el-menu default-active="1"
-      @open="handleOpen"
-      @close="handleClose"
-      :collapse="getSidberIsCollapse"
-      background-color="#fff"
-      text-color="#333"
-      active-text-color="#1976d2">
-      <router-link to="/layout/deviceMonitoring">
-          <el-menu-item index="2">
-            <i class="el-icon-menu"></i>
-            <span slot="title"> 地图测试 </span>
-          </el-menu-item>
-      </router-link>
-      <el-menu-item index="3">
-        <i class="el-icon-document"></i>
-        <span slot="title">导航三</span>
-      </el-menu-item>
-      <el-menu-item index="4">
-        <i class="el-icon-setting"></i>
-        <span slot="title">导航四</span>
-      </el-menu-item>
+    <el-menu default-active="1" @open="handleOpen" @close="handleClose" :collapse="getSidberIsCollapse" background-color="#fff" text-color="#333" active-text-color="#1976d2">
+      <SidebarItem></SidebarItem>
     </el-menu>
   </div>
 </template>
 
 <script>
-import {
-  mapGetters
-} from 'vuex'
+import SidebarItem from './SidebarItem'
+import { mapGetters } from 'vuex'
 export default {
   name: 'Appsiderbar',
   props: {
     routes: {
       type: Array
-    },
-    isNest: {
-      type: Boolean,
-      default: false
     }
+  },
+  components: {
+    SidebarItem
   },
   computed: {
     ...mapGetters(['getSidberIsCollapse'])
@@ -72,3 +33,9 @@ export default {
   }
 }
 </script>
+<style>
+ #app .hideSidebar .el-tooltip{
+  padding: 0 10px !important;
+  font-size: 12px !important;;
+ }
+</style>

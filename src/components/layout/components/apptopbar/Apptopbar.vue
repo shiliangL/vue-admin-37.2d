@@ -1,25 +1,29 @@
 <template>
   <div class="apptopbar">
-    <div class="isCollapse" @click="toggleSideBar">
-      <i class="el-icon-tickets"></i>
-    </div>
+    <switchButton class="switchButton" :toggleClick="toggleSideBar" :isActive="sidebarShow"></switchButton>
+
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-
+import { switchButton } from '@/components/indexExport'
 export default {
   name: 'Apptopbar',
   props: {},
-  components: {},
+  components: {
+    switchButton
+  },
   data () {
     return {}
   },
   computed: {
     ...mapGetters([
       'getSidberIsCollapse'
-    ])
+    ]),
+    sidebarShow () {
+      return !this.$store.state.layout.sidberIsCollapse
+    }
   },
   methods: {
     ...mapActions([
@@ -59,28 +63,21 @@ export default {
 
 <style lang="scss">
 .apptopbar {
+  width: 100%;
+  padding: 0 16px;
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
   z-index: 9999999999;
-  padding: 0 16px 0 0;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
   background: #1976d2;
   color: #fff;
   height: 60px;
   display: flex;
   align-items: center;
-  .isCollapse {
+  .switchButton {
     cursor: pointer;
-    font-size: 26px;
-    width: 70px;
-    height: 60px;
-    text-align: center;
-    line-height: 60px;
-    &:hover {
-      background: #0a63bb;
-    }
   }
 }
 </style>

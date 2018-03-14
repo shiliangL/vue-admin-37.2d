@@ -1,3 +1,4 @@
+// 组件以及常用方法安装全局
 import Vue from 'vue'
 import AMap from 'vue-amap'
 
