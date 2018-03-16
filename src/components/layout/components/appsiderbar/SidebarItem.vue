@@ -15,9 +15,9 @@
         <span slot="title">导航四</span>
       </el-menu-item>
 
-      <template v-for="item in routes" v-if="!item.hidden&&item.children">
+      <!-- <template v-for="item in routes" v-if="!item.hidden&&item.children">
         测试
-      </template>
+      </template> -->
   </div>
 </template>
 

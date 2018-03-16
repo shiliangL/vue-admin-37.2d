@@ -71,7 +71,6 @@ export default {
   left: 0;
   z-index: 9999999999;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
-  background: #1976d2;
   color: #fff;
   height: 60px;
   display: flex;
