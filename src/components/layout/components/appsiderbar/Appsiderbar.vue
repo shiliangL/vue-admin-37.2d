@@ -2,19 +2,23 @@
 <template>
   <div class="appsiderbar">
     <el-menu default-active="1" @open="handleOpen" @close="handleClose" :collapse="getSidberIsCollapse" background-color="#fff" text-color="#333" active-text-color="#1976d2">
-      <SidebarItem></SidebarItem>
+      <SidebarItem :routes="routes"></SidebarItem>
     </el-menu>
   </div>
 </template>
 
 <script>
 import SidebarItem from './SidebarItem'
+import menuList from './test.json'
 import { mapGetters } from 'vuex'
 export default {
   name: 'Appsiderbar',
   props: {
-    routes: {
-      type: Array
+
+  },
+  data () {
+    return {
+      routes: null
     }
   },
   components: {
@@ -22,6 +26,9 @@ export default {
   },
   computed: {
     ...mapGetters(['getSidberIsCollapse'])
+  },
+  created () {
+    this.routes = menuList.data.children
   },
   methods: {
     handleOpen (key, keyPath) {

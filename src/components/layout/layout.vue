@@ -3,31 +3,31 @@
     <div class="App_topbar">
       <Apptopbar></Apptopbar>
     </div>
-    <div class="App_sider" :class="{hideSidebar:!isShowSidebar}">
-      <Appsiderbar class="sidebar-container"></Appsiderbar>
+    <div class="app-wrapper" :class="{hideSidebar:!isShowSidebar}">
+    <div class="App_sider">
+      <!-- <Appsiderbar class="sidebar-container"></Appsiderbar> -->
     </div>
-    <div class="main-container" :class="{mxWidth:!isShowSidebar}">
+    <div class="main-container">
       <div>
-
+        测试
       </div>
       <div class="container_warp">
-       <router-view></router-view>
+        <Approuterview></Approuterview>
       </div>
+    </div>
     </div>
   </div>
 </template>
 
 <script>
-import {
-  Apptopbar,
-  Appsiderbar
-} from './components/index.js'
+import { Apptopbar, Appsiderbar, Approuterview } from './components/index.js'
 export default {
   name: 'layout',
   props: {},
   components: {
     Apptopbar,
-    Appsiderbar
+    Appsiderbar,
+    Approuterview
   },
   computed: {
     isShowSidebar () {
@@ -63,25 +63,31 @@ export default {
       z-index: 10;
     }
     .App_sider{
+      transition: width 0.28s;
       height: 100%;
+      width: 180px !important;
       box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
-      background: #fff;
+      background: rgb(161, 144, 144);
       position: fixed;
       top: 60px;
       left: 0;
     }
     .main-container{
+      padding-left: 180px;
+      transition: width 0.28s;
       width: 100%;
       height: 100%;
       padding-top: 70px;
-      background: #fff;
-      .container_warp{
-        padding: 10px;
+      background: rgb(163, 135, 135);
+    }
+    .hideSidebar {
+      .App_sider{
+        width: 36px !important;
+      }
+      .main-container{
+        padding-left: 36px;
       }
     }
-  }
-  #app .mxWidth {
-    padding-left: 36px;
   }
 </style>
 
