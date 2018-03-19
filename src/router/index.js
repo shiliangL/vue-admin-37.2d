@@ -37,37 +37,113 @@ export const constantRouterMap = [
     }]
   },
 
+  // {
+  //   path: '/example',
+  //   component: Layout,
+  //   redirect: '/example/table',
+  //   name: 'Example',
+  //   meta: { title: 'Example', icon: 'example' },
+  //   children: [
+  //     {
+  //       path: 'table',
+  //       name: 'Table',
+  //       component: () => import('@/views/table/index'),
+  //       meta: { title: 'Table', icon: 'table' }
+  //     },
+  //     {
+  //       path: 'tree',
+  //       name: 'Tree',
+  //       component: () => import('@/views/tree/index'),
+  //       meta: { title: 'Tree', icon: 'tree' }
+  //     }
+  //   ]
+  // },
+
+  // {
+  //   path: '/form',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'Form',
+  //       component: () => import('@/views/form/index'),
+  //       meta: { title: 'Form', icon: 'form' }
+  //     }
+  //   ]
+  // },
+
   {
-    path: '/example',
+    path: '/monitor',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
+    // redirect: '/example/table',
+    name: 'monitor',
+    meta: { title: '测试1', icon: 'example' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        path: 'real_time',
+        name: 'real_time',
+        component: () => import('@/views/monitor/real_time/index'),
+        meta: { title: '监测', icon: 'tree' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
+        path: 'remote_setting',
+        name: 'remote_setting',
+        component: () => import('@/views/monitor/remote_setting/index'),
+        meta: { title: '远程', icon: 'tree' }
+      },
+      {
+        path: 'devices_map',
+        name: 'devices_map',
+        component: () => import('@/views/monitor/devices_map/index'),
+        meta: { title: '地图', icon: 'tree' }
+      },
+      {
+        path: 'record_query',
+        name: 'record_query',
+        component: () => import('@/views/monitor/record_query/index'),
+        meta: { title: '记录', icon: 'tree' }
+      }
+    ]
+  },
+  {
+    path: '/monitor',
+    component: Layout,
+    redirect: '/example/table',
+    name: 'monitor2',
+    meta: { title: '测试2', icon: 'example' },
+    children: [
+      {
+        path: 'tree2',
+        name: 'Tree2',
+        component: () => import('@/views/tree/index'),
+        meta: { title: 'Tree', icon: 'tree' }
+      },
+      {
+        path: 'tree3',
+        name: 'Tree3',
         component: () => import('@/views/tree/index'),
         meta: { title: 'Tree', icon: 'tree' }
       }
     ]
   },
-
   {
-    path: '/form',
+    path: '/maintenance',
     component: Layout,
+    redirect: '/example/table',
+    name: 'monitor3',
+    meta: { title: '测试3', icon: 'example' },
     children: [
       {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        path: 'tree3',
+        name: 'Tree3',
+        component: () => import('@/views/tree/index'),
+        meta: { title: 'Tree', icon: 'tree' }
+      },
+      {
+        path: 'tree4',
+        name: 'Tree4',
+        component: () => import('@/views/tree/index'),
+        meta: { title: 'Tree', icon: 'tree' }
       }
     ]
   },

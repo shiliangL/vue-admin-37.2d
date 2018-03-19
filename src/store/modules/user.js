@@ -1,6 +1,6 @@
 import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-
+import { Message } from 'element-ui'
 const user = {
   state: {
     token: getToken(),
@@ -33,7 +33,10 @@ const user = {
           const data = response
           if (response.result === 'ok') {
             setToken(data.result)
+            Message.success('登录成功,欢迎光临！')
             // commit('SET_TOKEN', data.result)
+          } else {
+            Message.error('登录失败,请重新登录')
           }
           resolve()
         }).catch(error => {

@@ -17,7 +17,7 @@
           <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" style="width:100%;"  :loading="loading" @click.native.prevent="handleLogin">
+        <el-button type="primary" style="width:100%;" @click.native.prevent="handleLogin">
           登录
         </el-button>
       </el-form-item>
@@ -141,7 +141,7 @@ $bg: #333;
 $dark_gray: #889aa4;
 $light_gray: #eee;
 .login-container {
-  // background-image: url("../../assets/imgs/login_bg.svg");
+  background-image: url("../../assets/imgs/login_bg.svg");
   position: fixed;
   height: 100%;
   width: 100%;

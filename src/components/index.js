@@ -1,4 +1,4 @@
-// 做完全局的组件或者实例方法
+// 做全局的组件或者实例方法
 import Vue from 'vue'
 import $ from 'jquery'
 import Util from './Util/util'
