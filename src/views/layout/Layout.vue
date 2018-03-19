@@ -41,7 +41,6 @@ export default {
 	z-index: 10;
 }
 </style>
-
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "src/styles/mixin.scss";
 .app-wrapper {

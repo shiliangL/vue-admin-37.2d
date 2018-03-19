@@ -13,15 +13,15 @@ export function login(account, password) {
 
 export function getInfo(token) {
   return request({
-    url: 'rtusapi/user/info',
-    method: 'get',
-    params: { token }
+    url: 'rtusapi/users/getuserinfo',
+    method: 'get'
+    // params: { token }
   })
 }
 
 export function logout() {
   return request({
-    url: 'rtusapi/user/logout',
+    url: 'rtusapi/users/logout',
     method: 'post'
   })
 }
