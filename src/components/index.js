@@ -1,27 +1,20 @@
-// 组件以及常用方法安装全局
+// 做完全局的组件或者实例方法
 import Vue from 'vue'
-import AMap from 'vue-amap'
-
-import scrollBar from './scrollBar/scrollBar'
+import $ from 'jquery'
+import Util from './Util/util'
+import './Api/index'
 const components = [
-  scrollBar
 ]
-const install = function (Vue, opts = {}) {
+const install = function(Vue, opts = {}) {
   if (install.installed) return
-  Vue.prototype.$AMap = AMap
+  var util = new Util()
+  Vue.prototype.$util = util
+  Vue.prototype.$jq = $
   components.map(component => {
     Vue.component(component.name, component)
   })
 }
 if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue)
-};
+}
 Vue.use(install)
-
-// Vue.use(AMap)
-// AMap.initAMapApiLoader({
-//   key: 'ff15d7002a53347c2ee4fd661403762c',
-//   plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
-//   // 默认高德 sdk 版本为 1.4.4
-//   v: '1.4.4'
-// })
