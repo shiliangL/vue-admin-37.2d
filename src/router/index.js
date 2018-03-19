@@ -29,7 +29,7 @@ export const constantRouterMap = [
     path: '/',
     component: Layout,
     redirect: '/dashboard',
-    name: 'Dashboard',
+    name: 'dashboard',
     hidden: true,
     children: [{
       path: 'dashboard',
@@ -77,7 +77,7 @@ export const constantRouterMap = [
     component: Layout,
     // redirect: '/example/table',
     name: 'monitor',
-    meta: { title: '测试1', icon: 'example' },
+    meta: { title: '设备监控', icon: 'example' },
     children: [
       {
         path: 'real_time',
@@ -106,23 +106,23 @@ export const constantRouterMap = [
     ]
   },
   {
-    path: '/monitor',
+    path: '/devices',
     component: Layout,
     redirect: '/example/table',
-    name: 'monitor2',
-    meta: { title: '测试2', icon: 'example' },
+    name: 'devices',
+    meta: { title: '设备管理', icon: 'example' },
     children: [
       {
-        path: 'tree2',
-        name: 'Tree2',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        path: 'devices_group',
+        name: 'devices_group',
+        component: () => import('@/views/devices/devices_group/index'),
+        meta: { title: '设备列表', icon: 'tree' }
       },
       {
-        path: 'tree3',
-        name: 'Tree3',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        path: 'devices_deal',
+        name: 'devices_deal',
+        component: () => import('@/views/devices/devices_deal/index'),
+        meta: { title: '设备分组', icon: 'tree' }
       }
     ]
   },
@@ -131,19 +131,40 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/example/table',
     name: 'monitor3',
-    meta: { title: '测试3', icon: 'example' },
+    meta: { title: '运维管理', icon: 'example' },
     children: [
       {
         path: 'tree3',
         name: 'Tree3',
         component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        meta: { title: '占位', icon: 'tree' }
       },
       {
         path: 'tree4',
         name: 'Tree4',
         component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        meta: { title: '占位', icon: 'tree' }
+      }
+    ]
+  },
+  {
+    path: '/company',
+    component: Layout,
+    redirect: '/example/table',
+    name: 'company',
+    meta: { title: '企业管理', icon: 'example' },
+    children: [
+      {
+        path: 'company_list',
+        name: 'company_list',
+        component: () => import('@/views/company/company_list/index'),
+        meta: { title: '企业列表', icon: 'tree' }
+      },
+      {
+        path: 'company_member',
+        name: 'company_member',
+        component: () => import('@/views/company/company_member/index'),
+        meta: { title: '成员管理', icon: 'tree' }
       }
     ]
   },

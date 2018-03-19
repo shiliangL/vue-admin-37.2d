@@ -37,7 +37,7 @@ export default {
 	height: 60px;
 	width:100%!important;
 	min-width: 700px;
-	background:#314155;
+	background:#2b2f48;
 	z-index: 10;
 }
 </style>
