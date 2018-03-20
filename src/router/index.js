@@ -110,7 +110,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/example/table',
     name: 'devices',
-    meta: { title: '设备管理', icon: 'example' },
+    meta: { title: '设备管理', icon: '监控' },
     children: [
       {
         path: 'devices_group',
@@ -131,7 +131,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/example/table',
     name: 'monitor3',
-    meta: { title: '运维管理', icon: 'example' },
+    meta: { title: '运维管理', icon: '指标监测' },
     children: [
       {
         path: 'tree3',
@@ -152,7 +152,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/example/table',
     name: 'company',
-    meta: { title: '企业管理', icon: 'example' },
+    meta: { title: '企业管理', icon: '企业管理' },
     children: [
       {
         path: 'company_list',
