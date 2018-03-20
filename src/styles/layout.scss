@@ -69,8 +69,10 @@ table {
 .page {
     position: relative;
     width: 100%;
+    font-size: 13px;
     min-height: 50px;
     max-height: 230px;
+    min-width: 500px;
     .top {
         display: flex;
         justify-content: space-between;
@@ -83,6 +85,7 @@ table {
         }
     }
     .tableData {
+        min-width: 500px;
         width: 100%;
         overflow: auto;
         empty-cells: show;
@@ -91,7 +94,12 @@ table {
         border-collapse: collapse;
         margin: 0 auto;
         border: none;
-        font-size: 12px;
+        font-size: 13px;
+    }
+    .el-table td,
+    .el-table th {
+        padding: 6px 0;
+        font-size: 13px;
     }
 }
 

@@ -2,30 +2,30 @@
   <div class="page" style="width: 100%">
       <div class="top">
         <div class="left">
-      <el-input style="width: 200px;" class="filter-item" v-model="code2name"></el-input>
-      <el-select clearable style="width: 90px" class="filter-item" v-model="code2name">
+      <el-input size="medium" style="width: 200px;" placeholder="请输入内容" class="filter-item" v-model="code2name"></el-input>
+      <el-select size="medium" clearable style="width: 90px" class="filter-item" v-model="code2name">
+        <el-option size="medium" label="未签" value="no"></el-option>
+        <el-option label="已签" value="yes"></el-option>
+        <el-option label="解除" value="unwound"></el-option>
+        <el-option label="终止" value="stop"></el-option>
+      </el-select>
+      <el-select  size="medium" clearable class="filter-item" style="width: 130px" v-model="code2name">
         <el-option label="未签" value="no"></el-option>
         <el-option label="已签" value="yes"></el-option>
         <el-option label="解除" value="unwound"></el-option>
         <el-option label="终止" value="stop"></el-option>
       </el-select>
-      <el-select clearable class="filter-item" style="width: 130px" v-model="code2name">
-        <el-option label="未签" value="no"></el-option>
-        <el-option label="已签" value="yes"></el-option>
-        <el-option label="解除" value="unwound"></el-option>
-        <el-option label="终止" value="stop"></el-option>
-      </el-select>
-      <el-select clearable style="width: 140px" class="filter-item" v-model="code2name">
+      <el-select size="medium" clearable style="width: 140px" class="filter-item" v-model="code2name">
          <el-option label="未签" value="no"></el-option>
           <el-option label="已签" value="yes"></el-option>
           <el-option label="解除" value="unwound"></el-option>
           <el-option label="终止" value="stop"></el-option>
       </el-select>
-      <el-button class="filter-item" type="primary" icon="el-icon-search"> 搜索 </el-button>
-      <el-button class="filter-item" type="primary"> 重置 </el-button>
+      <el-button class="filter-item" size="medium" type="primary" icon="el-icon-search"> 搜索 </el-button>
+      <el-button class="filter-item" size="medium" type="primary"> 重置 </el-button>
         </div>
         <div class="rigt">
-        <el-button class="filter-item" type="primary"> 新增 </el-button>
+        <el-button class="filter-item" size="medium" type="primary"> 新增 </el-button>
         </div>
       </div>
 
