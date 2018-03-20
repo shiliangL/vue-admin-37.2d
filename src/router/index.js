@@ -77,7 +77,7 @@ export const constantRouterMap = [
     component: Layout,
     // redirect: '/example/table',
     name: 'monitor',
-    meta: { title: '设备监控', icon: 'example' },
+    meta: { title: '设备监控', icon: '监控服务' },
     children: [
       {
         path: 'real_time',

@@ -6,8 +6,7 @@ export default class Util {
     return {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': this.token,
-      'user_identity': 1
+      'Authorization': this.token
     }
   }
   // 获取cookie

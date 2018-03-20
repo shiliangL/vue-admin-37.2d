@@ -1,0 +1,41 @@
+#promotion-list .tab-title-layout {
+    width: 100%;
+    border-bottom: 1px solid #eaeaea;
+}
+#promotion-list .tab-title-layout ul {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+#promotion-list .tab-title-layout li {
+    cursor: pointer;
+    list-style: none;
+    float: left;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-right: 10px;
+    color: #333333;
+}
+#promotion-list .tab-title-layout ul li.active{color: #5AABFF; border-bottom: 2px solid #5AABFF;}
+@media screen and (min-width: 640px) and (max-width: 1400px) {
+    .table-list thead{height: 30px;}
+    .table-list thead th{font-size: 12px; height: 30px; line-height: 30px;}
+    .table-list tbody tr{height: 30px;}
+    .table-list tbody tr td{font-size: 12px; height: 30px;}
+    .el-form-item__label{font-size: 12.5px;}
+    #promotion-list .tab-title-layout {height: 40px}
+    #promotion-list .tab-title-layout ul {height: 40px;}
+    #promotion-list .tab-title-layout li {height: 40px; line-height: 40px; font-size: 13px;}
+}
+
+@media screen and (min-width: 1400px) {
+    .tab-title-layout {height: 50p; width: 100%;border-bottom: 1px solid #eaeaea;}
+    .table-list thead th{font-size: 13px; height: 40px; line-height: 40px;}
+    .table-list tbody tr{height: 40px;}
+    .table-list tbody tr td{font-size: 13px; height: 40px;}
+    .el-form-item__label{font-size: 14px;}
+    #promotion-list .tab-title-layout {height: 46px}
+    #promotion-list .tab-title-layout ul {height: 46px;}
+    #promotion-list .tab-title-layout li {height: 46px; line-height: 46px; font-size: 14px;}
+}

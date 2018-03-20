@@ -5,7 +5,8 @@
 		</div>
     <sidebar class="sidebar-container"></sidebar>
     <div class="main-container">
-      <navbar></navbar>
+      <div class="page-tags"></div>
+      <div class="view-tips"></div>
       <app-main></app-main>
     </div>
   </div>
@@ -40,6 +41,17 @@ export default {
 	background:#2b2f48;
 	z-index: 10;
 }
+.main-container{
+  position: relative;
+}
+ .main-container .page-tags{
+   margin-top: 60px;
+    height: 35px;
+    background: #ccc;
+  }
+ .main-container .app-main{
+    padding: 20px;
+  }
 </style>
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "src/styles/mixin.scss";
