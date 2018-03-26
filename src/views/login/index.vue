@@ -2,7 +2,7 @@
   <div class="login-container">
     <el-form :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left" label-width="0px"
       class="card-box login-form">
-      <h3 class="title"> Design具影响力的Web设计</h3>
+      <h3 class="title"> Design影响力的Web设计</h3>
       <el-form-item prop="account">
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
@@ -27,7 +27,7 @@
     </el-form>
 
       <VParticles
-        color="#dedede"
+        color="#fff"
         :particleOpacity="0.7"
         :particlesNumber="80"
         shapeType="circle"
@@ -35,7 +35,7 @@
         linesColor="#2E639E"
         :linesWidth="1"
         :lineLinked="true"
-        :lineOpacity="0.4"
+        :lineOpacity="0.6"
         :linesDistance="150"
         :moveSpeed="3"
         :hoverEffect="true"
@@ -220,7 +220,7 @@ $light_gray: #eee;
     position: absolute;
     left: 0;
     right: 0;
-    width: 400px;
+    width: 410px;
     padding: 35px 35px 15px 35px;
     margin: 120px auto;
   }
