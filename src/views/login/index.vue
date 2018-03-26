@@ -25,14 +25,37 @@
          <!-- 提示登录、第三方登录、注册 -->
       </div>
     </el-form>
+
+      <VParticles
+        color="#dedede"
+        :particleOpacity="0.7"
+        :particlesNumber="80"
+        shapeType="circle"
+        :particleSize="4"
+        linesColor="#2E639E"
+        :linesWidth="1"
+        :lineLinked="true"
+        :lineOpacity="0.4"
+        :linesDistance="150"
+        :moveSpeed="3"
+        :hoverEffect="true"
+        hoverMode="grab"
+        :clickEffect="true"
+        clickMode="push">
+    </VParticles>
+    
   </div>
 </template>
 
 <script>
 import { isvalidUsername } from '@/utils/validate'
+import { VParticles } from '@/components/indexEx.js'
 
 export default {
   name: 'login',
+  components: {
+    VParticles
+  },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!isvalidUsername(value)) {
@@ -68,8 +91,8 @@ export default {
   },
   methods: {
     getCookie(name) {
-      const strcookie = document.cookie// 获取cookie字符串
-      const arrcookie = strcookie.split('; ')// 分割
+      const strcookie = document.cookie // 获取cookie字符串
+      const arrcookie = strcookie.split('; ') // 分割
       for (let i = 0; i < arrcookie.length; i++) {
         const arr = arrcookie[i].split('=')
         if (arr[0] === name) {
@@ -120,12 +143,15 @@ export default {
           //   password: this.loginForm.password
           // }
 
-          this.$store.dispatch('Login', this.loginForm).then(() => {
-            this.loading = false
-            this.$router.push({ path: '/' })
-          }).catch(() => {
-            this.loading = false
-          })
+          this.$store
+            .dispatch('Login', this.loginForm)
+            .then(() => {
+              this.loading = false
+              this.$router.push({ path: '/' })
+            })
+            .catch(() => {
+              this.loading = false
+            })
         } else {
           this.$message({ type: 'warning', message: '请核对表单' })
           return
@@ -141,7 +167,10 @@ $bg: #333;
 $dark_gray: #889aa4;
 $light_gray: #eee;
 .login-container {
-  background-image: url("../../assets/imgs/login_bg.svg");
+  background-image: url("../../assets/imgs/b_g.svg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
   position: fixed;
   height: 100%;
   width: 100%;
