@@ -40,7 +40,7 @@
         :moveSpeed="3"
         :hoverEffect="true"
         hoverMode="grab"
-        :clickEffect="true"
+        :clickEffect="false"
         clickMode="push">
     </VParticles>
     
@@ -112,37 +112,6 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          // this.$jq.post('rtusapi/users/login', param, function(text, status) {
-          //   console.log(text, status)
-          // })
-          // this.$http.post('rtusapi/users/login', param, (response, status) => {
-          //   console.log(this.$util.getCookie('connect.sid'), 'dd')
-          //   this.loading = false
-          //   if (status && response.data.result === 'ok') {
-          //     this.$message({ type: 'success', message: '登录成功' })
-          //     this.$router.push({ path: '/' })
-          //   } else {
-          //     this.$message({ type: 'error', message: '未知错误登录失败' })
-          //   }
-          // })
-
-          // this.$axios.post('rtusapi/users/login', this.newUserInfo, {
-          //   headers: {
-          //     'Content-Type': 'application/x-www-form-urlencoded'
-          //   }
-          // })
-          //   .then(function(response) {
-          //     console.log(response)
-          //   })
-          //   .catch(function(error) {
-          //     console.log(error)
-          //   })
-
-          // const param = {
-          //   account: this.loginForm.username,
-          //   password: this.loginForm.password
-          // }
-
           this.$store
             .dispatch('Login', this.loginForm)
             .then(() => {
@@ -167,6 +136,7 @@ $bg: #333;
 $dark_gray: #889aa4;
 $light_gray: #eee;
 .login-container {
+  min-height: 400px;
   background-image: url("../../assets/imgs/b_g.svg");
   background-repeat: no-repeat;
   background-position: center center;

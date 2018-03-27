@@ -5,8 +5,15 @@
 
 html,
 body {
+    width: 100%;
+    height: 100%;
     padding: 0px;
     margin: 0px;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
 }
 
 * {
@@ -67,8 +74,8 @@ table {
 }
 
 .page {
-    position: relative;
     width: 100%;
+    height: 100%;
     font-size: 13px;
     min-height: 50px;
     max-height: 230px;

@@ -41,11 +41,12 @@ export default {
 	background:#2b2f48;
 	z-index: 10;
 }
-.main-container{
-  position: relative;
-}
+ .main-container{
+    position: relative;
+   
+ }
  .main-container .page-tags{
-   margin-top: 60px;
+   padding-top: 100px;
     height: 35px;
     background: #ccc;
   }
@@ -57,7 +58,6 @@ export default {
 @import "src/styles/mixin.scss";
 .app-wrapper {
   @include clearfix;
-  position: relative;
   height: 100%;
   width: 100%;
 }

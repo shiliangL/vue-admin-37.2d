@@ -63,6 +63,10 @@
         <add-view v-if="addViewVisible" ref="addView" @close="closeDialog" @onRefresh="onRefresh"></add-view>
       </el-dialog>
 
+      <!-- loading 加载 -->
+      <!-- {{multiselectValue}} -->
+      <!-- <multiselect v-model="multiselectValue" :options="options"></multiselect> -->
+      <loading v-model="loading"></loading>
   </div>
 </template>
  
@@ -75,9 +79,11 @@ export default {
   },
   data() {
     return {
+      multiselectValue: null,
+      options: ['list', 'of', 'options'],
       dialogVisible: false,
       addViewVisible: false,
-
+      loading: true,
       code2name: null,
       currentPage: 2,
       tableData: [
@@ -103,6 +109,11 @@ export default {
         }
       ]
     }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.loading = false
+    }, 2000)
   },
   methods: {
     // 弹层操作
