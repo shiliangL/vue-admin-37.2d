@@ -4,7 +4,6 @@ import 'normalize.css/normalize.css'// A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import 'vue-multiselect/dist/vue-multiselect.min'
 
 import locale from 'element-ui/lib/locale/lang/en'
 
@@ -14,7 +13,8 @@ import './components/index'
 import App from './App'
 import router from './router'
 import store from './store'
-
+// 使用公共方法
+import './public/index'
 import '@/icons' // icon
 import '@/permission' // permission control
 

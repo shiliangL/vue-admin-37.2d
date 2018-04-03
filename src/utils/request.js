@@ -17,19 +17,14 @@ service.interceptors.request.use(config => {
   }
   return config
 }, error => {
-  // Do something with request error
   console.log(error) // for debug
   Promise.reject(error)
 })
 
-// 响应拦截
+// 响应返回拦截
 service.interceptors.response.use(
   response => {
-  /**
-  *  响应返回拦截
-  */
     const res = response.data
-    // debugger
     if (res.result !== 'ok') {
       return response.data
       // Message({
@@ -58,7 +53,7 @@ service.interceptors.response.use(
   error => {
     console.log('err' + error)// for debug
     Message({
-      message: `${error.message}什么鬼`,
+      message: `${error.message}`,
       type: 'error',
       duration: 0,
       showClose: true

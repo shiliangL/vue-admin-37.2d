@@ -1,7 +1,9 @@
 <template>
   <div class="page" style="width: 100%">
+      {{table.maxHeight}} <h2>测试</h2>
+    
       <!-- 顶部搜索区域 -->
-      <div class="top">
+      <!-- <div class="top">
         <div class="left">
           <el-input size="medium" style="width: 200px;" placeholder="请输入内容" class="filter-item" v-model="code2name"></el-input>
           <el-select size="medium" clearable style="width: 90px" class="filter-item" v-model="code2name">
@@ -28,10 +30,10 @@
         <div class="rigt">
           <el-button class="filter-item" size="medium" type="primary" @click="openDialog"> 新增 </el-button>
         </div>
-      </div>
+      </div> -->
       <!-- 表格 -->
-      <div class="tableData" style="width: 100%">
-        <el-table border :data="tableData" style="width: 100%">
+      <TableContain :height.sync="table.maxHeight">
+         <el-table :data="table.data" :size="table.size" :max-height="table.maxHeight" slot="table" style="width: 100%">
         <el-table-column align="center" prop="date" label="日期" width="180"> </el-table-column>
         <el-table-column align="center" prop="name" label="姓名" width="180"> </el-table-column>
         <el-table-column align="center" prop="address" label="地址"> </el-table-column>
@@ -44,71 +46,46 @@
         </template>
         </el-table-column>
       </el-table>
-      </div>
-      <!-- 分页 -->
-      <div class="block">
+
+        <!-- 分页 -->
         <el-pagination
+          slot="page"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
+          :current-page.sync="pagination.page"
+          :page-sizes="pagination.pageSizes"
+          :page-size="pagination.size"
           layout="total, sizes, prev, pager, next"
-          :total="400">
+          :total="pagination.total">
         </el-pagination>
-      </div>
+
+
+      </TableContain>
+ 
 
       <!-- 弹层 -->
-      <el-dialog :visible.sync="dialogVisible" title="新增" size="tiny"  @close="closeDialog" @open="openDialog">
+      <!-- <el-dialog :visible.sync="dialogVisible" title="新增" size="tiny"  @close="closeDialog" @open="openDialog">
         <add-view v-if="addViewVisible" ref="addView" @close="closeDialog" @onRefresh="onRefresh"></add-view>
-      </el-dialog>
+      </el-dialog> -->
 
       <!-- loading 加载 -->
       <!-- {{multiselectValue}} -->
       <!-- <multiselect v-model="multiselectValue" :options="options"></multiselect> -->
-      <loading v-model="loading"></loading>
+      <!-- <loading v-model="loading"></loading>  -->
   </div>
 </template>
  
 <script>
 import addView from './addview/addview.vue'
+import listModel from '@/public/listModel.js'
 export default {
+  mixins: [listModel],
   name: 'record_query',
   components: {
     addView
   },
   data() {
-    return {
-      multiselectValue: null,
-      options: ['list', 'of', 'options'],
-      dialogVisible: false,
-      addViewVisible: false,
-      loading: true,
-      code2name: null,
-      currentPage: 2,
-      tableData: [
-        {
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        },
-        {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        },
-        {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }
-      ]
-    }
+    return {}
   },
   mounted() {
     setTimeout(() => {
