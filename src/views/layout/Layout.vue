@@ -39,7 +39,7 @@ export default {
 	width:100%!important;
 	min-width: 700px;
 	background:#2b2f48;
-	z-index: 10;
+	z-index: 2000;
 }
  .main-container{
     position: relative;
