@@ -1,6 +1,6 @@
 <template>
   <div class="page" style="width: 100%">
-      <SearchTree class="SearchTree"></SearchTree>
+      <SearchTree class="SearchTree" @clickSelect="clickSelect"></SearchTree>
       <div class="name"> 当前设备 IXML </div>
       <!-- 表格 设备信息表-->
       <TableContain :height.sync="table.maxHeight">
@@ -92,6 +92,9 @@ export default {
       }).catch((error) => {
         console.log(error)
       })
+    },
+    clickSelect(item) {
+      console.log(item, '选择对象')
     }
   }
 }

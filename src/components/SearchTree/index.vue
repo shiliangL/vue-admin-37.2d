@@ -269,8 +269,8 @@ export default {
       if (!value) return true
       return data.label.indexOf(value) !== -1
     },
-    clickLoadDetails() {
-
+    clickLoadDetails(data) {
+      this.$emit('clickSelect', data)
     },
     currentChange(a, b, c) {
       console.log(a, b, c)
