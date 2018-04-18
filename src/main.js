@@ -18,6 +18,8 @@ import './public/index'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+import './mock' // simulation data
+
 Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false

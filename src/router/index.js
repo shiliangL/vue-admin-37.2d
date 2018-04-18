@@ -136,13 +136,13 @@ export const constantRouterMap = [
       {
         path: 'tree3',
         name: 'Tree3',
-        component: () => import('@/views/tree/index'),
+        component: () => import('@/views/devices/devices_deal/index'),
         meta: { title: '占位', icon: 'tree' }
       },
       {
         path: 'tree4',
         name: 'Tree4',
-        component: () => import('@/views/tree/index'),
+        component: () => import('@/views/devices/devices_deal/index'),
         meta: { title: '占位', icon: 'tree' }
       }
     ]

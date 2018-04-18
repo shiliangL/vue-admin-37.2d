@@ -78,6 +78,7 @@
 <script>
 import addView from './addview/addview.vue'
 import listModel from '@/public/listModel.js'
+import { fetchShopAssistantInfo } from '@/api/shopInfo'
 export default {
   mixins: [listModel],
   name: 'record_query',
@@ -89,6 +90,7 @@ export default {
   },
   mounted() {
     setTimeout(() => {
+      this.fetchData()
       this.loading = false
     }, 2000)
   },
@@ -110,6 +112,11 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
+    },
+    fetchData() {
+      fetchShopAssistantInfo({ page: 0, size: 10 }).then(req => {
+        console.log(req)
+      })
     }
   }
 }
