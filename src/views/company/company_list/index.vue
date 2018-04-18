@@ -5,7 +5,12 @@
  
       <!-- 表格 -->
       <TableContain :height.sync="table.maxHeight">
-         <el-table :data="table.data" :size="table.size" :max-height="table.maxHeight" slot="table" style="width: 100%">
+        <el-table :data="table.data" :size="table.size" :max-height="table.maxHeight" slot="table" style="width: 100%">
+        <el-table-column align="center" label="序号" width="40">
+          <template slot-scope="scope">
+             <span v-text="scope.$index+1"></span>
+          </template>
+        </el-table-column>
         <el-table-column align="center" prop="id" label="企业ID"> </el-table-column>
         <el-table-column align="center" prop="name" label="企业名称"> </el-table-column>
         <el-table-column align="center" prop="addr" label="地址"> </el-table-column>
@@ -15,7 +20,7 @@
         <el-table-column align="center" prop="certification" label="实名状态">
           <template slot-scope="scope">
             <el-tag  size="mini" v-if="scope.row.certification ===0" type="gray">未认证</el-tag>
-            <el-tag  size="mini" v-if="scope.row.certification ===1" type="primary">提交认证</el-tag>
+            <el-tag  size="mini" v-if="scope.row.certification ===1" type="gray">提交认证</el-tag>
             <el-tag  size="mini" v-if="scope.row.certification ===2" type="success">已认证</el-tag>
           </template>
         </el-table-column>
@@ -74,8 +79,7 @@ export default {
   mounted() {
     setTimeout(() => {
       this.fetchData()
-      this.loading = false
-    }, 2000)
+    }, 20)
   },
   methods: {
     // 弹层操作

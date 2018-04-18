@@ -1,6 +1,5 @@
 // 做全局的组件或者实例方法
 import Vue from 'vue'
-import './Api/index'
 import loading from './Loading/index'
 // register globally
 const components = [

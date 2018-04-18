@@ -14,7 +14,8 @@ export default {
         total: 10 // 总条数
       },
       table: {
-        data: []
+        data: [],
+        size: 'mini'
       },
       add: {
         visiable: false, // 是否显示新增组件

@@ -46,9 +46,9 @@ export default {
    
  }
  .main-container .page-tags{
-   padding-top: 100px;
-    height: 35px;
-    background: #ccc;
+   padding-top: 80px;
+    height: 30px;
+    background: #fff;
   }
  .main-container .app-main{
     padding: 20px;
