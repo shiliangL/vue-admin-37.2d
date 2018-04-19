@@ -119,7 +119,7 @@ export default {
       if (this.multipleSelection.length) {
         this.downloadLoading = true
         import('@/utils/Export2Excel').then(excel => {
-          const tHeader = ['Id', 'Title', 'addr', 'Readings', 'Date']
+          const tHeader = ['Id', 'Title', '安装地址', 'Readings', 'Date']
           const filterVal = ['id', 'title', 'addr', 'pageviews', 'display_time']
           const list = this.multipleSelection
           const data = this.formatJson(filterVal, list)
