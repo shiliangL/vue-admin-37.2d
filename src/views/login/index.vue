@@ -90,17 +90,6 @@ export default {
     // console.log(this.$jq, 'vue实例')
   },
   methods: {
-    getCookie(name) {
-      const strcookie = document.cookie // 获取cookie字符串
-      const arrcookie = strcookie.split('; ') // 分割
-      for (let i = 0; i < arrcookie.length; i++) {
-        const arr = arrcookie[i].split('=')
-        if (arr[0] === name) {
-          return arr[1]
-        }
-      }
-      return ''
-    },
     showPwd() {
       if (this.pwdType === 'password') {
         this.pwdType = ''
@@ -109,6 +98,7 @@ export default {
       }
     },
     handleLogin() {
+      this.$router.push({ path: '/' })
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true

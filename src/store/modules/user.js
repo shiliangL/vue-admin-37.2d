@@ -31,6 +31,7 @@ const user = {
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(response => {
           const data = response
+          setToken('xxxxTk')
           if (response.result === 'ok') {
             setToken(data.result)
             Message.success('登录成功,欢迎光临！')

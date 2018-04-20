@@ -1,16 +1,12 @@
 <template>
-    <div class="SearchTree" v-clickoutside="close">
+    <div class="SearchTree">
       <div class="search">
-        <span v-if="showTree">
           <el-input size="mini" placeholder="名称检索" v-model.trim="codeOrname" style="width:140px"></el-input>
           <el-button type="primary" size="mini" @click="clickSearch"> 搜索 </el-button>
           <el-button style="margin:0px" size="mini" @click="reset"> 重置 </el-button>
-        </span>
-        <span v-else>
-          <el-button  class="pan-btn light-blue-btn" type="primary"  size="mini" @click="showTree = !showTree">获取设备</el-button>
-        </span>
+          <!-- <el-button type="text" :icon="iconName" size="mini" @click="showTree = !showTree"></el-button> -->
       </div>
-      <div class="tree" v-show="showTree">
+      <div class="tree" v-show="true">
         <ScrollBar>
           <el-tree ref="tree"
             accordion
@@ -36,7 +32,6 @@
 </template>
 
 <script>
-import Clickoutside from 'element-ui/src/utils/clickoutside'
 import { ScrollBar } from '@/components/indexEx.js'
 export default {
   name: 'SearchTree',
@@ -50,12 +45,12 @@ export default {
         label: 'label'
       },
       unfoldedArr: [],
-      showTree: false,
+      // showTree: false,
       // treeData: [],
       treeData: [
         {
           id: '919135926351822848',
-          label: '单鞋',
+          label: '设备组 A',
           status: 1,
           propertyName: null,
           topId: null,
@@ -64,7 +59,7 @@ export default {
           children: [
             {
               id: '943740344682414080',
-              label: '浅口',
+              label: '设备 A1',
               status: 1,
               propertyName: null,
               topId: null,
@@ -74,7 +69,7 @@ export default {
             },
             {
               id: '943740388168957952',
-              label: '中口',
+              label: '设备 A2',
               status: 1,
               propertyName: null,
               topId: null,
@@ -84,7 +79,7 @@ export default {
             },
             {
               id: '943740424776843264',
-              label: '深口',
+              label: '设备 A3',
               status: 1,
               propertyName: null,
               topId: null,
@@ -96,7 +91,7 @@ export default {
         },
         {
           id: '919138032865509376',
-          label: '空鞋',
+          label: '设备组 B',
           status: 1,
           propertyName: null,
           topId: null,
@@ -105,7 +100,7 @@ export default {
           children: [
             {
               id: '943740479722225664',
-              label: '中空',
+              label: '设备 B1',
               status: 1,
               propertyName: null,
               topId: null,
@@ -115,144 +110,12 @@ export default {
             },
             {
               id: '943740497623515136',
-              label: '鱼嘴',
+              label: '设备 B2',
               status: 1,
               propertyName: null,
               topId: null,
               topName: null,
               idFullInfo: '919138032865509376/943740497623515136',
-              children: []
-            },
-            {
-              id: '943740528938188800',
-              label: '后空',
-              status: 1,
-              propertyName: null,
-              topId: null,
-              topName: null,
-              idFullInfo: '919138032865509376/943740528938188800',
-              children: []
-            }
-          ]
-        },
-        {
-          id: '919138664301199360',
-          label: '凉鞋',
-          status: 1,
-          propertyName: null,
-          topId: null,
-          topName: null,
-          idFullInfo: '919138664301199360',
-          children: [
-            {
-              id: '943740531899367424',
-              label: '凉鞋',
-              status: 1,
-              propertyName: null,
-              topId: null,
-              topName: null,
-              idFullInfo: '919138664301199360/943740531899367424',
-              children: []
-            },
-            {
-              id: '943740573632692224',
-              label: '拖鞋',
-              status: 1,
-              propertyName: null,
-              topId: null,
-              topName: null,
-              idFullInfo: '919138664301199360/943740573632692224',
-              children: []
-            }
-          ]
-        },
-        {
-          id: '919139223217373184',
-          label: '包',
-          status: 1,
-          propertyName: null,
-          topId: null,
-          topName: null,
-          idFullInfo: '919139223217373184',
-          children: [
-            {
-              id: '919139264501907456',
-              label: '手拎包',
-              status: 1,
-              propertyName: null,
-              topId: null,
-              topName: null,
-              idFullInfo: '919139223217373184/919139264501907456',
-              children: []
-            },
-            {
-              id: '919139367694368768',
-              label: '单肩包',
-              status: 1,
-              propertyName: null,
-              topId: null,
-              topName: null,
-              idFullInfo: '919139223217373184/919139367694368768',
-              children: []
-            },
-            {
-              id: '919139418315423744',
-              label: '双肩包',
-              status: 1,
-              propertyName: null,
-              topId: null,
-              topName: null,
-              idFullInfo: '919139223217373184/919139418315423744',
-              children: []
-            },
-            {
-              id: '919139447553916928',
-              label: '钱包',
-              status: 1,
-              propertyName: null,
-              topId: null,
-              topName: null,
-              idFullInfo: '919139223217373184/919139447553916928',
-              children: []
-            },
-            {
-              id: '919139476205207552',
-              label: '卡包',
-              status: 1,
-              propertyName: null,
-              topId: null,
-              topName: null,
-              idFullInfo: '919139223217373184/919139476205207552',
-              children: []
-            },
-            {
-              id: '919409539936157696',
-              label: '正价包',
-              status: 1,
-              propertyName: null,
-              topId: null,
-              topName: null,
-              idFullInfo: '919139223217373184/919409539936157696',
-              children: []
-            },
-            {
-              id: '943792891329773568',
-              label: '赠品包',
-              status: 1,
-              propertyName: null,
-              topId: null,
-              topName: null,
-              idFullInfo: '919139223217373184/943792891329773568',
-              children: []
-            },
-            {
-              id: '959009708805455872',
-              label: '斜挎包',
-              status: 1,
-              propertyName: null,
-              topId: null,
-              topName: null,
-              idFullInfo: '919139223217373184//959009708805455872',
               children: []
             }
           ]
@@ -261,8 +124,10 @@ export default {
       codeOrname: null
     }
   },
-  directives: {
-    Clickoutside
+  computed: {
+    iconName() {
+      return this.showTree ? 'el-icon-arrow-down' : 'el-icon-arrow-up'
+    }
   },
   methods: {
     filterNode(value, data) {
@@ -282,9 +147,6 @@ export default {
     reset() {
       this.codeOrname = null
       this.$refs['tree'].filter(null)
-    },
-    close() {
-      this.showTree = false
     }
   }
 }
@@ -292,12 +154,12 @@ export default {
 
 <style scoped lang="scss">
 .SearchTree {
-  min-width: 320px;
-  width: 320px;
-  padding: 6px;
+  min-width: 280px;
+  width: 280px;
+  padding: 8px;
   border-radius: 8px;
-  // box-shadow: 0 2px 5px 0 rgba(0,0,0,.3);
-  // border: 1px solid #d1dbe5;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,.3);
+  border: 1px solid #d1dbe5;
   .scroll-container {
     min-height:280px;
     height:280px;
@@ -308,7 +170,6 @@ export default {
     background: #fff;
     min-height:280px;
     overflow: hidden;
-    border: 1px solid #d1dbe5;
   }
   .custom-tree-node {
     font-size: 14px;

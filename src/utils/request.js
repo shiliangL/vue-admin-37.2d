@@ -26,6 +26,8 @@ service.interceptors.response.use(
   response => {
     const res = response.data
     if (res.result !== 'ok') {
+      // 判断业务情况 根据不同的状态码
+      // // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
       return response.data
       // Message({
       //   message: '!== 20000',

@@ -1,5 +1,5 @@
 <template>
-    <div class="searchBox">
+    <div class="searchBox w180">
       {{searchBoxValue}}
        <el-select filterable remote clearable
         @focus="fetchData"
