@@ -168,7 +168,7 @@ export default {
   .tree {
     margin-top: 8px;
     background: #fff;
-    min-height:280px;
+    min-height:330px;
     overflow: hidden;
   }
   .custom-tree-node {

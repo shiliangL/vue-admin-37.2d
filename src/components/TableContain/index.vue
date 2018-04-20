@@ -1,5 +1,5 @@
 <template>
-  <div class="tableContain">
+  <div class="tableContain" :class="{'border':border}">
       <slot ref="table" name="table"></slot>
       <slot ref="page" name="page"></slot>
   </div>
@@ -8,6 +8,12 @@
 <script>
 export default {
   name: 'TableContain',
+  props: {
+    border: {
+      type: Boolean,
+      default: true
+    }
+  },
   mounted() {
     window.addEventListener('resize', this.resizeHeight)
   },
@@ -37,3 +43,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.border{
+  border: 1px solid #ebebeb;
+}
+</style>
+ 

@@ -1,74 +1,77 @@
-<template>
+ <template>
   <div class="page" style="width: 100%">
     <div class="flex-box">
       <div>
         <SearchTree class="SearchTree" @clickSelect="clickSelect"></SearchTree>
       </div>
       <div class="content">
-        <TableContain :height.sync="table.maxHeight">
-          <el-table :data="table.data" :size="table.size" :max-height="table.maxHeight" slot="table" style="width: 100%">
-          <el-table-column align="center" label="序号" width="40">
-            <template slot-scope="scope">
-              <span v-text="scope.$index+1"></span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" prop="id" label="设备ID"> </el-table-column>
-          <el-table-column align="center" prop="psn" label="PSN"> </el-table-column>
-          <el-table-column align="center" prop="life_cycle" label="生命周期"> </el-table-column>
-          <el-table-column align="center" prop="life_start" label="开始时间"> </el-table-column>
-          <el-table-column align="center" prop="life_end" label="到期时间"> </el-table-column>
-          <el-table-column align="center" prop="iccid" label="ICCID号"> </el-table-column>
-          <el-table-column align="center" prop="iccid" label="IMEI/ICCID码"> </el-table-column>
-          <el-table-column align="center" prop="repair_status" label="维修状态">
-            <template slot-scope="scope">
-              <el-tag  size="mini" v-if="scope.row.repair_status ===0" type="success">正常</el-tag>
-              <el-tag  size="mini" v-if="scope.row.repair_status ===1" type="gray">报修中</el-tag>
-              <el-tag  size="mini" v-if="scope.row.repair_status ===2" type="gray">修理中</el-tag>
-              <el-tag  size="mini" v-if="scope.row.repair_status ===3" type="gray">已修好待验证</el-tag>
-              <el-tag  size="mini" v-if="scope.row.repair_status ===4" type="danger">已报废</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" prop="expected_lifecycle" label="期望续期/天"> </el-table-column>
-          <el-table-column align="center" prop="renewal_ct" label="已续期次数"> </el-table-column>
-          <!-- <el-table-column align="center" prop="address" label="操作">
-            <template slot-scope="scope">
-            <el-button type="primary" size="mini"> 编辑 </el-button>
-            <el-button size="mini" type="success"> 正常 </el-button>
-            <el-button size="mini"> 正常 </el-button>
-            <el-button size="mini" type="danger"> 故障 </el-button>
-          </template>
-          </el-table-column> -->
-        </el-table>
-          <!-- 分页 -->
-          <el-pagination
-            slot="page"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page.sync="pagination.page"
-            :page-sizes="pagination.pageSizes"
-            :page-size="pagination.size"
-            layout="total, sizes, prev, pager, next"
-            :total="pagination.total">
-          </el-pagination>
-        </TableContain>
+        <div class="mc-titel">
+           <!-- 顶部搜索区域 -->
+          <div class="search-bar">
+            <div class="left" style="display: flex;align-items: center;">
+               <div>
+                <h4>设备名称（PSN码）</h4>
+              </div>
+              <div>
+                <h4>状态: 正常</h4>
+              </div>
+            </div>
+            <div class="right">
+              <el-button type="danger" size="small"> 关机 </el-button>
+              <el-button type="primary" plain size="small" > 读取 </el-button>
+              <el-button type="primary" size="small" > 保存 </el-button>
+            </div>
+          </div>
+        </div>
+        <div class="mc-icon">
+          <el-form ref="form" :model="form" label-width="180px" size="small" :inline="true">
+            
+            <el-form-item label="采样间隔/秒">
+              <el-input class="w180" type="number" v-model.trim="form.name"></el-input>
+            </el-form-item>
+            
+            <el-form-item label="温度报警使能">
+              <el-select class="w180"  v-model="form.name" placeholder="请选择活动区域">
+                <el-option label="启用" value="1"></el-option>
+                <el-option label="禁用" value="0"></el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item label="湿度报警使能">
+              <el-select class="w180"  v-model="form.name" placeholder="请选择活动区域">
+                <el-option label="启用" value="1"></el-option>
+                <el-option label="禁用" value="0"></el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item label="距离报警使能">
+              <el-select class="w180" v-model="form.name" placeholder="请选择活动区域">
+                <el-option label="启用" value="1"></el-option>
+                <el-option label="禁用" value="0"></el-option>
+              </el-select>
+            </el-form-item>
+
+          </el-form>
+ 
+        </div>
       </div>
     </div>
   </div>
 </template>
  
 <script>
-import listModel from '@/public/listModel.js'
 import { fetchShopAssistantInfo } from '@/api/shopInfo'
 import { SearchTree } from '@/components/indexEx.js'
 export default {
-  mixins: [listModel],
   name: 'remote_setting',
   components: {
     SearchTree
   },
   data() {
     return {
-      activeName: 0
+      form: {
+        name: null
+      }
     }
   },
   mounted() {
@@ -79,14 +82,6 @@ export default {
   methods: {
     onRefresh() {
       console.log('刷新页面')
-    },
-    handleSizeChange(val) {
-      this.pagination.size = val
-      this.fetchData()
-    },
-    handleCurrentChange(val) {
-      this.pagination.page = val
-      this.fetchData()
     },
     fetchData() {
       fetchShopAssistantInfo({ page: 0, size: 10 })
@@ -100,6 +95,9 @@ export default {
     },
     clickSelect(item) {
       console.log(item, '选择对象')
+    },
+    handleClickTabs(tab, event) {
+      console.log(tab, event)
     }
   }
 }
@@ -112,7 +110,8 @@ export default {
     }
     .content {
       margin-left: 10px;
-      width: 100%;
+      min-width: 500px;
+      width: 98%;
     }
   }
 }
