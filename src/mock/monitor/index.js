@@ -2,14 +2,13 @@ import Mock from 'mockjs'
 import * as monitorAPI from '@/api/monitor'
 import utils from '../utils'
 
-const shopAssistantInfo = []
+const Groups = []
 const TotalPageSize = Math.random() * 100
-
 for (let i = 0; i < TotalPageSize; i++) {
-  shopAssistantInfo.push(Mock.mock({
+  Groups.push(Mock.mock({
     'id': '@string("number", 16)',
     name() {
-      return Mock.mock('@city') + '分公司'
+      return Mock.mock('@city') + '组'
     },
     'code|1': ['LLX', 'BTS', 'NKT', 'APL'],
     addr() {
@@ -37,48 +36,22 @@ for (let i = 0; i < TotalPageSize; i++) {
   }))
 }
 const Apis = {
-  fetchShopAssistantInfo(config) {
+  fetchGroups(config) {
     const { page = 1,
       size = 20,
-      orderNo,
-      recevier,
-      deliverType,
-      startDate,
-      endDate,
-      shopName
+      codeOrname
     } = utils.getPranams(config)
 
     const pranams = [{
       type: 'like',
-      key: 'orderNo',
-      value: orderNo
-    }, {
-      type: 'like',
-      key: 'recevier',
-      value: recevier
-    }, {
-      type: 'like',
-      key: 'shopName',
-      value: shopName
-    }, {
-      type: 'eq',
-      key: 'deliverType',
-      value: deliverType
-    }, {
-      type: 'timeGte',
-      key: 'saleDate',
-      value: startDate
-    }, {
-      type: 'timeLte',
-      key: 'saleDate',
-      value: endDate
+      key: 'codeOrname',
+      value: codeOrname
     }]
-
-    const filterMock = utils.query(shopAssistantInfo, pranams)
+    const filterMock = utils.query(Groups, pranams)
 
     const ret = utils.setPageRet(filterMock, page, size)
 
-    utils.log('MockLists:', ret, config)
+    utils.log('设备组MockLists:', ret, config)
 
     return ret
   }

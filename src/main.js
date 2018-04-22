@@ -16,7 +16,7 @@ import store from './store'
 // 使用公共方法
 import './public/index'
 import '@/icons' // icon
-// import '@/permission' // permission control
+import '@/permission' // permission control
 
 import './mock' // simulation data
 

@@ -77,9 +77,7 @@ export default {
     }
   },
   mounted() {
-    setTimeout(() => {
-      this.fetchData()
-    }, 2000)
+
   },
   methods: {
     onRefresh() {

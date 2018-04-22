@@ -1,16 +1,16 @@
 <template>
     <div class="SearchTree">
       <div class="search">
-          <el-select v-model="group" placeholder="设备组" size="mini" class="w160">
-            <el-option v-for="item in groupOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          <el-select v-model="group" placeholder="设备组" size="mini" class="w160" clearable filterable @change="select2fetchGroupsConfig">
+            <el-option v-for="item in groupOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
           </el-select>
           <el-input class="w160" size="mini" placeholder="设备名称检索" v-model.trim="codeOrname"></el-input>
-          <el-button type="primary" size="mini" @click="clickSearch"> 搜索 </el-button>
+          <el-button type="primary" size="mini" @click="filterSeach"> 搜索 </el-button>
           <el-button style="margin:0px" size="mini" @click="reset"> 重置 </el-button>
       </div>
-      <div class="tree" v-show="true">
-        <el-table :data="tableData" size="mini" :max-height="280" style="width: 100%"
-        v-loading.body="listLoading" element-loading-text="拼命加载中" highlight-current-row @selection-change="clickLoadDetails">
+      <div class="tree">
+        <el-table :data="tableData" size="mini" :max-height="430" style="width: 100%"
+        v-loading.body="listLoading" element-loading-text="拼命加载中" highlight-current-row @row-click="clickLoadDetails">
           <el-table-column align="center" label="序号" width="40">
             <template slot-scope="scope">
               <span v-text="scope.$index+1"></span>
@@ -29,6 +29,7 @@
 
 <script>
 import { ScrollBar } from '@/components/indexEx.js'
+import { fetchGroups, fetchGroupsConfig, fetchmMeasureValue } from '@/api/monitor'
 export default {
   name: 'SearchTree',
   components: {
@@ -40,16 +41,71 @@ export default {
       listLoading: false,
       group: null,
       groupOptions: [],
+      config: {
+        caption: null,
+        suffix: null,
+        type: null,
+        visible: null
+      },
       codeOrname: null
     }
   },
+  mounted() {
+    this.fetchGroupData()
+  },
   methods: {
-    clickLoadDetails(data) {
-      this.$emit('clickSelect', data)
+    fetchGroupData() {
+      fetchGroups({ page: 0, size: 10, codeOrname: this.codeOrname }).then(({ data }) => {
+        this.groupOptions = data.content
+      }).catch(error => {
+        console.log(error)
+      })
     },
-    clickSearch() {
-      const { codeOrname } = this
-      this.$refs['tree'].filter(codeOrname)
+    select2fetchGroupsConfig(id) {
+      // 选择组的时候加载配置信息
+      fetchGroupsConfig({ GroupID: id }).then(res => {
+        console.log(res)
+        const result = res.MeasureConfig
+        if (!result) return
+        const { config } = this
+        config.caption = result.caption.split(',')
+        config.suffix = result.suffix.split(',')
+        config.type = result.type.split(',')
+        config.visible = result.visible
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    clickLoadDetails(data) {
+      // 加载组下具体设备 fetchmMeasureValue
+      fetchmMeasureValue({ PSN: data.id }).then(res => {
+        const reslutData = res
+        const data = res.Value.slice(0, this.config.visible)
+        const option = []
+        const { config } = this
+        data.forEach((item, index) => {
+          option.push({
+            caption: config.caption[index],
+            suffix: config.suffix[index],
+            type: config.type[index],
+            visible: config.visible,
+            value: item
+          })
+        })
+        reslutData.option = option
+        console.log(reslutData, '拼接输出')
+        this.$emit('clickSelect', reslutData)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    filterSeach() {
+      const { codeOrname, tableData } = this
+      if (!codeOrname) return
+      tableData.filter(item => {
+        return item.name === codeOrname
+      })
+      console.log(tableData)
     },
     reset() {
       this.codeOrname = null
@@ -66,27 +122,11 @@ export default {
   border-radius: 8px;
   // box-shadow: 0 2px 5px 0 rgba(0,0,0,.3);
   border: 1px solid #d1dbe5;
-  .scroll-container {
-    min-height:280px;
-    height:280px;
-    background-color: #fff;
-  }
   .tree {
-    margin-top: 8px;
-    background: #fff;
-    min-height:330px;
-    overflow: hidden;
-  }
-  .custom-tree-node {
-    font-size: 14px;
-    flex: 1;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-align: center;
-    align-items: center;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-    padding-right: 10px;
+    // margin-top: 8px;
+    // background: #fff;
+    // min-height: 330px;
+    // overflow: hidden;
   }
 }
 </style>
