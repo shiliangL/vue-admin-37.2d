@@ -1,32 +1,28 @@
 <template>
     <div class="SearchTree">
       <div class="search">
-          <el-input size="mini" placeholder="名称检索" v-model.trim="codeOrname" style="width:140px"></el-input>
+          <el-select v-model="group" placeholder="设备组" size="mini" class="w160">
+            <el-option v-for="item in groupOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+          <el-input class="w160" size="mini" placeholder="设备名称检索" v-model.trim="codeOrname"></el-input>
           <el-button type="primary" size="mini" @click="clickSearch"> 搜索 </el-button>
           <el-button style="margin:0px" size="mini" @click="reset"> 重置 </el-button>
-          <!-- <el-button type="text" :icon="iconName" size="mini" @click="showTree = !showTree"></el-button> -->
       </div>
       <div class="tree" v-show="true">
-        <ScrollBar>
-          <el-tree ref="tree"
-            accordion
-            :highlight-current="true" 
-            :data="treeData"
-            :filter-node-method="filterNode" 
-            :props="defaultProps" 
-            @node-click="clickLoadDetails" node-key="id" 
-            @check-change="currentChange"
-            :default-expanded-keys="unfoldedArr">
-            <!-- <span class="custom-tree-node" slot-scope="{ node, data }">
-              <span>{{ node.label }}</span>
-              <span>
-                <el-button type="text" size="mini" @click="() => append(data)"> 添加 </el-button>
-                <el-button type="text" size="mini" @click="() => editor(data)"> 编辑 </el-button>
-                <el-button type="text" size="mini" @click="() => remove(node, data)"> 删除 </el-button>
-              </span>
-            </span> -->
-          </el-tree>
-        </ScrollBar>
+        <el-table :data="tableData" size="mini" :max-height="280" style="width: 100%"
+        v-loading.body="listLoading" element-loading-text="拼命加载中" highlight-current-row @selection-change="clickLoadDetails">
+          <el-table-column align="center" label="序号" width="40">
+            <template slot-scope="scope">
+              <span v-text="scope.$index+1"></span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="name" label="名称"> </el-table-column>
+          <el-table-column align="center" prop="status" label="状态"> 
+            <template slot-scope="scope">
+              <el-tag size="mini" :type="scope.row.status===1?'success':'danger'">{{scope.row.status===1? '在线':'离线'}}</el-tag>
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
     </div>
 </template>
@@ -40,105 +36,16 @@ export default {
   },
   data() {
     return {
-      defaultProps: {
-        children: 'children',
-        label: 'label'
-      },
-      unfoldedArr: [],
-      // showTree: false,
-      // treeData: [],
-      treeData: [
-        {
-          id: '919135926351822848',
-          label: '设备组 A',
-          status: 1,
-          propertyName: null,
-          topId: null,
-          topName: null,
-          idFullInfo: '919135926351822848',
-          children: [
-            {
-              id: '943740344682414080',
-              label: '设备 A1',
-              status: 1,
-              propertyName: null,
-              topId: null,
-              topName: null,
-              idFullInfo: '919135926351822848/943740344682414080',
-              children: []
-            },
-            {
-              id: '943740388168957952',
-              label: '设备 A2',
-              status: 1,
-              propertyName: null,
-              topId: null,
-              topName: null,
-              idFullInfo: '919135926351822848/943740388168957952',
-              children: []
-            },
-            {
-              id: '943740424776843264',
-              label: '设备 A3',
-              status: 1,
-              propertyName: null,
-              topId: null,
-              topName: null,
-              idFullInfo: '919135926351822848/943740424776843264',
-              children: []
-            }
-          ]
-        },
-        {
-          id: '919138032865509376',
-          label: '设备组 B',
-          status: 1,
-          propertyName: null,
-          topId: null,
-          topName: null,
-          idFullInfo: '919138032865509376',
-          children: [
-            {
-              id: '943740479722225664',
-              label: '设备 B1',
-              status: 1,
-              propertyName: null,
-              topId: null,
-              topName: null,
-              idFullInfo: '919138032865509376/943740479722225664',
-              children: []
-            },
-            {
-              id: '943740497623515136',
-              label: '设备 B2',
-              status: 1,
-              propertyName: null,
-              topId: null,
-              topName: null,
-              idFullInfo: '919138032865509376/943740497623515136',
-              children: []
-            }
-          ]
-        }
-      ],
+      tableData: [{ name: '1号设备', id: 999000001, status: 1 }, { name: '2号设备', id: 999000002, status: 0 }],
+      listLoading: false,
+      group: null,
+      groupOptions: [],
       codeOrname: null
     }
   },
-  computed: {
-    iconName() {
-      return this.showTree ? 'el-icon-arrow-down' : 'el-icon-arrow-up'
-    }
-  },
   methods: {
-    filterNode(value, data) {
-      if (!value) return true
-      return data.label.indexOf(value) !== -1
-    },
     clickLoadDetails(data) {
       this.$emit('clickSelect', data)
-    },
-    currentChange(a, b, c) {
-      console.log(a, b, c)
     },
     clickSearch() {
       const { codeOrname } = this
@@ -146,7 +53,6 @@ export default {
     },
     reset() {
       this.codeOrname = null
-      this.$refs['tree'].filter(null)
     }
   }
 }
@@ -154,11 +60,11 @@ export default {
 
 <style scoped lang="scss">
 .SearchTree {
-  min-width: 280px;
-  width: 280px;
+  min-width: 480px;
+  width: 480px;
   padding: 8px;
   border-radius: 8px;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,.3);
+  // box-shadow: 0 2px 5px 0 rgba(0,0,0,.3);
   border: 1px solid #d1dbe5;
   .scroll-container {
     min-height:280px;
