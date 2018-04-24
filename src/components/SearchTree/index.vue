@@ -29,7 +29,7 @@
 
 <script>
 import { ScrollBar } from '@/components/indexEx.js'
-import { fetchGroups, fetchGroupsConfig, fetchmMeasureValue } from '@/api/monitor'
+import { fetchGroups, fetchGroupsConfig, fetchmMeasureValue, fetchGroupDev } from '@/api/monitor'
 export default {
   name: 'SearchTree',
   components: {
@@ -37,7 +37,7 @@ export default {
   },
   data() {
     return {
-      tableData: [{ name: '1号设备', id: 999000001, status: 1 }, { name: '2号设备', id: 999000002, status: 0 }],
+      tableData: [],
       listLoading: false,
       group: null,
       groupOptions: [],
@@ -53,19 +53,22 @@ export default {
   mounted() {
     this.fetchGroupData()
   },
+  created() {
+    this.hasConfig = false
+  },
   methods: {
     fetchGroupData() {
-      fetchGroups({ page: 0, size: 10, codeOrname: this.codeOrname }).then(({ data }) => {
-        this.groupOptions = data.content
+      fetchGroups({ page: 0, size: 10, codeOrname: this.codeOrname }).then(data => {
+        this.groupOptions = data.groups
       }).catch(error => {
         console.log(error)
       })
     },
     select2fetchGroupsConfig(id) {
       // 选择组的时候加载配置信息
-      fetchGroupsConfig({ GroupID: id }).then(res => {
-        console.log(res)
-        const result = res.MeasureConfig
+      if (!id) return
+      fetchGroupsConfig({ GroupID: id }).then(data => {
+        const result = data.MeasureConfig
         if (!result) return
         const { config } = this
         config.caption = result.caption.split(',')
@@ -75,6 +78,15 @@ export default {
       }).catch(error => {
         console.log(error)
       })
+
+      // 加载组下设备
+      this.listLoading = true
+      fetchGroupDev({ GroupID: id }).then(data => {
+        this.tableData = data.Devices
+      }).catch(error => {
+        console.log(error)
+      })
+      this.listLoading = false
     },
     clickLoadDetails(data) {
       // 加载组下具体设备 fetchmMeasureValue
@@ -93,7 +105,6 @@ export default {
           })
         })
         reslutData.option = option
-        console.log(reslutData, '拼接输出')
         this.$emit('clickSelect', reslutData)
       }).catch(error => {
         console.log(error)

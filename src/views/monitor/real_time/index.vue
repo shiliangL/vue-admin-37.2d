@@ -4,51 +4,59 @@
       <div>
         <SearchTree class="SearchTree" @clickSelect="clickSelect"></SearchTree>
       </div>
-      <div class="content">
-        <div class="mc-titel">
-          <el-row :gutter="40">
-            <el-col :xs="12" :sm="8" :lg="8" class="card-panel-col">
-              <div> <h4 style="color: #409eff;">{{data.Name}}（PSN码:{{data.PSN}}）</h4> </div>
-            </el-col>
-            <el-col :xs="12" :sm="8" :lg="8" class="card-panel-col">
-              <div> <h4>系统: {{data.run===1?'正常':'停机'}}</h4> </div>
-            </el-col>
-            <el-col :xs="12" :sm="8" :lg="8" class="card-panel-col">
-              <div> <h4>模式: {{data.mode}}</h4> </div>
-            </el-col>
-            <el-col :xs="12" :sm="8" :lg="8" class="card-panel-col">
-              <div> <h4>采集时间: {{data.Time}}</h4> </div>
-            </el-col>
-            <el-col :xs="12" :sm="8" :lg="8" class="card-panel-col">
-              <div> <h4>告警: {{data.alarm}}</h4> </div>
-            </el-col>
-            <el-col :xs="12" :sm="8" :lg="8" class="card-panel-col">
-              <div> <h4>故障: {{data.error}}</h4> </div>
-            </el-col>
-          </el-row>    
-        </div>
-        <div class="mc-icon">
-           <el-row class="panel-group" :gutter="40">
-            <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col" v-for="item in data.Value" :key="item">
-              <div class="card-panel">
-                <div class="card-panel-icon-wrapper icon-people">
-                  <svg-icon icon-class="peoples" class-name="card-panel-icon" />
+       <transition name="el-fade-in">
+        <div class="content" v-show="isShow">
+          <div class="mc-titel">
+            <el-row :gutter="40">
+              <el-col :xs="12" :sm="8" :lg="8" class="card-panel-col">
+                <div> <h4 style="color: #409eff;">{{data.Name}}（PSN码:{{data.PSN}}）</h4> </div>
+              </el-col>
+              <el-col :xs="12" :sm="8" :lg="8" class="card-panel-col">
+                <div> <h4>系统: {{data.run===1?'正常':'停机'}}</h4> </div>
+              </el-col>
+              <el-col :xs="12" :sm="8" :lg="8" class="card-panel-col">
+                <div> <h4>模式: {{data.mode}}</h4> </div>
+              </el-col>
+              <el-col :xs="12" :sm="8" :lg="8" class="card-panel-col">
+                <div> <h4>采集时间: {{data.Time}}</h4> </div>
+              </el-col>
+              <el-col :xs="12" :sm="8" :lg="8" class="card-panel-col">
+                <div> <h4>告警: {{data.alarm}}</h4> </div>
+              </el-col>
+              <el-col :xs="12" :sm="8" :lg="8" class="card-panel-col">
+                <div> <h4>故障: {{data.error}}</h4> </div>
+              </el-col>
+            </el-row>    
+          </div>
+          <div class="mc-icon">
+            <el-row class="panel-group" :gutter="40">
+              <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col" v-for="(item,index) in data.option" :key="index">
+                <div class="card-panel">
+                  <div class="card-panel-icon">
+                    <div class="on-switch" v-if="item.type ==='DI'||item.type ==='DO'">
+                      <span v-if="item.value===1" class="on el-switch is-checked el-switch__core" style="background-color: #409eff;">
+                        <span class="el-switch__button" style="transform: translate3d(20px, 0px, 0px);"></span>
+                      </span> 
+                      <span v-else class="off el-switch is-checked el-switch__core">
+                        <span class="el-switch__button" style="transform: translate3d(0px, 0px, 0px);"></span>
+                      </span> 
+                    </div>
+                  </div>
+                  <div class="card-panel-description">
+                    <div class="card-panel-text"> {{item.caption}} </div>
+                    <div class="card-panel-num"> {{item.value}}  <span> {{item.suffix}} </span> </div>
+                  </div>
                 </div>
-                <div class="card-panel-description">
-                  <div class="card-panel-text">New Visits</div>
-                  <div class="card-panel-num"> {{item}} </div>
-                </div>
-              </div>
-            </el-col>
-           </el-row>
+              </el-col>
+            </el-row>
+          </div>
         </div>
-      </div>
+      </transition>
     </div>
   </div>
 </template>
  
 <script>
-import { fetchShopAssistantInfo } from '@/api/shopInfo'
 import { SearchTree } from '@/components/indexEx.js'
 export default {
   name: 'real_time',
@@ -57,22 +65,16 @@ export default {
   },
   data() {
     return {
+      isShow: false,
       data: {
-        'PSN': 18010001,
-        'Name': '设备1#',
-        'Time': '2018-4-19 15:51:28',
-        'run': 1,
-        'mode': '制冷模式',
-        'error': '故障！故障码:xx',
-        'alarm': '报警！报警码:xx',
-        'Value': [
-          23.4,
-          67,
-          1,
-          0
-        ],
-        'result': 'ok',
-        'msg': '获取测量值成功!(暂时为假数据)'
+        'PSN': null,
+        'Name': null,
+        'Time': null,
+        'run': null,
+        'mode': null,
+        'error': null,
+        'alarm': null,
+        'option': []
       }
     }
   },
@@ -80,24 +82,19 @@ export default {
 
   },
   methods: {
-    onRefresh() {
-      console.log('刷新页面')
-    },
-    fetchData() {
-      fetchShopAssistantInfo({ page: 0, size: 10 })
-        .then(({ data }) => {
-          this.table.data = data.content
-          this.pagination.total = data.totalElements
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
     clickSelect(item) {
+      this.isShow = true
+      if (!item) return
+      const { data } = this
+      data.PSN = item.PSN
+      data.Name = item.Name
+      data.Time = item.Time
+      data.run = item.run
+      data.mode = item.mode
+      data.error = item.error
+      data.alarm = item.alarm
+      data.option = item.option
       console.log(item, '选择对象')
-    },
-    handleClickTabs(tab, event) {
-      console.log(tab, event)
     }
   }
 }
@@ -106,8 +103,6 @@ export default {
 <style lang="scss" scoped>
 .page {
   .flex-box {
-    .tree {
-    }
     .content {
       margin-left: 10px;
       width: 98%;

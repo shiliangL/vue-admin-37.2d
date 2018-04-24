@@ -8,7 +8,7 @@ export function fetchRealTime(query) {
   })
 }
 
-// 获取所有设备组
+// 获取所有设备组1
 export function fetchGroups(query) {
   return request({
     url: 'rtusapi/devices/getgroups',
@@ -17,7 +17,7 @@ export function fetchGroups(query) {
   })
 }
 
-// 获取所有某组设备配置信息
+// 获取所有某组设备配置信息2
 export function fetchGroupsConfig(query) {
   return request({
     url: 'rtusapi/monitor/getmeasureconfig',
@@ -25,7 +25,15 @@ export function fetchGroupsConfig(query) {
     params: query
   })
 }
-// 获取设备测量值
+// 获取所有某组下的设备2
+export function fetchGroupDev(query) {
+  return request({
+    url: 'rtusapi/devices/getdevbygroup',
+    method: 'get',
+    params: query
+  })
+}
+// 获取设备测量值3
 export function fetchmMeasureValue(query) {
   return request({
     url: 'rtusapi/monitor/getmeasurevalue',
