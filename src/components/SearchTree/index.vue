@@ -16,10 +16,17 @@
               <span v-text="scope.$index+1"></span>
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="name" label="名称"> </el-table-column>
+          <el-table-column align="center" label="名称">
+             <template slot-scope="scope">
+              <span> {{scope.row.name}} ( PSN:{{scope.row.psn}})</span>
+            </template>
+          </el-table-column>
           <el-table-column align="center" prop="status" label="状态"> 
             <template slot-scope="scope">
-              <el-tag size="mini" :type="scope.row.status===1?'success':'danger'">{{scope.row.status===1? '在线':'离线'}}</el-tag>
+              <el-tag  size="mini" v-if="scope.row.online===0">离线</el-tag>
+              <el-tag  size="mini" v-if="scope.row.online===1">在线</el-tag>
+              <el-tag  size="mini" v-if="scope.row.online===2">警告</el-tag>
+              <el-tag  size="mini" v-if="scope.row.online===3">故障</el-tag>
             </template>
           </el-table-column>
         </el-table>
@@ -120,6 +127,13 @@ export default {
     },
     reset() {
       this.codeOrname = null
+    }
+  },
+  watch: {
+    group: {
+      handler(val) {
+        this.tableData = []
+      }
     }
   }
 }

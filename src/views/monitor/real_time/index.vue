@@ -32,19 +32,23 @@
             <el-row class="panel-group" :gutter="40">
               <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col" v-for="(item,index) in data.option" :key="index">
                 <div class="card-panel">
-                  <div class="card-panel-icon">
-                    <div class="on-switch" v-if="item.type ==='DI'||item.type ==='DO'">
-                      <span v-if="item.value===1" class="on el-switch is-checked el-switch__core" style="background-color: #409eff;">
-                        <span class="el-switch__button" style="transform: translate3d(20px, 0px, 0px);"></span>
-                      </span> 
-                      <span v-else class="off el-switch is-checked el-switch__core">
-                        <span class="el-switch__button" style="transform: translate3d(0px, 0px, 0px);"></span>
-                      </span> 
-                    </div>
-                  </div>
                   <div class="card-panel-description">
                     <div class="card-panel-text"> {{item.caption}} </div>
-                    <div class="card-panel-num"> {{item.value}}  <span> {{item.suffix}} </span> </div>
+                    <div class="card-panel-num"> 
+                      <template v-if="item.type !=='DI'||item.type !=='DO'">
+                        {{item.value}}  <span> {{item.suffix}} </span> 
+                      </template>
+
+                      <span class="on-switch" v-if="item.type ==='DI'||item.type ==='DO'">
+                        <span v-if="item.value===1" class="on el-switch is-checked el-switch__core" style="background-color: #409eff;">
+                          <span class="el-switch__button" style="transform: translate3d(20px, 0px, 0px);"></span>
+                        </span> 
+                        <span v-else class="off el-switch is-checked el-switch__core">
+                          <span class="el-switch__button" style="transform: translate3d(0px, 0px, 0px);"></span>
+                        </span> 
+                      </span>
+
+                    </div>
                   </div>
                 </div>
               </el-col>

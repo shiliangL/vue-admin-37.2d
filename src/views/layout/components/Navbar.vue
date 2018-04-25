@@ -1,5 +1,8 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
+    <div class="logo" :class="{'hideLogo':!sidebar.opened}">
+      <h3>LOGO</h3>
+    </div>
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
@@ -51,9 +54,20 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .navbar {
+  display: flex;
+  align-items: center;
   height: 50px;
   line-height: 50px;
   border-radius: 0px !important;
+  .logo{
+    text-align: center;
+    width: 170px;
+    transition: all .38s;
+  }
+  .hideLogo{
+    width: 90px;
+    transition: all .38s;
+  }
   .hamburger-container {
     line-height: 58px;
     height: 50px;

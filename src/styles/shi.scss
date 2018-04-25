@@ -26,6 +26,7 @@
     }
     .card-panel {
         height: 108px;
+        padding-left: 10px;
         cursor: pointer;
         font-size: 12px;
         position: relative;
@@ -63,9 +64,8 @@
         .icon-shoppingCard {
             color: #34bfa3
         }
-        .card-panel-icon-wrapper {
+        .card-panel-icon {
             float: left;
-            margin: 14px 0 0 14px;
             padding: 16px;
             transition: all 0.38s ease-out;
             border-radius: 6px;
@@ -74,7 +74,6 @@
             font-size: 48px;
         }
         .card-panel-description {
-            float: right;
             font-weight: bold;
             margin: 26px;
             margin-left: 0px;
