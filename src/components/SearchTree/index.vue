@@ -10,7 +10,7 @@
       </div>
       <div class="tree">
         <el-table :data="tableData" size="mini" :max-height="430" style="width: 100%"
-        v-loading.body="listLoading" element-loading-text="拼命加载中" highlight-current-row @row-click="clickLoadDetails">
+        v-loading.body="listLoading" element-loading-text="拼命加载中" highlight-current-row @row-click="clickTableRow">
           <el-table-column align="center" label="序号" width="40">
             <template slot-scope="scope">
               <span v-text="scope.$index+1"></span>
@@ -36,11 +36,23 @@
 
 <script>
 import { ScrollBar } from '@/components/indexEx.js'
-import { fetchGroups, fetchGroupsConfig, fetchmMeasureValue, fetchGroupDev } from '@/api/monitor'
+import {
+  fetchGroups,
+  fetchMeasureConfig,
+  fetchmMeasureValue,
+  fetchGroupConfig,
+  fetchgSetUpvalue,
+  fetchGroupDev } from '@/api/monitor'
 export default {
   name: 'SearchTree',
   components: {
     ScrollBar
+  },
+  props: {
+    clitkType: {
+      type: String, // 'get' 'set'
+      required: true
+    }
   },
   data() {
     return {
@@ -54,6 +66,9 @@ export default {
         type: null,
         visible: null
       },
+      SetupConfig: {
+
+      },
       codeOrname: null
     }
   },
@@ -61,7 +76,22 @@ export default {
     this.fetchGroupData()
   },
   created() {
-    this.hasConfig = false
+    this.config = {
+      caption: null,
+      suffix: null,
+      type: null,
+      visible: null
+    }
+    this.SetupConfig = {
+      CtrlEnable: null,
+      caption: null,
+      max: null,
+      min: null,
+      modify: null,
+      suffix: null,
+      type: null,
+      visible: null
+    }
   },
   methods: {
     fetchGroupData() {
@@ -74,48 +104,96 @@ export default {
     select2fetchGroupsConfig(id) {
       // 选择组的时候加载配置信息
       if (!id) return
-      fetchGroupsConfig({ GroupID: id }).then(data => {
-        const result = data.MeasureConfig
-        if (!result) return
-        const { config } = this
-        config.caption = result.caption.split(',')
-        config.suffix = result.suffix.split(',')
-        config.type = result.type.split(',')
-        config.visible = result.visible
-      }).catch(error => {
-        console.log(error)
-      })
-
+      if (this.clitkType === 'get') {
+        fetchMeasureConfig({ GroupID: id }).then(data => {
+          const result = data.MeasureConfig
+          if (!result) return
+          const { config } = this
+          config.caption = result.caption.split(',')
+          config.suffix = result.suffix.split(',')
+          config.type = result.type.split(',')
+          config.visible = result.visible
+        }).catch(error => {
+          console.log(error)
+        })
+      } else {
+        fetchGroupConfig({ GroupID: id }).then(data => {
+          const result = data.SetupConfig
+          if (!result) return
+          const { SetupConfig } = this
+          SetupConfig.caption = result.caption.split(',')
+          SetupConfig.suffix = result.suffix.split(',')
+          SetupConfig.max = result.max.split(',')
+          SetupConfig.min = result.min.split(',')
+          SetupConfig.visible = result.visible
+          SetupConfig.CtrlEnable = result.CtrlEnable
+          SetupConfig.modify = result.modify
+          SetupConfig.type = JSON.parse(result.type).list
+        }).catch(error => {
+          console.log(error)
+        })
+      }
       // 加载组下设备
       this.listLoading = true
-      fetchGroupDev({ GroupID: id }).then(data => {
-        this.tableData = data.Devices
+      fetchGroupDev({ GroupId: id }).then(data => {
+        this.tableData = data.StatusList
       }).catch(error => {
         console.log(error)
       })
       this.listLoading = false
     },
-    clickLoadDetails(data) {
+    clickTableRow(data) {
       // 加载组下具体设备 fetchmMeasureValue
-      fetchmMeasureValue({ PSN: data.id }).then(res => {
-        const reslutData = res
-        const data = res.Value.slice(0, this.config.visible)
-        const option = []
-        const { config } = this
-        data.forEach((item, index) => {
-          option.push({
-            caption: config.caption[index],
-            suffix: config.suffix[index],
-            type: config.type[index],
-            visible: config.visible,
-            value: item
-          })
+      if (this.clitkType === 'get') {
+        fetchmMeasureValue({ PSN: data.psn }).then(res => {
+          const reslutData = res
+          const data = res.Value.slice(0, this.config.visible)
+          const option = []
+          const { config } = this
+          if (Array.isArray(data) && data.length > 0) {
+            data.forEach((item, index) => {
+              option.push({
+                caption: config.caption[index],
+                suffix: config.suffix[index],
+                type: config.type[index],
+                visible: config.visible,
+                value: item
+              })
+            })
+            reslutData.option = option
+            this.$emit('clickSelect', reslutData)
+          } else {
+            this.$emit('clickSelect', null)
+          }
+        }).catch(error => {
+          console.log(error)
         })
-        reslutData.option = option
-        this.$emit('clickSelect', reslutData)
-      }).catch(error => {
-        console.log(error)
-      })
+      } else {
+        // 加载组下设备设置值
+        fetchgSetUpvalue({ PSN: data.psn }).then(res => {
+          const data = res.value.slice(0, this.SetupConfig.visible)
+          const option = []
+          const { SetupConfig } = this
+          if (Array.isArray(data) && data.length > 0) {
+            data.forEach((item, index) => {
+              option.push({
+                caption: SetupConfig.caption[index],
+                suffix: SetupConfig.suffix[index],
+                max: SetupConfig.max[index],
+                min: SetupConfig.min[index],
+                visible: SetupConfig.visible,
+                value: item
+              })
+            })
+            SetupConfig.option = option
+            this.$emit('clickSelect', SetupConfig)
+          } else {
+            this.$emit('clickSelect', null)
+          }
+        }).catch(error => {
+          console.log(error)
+        })
+      }
     },
     filterSeach() {
       const { codeOrname, tableData } = this

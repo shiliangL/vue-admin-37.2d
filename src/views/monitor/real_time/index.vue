@@ -2,7 +2,7 @@
   <div class="page" style="width: 100%">
     <div class="flex-box">
       <div>
-        <SearchTree class="SearchTree" @clickSelect="clickSelect"></SearchTree>
+        <SearchTree clitkType="get" class="SearchTree" @clickSelect="clickSelect"></SearchTree>
       </div>
        <transition name="el-fade-in">
         <div class="content" v-show="isShow">

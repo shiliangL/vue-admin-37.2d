@@ -2,7 +2,7 @@
   <div class="page" style="width: 100%">
     <div class="flex-box">
       <div>
-        <SearchTree class="SearchTree" @clickSelect="clickSelect"></SearchTree>
+        <SearchTree clitkType="set" class="SearchTree" @clickSelect="clickSelect"></SearchTree>
       </div>
       <div class="content">
         <div class="mc-titel">
