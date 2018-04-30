@@ -35,7 +35,7 @@ export const constantRouterMap = [
         path: 'remote_setting',
         name: 'remote_setting',
         component: () => import('@/views/monitor/remote_setting/index'),
-        meta: { title: '设备远程', icon: '' }
+        meta: { title: '远程控制', icon: '' }
       },
       {
         path: 'devices_map',

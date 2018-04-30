@@ -23,10 +23,10 @@
           </el-table-column>
           <el-table-column align="center" prop="status" label="状态"> 
             <template slot-scope="scope">
-              <el-tag  size="mini" v-if="scope.row.online===0">离线</el-tag>
-              <el-tag  size="mini" v-if="scope.row.online===1">在线</el-tag>
-              <el-tag  size="mini" v-if="scope.row.online===2">警告</el-tag>
-              <el-tag  size="mini" v-if="scope.row.online===3">故障</el-tag>
+              <el-tag  size="mini" v-if="scope.row.online==0">离线</el-tag>
+              <el-tag  size="mini" v-if="scope.row.online==1">在线</el-tag>
+              <el-tag  size="mini" v-if="scope.row.online==2">警告</el-tag>
+              <el-tag  size="mini" v-if="scope.row.online==3">故障</el-tag>
             </template>
           </el-table-column>
         </el-table>
@@ -41,7 +41,7 @@ import {
   fetchMeasureConfig,
   fetchmMeasureValue,
   fetchGroupConfig,
-  fetchgSetUpvalue,
+  // fetchgSetUpvalue,
   fetchGroupDev } from '@/api/monitor'
 export default {
   name: 'SearchTree',
@@ -49,6 +49,9 @@ export default {
     ScrollBar
   },
   props: {
+    value: {
+      type: Object
+    },
     clitkType: {
       type: String, // 'get' 'set'
       required: true
@@ -76,22 +79,16 @@ export default {
     this.fetchGroupData()
   },
   created() {
-    this.config = {
-      caption: null,
-      suffix: null,
-      type: null,
-      visible: null
-    }
-    this.SetupConfig = {
-      CtrlEnable: null,
-      caption: null,
-      max: null,
-      min: null,
-      modify: null,
-      suffix: null,
-      type: null,
-      visible: null
-    }
+    // this.SetupConfig = {
+    //   CtrlEnable: null,
+    //   caption: null,
+    //   max: null,
+    //   min: null,
+    //   modify: null,
+    //   suffix: null,
+    //   type: null,
+    //   visible: null
+    // }
   },
   methods: {
     fetchGroupData() {
@@ -101,46 +98,95 @@ export default {
         console.log(error)
       })
     },
-    select2fetchGroupsConfig(id) {
-      // 选择组的时候加载配置信息
+    // 定时刷新设备状态
+    setIntervalFetch(id) {
+      const fechTime = 5000
       if (!id) return
-      if (this.clitkType === 'get') {
-        fetchMeasureConfig({ GroupID: id }).then(data => {
-          const result = data.MeasureConfig
-          if (!result) return
-          const { config } = this
-          config.caption = result.caption.split(',')
-          config.suffix = result.suffix.split(',')
-          config.type = result.type.split(',')
-          config.visible = result.visible
-        }).catch(error => {
-          console.log(error)
-        })
-      } else {
-        fetchGroupConfig({ GroupID: id }).then(data => {
-          const result = data.SetupConfig
-          if (!result) return
-          const { SetupConfig } = this
-          SetupConfig.caption = result.caption.split(',')
-          SetupConfig.suffix = result.suffix.split(',')
-          SetupConfig.max = result.max.split(',')
-          SetupConfig.min = result.min.split(',')
-          SetupConfig.visible = result.visible
-          SetupConfig.CtrlEnable = result.CtrlEnable
-          SetupConfig.modify = result.modify
-          SetupConfig.type = JSON.parse(result.type).list
-        }).catch(error => {
-          console.log(error)
-        })
+      if (!this.timer) {
+        this.fetchProductStatus(id)
       }
-      // 加载组下设备
-      this.listLoading = true
+      this.timer = setInterval(() => {
+        this.fetchProductStatus(id)
+      }, fechTime)
+    },
+    // 加载组下的设备+状态
+    fetchProductStatus(id) {
       fetchGroupDev({ GroupId: id }).then(data => {
-        this.tableData = data.StatusList
+        if (JSON.stringify(data.list) !== '{}') {
+          const tableData = []
+          const result = JSON.parse(data.list)
+          for (const key in result) {
+            if (result.hasOwnProperty(key)) {
+              const item = result[key]
+              if (Array.isArray(item)) {
+                tableData.push({
+                  name: item[0],
+                  psn: item[1],
+                  online: item[2],
+                  key: key
+                })
+              }
+            }
+          }
+          this.tableData = tableData
+        } else {
+          this.tableData = []
+        }
       }).catch(error => {
         console.log(error)
       })
-      this.listLoading = false
+    },
+    select2fetchGroupsConfig(id) {
+      // 选择组改变的时候
+      if (!id) return
+      if (this.clitkType === 'get') {
+        this.loadGetConfig(id)
+      } else {
+        console.log('控制')
+      }
+      // 加载组下设备 5秒刷新
+      this.setIntervalFetch(id)
+      console.log('异步')
+    },
+    loadGetConfig(id) {
+      // 加载检测配置
+      fetchMeasureConfig({ GroupID: id }).then(res => {
+        console.log(res, 'sb')
+        // debugger
+        // const result = data.MeasureConfig
+        // console.log(result, 'xxxxxxx')
+        // if (!result) return
+        // const { config } = this
+        // config.caption = result.caption.split(',')
+        // config.suffix = result.suffix.split(',')
+        // config.type = result.type.split(',')
+        // config.visible = result.visible
+        // console.log(config, '配置')
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    loadSetConfig(id) {
+      // 加载控制配置
+      fetchGroupConfig({ GroupID: id }).then(data => {
+        console.log(data)
+        if (data.result === 'ok' && data.SetupConfig) {
+          this.$emit('input', data.SetupConfig)
+        }
+        // const result = data.SetupConfig
+        // if (!result) return
+        // const { SetupConfig } = this
+        // SetupConfig.caption = result.caption.split(',')
+        // SetupConfig.suffix = result.suffix.split(',')
+        // SetupConfig.max = result.max.split(',')
+        // SetupConfig.min = result.min.split(',')
+        // SetupConfig.visible = result.visible
+        // SetupConfig.CtrlEnable = result.CtrlEnable
+        // SetupConfig.modify = result.modify
+        // SetupConfig.type = JSON.parse(result.type).list
+      }).catch(error => {
+        console.log(error)
+      })
     },
     clickTableRow(data) {
       // 加载组下具体设备 fetchmMeasureValue
@@ -150,6 +196,7 @@ export default {
           const data = res.Value.slice(0, this.config.visible)
           const option = []
           const { config } = this
+          debugger
           if (Array.isArray(data) && data.length > 0) {
             data.forEach((item, index) => {
               option.push({
@@ -170,29 +217,30 @@ export default {
         })
       } else {
         // 加载组下设备设置值
-        fetchgSetUpvalue({ PSN: data.psn }).then(res => {
-          const data = res.value.slice(0, this.SetupConfig.visible)
-          const option = []
-          const { SetupConfig } = this
-          if (Array.isArray(data) && data.length > 0) {
-            data.forEach((item, index) => {
-              option.push({
-                caption: SetupConfig.caption[index],
-                suffix: SetupConfig.suffix[index],
-                max: SetupConfig.max[index],
-                min: SetupConfig.min[index],
-                visible: SetupConfig.visible,
-                value: item
-              })
-            })
-            SetupConfig.option = option
-            this.$emit('clickSelect', SetupConfig)
-          } else {
-            this.$emit('clickSelect', null)
-          }
-        }).catch(error => {
-          console.log(error)
-        })
+        this.$emit('clickSelect', data)
+        // fetchgSetUpvalue({ PSN: data.psn }).then(res => {
+        //   const data = res.value.slice(0, this.SetupConfig.visible)
+        //   const option = []
+        //   const { SetupConfig } = this
+        //   if (Array.isArray(data) && data.length > 0) {
+        //     data.forEach((item, index) => {
+        //       option.push({
+        //         caption: SetupConfig.caption[index],
+        //         suffix: SetupConfig.suffix[index],
+        //         max: SetupConfig.max[index],
+        //         min: SetupConfig.min[index],
+        //         visible: SetupConfig.visible,
+        //         value: item
+        //       })
+        //     })
+        //     SetupConfig.option = option
+        //     this.$emit('clickSelect', SetupConfig)
+        //   } else {
+        //     this.$emit('clickSelect', null)
+        //   }
+        // }).catch(error => {
+        //   console.log(error)
+        // })
       }
     },
     filterSeach() {
@@ -207,10 +255,16 @@ export default {
       this.codeOrname = null
     }
   },
+  beforeDestroy() {
+    clearInterval(this.timer)
+  },
   watch: {
     group: {
       handler(val) {
         this.tableData = []
+        if (!val) {
+          clearInterval(this.timer)
+        }
       }
     }
   }

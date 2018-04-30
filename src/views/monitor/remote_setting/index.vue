@@ -2,7 +2,8 @@
   <div class="page" style="width: 100%">
     <div class="flex-box">
       <div>
-        <SearchTree clitkType="set" class="SearchTree" @clickSelect="clickSelect"></SearchTree>
+        {{SetupConfig}}
+        <SearchTree clitkType="set" class="SearchTree" @clickSelect="clickSelect" v-model="SetupConfig"></SearchTree>
       </div>
       <div class="content">
         <div class="mc-titel">
@@ -16,8 +17,13 @@
                 <h4>状态: 正常</h4>
               </div>
             </div>
-            <div class="right">
-              <el-button type="danger" size="small"> 关机 </el-button>
+            <div class="right" v-if="SetupConfig">
+              <template v-if="SetupConfig.CtrlEnable">
+                <el-button type="primary" plain size="small" > 开机 </el-button>
+              </template>
+              <template v-else>
+                <el-button type="danger" size="small"> 关机 </el-button>
+              </template>
               <el-button type="primary" plain size="small" > 读取 </el-button>
               <el-button type="primary" size="small" > 保存 </el-button>
             </div>
@@ -69,6 +75,7 @@ export default {
   },
   data() {
     return {
+      SetupConfig: null,
       form: {
         name: null
       }
