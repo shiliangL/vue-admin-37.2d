@@ -2,10 +2,10 @@
   <div class="page" style="width: 100%">
     <div class="flex-box">
       <div>
-        <SearchTree clitkType="get" class="SearchTree" @clickSelect="clickSelect"></SearchTree>
+        <SearchTree clitkType="get" class="SearchTree" @clickSelect="clickSelect" v-model="SetupConfig"></SearchTree>
       </div>
        <transition name="el-fade-in">
-        <div class="content" v-show="isShow">
+        <div class="content" v-if="SetupConfig">
           <div class="mc-titel">
             <el-row :gutter="40">
               <el-col :xs="12" :sm="8" :lg="8" class="card-panel-col">
@@ -40,7 +40,7 @@
                       </template>
 
                       <span class="on-switch" v-if="item.type ==='DI'||item.type ==='DO'">
-                        <span v-if="item.value===1" class="on el-switch is-checked el-switch__core" style="background-color: #409eff;">
+                        <span v-if="item.value==='开'" class="on el-switch is-checked el-switch__core" style="background-color: #409eff;">
                           <span class="el-switch__button" style="transform: translate3d(20px, 0px, 0px);"></span>
                         </span> 
                         <span v-else class="off el-switch is-checked el-switch__core">
@@ -70,6 +70,7 @@ export default {
   data() {
     return {
       isShow: false,
+      SetupConfig: null,
       data: {
         'PSN': null,
         'Name': null,
@@ -87,18 +88,26 @@ export default {
   },
   methods: {
     clickSelect(item) {
-      this.isShow = true
-      if (!item) return
-      const { data } = this
-      data.PSN = item.PSN
-      data.Name = item.Name
-      data.Time = item.Time
-      data.run = item.run
-      data.mode = item.mode
-      data.error = item.error
-      data.alarm = item.alarm
-      data.option = item.option
-      console.log(item, '选择对象')
+
+    }
+  },
+  watch: {
+    SetupConfig: {
+      handler(item) {
+        if (item) {
+          this.data = {
+            PSN: item.PSN,
+            Name: item.Name,
+            Time: item.Time,
+            run: item.run,
+            mode: item.mode,
+            error: item.error,
+            alarm: item.alarm,
+            option: item.option
+          }
+        }
+        console.log(item)
+      }
     }
   }
 }

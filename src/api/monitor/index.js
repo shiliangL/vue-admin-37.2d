@@ -17,8 +17,9 @@ export function fetchGroups(query) {
   })
 }
 
-// 获取所有某组设备配置信息2
-export function fetchMeasureConfig(query) {
+// 获取所有某组设备配置信息2fetchMeasureConfig
+
+export function fetchGetConfig(query) {
   return request({
     url: 'rtusapi/monitor/getmeasureconfig',
     method: 'get',
@@ -44,7 +45,7 @@ export function fetchmMeasureValue(query) {
 
 // 远程设置
 // 获取所有某组 设备配置信息
-export function fetchGroupConfig(query) {
+export function fetchSetConfig(query) {
   return request({
     url: 'rtusapi/monitor/getsetupconfig',
     method: 'get',

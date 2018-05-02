@@ -5,7 +5,7 @@
         {{SetupConfig}}
         <SearchTree clitkType="set" class="SearchTree" @clickSelect="clickSelect" v-model="SetupConfig"></SearchTree>
       </div>
-      <div class="content">
+      <div class="content" v-if="SetupConfig">
         <div class="mc-titel">
            <!-- 顶部搜索区域 -->
           <div class="search-bar">
@@ -17,7 +17,7 @@
                 <h4>状态: 正常</h4>
               </div>
             </div>
-            <div class="right" v-if="SetupConfig">
+            <div class="right">
               <template v-if="SetupConfig.CtrlEnable">
                 <el-button type="primary" plain size="small" > 开机 </el-button>
               </template>
@@ -31,8 +31,18 @@
         </div>
         <div class="mc-icon">
           <el-form ref="form" :model="form" label-width="180px" size="small" :inline="true">
+          <div v-for="(item,index) in SetupConfig.option" :key="index">
+            <el-form-item :label="item.caption">
+              <template v-if="item.type ==='D'">
+                <input class="w180" type="number" value="`${item.value}`"/>
+              </template>
+              <template v-else>
+
+              </template>
+            </el-form-item>
+          </div>
             
-            <el-form-item label="采样间隔/秒">
+            <!-- <el-form-item label="采样间隔/秒">
               <el-input class="w180" type="number" v-model.trim="form.name"></el-input>
             </el-form-item>
             
@@ -55,7 +65,7 @@
                 <el-option label="启用" value="1"></el-option>
                 <el-option label="禁用" value="0"></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
 
           </el-form>
  
