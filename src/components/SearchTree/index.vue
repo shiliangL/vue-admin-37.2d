@@ -160,8 +160,8 @@ export default {
         console.log(error)
       })
     },
-    loadSetMeasureValue(psn) {
-      fetchgSetUpvalue({ PSN: psn }).then(data => {
+    loadSetMeasureValue(value) {
+      fetchgSetUpvalue({ PSN: value.psn }).then(data => {
         if (data.result === 'ok') {
           if (!this.SetupConfig) return
           const reslutData = data
@@ -170,23 +170,22 @@ export default {
           const { SetupConfig } = this
           if (Array.isArray(result) && result.length > 0) {
             result.forEach((item, index) => {
+              const value = SetupConfig.type[index] !== 'D' ? SetupConfig.type[index].O[item - 1] : item
               option.push({
                 caption: SetupConfig.caption[index],
                 suffix: SetupConfig.suffix[index],
                 max: SetupConfig.max[index],
                 min: SetupConfig.min[index],
                 type: SetupConfig.type[index],
-                value: item
+                value: value
               })
             })
             reslutData.option = option
-            this.$emit('input', reslutData)
+            const val = Object.assign({}, value, reslutData)
+            this.$emit('input', val)
           } else {
             this.$emit('input', null)
           }
-          console.log(JSON.stringify(this.SetupConfig))
-          console.log(data)
-          console.log('x')
         }
       }).catch(error => {
         console.log(error)
@@ -247,8 +246,7 @@ export default {
         this.setIntervalfetchValue(data.psn)
       } else {
         // 加载组下设备设置值
-        this.loadSetMeasureValue(data.psn)
-        this.$emit('clickSelect', data)
+        this.loadSetMeasureValue(data)
       }
     },
     filterSeach() {

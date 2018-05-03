@@ -2,7 +2,6 @@
   <div class="page" style="width: 100%">
     <div class="flex-box">
       <div>
-        {{SetupConfig}}
         <SearchTree clitkType="set" class="SearchTree" @clickSelect="clickSelect" v-model="SetupConfig"></SearchTree>
       </div>
       <div class="content" v-if="SetupConfig">
@@ -11,37 +10,37 @@
           <div class="search-bar">
             <div class="left" style="display: flex;align-items: center;">
                <div>
-                <h4>设备名称（PSN码）</h4>
+                <h4>{{SetupConfig.name}}（ SetupConfig.psn ）</h4>
               </div>
               <div>
-                <h4>状态: 正常</h4>
+                <span>状态: </span>
+                <el-tag  size="mini" type="gray" v-if="SetupConfig.online==0">离线</el-tag>
+                <el-tag  size="mini" v-if="SetupConfig.online==1">在线</el-tag>
+                <el-tag  size="mini" type="warning" v-if="SetupConfig.online==2">警告</el-tag>
+                <el-tag  size="mini" type="danger" v-if="SetupConfig.online==3">故障</el-tag>
               </div>
             </div>
             <div class="right">
-              <template v-if="SetupConfig.CtrlEnable">
+              <template v-if="SetupConfig.run!==1">
                 <el-button type="primary" plain size="small" > 开机 </el-button>
               </template>
               <template v-else>
                 <el-button type="danger" size="small"> 关机 </el-button>
               </template>
-              <el-button type="primary" plain size="small" > 读取 </el-button>
-              <el-button type="primary" size="small" > 保存 </el-button>
+              <!-- <el-button type="primary" plain size="small" > 读取 </el-button>
+              <el-button type="primary" size="small" > 保存 </el-button> -->
             </div>
           </div>
         </div>
         <div class="mc-icon">
-          <el-form ref="form" :model="form" label-width="180px" size="small" :inline="true">
-          <div v-for="(item,index) in SetupConfig.option" :key="index">
-            <el-form-item :label="item.caption">
-              <template v-if="item.type ==='D'">
-                <input class="w180" type="number" value="`${item.value}`"/>
-              </template>
-              <template v-else>
-
-              </template>
-            </el-form-item>
-          </div>
-            
+          <el-form ref="form" :model="form" label-width="180px" size="small" :inline="true" class="form">
+            <el-row :gutter="40">
+              <el-col :xs="12" :sm="8" :lg="8" class="card-panel-col" v-for="(item,index) in SetupConfig.option" :key="index">
+                 <div v-if="item.type ==='D'"> <h4> {{item.caption}}: {{item.value }}/{{item.suffix}}</h4> </div>
+                 <div v-else> <h4> {{item.caption}}: {{item.value }} </h4> </div>
+              </el-col>
+            </el-row>  
+ 
             <!-- <el-form-item label="采样间隔/秒">
               <el-input class="w180" type="number" v-model.trim="form.name"></el-input>
             </el-form-item>
@@ -127,6 +126,9 @@ export default {
       margin-left: 10px;
       min-width: 500px;
       width: 98%;
+    }
+    .form{
+      padding: 20px;
     }
   }
 }
