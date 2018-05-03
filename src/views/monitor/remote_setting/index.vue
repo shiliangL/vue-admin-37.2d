@@ -10,7 +10,7 @@
           <div class="search-bar">
             <div class="left" style="display: flex;align-items: center;">
                <div>
-                <h4>{{SetupConfig.name}}（ SetupConfig.psn ）</h4>
+                <h4>{{SetupConfig.name}}（ {{SetupConfig.psn}} ）</h4>
               </div>
               <div>
                 <span>状态: </span>
