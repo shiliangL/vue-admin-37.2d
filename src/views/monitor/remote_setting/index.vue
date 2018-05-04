@@ -126,6 +126,12 @@ export default {
       margin-left: 10px;
       min-width: 500px;
       width: 98%;
+      border: 1px solid #d1dbe5;
+      border-radius: 8px;
+      padding: 10px;
+      .search-bar{
+        border-bottom: 1px solid #d1dbe5;
+      }
     }
     .form{
       padding: 20px;

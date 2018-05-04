@@ -72,24 +72,20 @@ export default {
       isShow: false,
       SetupConfig: null,
       data: {
-        'PSN': null,
-        'Name': null,
-        'Time': null,
-        'run': null,
-        'mode': null,
-        'error': null,
-        'alarm': null,
-        'option': []
+        PSN: null,
+        Name: null,
+        Time: null,
+        run: null,
+        mode: null,
+        error: null,
+        alarm: null,
+        option: []
       }
     }
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
-    clickSelect(item) {
-
-    }
+    clickSelect(item) {}
   },
   watch: {
     SetupConfig: {
@@ -119,12 +115,16 @@ export default {
     .content {
       margin-left: 10px;
       width: 98%;
+      border: 1px solid #d1dbe5;
+      border-radius: 8px;
+      padding: 10px;
       .flex-box {
         justify-content: space-around;
+      }
+      .mc-titel {
+        border-bottom: 1px solid #d1dbe5;
       }
     }
   }
 }
 </style>
-
- 

@@ -4,24 +4,19 @@
           <el-select v-model="group" placeholder="设备组" size="mini" class="w160" clearable filterable @change="select2fetchGroupsConfig">
             <el-option v-for="item in groupOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
           </el-select>
-          <el-input class="w160" size="mini" placeholder="设备名称检索" v-model.trim="codeOrname" disabled></el-input>
-          <el-button type="primary" size="mini" @click="filterSeach"> 搜索 </el-button>
-          <el-button style="margin:0px" size="mini" @click="reset"> 重置 </el-button>
+          <!-- <el-input class="w160" size="mini" placeholder="设备名称检索" v-model.trim="codeOrname" disabled></el-input> -->
+          <!-- <el-button type="primary" size="mini" @click="filterSeach"> 搜索 </el-button>
+          <el-button style="margin:0px" size="mini" @click="reset"> 重置 </el-button> -->
       </div>
       <div class="tree">
         <el-table :data="tableData" size="mini" :max-height="430" style="width: 100%"
         v-loading.body="listLoading" element-loading-text="拼命加载中" highlight-current-row @row-click="clickTableRow">
-          <el-table-column align="center" label="序号" width="40">
-            <template slot-scope="scope">
-              <span v-text="scope.$index+1"></span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="名称">
+          <el-table-column align="center" label="设备名称">
              <template slot-scope="scope">
-              <span> {{scope.row.name}} ( PSN:{{scope.row.psn}})</span>
+              <span> {{scope.row.name}} ({{scope.row.psn}})</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="status" label="状态"> 
+          <el-table-column align="center" prop="status" label="状态" width="50">
             <template slot-scope="scope">
               <el-tag  size="mini" v-if="scope.row.online==0">离线</el-tag>
               <el-tag  size="mini" v-if="scope.row.online==1">在线</el-tag>
@@ -255,7 +250,6 @@ export default {
       tableData.filter(item => {
         return item.name === codeOrname
       })
-      console.log(tableData)
     },
     reset() {
       this.codeOrname = null
@@ -282,8 +276,8 @@ export default {
 
 <style scoped lang="scss">
 .SearchTree {
-  min-width: 480px;
-  width: 480px;
+  min-width: 220px;
+  width: 220px;
   padding: 8px;
   border-radius: 8px;
   border: 1px solid #d1dbe5;
