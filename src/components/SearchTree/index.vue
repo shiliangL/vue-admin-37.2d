@@ -1,7 +1,7 @@
 <template>
     <div class="SearchTree">
       <div class="search">
-          <el-select v-model="group" placeholder="设备组" size="mini" class="w160" clearable filterable @change="select2fetchGroupsConfig">
+          <el-select v-model="group" placeholder="设备组" size="mini" class="w160" filterable @change="select2fetchGroupsConfig">
             <el-option v-for="item in groupOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
           </el-select>
           <!-- <el-input class="w160" size="mini" placeholder="设备名称检索" v-model.trim="codeOrname" disabled></el-input> -->
@@ -54,6 +54,7 @@ export default {
   },
   data() {
     return {
+      clitkPsn: null, // 点击缓存对象
       tableData: [],
       listLoading: false,
       isLoading: false,
@@ -62,19 +63,22 @@ export default {
       config: null, // 监测数据对象
       SetupConfig: null, // 控制数据对象
       codeOrname: null,
-      fechTime: 10000
+      fechTime: 10000 // 监控时间间隔
     }
   },
   mounted() {
     this.fetchGroupData()
   },
   created() {
-
+    this.isDefault = true // 默认加载第一项
   },
   methods: {
     fetchGroupData() {
-      fetchGroups({ page: 0, size: 10, codeOrname: this.codeOrname }).then(data => {
-        this.groupOptions = data.groups
+      fetchGroups({ page: 0, size: 10, codeOrname: this.codeOrname }).then(({ groups }) => {
+        if (Array.isArray(groups) && groups.length > 0) {
+          this.groupOptions = groups
+          this.group = groups[0].id
+        }
       }).catch(error => {
         console.log(error)
       })
@@ -91,6 +95,7 @@ export default {
     },
     // 加载组下的设备+状态
     fetchProductStatus(id) {
+      console.log('监控状态')
       fetchGroupDev({ GroupId: id }).then(data => {
         if (JSON.stringify(data.list) !== '{}') {
           const tableData = []
@@ -98,6 +103,7 @@ export default {
           for (const key in result) {
             if (result.hasOwnProperty(key)) {
               const item = result[key]
+              if (!item) return
               if (Array.isArray(item)) {
                 tableData.push({
                   name: item[0],
@@ -109,6 +115,10 @@ export default {
             }
           }
           this.tableData = tableData
+          if (Array.isArray(tableData) && tableData.length > 1 && this.isDefault) {
+            this.clickTableRow(tableData[0])
+          }
+          // isDefault
         } else {
           this.tableData = []
         }
@@ -189,8 +199,8 @@ export default {
     select2fetchGroupsConfig(id) {
       // 选择组改变的时候
       if (!id) return
+      if (this.isLoading) return
       if (this.clitkType === 'get') {
-        if (this.isLoading) return
         this.loadGetConfig(id)
       } else {
         this.loadSetConfig(id)
@@ -234,6 +244,9 @@ export default {
       })
     },
     clickTableRow(data) {
+      this.isDefault = false
+      // clearInterval(this.timer)
+      clearInterval(this.timerValue)
       // 点击选择 row 时候
       this.clitkPsn = data.psn
       if (this.clitkType === 'get') {
@@ -261,12 +274,16 @@ export default {
   },
   watch: {
     group: {
-      handler(val) {
-        this.tableData = []
-        if (!val) {
+      handler(newValue, oldValue) {
+        if (newValue && oldValue) {
+          this.tableData = []
+        }
+        if (!newValue) {
           clearInterval(this.timer)
           clearInterval(this.timerValue)
           this.$emit('input', null)
+        } else {
+          this.select2fetchGroupsConfig(newValue)
         }
       }
     }
