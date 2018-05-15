@@ -1,25 +1,35 @@
 <template>
   <div class="page">
-      <h1>devices_list</h1>
-       <table-contain :height.sync="table.maxHeight">
+
+    <search-bar :data="searchBarData" @search="searchAction" @reset="reset" @add="showAdd()" ></search-bar>
+
+    <table-contain :height.sync="table.maxHeight">
     <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;">
       <el-table-column label="序号" width="50" align="center">
         <template slot-scope="scope">
           <span>{{scope.$index + 1}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="code" label="品牌编码" align="center"></el-table-column>
-      <el-table-column prop="name" label="品牌名称" align="center"></el-table-column>
- 
+      <el-table-column prop="id" label="id" align="center"></el-table-column>
+      <el-table-column prop="name" label="psn" align="center"></el-table-column>
+      <el-table-column prop="name" label="名称" align="center"></el-table-column>
+      <el-table-column prop="TypeId" label="类型" align="center">
+        <!-- <template slot-scope="scope">
+          <el-button plain type="primary" size="mini">查看</el-button>
+        </template> -->
+      </el-table-column>
       <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
-         <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button>
+          <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">修改名称</el-button>
+          <el-button type="primary" size="mini" @click="clickBind(scope.$index, scope.row)">绑定类型</el-button>
+          <!-- <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button> -->
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
-      slot="footer"
+    
+    <div slot="page"></div>
+    <!-- <el-pagination
+      slot="page"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="pagination.page"
@@ -27,20 +37,77 @@
       :page-size="pagination.size"
       layout="total, sizes, prev, pager, next"
       :total="pagination.total">
-    </el-pagination>
+    </el-pagination> -->
   </table-contain> 
-  
+    <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="fetchList(1)" @edit="fetchList"></add>
   </div>
 </template>
 
 <script>
 import model from '@/public/listModel.js'
+import { fetchList } from '@/api/devices_list'
+import Add from './add'
 export default {
   mixins: [model],
   name: 'devices_list',
+  components: {
+    Add
+  },
   data() {
-    return {}
+    return {
+      searchBarData: [
+        [
+          {
+            type: 'input',
+            value: null,
+            key: 'name',
+            placeholder: '请输入'
+          },
+          { type: 'search', name: '查询' },
+          { type: 'reset', name: '重置' }
+        ],
+        [{ type: 'add', name: '新增' }]
+      ]
+    }
+  },
+  mounted() {
+    this.fetchList()
+  },
+  methods: {
+    fetchList() {
+      fetchList().then(({ Devices }) => {
+        this.table.data = Devices
+      })
+    },
+    searchAction(params) {
+      this.fetchList(params)
+    },
+    reset() {
+
+    },
+    showAdd() {
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: null }})
+    },
+    handleCurrentChange() {
+
+    },
+    clickEdit(index, data) {
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'edit', obj: data }})
+    },
+    clickBind(index, data) {
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'bind', obj: data }})
+    },
+    clickDelete(index, data) {
+      this.$confirm('是否需要删除数据?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+
+      })
+    }
   }
 }
 </script>
+
 
