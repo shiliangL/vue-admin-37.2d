@@ -84,8 +84,8 @@ export default {
             rename(data).then(() => { this.success() }).catch((error) => { this.error(error) })
           } else if (this.data.type === 'bind') {
             const data = {
-              DeviceId: this.form.DeviceId,
-              TypeId: this.form.TypeId
+              DeviceId: this.form.DeviceId.toString(),
+              TypeId: this.form.TypeId.toString()
             }
             bindingtype(data).then(() => { this.success() }).catch((error) => { this.error(error) })
           }

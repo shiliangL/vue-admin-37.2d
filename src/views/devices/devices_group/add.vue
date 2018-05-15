@@ -2,6 +2,7 @@
   <div class="add">
     <el-dialog :title="dialog.title" width="370px" :visible.sync="dialog.visiable" @close="closeDialog">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px" id="form" class="demo-ruleForm" :inline="true">
+        
         <el-form-item label="组名称" :rules="rules.input"  prop="GroupName">
            <el-input class="w180" size="small" v-model.trim="form.GroupName"></el-input>
         </el-form-item>
