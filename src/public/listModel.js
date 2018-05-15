@@ -15,7 +15,8 @@ export default {
       },
       table: {
         data: [],
-        size: 'mini'
+        size: 'mini',
+        maxHeight: 410
       },
       add: {
         visiable: false, // 是否显示新增组件

@@ -55,6 +55,7 @@ export default {
     clickSaveOrUpdate() {
       this.$refs['form'].validate(valid => {
         if (valid) {
+          this.button.loading = true
           if (this.data.type === 'edit' && this.data.obj.name === this.form.GroupName) {
             this.$message({ type: 'warning', message: '数据并未改变' })
             return
@@ -74,6 +75,7 @@ export default {
     success() {
       this.$message({ type: 'success', message: this.dialog.title + '成功' })
       this.closeDialog()
+      this.button.loading = false
       if (this.data.type === 'add') {
         this.$emit('add')
       } else {
@@ -81,6 +83,7 @@ export default {
       }
     },
     error(error) {
+      this.button.loading = false
       this.$message({ type: 'error', message: error.msg })
       this.$setKeyValue(this.button, { loading: false, text: '确定' })
     }

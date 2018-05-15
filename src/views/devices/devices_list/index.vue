@@ -11,7 +11,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="id" label="id" align="center"></el-table-column>
-      <el-table-column prop="name" label="psn" align="center"></el-table-column>
+      <el-table-column prop="psn" label="psn" align="center"></el-table-column>
       <el-table-column prop="name" label="名称" align="center"></el-table-column>
       <el-table-column prop="type" label="类型" align="center">
         <!-- <template slot-scope="scope">
