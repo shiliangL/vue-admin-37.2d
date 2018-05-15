@@ -35,7 +35,7 @@ service.interceptors.response.use(
           location.reload()// 为了重新实例化vue-router对象 避免bug
         })
       }
-      return Promise.reject('error')
+      return Promise.reject(res)
     } else {
       return response.data
     }

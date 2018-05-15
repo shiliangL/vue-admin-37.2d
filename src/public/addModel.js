@@ -1,5 +1,8 @@
 
+// rules
+import rules from './rules.js'
 export default {
+  mixins: [rules],
   props: {
     data: { // 用于给外部的数据传递
       type: Object,

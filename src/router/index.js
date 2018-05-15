@@ -59,15 +59,15 @@ export const constantRouterMap = [
     meta: { title: '设备管理', icon: '监控' },
     children: [
       {
-        path: 'devices_group',
-        name: 'devices_group',
-        component: () => import('@/views/devices/devices_group/index'),
+        path: 'devices_list',
+        name: 'devices_list',
+        component: () => import('@/views/devices/devices_list/index'),
         meta: { title: '设备列表', icon: '' }
       },
       {
-        path: 'devices_deal',
-        name: 'devices_deal',
-        component: () => import('@/views/devices/devices_deal/index'),
+        path: 'devices_group',
+        name: 'devices_group',
+        component: () => import('@/views/devices/devices_group/index'),
         meta: { title: '设备分组', icon: '' }
       }
     ]
@@ -82,13 +82,13 @@ export const constantRouterMap = [
       {
         path: 'tree3',
         name: 'Tree3',
-        component: () => import('@/views/devices/devices_deal/index'),
+        component: () => import('@/views/maintenance/devices_deal/index'),
         meta: { title: '占位', icon: '' }
       },
       {
         path: 'tree4',
         name: 'Tree4',
-        component: () => import('@/views/devices/devices_deal/index'),
+        component: () => import('@/views/maintenance/devices_deal/index'),
         meta: { title: '占位', icon: '' }
       }
     ]

@@ -8,13 +8,11 @@
 @import './theme-black.scss';
 @import './shi.scss';
 @import './form.scss';
-
 body {
     height: 100%;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-    // background: #f0f2f5;    
+    text-rendering: optimizeLegibility; // background: #f0f2f5;    
     font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
 }
 
@@ -150,7 +148,7 @@ code {
 }
 
 .editor-container .CodeMirror {
-    height: 100%!important;
+    height: 100% !important;
 }
 
 .text-center {
@@ -209,40 +207,54 @@ code {
 //     color: rgb(129, 148, 147);
 //     font-size: 12.5px
 // }
+.search-bar .left {
+    float: left;
+}
 
 .w180 {
     width: 180px;
 }
+
 .w170 {
     width: 170px;
 }
+
 .w160 {
     width: 160px;
 }
+
 .w150 {
     width: 150px
 }
+
 .w140 {
     width: 140px;
 }
+
 .w130 {
     width: 130px;
 }
+
 .w120 {
     width: 120px;
 }
+
 .w110 {
     width: 110px;
 }
+
 .w100 {
     width: 100px;
 }
+
 .w90 {
     width: 90px;
 }
+
 .w80 {
     width: 80px;
 }
+
 .left {
     float: left;
 }
