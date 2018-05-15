@@ -101,7 +101,7 @@ export default {
       }).then(() => {
         deletegroup({ GroupId: data.id }).then(() => {
           this.$message({ type: 'success', message: '删除成功!' })
-          this.fetchData()
+          this.fetchList()
         }).catch(() => {
           this.$message({ type: 'error', message: '删除失败!' })
         })

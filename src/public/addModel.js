@@ -1,6 +1,7 @@
 
 // rules
 import rules from './rules.js'
+import { editType } from '@/utils'
 export default {
   mixins: [rules],
   props: {
@@ -20,5 +21,8 @@ export default {
         text: '确定' // 按钮默认文字
       }
     }
+  },
+  methods: {
+    editType
   }
 }

@@ -51,7 +51,7 @@ export default {
     }
   },
   created() {
-    const title = this.data.type === 'add' ? '新增' : '编辑'
+    const title = this.editType(this.data.type)
     this.$setKeyValue(this.dialog, { title: title, visiable: true })
   },
   mounted() {

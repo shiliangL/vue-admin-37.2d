@@ -13,15 +13,15 @@
       <el-table-column prop="id" label="id" align="center"></el-table-column>
       <el-table-column prop="name" label="psn" align="center"></el-table-column>
       <el-table-column prop="name" label="名称" align="center"></el-table-column>
-      <el-table-column prop="TypeId" label="类型" align="center">
+      <el-table-column prop="type" label="类型" align="center">
         <!-- <template slot-scope="scope">
-          <el-button plain type="primary" size="mini">查看</el-button>
+          <el-button plain type="info" size="mini">未定义类型</el-button>
         </template> -->
       </el-table-column>
       <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">修改名称</el-button>
-          <el-button type="primary" size="mini" @click="clickBind(scope.$index, scope.row)">绑定类型</el-button>
+          <el-button type="primary" plain size="mini" @click="clickBind(scope.$index, scope.row)">绑定类型</el-button>
           <!-- <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button> -->
         </template>
       </el-table-column>
@@ -76,7 +76,16 @@ export default {
   methods: {
     fetchList() {
       fetchList().then(({ Devices }) => {
-        this.table.data = Devices
+        if (Array.isArray(Devices) && Devices.length > 0) {
+          for (const item of Devices) {
+            if (item.TypeId === 0) {
+              item.type = '未定义'
+            } else {
+              item.type = item.TypeId
+            }
+          }
+          this.table.data = Devices
+        }
       })
     },
     searchAction(params) {

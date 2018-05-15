@@ -5,7 +5,7 @@
         <el-form-item label="组名称" :rules="rules.input"  prop="GroupName">
            <el-input class="w180" size="small" v-model.trim="form.GroupName"></el-input>
         </el-form-item>
-         
+         <!-- <multipleTable></multipleTable> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button :loading="button.loading" size="small" type="primary" @click="clickSaveOrUpdate('form')">{{button.text}}</el-button>
@@ -16,10 +16,14 @@
 </template>
 
 <script>
+import { multipleTable } from '@/components/indexEx.js'
 import addModel from '@/public/addModel.js'
 import { creategroup, updategroup } from '@/api/devices_group'
 export default {
   mixins: [addModel],
+  components: {
+    multipleTable
+  },
   data() {
     return {
       form: {
@@ -35,7 +39,7 @@ export default {
     }
   },
   created() {
-    const title = this.data.type === 'add' ? '新增' : '编辑'
+    const title = this.editType(this.data.type)
     this.$setKeyValue(this.dialog, { title: title, visiable: true })
   },
   mounted() {

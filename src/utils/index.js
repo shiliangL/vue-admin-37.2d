@@ -1,7 +1,3 @@
-/**
- * Created by jiachenpan on 16/11/18.
- */
-
 export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
     return null
@@ -63,4 +59,21 @@ export function param2Obj(url) {
     return {}
   }
   return JSON.parse('{"' + decodeURIComponent(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
+}
+
+export function editType(key) {
+  switch (key) {
+    case 'add':
+    {
+      return '新增'
+    }
+    case 'edit':
+    {
+      return '编辑'
+    }
+    case 'bind':
+    {
+      return ' 绑定'
+    }
+  }
 }
