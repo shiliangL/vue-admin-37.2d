@@ -5,7 +5,7 @@
         
         <el-form-item label="PSN" :rules="rules.input"  prop="PSN" v-if="this.data.type === 'add'">
           <el-input class="w180" size="small" v-model.trim="form.PSN"></el-input>
-          <el-tooltip content="添加一个或连续的多个，如添加多个连续编号用：min-max形式" placement="top">
+          <el-tooltip content="添加一个或连续的多个，如添加多个连续编号用：min-max形式" placement="top" effect="light">
             <el-button type="text">提示</el-button>
           </el-tooltip>
         </el-form-item>
