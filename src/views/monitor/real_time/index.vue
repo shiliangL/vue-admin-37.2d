@@ -116,6 +116,7 @@ export default {
       margin-left: 10px;
       width: 98%;
       border: 1px solid #d1dbe5;
+      background:#fff;
       border-radius: 8px;
       padding: 10px;
       .flex-box {

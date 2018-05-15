@@ -298,5 +298,6 @@ export default {
   padding: 8px;
   border-radius: 8px;
   border: 1px solid #d1dbe5;
+  background:#fff;
 }
 </style>

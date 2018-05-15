@@ -7,7 +7,7 @@
       <div class="content" v-if="SetupConfig">
         <div class="mc-titel">
            <!-- 顶部搜索区域 -->
-          <div class="search-bar">
+          <div class="search-bar clearfix">
             <div class="left" style="display: flex;align-items: center;">
                <div>
                 <h4>{{SetupConfig.name}}（ {{SetupConfig.psn}} ）</h4>
@@ -33,9 +33,9 @@
           </div>
         </div>
         <div class="mc-icon">
-          <el-form ref="form" :model="form" label-width="180px" size="small" :inline="true" class="form">
+          <el-form ref="form" :model="form" label-width="180px" size="small" class="form">
             <el-row :gutter="40">
-              <el-col :xs="12" :sm="8" :lg="8" class="card-panel-col" v-for="(item,index) in SetupConfig.option" :key="index">
+              <el-col :xs="12" :sm="8" :lg="8" class="card-panel-col clearfix" v-for="(item,index) in SetupConfig.option" :key="index">
                  <div v-if="item.type ==='D'"> <h4> {{item.caption}}: {{item.value }}/{{item.suffix}}</h4> </div>
                  <div v-else> <h4> {{item.caption}}: {{item.value }} </h4> </div>
               </el-col>
@@ -129,6 +129,7 @@ export default {
       border: 1px solid #d1dbe5;
       border-radius: 8px;
       padding: 10px;
+      background:#fff;
       .search-bar{
         border-bottom: 1px solid #d1dbe5;
       }
