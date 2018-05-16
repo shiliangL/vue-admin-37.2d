@@ -39,3 +39,11 @@ export function rmdevfromgroup(query) {
     data: query
   })
 }
+// 添加某组内的某设备
+export function adddevtogroup(query) {
+  return request({
+    url: 'rtusapi/devices/adddevtogroup',
+    method: 'POST',
+    data: query
+  })
+}

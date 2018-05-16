@@ -117,13 +117,13 @@ export default {
     clickEmit() {
       this.$emit('input', this.selectArray)
     },
-    clickDelete(index, data) {
+    clickDelete(index, rowData) {
       this.$confirm('是否需要删除数据?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        rmdevfromgroup({ GroupId: this.$attrs.GroupID, DeviceId: data.id }).then(() => {
+        rmdevfromgroup({ GroupId: this.$attrs.GroupID, DeviceId: rowData.id }).then(() => {
           this.$message({ type: 'success', message: '删除成功!' })
           this.fetchList()
         }).catch(() => {

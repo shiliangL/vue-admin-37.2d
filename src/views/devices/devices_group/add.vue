@@ -2,17 +2,16 @@
   <div class="add">
     <el-dialog :title="dialog.title" :width="dialogWidth" :visible.sync="dialog.visiable" @close="closeDialog">
       <el-form :model="form" :rules="rules" ref="form" label-width="100px" id="form" class="demo-ruleForm" :inline="true">
-        {{multipleValue}} 测试文件
         <el-form-item v-if="this.data.type === 'add'" label="组名称" :rules="rules.input"  prop="GroupName">
            <el-input class="w180" size="small" v-model.trim="form.GroupName"></el-input>
         </el-form-item>
 
         <template v-if="this.data.type === 'add-de'">
-          <multipleTable ref="multipleTable"></multipleTable>
+          <multipleTable ref="multipleTable" v-model="multipleValue"></multipleTable>
         </template>
 
         <template v-if="this.data.type === 'add-view-de'">
-          <multipleTable ref="multipleTable" isHander :isSearch="false" :GroupID="data.obj.id" v-model="multipleValue"></multipleTable>
+          <multipleTable ref="multipleTable" isHander :isSearch="false" :GroupID="data.obj.id"></multipleTable>
         </template>
 
       </el-form>
@@ -29,7 +28,7 @@
 <script>
 import { multipleTable } from '@/components/indexEx.js'
 import addModel from '@/public/addModel.js'
-import { creategroup, updategroup } from '@/api/devices_group'
+import { creategroup, updategroup, adddevtogroup } from '@/api/devices_group'
 export default {
   mixins: [addModel],
   components: {
@@ -78,14 +77,29 @@ export default {
           }
           this.button.loading = true
           if (this.data.type === 'add') {
+            // 新增组
             creategroup({ GroupName: this.form.GroupName }).then(() => { this.success() }).catch((error) => { this.error(error) })
           } else if (this.data.type === 'add-de') {
+            // 组添加设备
             this.$refs['multipleTable'].clickEmit()
             this.button.loading = false
             setTimeout(() => {
-              console.log(this.multipleValue)
+              const { multipleValue } = this
+              if (Array.isArray(multipleValue) && multipleValue.length > 0) {
+                const ids = multipleValue.map(item => {
+                  return item.id.toString()
+                }).join(',')
+                const data = {
+                  GroupId: this.data.obj.id.toString(),
+                  DeviceId: ids
+                }
+                adddevtogroup(data).then(() => { this.success() }).catch((error) => { this.error(error) })
+              } else {
+                return
+              }
             }, 20)
           } else {
+            // 组修改名称
             const data = {
               GroupId: this.form.GroupId,
               GroupName: this.form.GroupName
