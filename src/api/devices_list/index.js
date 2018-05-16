@@ -42,3 +42,11 @@ export function bindingtype(query) {
     data: query
   })
 }
+// 设备解绑类型
+export function unbindingtype(query) {
+  return request({
+    url: 'rtusapi/devices/unbindingtype',
+    method: 'POST',
+    data: query
+  })
+}

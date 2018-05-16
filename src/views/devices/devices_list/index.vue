@@ -21,7 +21,8 @@
       <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">修改名称</el-button>
-          <el-button type="primary" plain size="mini" @click="clickBind(scope.$index, scope.row)">绑定类型</el-button>
+          <el-button v-if="scope.row.TypeId === 0" type="primary" plain size="mini" @click="clickBind(scope.$index, scope.row)">绑定</el-button>
+          <el-button v-else type="danger" plain size="mini" @click="clickUnbindType(scope.$index, scope.row)">解绑</el-button>
           <!-- <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button> -->
         </template>
       </el-table-column>
@@ -45,7 +46,7 @@
 
 <script>
 import model from '@/public/listModel.js'
-import { fetchList } from '@/api/devices_list'
+import { fetchList, unbindingtype } from '@/api/devices_list'
 import Add from './add'
 export default {
   mixins: [model],
@@ -114,6 +115,27 @@ export default {
       }).then(() => {
 
       })
+    },
+    clickUnbindType(index, value) {
+      this.$confirm('确定解绑设备吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const data = {
+          DeviceId: value.id.toString()
+        }
+        unbindingtype(data).then((res) => {
+          if (res.result === 'ok') {
+            this.fetchList()
+            this.$message({ type: 'success', message: '设备解绑成功' })
+          } else {
+            this.$message({ type: 'error', message: '设备解绑失败' })
+          }
+        }).catch(() => {
+          this.$message({ type: 'error', message: '设备解绑失败' })
+        })
+      }).catch(() => {})
     }
   }
 }

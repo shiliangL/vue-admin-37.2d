@@ -73,7 +73,15 @@ export function editType(key) {
     }
     case 'bind':
     {
-      return ' 绑定'
+      return '绑定'
+    }
+    case 'add-de':
+    {
+      return '设备组添加设备'
+    }
+    case 'add-view-de':
+    {
+      return '已添加设备'
     }
   }
 }

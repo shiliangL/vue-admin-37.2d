@@ -12,11 +12,18 @@
       </el-table-column>
       <el-table-column prop="id" label="id" align="center"></el-table-column>
       <el-table-column prop="name" label="名称" align="center"></el-table-column>
-      <el-table-column prop="name" label="设备" align="center">
+      <el-table-column prop="name" label="添加设备" align="center">
         <template slot-scope="scope">
-          <el-button plain type="primary" size="mini">查看</el-button>
+          <el-button plain type="primary"  @click="clickAddDE(scope.$index, scope.row)" size="mini">添加</el-button>
         </template>
       </el-table-column>
+
+       <el-table-column prop="name" label="已添加设备" align="center">
+        <template slot-scope="scope">
+          <el-button plain type="primary"  @click="clickViewDE(scope.$index, scope.row)" size="mini">查看</el-button>
+        </template>
+      </el-table-column>
+
       <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button>
@@ -93,6 +100,12 @@ export default {
     clickEdit(index, data) {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'edit', obj: data }})
     },
+    clickAddDE(index, data) {
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'add-de', obj: data }})
+    },
+    clickViewDE(index, data) {
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'add-view-de', obj: data }})
+    },
     clickDelete(index, data) {
       this.$confirm('是否需要删除数据?', '提示', {
         confirmButtonText: '确定',
@@ -105,7 +118,7 @@ export default {
         }).catch(() => {
           this.$message({ type: 'error', message: '删除失败!' })
         })
-      })
+      }).catch(() => {})
     }
   }
 }

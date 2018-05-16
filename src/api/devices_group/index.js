@@ -30,3 +30,12 @@ export function updategroup(query) {
     data: query
   })
 }
+
+// 删除某组内的某设备
+export function rmdevfromgroup(query) {
+  return request({
+    url: 'rtusapi/devices/rmdevfromgroup',
+    method: 'POST',
+    data: query
+  })
+}

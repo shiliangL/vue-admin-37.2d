@@ -1,19 +1,27 @@
 <template>
 	<div class="multipleTable">
-		<div class="search-Box">
+		<div class="search-Box" v-if="isSearch">
 			<el-input class="w180" size="small"  placeholder="输入关键字检索" icon="search"  v-model="search"></el-input> 
 			<el-button type="primary" size="small" @click="click2search"> 搜索 </el-button>
 			<el-button size="small"> 重置 </el-button>
 		</div>
-		<el-table :data="tableData" style="width: 100%" size="mini"    
+		<el-table :data="tableData" style="width: 100%" size="mini"
+      v-loading="loading"
 			ref="multipleTable"
+      max-height="300"
 			highlight-current-row
 			@row-click="clickTableRow"
 			@selection-change="selectOneAndMore"
 			@select-all="selectAll">
-			<el-table-column align="center" type="selection" width="30"> </el-table-column>
-			<el-table-column align="center" prop="date" label="日期"></el-table-column>
-			<el-table-column align="center" prop="name" label="姓名"> </el-table-column>
+			<el-table-column align="center" type="selection" width="30" v-if="!isHander"> </el-table-column>
+			<el-table-column align="center" prop="psn" label="psn"></el-table-column>
+			<el-table-column align="center" prop="name" label="名称"> </el-table-column>
+      <el-table-column label="操作" align="center" width="90" v-if="isHander">
+        <template slot-scope="scope">
+          <!-- <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">编辑</el-button> -->
+          <el-button type="danger" size="mini" @click="clickDelete(scope.$index, scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
 		</el-table>
 
 		<!-- <div style="text-align: center;margin: 6px;">
@@ -24,41 +32,56 @@
 </template>
 
 <script>
+// isHander 显示操作说明是查看
 import request from '@/utils/request'
-
+import { rmdevfromgroup } from '@/api/devices_group'
 export default {
   name: 'multipleTable',
+  inheritAttrs: false,
   props: {
     url: {
       type: String,
       default: 'rtusapi/devices/getdevnogroup' // 未分组设备
+    },
+    isSearch: {
+      type: Boolean,
+      default: true
+    },
+    isHander: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
+      loading: false,
       search: '', // 搜索
-      tableData: [
-        { date: '2016-05-02', name: '王小虎', address: '上海市普陀区金沙江路 1518 弄' },
-        { date: '2016-05-04', name: '章小米', address: '上海市普陀区金沙江路 1517 弄' },
-        { date: '2016-05-01', name: '李小东', address: '上海市普陀区金沙江路 1519 弄' }
-      ],
+      tableData: [],
       selectArray: []
     }
   },
   created() {
-
+    this.GroupID = this.$attrs.GroupID
+    setTimeout(() => {
+      console.log('xxx')
+      this.$emit('input', 'well done!')
+    }, 2000)
   },
   mounted() {
     this.fetchList()
   },
   methods: {
-    fetchList(query) {
+    fetchList() {
+      this.loading = true
+      const url = this.isHander ? 'rtusapi/devices/getdevbygroup' : this.url
+      const query = this.isHander ? { GroupID: this.$attrs.GroupID } : ''
       request({
-        url: this.url,
+        url: url,
         method: 'get',
         params: query
-      }).then(res => {
-        console.log(res)
+      }).then(({ Devices }) => {
+        this.loading = false
+        this.tableData = Devices
       })
     },
     click2search() {
@@ -94,8 +117,19 @@ export default {
     clickEmit() {
       this.$emit('input', this.selectArray)
     },
-    clickSave() {
-
+    clickDelete(index, data) {
+      this.$confirm('是否需要删除数据?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        rmdevfromgroup({ GroupId: this.$attrs.GroupID, DeviceId: data.id }).then(() => {
+          this.$message({ type: 'success', message: '删除成功!' })
+          this.fetchList()
+        }).catch(() => {
+          this.$message({ type: 'error', message: '删除失败!' })
+        })
+      }).catch(() => {})
     }
   }
 }
@@ -103,7 +137,6 @@ export default {
 
 <style scoped lang="scss">
  .multipleTable{
-	 width:350px;
-	 background:#fff;
+   background:#fff;
  }
 </style>
