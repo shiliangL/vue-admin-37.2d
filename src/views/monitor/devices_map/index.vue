@@ -1,9 +1,10 @@
 <template>
     <div>
-        <baidu-map class="bm-view" ak="vUHITq2fmXpfwoeezVGNh2VCfbT02tY7" center="深圳">
+        <baidu-map class="bm-view" ak="vUHITq2fmXpfwoeezVGNh2VCfbT02tY7" center="北京" @click="handerClickMap" :scroll-wheel-zoom="true">
           <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
           <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :showAddressBar="true" :autoLocation="true" @locationSuccess="locationSuccess"></bm-geolocation>
-          <bm-marker :position="{lng: position.lng, lat: position.lat}" :dragging="true" animation="BMAP_ANIMATION_BOUNCE"></bm-marker>
+          <bm-marker  :position="{lng: 116.404, lat: 39.915}" :dragging="true" animation="BMAP_ANIMATION_BOUNCE"></bm-marker>
+          <bm-marker  :position="{lng: 96.204, lat: 20.215}" :dragging="true" animation="BMAP_ANIMATION_BOUNCE"></bm-marker>
         </baidu-map>
     </div>
 </template>
@@ -36,6 +37,10 @@ export default {
         position.lng = pos.point.lat
         position.lat = pos.point.lng
       }
+      console.log(this.position)
+    },
+    handerClickMap(e) {
+      console.log(e)
     }
   }
 }

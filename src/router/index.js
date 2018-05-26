@@ -69,6 +69,12 @@ export const constantRouterMap = [
         name: 'devices_group',
         component: () => import('@/views/devices/devices_group/index'),
         meta: { title: '设备分组', icon: '' }
+      },
+      {
+        path: 'devices_me',
+        name: 'devices_me',
+        component: () => import('@/views/devices/devices_me/index'),
+        meta: { title: '设备分类', icon: '' }
       }
     ]
   },

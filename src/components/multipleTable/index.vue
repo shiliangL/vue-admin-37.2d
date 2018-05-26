@@ -89,7 +89,11 @@ export default {
       if (search) {
         const data = this.tableData.filter(dataNews => {
           return Object.keys(dataNews).some(key => {
-            return String(dataNews[key]).toLowerCase().indexOf(search) > -1
+            return (
+              String(dataNews[key])
+                .toLowerCase()
+                .indexOf(search) > -1
+            )
           })
         })
         this.tableData = data
@@ -118,25 +122,33 @@ export default {
       this.$emit('input', this.selectArray)
     },
     clickDelete(index, rowData) {
-      this.$confirm('是否需要删除数据?', '提示', {
+      this.$confirm('是否需要删除?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        rmdevfromgroup({ GroupId: this.$attrs.GroupID, DeviceId: rowData.id }).then(() => {
-          this.$message({ type: 'success', message: '删除成功!' })
-          this.fetchList()
-        }).catch(() => {
-          this.$message({ type: 'error', message: '删除失败!' })
+      })
+        .then(() => {
+          const data = {
+            GroupId: this.$attrs.GroupID.toString(),
+            DeviceId: rowData.id.toString()
+          }
+          rmdevfromgroup(data)
+            .then(() => {
+              this.$message({ type: 'success', message: '删除成功!' })
+              this.fetchList()
+            })
+            .catch(() => {
+              this.$message({ type: 'error', message: '删除失败!' })
+            })
         })
-      }).catch(() => {})
+        .catch(() => {})
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
- .multipleTable{
-   background:#fff;
- }
+.multipleTable {
+  background: #fff;
+}
 </style>
