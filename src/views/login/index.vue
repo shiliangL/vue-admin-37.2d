@@ -1,41 +1,49 @@
 <template>
   <div class="login-container">
-    <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
-      <div class="title-container">
-        <h3 class="title">{{$t('login.title')}}</h3>
-        <lang-select class="set-language"></lang-select>
+    <div class="layer bg" id="login"></div>
+
+    <div class="layer flex-center">
+      <!-- logo部分 -->
+      <!-- 表单部分 -->
+      <div class="form-group">
+        <el-card class="box-card">
+          <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
+            <div class="title-container">
+              <span class="title">{{$t('login.title')}}</span>
+            </div>
+            <el-form-item prop="username">
+              <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username" />
+            </el-form-item>
+
+            <el-form-item prop="password">
+              <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="password" />
+            </el-form-item>
+
+            <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">{{$t('login.logIn')}}</el-button>
+
+            <!-- <div class="tips">
+              <span>{{$t('login.username')}} : admin</span>
+              <span>{{$t('login.password')}} : {{$t('login.any')}}</span>
+            </div>
+            <div class="tips">
+              <span style="margin-right:18px;">{{$t('login.username')}} : editor</span>
+              <span>{{$t('login.password')}} : {{$t('login.any')}}</span>
+            </div> -->
+
+            <!-- <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{$t('login.thirdparty')}}</el-button> -->
+          </el-form>
+        <!-- <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog" append-to-body>
+          {{$t('login.thirdpartyTips')}}
+        </el-dialog> -->
+        </el-card>
       </div>
-      <el-form-item prop="username">
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username" />
-      </el-form-item>
-
-      <el-form-item prop="password">
-        <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="password" />
-      </el-form-item>
-
-      <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">{{$t('login.logIn')}}</el-button>
-
-      <!-- <div class="tips">
-        <span>{{$t('login.username')}} : admin</span>
-        <span>{{$t('login.password')}} : {{$t('login.any')}}</span>
-      </div>
-      <div class="tips">
-        <span style="margin-right:18px;">{{$t('login.username')}} : editor</span>
-        <span>{{$t('login.password')}} : {{$t('login.any')}}</span>
-      </div> -->
-
-      <!-- <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{$t('login.thirdparty')}}</el-button> -->
-    </el-form>
-
-    <!-- <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog" append-to-body>
-      {{$t('login.thirdpartyTips')}}
-    </el-dialog> -->
-
+    
+    </div>
   </div>
 </template>
 
 <script>
-
+// import config from './config'
 import { LangSelect } from '@/components/base.js'
 
 export default {
@@ -49,12 +57,15 @@ export default {
         username: 'test',
         password: '11111111'
       },
-      loginRules: {
-      },
+      loginRules: {},
       passwordType: 'password',
       loading: false,
       showDialog: false
     }
+  },
+  mounted() {
+    // 初始化例子插件
+
   },
   methods: {
     showPwd() {
@@ -68,12 +79,15 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
-            this.loading = false
-            this.$router.push({ path: '/' })
-          }).catch(() => {
-            this.loading = false
-          })
+          this.$store
+            .dispatch('LoginByUsername', this.loginForm)
+            .then(() => {
+              this.loading = false
+              this.$router.push({ path: '/' })
+            })
+            .catch(() => {
+              this.loading = false
+            })
         } else {
           console.log('error submit!!')
           return false
@@ -108,106 +122,59 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss">
-$bg:#ffff;
-$light_gray:#eee;
-/* reset element-ui css */
+<style lang="scss" scoped>
 .login-container {
-  .el-input {
-    display: inline-block;
-    height: 47px;
-    width: 85%;
-    input {
-      background: transparent;
-      border: 0px;
-      -webkit-appearance: none;
-      border-radius: 0px;
-      padding: 12px 5px 12px 15px;
-      color: $light_gray;
-      height: 47px;
-      &:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
-        -webkit-text-fill-color: #fff !important;
-      }
-    }
-  }
-  .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    color: #454545;
-  }
-}
-</style>
-
-<style rel="stylesheet/scss" lang="scss" scoped>
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray:#eee;
-
-.login-container {
-  position: fixed;
+  background-color: #edf4fa;
   height: 100%;
-  width: 100%;
-  background-color: $bg;
-  .login-form {
+  position: relative; // 层
+  .layer {
     position: absolute;
-    left: 0;
-    right: 0;
-    width: 520px;
-    padding: 35px 35px 15px 35px;
-    margin: 120px auto;
+    height: 100%;
+    width: 100%;
+    &.flex-center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+  } // 背景
+  .bg {
+    canvas {
+      display: block;
+      margin: 0px;
+      padding: 0px;
+    }
   }
-  .tips {
-    font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px;
-    span {
-      &:first-of-type {
-        margin-right: 16px;
+  .form-group {
+    width: 300px; // 重新设置卡片阴影
+    .title-container{
+      text-align: center;
+      .title{
+        font-size: 18px;
+        padding: 10px 0;
+        display: block;
       }
     }
-  }
-  .svg-container {
-    padding: 6px 5px 6px 15px;
-    color: $dark_gray;
-    vertical-align: middle;
-    width: 30px;
-    display: inline-block;
-    &_login {
-      font-size: 20px;
+    .el-card {
+      box-shadow: 0 0 8px 0 rgba(232, 237, 250, 0.6),
+        0 2px 4px 0 rgba(232, 237, 250, 0.5);
+      .el-card__body {
+        padding-top: 70px;
+      }
+    } // 登陆按钮
+    .button-login {
+      width: 100%;
+    } // 输入框左边的图表区域缩窄
+    .el-input-group__prepend {
+      padding: 0px 14px;
     }
-  }
-  .title-container {
-    position: relative;
-    .title {
-      font-size: 26px;
-      font-weight: 400;
-      color: $light_gray;
-      margin: 0px auto 40px auto;
-      text-align: center;
-      font-weight: bold;
+    .login-code {
+      height: 40px - 2px;
+      display: block;
+      margin: 0px -20px;
+      border-top-right-radius: 2px;
+      border-bottom-right-radius: 2px;
     }
-    .set-language {
-      color: #fff;
-      position: absolute;
-      top: 5px;
-      right: 0px;
-    }
-  }
-  .show-pwd {
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    font-size: 16px;
-    color: $dark_gray;
-    cursor: pointer;
-    user-select: none;
-  }
-  .thirdparty-button {
-    position: absolute;
-    right: 35px;
-    bottom: 28px;
   }
 }
 </style>

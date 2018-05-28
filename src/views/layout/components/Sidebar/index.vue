@@ -2,10 +2,16 @@
   <scroll-bar class="scroll-bar">
     <div class="logo-layout">
       <a href="#/">
-        <h1>Cloudolp</h1>
+        <h1>WebPro</h1>
       </a>
     </div>
-    <el-menu mode="vertical" :default-active="$route.path" :collapse="isCollapse" background-color="#001529" text-color="#bfcbd9" active-text-color="#409EFF" :unique-opened="true">
+    <el-menu mode="vertical" 
+      :collapse="isCollapse" 
+      :default-active="$route.path" 
+      background-color="#002140" 
+      text-color="#bfcbd9" 
+      active-text-color="#409EFF" 
+      :unique-opened="true">
       <sidebar-item :routes="permission_routers"></sidebar-item>
     </el-menu>
   </scroll-bar>

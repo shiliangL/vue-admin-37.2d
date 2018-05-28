@@ -42,11 +42,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "src/styles/variables.scss";
 .scroll-container {
   position: relative;
   width: 100%;
   height: 100%;
-  background-color:#ccc;
+  background-color: $sideBarBg;
   .scroll-wrapper {
     position: absolute;
      width: 100%!important;

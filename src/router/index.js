@@ -6,6 +6,7 @@ const _import = require('./_import_' + process.env.NODE_ENV)
 
 Vue.use(Router)
 
+// 标准路由
 export const constantRouterMap = [
   { path: '/login', component: _import('login/index'), hidden: true },
   { path: '/404', component: _import('errorPage/index'), hidden: true },
@@ -13,6 +14,7 @@ export const constantRouterMap = [
     path: '',
     component: Layout,
     redirect: 'dashboard',
+    hidden: true,
     children: [{
       path: 'dashboard',
       component: _import('dashboard/index'),
@@ -22,6 +24,7 @@ export const constantRouterMap = [
   }
 ]
 
+// 异步权限路由
 export const asyncRouterMap = [
   {
     path: '/users',
