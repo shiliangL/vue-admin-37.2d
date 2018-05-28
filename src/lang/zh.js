@@ -46,7 +46,11 @@ export default {
     exportZip: 'Export Zip',
     theme: '换肤',
     clipboardDemo: 'Clipboard',
-    i18n: '国际化'
+    i18n: '国际化',
+
+    users: '用户管理',
+    userList: '用户列表',
+    userInfo: '用户信息'
   },
   navbar: {
     logOut: '退出登录',

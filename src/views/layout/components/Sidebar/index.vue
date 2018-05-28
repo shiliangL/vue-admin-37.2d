@@ -19,10 +19,7 @@ import ScrollBar from '@/components/ScrollBar'
 export default {
   components: { SidebarItem, ScrollBar },
   computed: {
-    ...mapGetters([
-      'permission_routers',
-      'sidebar'
-    ]),
+    ...mapGetters(['permission_routers', 'sidebar']),
     isCollapse() {
       return !this.sidebar.opened
     }
@@ -32,27 +29,26 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .scroll-bar {
-  -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);
-  box-shadow: 2px 0 6px rgba(0,21,41,.35);
+  -webkit-box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+  box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
 }
 .logo-layout {
-    height: 64px;
-    position: relative;
-    line-height: 64px;
-    padding-left: 24px;
-    -webkit-transition: all .3s;
-    transition: all .3s;
-    background: #002140;
-    overflow: hidden;
-    vertical-align:middle
-  a {
+  height: 64px;
+  position: relative;
+  line-height: 64px;
+  padding-left: 24px;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  background: #002140;
+  overflow: hidden;
+  vertical-align:middle a {
     color: #1890ff;
     background-color: transparent;
     text-decoration: none;
     outline: none;
     cursor: pointer;
-    -webkit-transition: color .3s;
-    transition: color .3s;
+    -webkit-transition: color 0.3s;
+    transition: color 0.3s;
     -webkit-text-decoration-skip: objects;
   }
   img {
@@ -70,7 +66,7 @@ export default {
     color: #fff;
     font-size: 20px;
     margin: 0 0 0 12px;
-    font-family: Myriad Pro,Helvetica Neue,Arial,Helvetica,sans-serif;
+    font-family: Myriad Pro, Helvetica Neue, Arial, Helvetica, sans-serif;
     font-weight: 600;
   }
 }

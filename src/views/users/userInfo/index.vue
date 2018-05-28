@@ -1,12 +1,12 @@
 <template>
-<div>
-<h3>goods</h3>
-</div>
+    <div>
+			用户信息列表
+    </div>
 </template>
 
 <script>
 export default {
-  name: 'goods'
+  name: 'userInfo'
 }
 </script>
 

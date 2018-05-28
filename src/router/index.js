@@ -8,11 +8,11 @@ Vue.use(Router)
 
 export const constantRouterMap = [
   { path: '/login', component: _import('login/index'), hidden: true },
-  // { path: '/404', component: _import('errorPage/404'), hidden: true },
+  { path: '/404', component: _import('errorPage/index'), hidden: true },
   {
     path: '',
     component: Layout,
-    // redirect: 'dashboard',
+    redirect: 'dashboard',
     children: [{
       path: 'dashboard',
       component: _import('dashboard/index'),
@@ -24,16 +24,17 @@ export const constantRouterMap = [
 
 export const asyncRouterMap = [
   {
-    path: '/goods',
+    path: '/users',
     component: Layout,
     redirect: 'noredirect',
-    name: 'goods',
+    name: 'users',
     meta: {
-      title: '商品',
+      title: 'users',
       icon: 'component'
     },
     children: [
-      { path: 'goods', component: _import('goods/index'), name: 'goods', meta: { title: 'goods' }}
+      { path: 'userList', component: _import('users/userList/index'), name: 'userList', meta: { title: 'userList' }},
+      { path: 'userInfo', component: _import('users/userInfo/index'), name: 'userInfo', meta: { title: 'userInfo' }}
     ]
   },
   { path: '*', redirect: '/404', hidden: true }

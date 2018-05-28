@@ -1,4 +1,4 @@
-<template>
+ <template>
   <el-menu class="navbar" mode="horizontal">
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
 
@@ -6,25 +6,19 @@
 
     <div class="right-menu">
 
-      <el-dropdown trigger="click">
-        <span class="el-dropdown-link">
-          下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
-        </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>中文</el-dropdown-item>
-          <el-dropdown-item>English</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-
       <el-dropdown class="avatar-container right-menu-item" trigger="click">
         <div class="avatar-wrapper">
-          <!-- <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'"> -->
-          用户头像
-          <i class="el-icon-caret-bottom"></i>
+          <!-- 用户头像 <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
+          <i class="el-icon-caret-bottom"></i> -->
         </div>
         <el-dropdown-menu slot="dropdown">
+          <router-link to="/">
+            <el-dropdown-item>
+              {{$t('navbar.dashboard')}}
+            </el-dropdown-item>
+          </router-link>
           <el-dropdown-item divided>
-            <span @click="logout" style="display:block;"> 退出 </span>
+            <span @click="logout" style="display:block;">{{$t('navbar.logOut')}}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -32,10 +26,10 @@
   </el-menu>
 </template>
 
+
 <script>
 import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
-import Hamburger from '@/components/Hamburger'
+import { Breadcrumb, Hamburger } from '@/components/base.js'
 
 export default {
   components: {
