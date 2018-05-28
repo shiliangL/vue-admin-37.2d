@@ -33,7 +33,7 @@ export const asyncRouterMap = [
       icon: 'component'
     },
     children: [
-      { path: 'goods', component: _import('goods/index'), name: 'goods', meta: { title: 'goods' } }
+      { path: 'goods', component: _import('goods/index'), name: 'goods', meta: { title: 'goods' }}
     ]
   },
   { path: '*', redirect: '/404', hidden: true }

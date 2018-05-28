@@ -6,8 +6,8 @@
 
 <script>
 export default {
-  name: "errorPage"
-};
+  name: 'errorPage'
+}
 </script>
 
 <style scoped>
