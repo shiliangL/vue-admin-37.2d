@@ -2,11 +2,11 @@ import request from '@/utils/request'
 
 export function loginByUsername(username, password) {
   const data = {
-    username,
-    password
+    account: username,
+    password: password
   }
   return request({
-    url: '/login/login',
+    url: 'rtusapi/users/login',
     method: 'post',
     data
   })
@@ -20,9 +20,10 @@ export function logout() {
 }
 
 export function getUserInfo(token) {
+  // 登录成功后 根据 token 获取客户信息
   return request({
-    url: '/user/info',
-    method: 'get',
-    params: { token }
+    url: 'rtusapi/users/getuserinfo',
+    method: 'get'
+    // params: { token }
   })
 }

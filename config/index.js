@@ -10,7 +10,16 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/rtusapi/': { //这里是我配置的名字
+        // target: 'http://10.0.5.189:8050',
+        target: 'http://www.rtuol.com',
+        changeOrigin: true, //开启代理
+        pathRewrite: {
+          '^/rtusapi': '/rtusapi'
+        }
+      }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
