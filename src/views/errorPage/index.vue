@@ -1,15 +1,14 @@
 <template>
     <div>
-        登录页面
+			404
     </div>
 </template>
 
 <script>
 export default {
-  name: 'login'
-}
+  name: "errorPage"
+};
 </script>
 
 <style scoped>
-
 </style>

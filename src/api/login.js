@@ -1,27 +1,28 @@
 import request from '@/utils/request'
 
-export function login(account, password) {
+export function loginByUsername (username, password) {
+  const data = {
+    username,
+    password
+  }
   return request({
-    url: 'rtusapi/users/login',
+    url: '/login/login',
     method: 'post',
-    data: {
-      account,
-      password
-    }
+    data
   })
 }
 
-export function getInfo(token) {
+export function logout () {
   return request({
-    url: 'rtusapi/users/getuserinfo',
-    method: 'get'
-    // params: { token }
-  })
-}
-
-export function logout() {
-  return request({
-    url: 'rtusapi/users/logout',
+    url: '/login/logout',
     method: 'post'
+  })
+}
+
+export function getUserInfo (token) {
+  return request({
+    url: '/user/info',
+    method: 'get',
+    params: { token }
   })
 }

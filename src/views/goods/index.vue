@@ -1,15 +1,14 @@
 <template>
-    <div>
-        登录页面
-    </div>
+<div>
+<h3>goods</h3>
+</div>
 </template>
 
 <script>
 export default {
-  name: 'login'
+  name: 'goods'
 }
 </script>
 
 <style scoped>
-
 </style>
