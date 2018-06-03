@@ -35,6 +35,7 @@ export default {
 	  position: relative;
 	  height: 100%;
 		width: 100%;
-		background: #f0f2f5;
+		// background: #f0f2f5;
+		background: #fff;
 	}
 </style>

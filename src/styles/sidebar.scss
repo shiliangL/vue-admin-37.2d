@@ -95,11 +95,10 @@
     }
     .nest-menu .el-submenu>.el-submenu__title,
     .el-submenu .el-menu-item {
-        min-width: 180px !important;
-        background-color: black !important;
+        min-width: 180px !important; // background-color: black !important;
         &:hover {
             background-color: $menuHover !important;
-            color: rgb(64, 158, 255) !important;
+            color: $menuSubTextHover !important;
         }
     }
     .el-menu--collapse .el-menu .el-submenu {

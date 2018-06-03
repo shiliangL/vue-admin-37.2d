@@ -58,10 +58,13 @@ export default {
 
 <style lang="scss" scoped>
 @import "src/styles/navbar.scss";
+@import "src/styles/variables.scss";
+
 .navbar {
   height: 50px;
   line-height: 50px;
   border-radius: 0px !important;
+  background: $navbarBgColor;
   .hamburger-container {
     line-height: 58px;
     height: 50px;
@@ -78,6 +81,7 @@ export default {
   .right-menu {
     float: right;
     height: 100%;
+    margin-right: 10px;
     &:focus{
      outline: none;
     }

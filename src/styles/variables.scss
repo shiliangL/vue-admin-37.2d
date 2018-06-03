@@ -6,11 +6,15 @@ $green: #30B08F;
 $tiffany: #4AB7BD;
 $yellow:#FEC171;
 $panGreen: #30B08F;
+$logoTextColor: #409eff; //logo 字体颜色
+$navbarBgColor: #f8f8f9; //顶部导航栏背景颜色
+$tagsViewBgColor:#f8f8f9; //顶部标签导航背景颜色
 //sidebar
-$menuBg:#001529;
+$menuBg:#f8f8f9;
 $subMenuBg:black;
-$menuHover:black;
-$sideBarBg:#002140;
+$menuHover:#e8e8e8; //鼠标滑过2级菜单背景颜色
+$menuSubTextHover: none; //鼠标滑过2级菜单字体颜色
+$sideBarBg:#f8f8f9;
 // 导航面包
 $tagViewColorBg:#f7f7f7;
 $tagViewColorText:#495060;
@@ -19,4 +23,27 @@ $tagDotBg:#e9eaec;
 $AC_tagViewColorBg:#f7f7f7;
 $AC_tagViewColorText:#495060;
 $AC_tagViewColorBorder:#409eff;
-$AC_tagDotBg:#409eff
+$AC_tagDotBg:#409eff; // 工具类名统一前缀
+$prefix: dd;
+// 主色
+$color-primary: #409EFF;
+// 辅助色
+$color-info: #909399;
+$color-success: #67C23A;
+$color-warning: #E6A23C;
+$color-danger: #F56C6C;
+// 文字
+$color-text-main: #303133;
+$color-text-normal: #606266;
+$color-text-sub: #909399;
+$color-text-placehoder: #C0C4CC;
+// 边框
+$color-border-1: #DCDFE6;
+$color-border-2: #E4E7ED;
+$color-border-3: #EBEEF5;
+$color-border-4: #F2F6FC;
+// 背景
+$color-bg: #f8f8f9;
+$margin: 20px;
+$color-bg:#fff;
+$color:#333;

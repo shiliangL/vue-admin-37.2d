@@ -1,8 +1,6 @@
 <template>
   <div class="login-container">
-    <div class="layer bg" id="login"></div>
-
-    <div class="layer flex-center">
+    <div class="container">
       <!-- logo部分 -->
       <!-- 表单部分 -->
       <div class="form-group">
@@ -43,9 +41,8 @@
 </template>
 
 <script>
-// import config from './config'
 import { LangSelect } from '@/components/base.js'
-
+import config from './config'
 export default {
   components: {
     LangSelect
@@ -65,9 +62,16 @@ export default {
   },
   mounted() {
     // 初始化例子插件
-
+    require('particles.js')
+    this.$nextTick(() => {
+      // this.init()
+    })
   },
   methods: {
+    init() {
+      if (!window.particlesJS) return
+      window.particlesJS('canvas', config)
+    },
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -89,8 +93,7 @@ export default {
               this.loading = false
             })
         } else {
-          console.log('error submit!!')
-          return false
+          return
         }
       })
     },
@@ -126,26 +129,32 @@ export default {
 .login-container {
   background-color: #edf4fa;
   height: 100%;
-  position: relative; // 层
-  .layer {
-    position: absolute;
+  width: 100%;
+  
+  .container{
+    z-index: 10;
     height: 100%;
     width: 100%;
-    &.flex-center {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-  } // 背景
-  .bg {
-    canvas {
-      display: block;
-      margin: 0px;
-      padding: 0px;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  } 
+
+  .canvas {
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background-color: #edf4fa;
   }
+    
   .form-group {
+    background: transparent;
     width: 300px; // 重新设置卡片阴影
     .title-container{
       text-align: center;

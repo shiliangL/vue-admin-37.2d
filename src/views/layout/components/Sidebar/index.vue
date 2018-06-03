@@ -1,15 +1,15 @@
 <template>
   <scroll-bar class="scroll-bar">
     <div class="logo-layout">
-      <a href="#/">
+      <a href="#/" class="logo">
         <h1>WebPro</h1>
       </a>
     </div>
-    <el-menu mode="vertical" 
+    <el-menu
       :collapse="isCollapse" 
       :default-active="$route.path" 
-      background-color="#002140" 
-      text-color="#bfcbd9" 
+      background-color="#f8f8f9" 
+      text-color="#909399" 
       active-text-color="#409EFF" 
       :unique-opened="true">
       <sidebar-item :routes="permission_routers"></sidebar-item>
@@ -33,19 +33,22 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
+@import "src/styles/variables.scss";
+
 .scroll-bar {
   -webkit-box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
   box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
 }
 .logo-layout {
+  color: #909399;
   height: 64px;
   position: relative;
   line-height: 64px;
   padding-left: 24px;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
-  background: #002140;
+  background:#f8f8f9;
   overflow: hidden;
   vertical-align:middle a {
     color: #1890ff;
@@ -69,7 +72,7 @@ export default {
     float: left;
     width: 80px;
     line-height: 64px;
-    color: #fff;
+    color:$logoTextColor;
     font-size: 20px;
     margin: 0 0 0 12px;
     font-family: Myriad Pro, Helvetica Neue, Arial, Helvetica, sans-serif;
