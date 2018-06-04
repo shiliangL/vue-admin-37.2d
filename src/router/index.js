@@ -40,6 +40,19 @@ export const asyncRouterMap = [
       { path: 'userInfo', component: _import('users/userInfo/index'), name: 'userInfo', meta: { title: 'userInfo' }}
     ]
   },
+  {
+    path: '/goods',
+    component: Layout,
+    name: 'goods',
+    meta: {
+      title: 'goods',
+      icon: 'map'
+    },
+    children: [
+      { path: 'commodity', component: _import('goods/commodity/index'), name: 'commodity', meta: { title: 'commodity' }},
+      { path: 'goodsClass', component: _import('goods/goodsClass/index'), name: 'goodsClass', meta: { title: 'goodsClass' }}
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 

@@ -2,7 +2,7 @@
   <scroll-bar class="scroll-bar">
     <div class="logo-layout">
       <a href="#/" class="logo">
-        <h1>WebPro</h1>
+        <span>厨满满</span>
       </a>
     </div>
     <el-menu
@@ -45,10 +45,9 @@ export default {
   height: 64px;
   position: relative;
   line-height: 64px;
-  padding-left: 24px;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
-  background:#f8f8f9;
+  background: #f8f8f9;
   overflow: hidden;
   vertical-align:middle a {
     color: #1890ff;
@@ -68,15 +67,17 @@ export default {
     display: inline-block;
     vertical-align: middle;
   }
-  h1 {
-    float: left;
-    width: 80px;
-    line-height: 64px;
-    color:$logoTextColor;
-    font-size: 20px;
-    margin: 0 0 0 12px;
-    font-family: Myriad Pro, Helvetica Neue, Arial, Helvetica, sans-serif;
-    font-weight: 600;
+  .logo {
+    display: inline-block;
+    text-align: center;
+    span {
+      width: 80px;
+      line-height: 64px;
+      color: $logoTextColor;
+      font-size: 20px;
+      font-family: Myriad Pro, Helvetica Neue, Arial, Helvetica, sans-serif;
+      font-weight: 600;
+    }
   }
 }
 </style>

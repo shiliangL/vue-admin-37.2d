@@ -50,7 +50,13 @@ export default {
 
     users: '用户管理',
     userList: '用户列表',
-    userInfo: '用户信息'
+    userInfo: '用户信息',
+
+    goods: '商品管理',
+    commodity: '商品档案',
+    goodsClass: '商品分类',
+    goodsProfile: '辅助资料',
+    goodsImgs: '商品图片'
   },
   navbar: {
     logOut: '退出登录',

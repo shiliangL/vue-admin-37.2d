@@ -45,11 +45,11 @@ export default {
       default: false
     }
   },
-  methods: {
-    generateTitle
-  },
   components: {
     SvgIcon
+  },
+  methods: {
+    generateTitle
   }
 }
 </script>
