@@ -4,7 +4,7 @@
     <template v-if="data && data.length > 0">
       <div class="left" v-for="(item, index) in data[0]" :key="index">
         <template v-if="item.type === 'date'">
-          <el-date-picker :style="{width:'134px'}" size="small" v-model="item.value" value-format="yyyy-MM-dd" type="date" :placeholder="item.placeholder"></el-date-picker>
+          <el-date-picker :style="{width:'140px'}" size="small" v-model="item.value" value-format="yyyy-MM-dd" type="date" :placeholder="item.placeholder"></el-date-picker>
         </template>
         <template v-else-if="item.type === 'option'">
           <el-select :class="item.class?item.class:'w90'" size="small" v-model="item.value" clearable filterable :placeholder="item.placeholder">

@@ -13,7 +13,7 @@ export default {
         total: 0 // 总条数
       },
       table: {
-        data: [], // 列表表格数据
+        data: [{}], // 列表表格数据
         size: 'mini', // 列表表格大小
         maxHeight: 0 // 列表表格最大高度
       },
