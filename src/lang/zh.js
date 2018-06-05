@@ -66,7 +66,7 @@ export default {
     theme: '换肤'
   },
   login: {
-    title: '系统登录',
+    title: '厨满满商城后台管理系统',
     logIn: '登录',
     username: '账号',
     password: '密码',

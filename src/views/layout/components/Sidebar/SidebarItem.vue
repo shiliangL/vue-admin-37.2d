@@ -33,7 +33,7 @@
 
 <script>
 import { generateTitle } from '@/utils/i18n'
-import { SvgIcon } from '@/components/base.js'
+
 export default {
   name: 'SidebarItem',
   props: {
@@ -44,9 +44,6 @@ export default {
       type: Boolean,
       default: false
     }
-  },
-  components: {
-    SvgIcon
   },
   methods: {
     generateTitle

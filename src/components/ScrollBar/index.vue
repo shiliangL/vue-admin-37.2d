@@ -47,7 +47,8 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: $sideBarBg;
+  background: #00142a;
+  // background-color: $sideBarBg;
   .scroll-wrapper {
     position: absolute;
      width: 100%!important;

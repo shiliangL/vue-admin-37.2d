@@ -1,6 +1,6 @@
 <template>
   <section class="app-main" style="min-height: 100%">
-    <transition name="fade-transverse" mode="out-in">
+    <transition name="fade" mode="out-in">
       <keep-alive :include="cachedViews">
         <router-view></router-view>
       </keep-alive>
@@ -19,6 +19,10 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
- 
+<style rel="stylesheet/scss" lang="scss" scoped>
+// .app-main {
+//   background-color: white;
+//   margin-top: 5px;
+//   margin-left: 15px;
+// }
 </style>

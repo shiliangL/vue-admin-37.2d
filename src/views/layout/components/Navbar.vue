@@ -1,15 +1,20 @@
- <template>
+<template>
   <el-menu class="navbar" mode="horizontal">
-    <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
-
-    <breadcrumb class="breadcrumb-container"></breadcrumb>
-
+    <div class="navbar_left left">
+      <!-- 展开收起 -->
+      <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
+      <!-- 顶部菜单导航 -->
+      <div class="topMenu">
+        <span class="item" v-for="(item,index) in topMenuList" :key="index" @click="clickTabTitle(index)" :class="curIndex==index?'active' : ''" > {{item}} </span>
+      </div>
+    </div>
+    <!-- <breadcrumb class="breadcrumb-container"></breadcrumb> -->
+    <!-- 顶部右边菜单 -->
     <div class="right-menu">
-
-      <el-dropdown trigger="click">
+      <el-dropdown class="avatar-container right-menu-item" trigger="hover">
         <div class="avatar-wrapper">
-          用户
-          <i class="el-icon-caret-bottom"></i>
+          <!-- <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'"> -->
+          shiliangl
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/">
@@ -23,15 +28,28 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+    
   </el-menu>
 </template>
 
-
 <script>
 import { mapGetters } from 'vuex'
-import { Breadcrumb, Hamburger } from '@/components/base.js'
+import Breadcrumb from '@/components/Breadcrumb'
+import Hamburger from '@/components/Hamburger'
 
 export default {
+  data() {
+    return {
+      curIndex: 1,
+      topMenuList: [
+        '后台首页',
+        '运营中心',
+        '供应链',
+        '财务中心',
+        '系统管理'
+      ]
+    }
+  },
   components: {
     Breadcrumb,
     Hamburger
@@ -44,6 +62,9 @@ export default {
     ])
   },
   methods: {
+    clickTabTitle(index) {
+      this.curIndex = index
+    },
     toggleSideBar() {
       this.$store.dispatch('toggleSideBar')
     },
@@ -56,15 +77,13 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss" scoped>
 @import "src/styles/navbar.scss";
-@import "src/styles/variables.scss";
-
 .navbar {
   height: 50px;
   line-height: 50px;
   border-radius: 0px !important;
-  background: $navbarBgColor;
+  position: relative;
   .hamburger-container {
     line-height: 58px;
     height: 50px;
@@ -74,14 +93,26 @@ export default {
   .breadcrumb-container{
     float: left;
   }
-  .errLog-container {
-    display: inline-block;
-    vertical-align: top;
+  .topMenu{
+    .item{
+      padding: 0 20px;
+      cursor: pointer;
+      display: inline-block;
+      &:hover{
+        // background: #3333;
+      }
+    }
+    .active {
+			color: #1cbc9c;
+      // border-bottom: 2px solid #1cbc9c;
+    }
+  }
+  .navbar_left{
+    min-width: 1000px;
   }
   .right-menu {
-    float: right;
-    height: 100%;
-    margin-right: 10px;
+    position: absolute;
+    right: 0;
     &:focus{
      outline: none;
     }

@@ -17,7 +17,7 @@
               <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="password" />
             </el-form-item>
 
-            <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">{{$t('login.logIn')}}</el-button>
+            <el-button type="primary" style="width:100%;margin-bottom:30px;" class="button-login" :loading="loading" @click.native.prevent="handleLogin">{{$t('login.logIn')}}</el-button>
 
             <!-- <div class="tips">
               <span>{{$t('login.username')}} : admin</span>
@@ -34,6 +34,9 @@
           {{$t('login.thirdpartyTips')}}
         </el-dialog> -->
         </el-card>
+        <div class="copyright">
+          <p> Copyright © www.chumanduo.com, All Rights Reserved. </p>
+        </div>
       </div>
     
     </div>
@@ -42,7 +45,6 @@
 
 <script>
 import { LangSelect } from '@/components/base.js'
-import config from './config'
 export default {
   components: {
     LangSelect
@@ -62,16 +64,8 @@ export default {
   },
   mounted() {
     // 初始化例子插件
-    require('particles.js')
-    this.$nextTick(() => {
-      // this.init()
-    })
   },
   methods: {
-    init() {
-      if (!window.particlesJS) return
-      window.particlesJS('canvas', config)
-    },
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -128,6 +122,7 @@ export default {
 <style lang="scss" scoped>
 .login-container {
   background-color: #edf4fa;
+  background-color: #1cbc9c;
   height: 100%;
   width: 100%;
   
@@ -140,19 +135,6 @@ export default {
     align-items: center;
   } 
 
-  .canvas {
-    height: 100%;
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    background-color: #edf4fa;
-  }
-    
   .form-group {
     background: transparent;
     width: 300px; // 重新设置卡片阴影
@@ -162,17 +144,31 @@ export default {
         font-size: 18px;
         padding: 10px 0;
         display: block;
+        color: #1cbc9c;
       }
     }
     .el-card {
-      box-shadow: 0 0 8px 0 rgba(232, 237, 250, 0.6),
-        0 2px 4px 0 rgba(232, 237, 250, 0.5);
+      width: 350px;
+      background-color: rgba(255, 255, 255, 1);
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.349019607843137);
+      font-family: '微软雅黑 Bold', '微软雅黑 Regular', '微软雅黑';
+      font-weight: 700;
+      font-style: normal;
+      font-size: 16px;
+      color: #999999;
+      text-align: left;
+      line-height: 20px;
+
       .el-card__body {
         padding-top: 70px;
       }
     } // 登陆按钮
     .button-login {
       width: 100%;
+      background-color: #1cbc9c;
+      border: none;
     } // 输入框左边的图表区域缩窄
     .el-input-group__prepend {
       padding: 0px 14px;
@@ -183,6 +179,12 @@ export default {
       margin: 0px -20px;
       border-top-right-radius: 2px;
       border-bottom-right-radius: 2px;
+    }
+
+    .copyright{
+      width: 100%;
+      color: #fff;
+      font-size: 12px;
     }
   }
 }

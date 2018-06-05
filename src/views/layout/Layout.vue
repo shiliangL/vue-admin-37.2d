@@ -3,7 +3,7 @@
 		<sidebar class="sidebar-container"></sidebar>
 		<div class="main-container">
 			<navbar></navbar>
-			<tags-view></tags-view>
+			<!-- <tags-view></tags-view> -->
 			<app-main></app-main>
 		</div>
 	</div>
@@ -28,14 +28,13 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss" scoped>
 	@import "src/styles/mixin.scss";
 	.app-wrapper {
 	  @include clearfix;
 	  position: relative;
 	  height: 100%;
 		width: 100%;
-		// background: #f0f2f5;
-		background: #fff;
+		background: #f0f2f5;
 	}
 </style>

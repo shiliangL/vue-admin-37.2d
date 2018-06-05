@@ -1,12 +1,12 @@
 @import './variables.scss';
-@import './sidebar.scss';
 @import './mixin.scss';
 @import './transition.scss';
-// @import './element-ui.scss';
-// @import './btn.scss';
-// @import './list-page.scss';
-// @import './theme-black.scss';
-// @import './form.scss';
+@import './element-ui.scss';
+@import './sidebar.scss';
+@import './btn.scss';
+@import './list-page.scss';
+@import './theme-black.scss';
+@import './form.scss';
 body {
     height: 100%;
     -moz-osx-font-smoothing: grayscale;
@@ -29,7 +29,8 @@ html {
 }
 
 .app-main {
-    padding: 20px;
+    margin: 10px;
+    background: #fff;
 }
 
 *,

@@ -5,11 +5,11 @@
         <span>厨满满</span>
       </a>
     </div>
-    <el-menu
-      :collapse="isCollapse" 
+    <el-menu mode="vertical" 
       :default-active="$route.path" 
-      background-color="#f8f8f9" 
-      text-color="#909399" 
+      :collapse="isCollapse" 
+      background-color="#001529" 
+      text-color="#bfcbd9" 
       active-text-color="#409EFF" 
       :unique-opened="true">
       <sidebar-item :routes="permission_routers"></sidebar-item>
@@ -25,7 +25,10 @@ import ScrollBar from '@/components/ScrollBar'
 export default {
   components: { SidebarItem, ScrollBar },
   computed: {
-    ...mapGetters(['permission_routers', 'sidebar']),
+    ...mapGetters([
+      'permission_routers',
+      'sidebar'
+    ]),
     isCollapse() {
       return !this.sidebar.opened
     }
@@ -33,49 +36,38 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import "src/styles/variables.scss";
-
+<style rel="stylesheet/scss" lang="scss" scoped>
 .scroll-bar {
-  -webkit-box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
-  box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+  -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);
+  box-shadow: 2px 0 6px rgba(0,21,41,.35);
 }
 .logo-layout {
-  color: #909399;
-  height: 64px;
-  position: relative;
-  line-height: 64px;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
-  background: #f8f8f9;
-  overflow: hidden;
-  vertical-align:middle a {
+    height: 50px;
+    position: relative;
+    line-height: 50px;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    background: #002140;
+    overflow: hidden;
+    vertical-align:middle
+  a {
     color: #1890ff;
     background-color: transparent;
     text-decoration: none;
     outline: none;
     cursor: pointer;
-    -webkit-transition: color 0.3s;
-    transition: color 0.3s;
+    -webkit-transition: color .3s;
+    transition: color .3s;
     -webkit-text-decoration-skip: objects;
   }
-  img {
-    width: 30px;
-    height: 30px;
-    margin-top: 17px;
-    margin-left: -3px;
-    display: inline-block;
-    vertical-align: middle;
-  }
-  .logo {
+  .logo{
     display: inline-block;
     text-align: center;
     span {
       width: 80px;
-      line-height: 64px;
-      color: $logoTextColor;
+      color: #fff;
       font-size: 20px;
-      font-family: Myriad Pro, Helvetica Neue, Arial, Helvetica, sans-serif;
+      font-family: Myriad Pro,Helvetica Neue,Arial,Helvetica,sans-serif;
       font-weight: 600;
     }
   }

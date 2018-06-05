@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 /* Layout */
-import Layout from '@/views/layout'
+import Layout from '@/views/layout/Layout'
 const _import = require('./_import_' + process.env.NODE_ENV)
 
 Vue.use(Router)
@@ -33,7 +33,7 @@ export const asyncRouterMap = [
     name: 'users',
     meta: {
       title: 'users',
-      icon: 'map'
+      icon: 'component'
     },
     children: [
       { path: 'userList', component: _import('users/userList/index'), name: 'userList', meta: { title: 'userList' }},
@@ -46,10 +46,10 @@ export const asyncRouterMap = [
     name: 'goods',
     meta: {
       title: 'goods',
-      icon: 'map'
+      icon: 'component'
     },
     children: [
-      { path: 'commodity', component: _import('goods/commodity/index'), name: 'commodity', meta: { title: 'commodity' }},
+      { path: 'orderList', component: _import('goods/orderList/index'), name: 'orderList', meta: { title: 'orderList' }},
       { path: 'goodsClass', component: _import('goods/goodsClass/index'), name: 'goodsClass', meta: { title: 'goodsClass' }}
     ]
   },

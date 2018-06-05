@@ -10,6 +10,7 @@ import App from './App'
 import store from './store'
 import i18n from './lang' // Internationalization
 import './permission' // permission control
+import './icons' // icon
 
 import router from './router'
 
