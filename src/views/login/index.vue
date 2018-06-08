@@ -62,6 +62,9 @@ export default {
       showDialog: false
     }
   },
+  created() {
+    // window.addEventListener('hashchange', this.afterQRScan)
+  },
   mounted() {
     // 初始化例子插件
   },
@@ -110,9 +113,6 @@ export default {
       // }
     }
   },
-  created() {
-    // window.addEventListener('hashchange', this.afterQRScan)
-  },
   destroyed() {
     // window.removeEventListener('hashchange', this.afterQRScan)
   }
@@ -137,7 +137,7 @@ export default {
 
   .form-group {
     background: transparent;
-    width: 300px; // 重新设置卡片阴影
+    // width: 300px; // 重新设置卡片阴影
     .title-container{
       text-align: center;
       .title{
@@ -158,9 +158,7 @@ export default {
       font-style: normal;
       font-size: 16px;
       color: #999999;
-      text-align: left;
       line-height: 20px;
-
       .el-card__body {
         padding-top: 70px;
       }
@@ -182,6 +180,7 @@ export default {
     }
 
     .copyright{
+      text-align: center;
       width: 100%;
       color: #fff;
       font-size: 12px;

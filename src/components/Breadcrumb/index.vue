@@ -40,7 +40,8 @@ export default {
   .app-breadcrumb.el-breadcrumb {
     display: inline-block;
     font-size: 14px;
-    line-height: 50px;
+    height: 40px;
+    line-height: 40px;
     margin-left: 10px;
     color: rgba(0,0,0,.65);
     .no-redirect {

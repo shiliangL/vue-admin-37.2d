@@ -1,4 +1,5 @@
 export { default as Navbar } from './Navbar'
 export { default as Sidebar } from './Sidebar/index.vue'
 export { default as TagsView } from './TagsView'
+export { default as topNavBar } from './topNavBar'
 export { default as AppMain } from './AppMain'

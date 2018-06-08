@@ -3,6 +3,10 @@
   .el-submenu__title {
     height: 46px;
     line-height: 46px;
+    background: none!important;
+    &:hover {
+      background-color: #e8f8f5!important;
+    }
   }
 }
 
@@ -25,25 +29,25 @@
   }
 }
 
-.el-submenu__title {
-  background-color: #001529!important;
-  &:hover {
-    color: rgb(64, 158, 255)!important;
-  }
-}
+// .el-submenu__title {
+//   background-color: #f9f9f9!important;
+//   &:hover {
+//     color: rgb(64, 158, 255)!important;
+//   }
+// }
 
-.el-menu-item.is-active {
-  color: rgb(64, 158, 255)!important;
-}
+// .el-menu-item.is-active {
+//   color: rgb(64, 158, 255)!important;
+// }
 
-.el-submenu.is-active.is-opened > .el-submenu__title {
-  color: rgb(64, 158, 255)!important;
-}
+// .el-submenu.is-active.is-opened > .el-submenu__title {
+//   // color: rgb(64, 158, 255)!important;
+// }
 
 .el-submenu.is-active > .el-submenu__title > svg, 
 .el-submenu.is-active > .el-submenu__title > span,
 .el-submenu.is-active > .el-submenu__title .el-submenu__icon-arrow{
-  color: rgb(64, 158, 255)!important;
+  color: #1cbc9c !important;
 }
 
 .el-menu-item > span {

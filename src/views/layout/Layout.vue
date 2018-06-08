@@ -2,15 +2,20 @@
 	<div class="app-wrapper" :class="{hideSidebar:!sidebar.opened}">
 		<sidebar class="sidebar-container"></sidebar>
 		<div class="main-container">
-			<navbar></navbar>
-			<!-- <tags-view></tags-view> -->
+			<StickyBar>
+				<topNavBar></topNavBar>
+				<tags-view></tags-view>
+			</StickyBar>
 			<app-main></app-main>
 		</div>
 	</div>
 </template>
 
 <script>
-import { Navbar, Sidebar, AppMain, TagsView } from './components'
+import { Navbar, Sidebar, AppMain, TagsView, topNavBar } from './components'
+import { StickyBar } from '@/components/base.js'
+import menuList from './menuList.json'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'layout',
@@ -18,11 +23,94 @@ export default {
     Navbar,
     Sidebar,
     AppMain,
-    TagsView
+    TagsView,
+    StickyBar,
+    topNavBar
   },
   computed: {
     sidebar() {
       return this.$store.state.app.sidebar
+    }
+  },
+  created() {
+    console.log('xx')
+  },
+  mounted() {
+    this.fetchMenu()
+  },
+  methods: {
+    ...mapActions([
+      'VX_setMenuList'
+    ]),
+    fetchMenu() {
+      const data = this.initMenuList(menuList.data)
+      if (Array.isArray(data) && data.length > 0) {
+        this.VX_setMenuList(data)
+      } else {
+        this.VX_setMenuList([])
+      }
+    },
+    // 初始化菜单列表
+    initMenuList(data) {
+      if (!Array.isArray(data)) return
+      const temp = {}
+      const result = []
+
+      // 遍历子节点
+      const iterNode = (node) => {
+        const { id } = node
+        for (const key in temp) {
+          if (temp[key].parentId === id) {
+            temp[key].flag = true
+            iterNode(temp[key])
+          }
+        }
+      }
+
+      // 遍历父节点
+      const iterParent = (parent) => {
+        if (temp[parent.parentId]) {
+          temp[parent.parentId].flag = true
+          iterParent(temp[parent.parentId])
+        }
+      }
+
+      // data.forEach(item => temp[item.id] = item)
+      for (const item of data) {
+        temp[item.id] = item
+      }
+
+      data.forEach(item => {
+        const { flag, parentId } = item
+        const parent = temp[parentId]
+
+        if (!parent && typeof flag === 'string') {
+          iterNode(item)
+        } else if (parent && typeof flag === 'string') {
+          parent.flag = true
+          iterParent(parent)
+          iterNode(item)
+        }
+      })
+
+      data.forEach(item => {
+        const { flag, parentId } = item
+        const parent = temp[parentId]
+
+        if (parent && parent.flag && flag) {
+          item.text = item.title
+          if (!parent['children']) {
+            parent['children'] = []
+          }
+          parent['children'].push(item)
+        } else if (!parent && flag) {
+          item.text = item.title
+          result.push(item)
+        }
+      })
+      // 设置所有菜单列表
+      // this.menuList = result
+      return result
     }
   }
 }
@@ -36,5 +124,10 @@ export default {
 	  height: 100%;
 		width: 100%;
 		background: #f0f2f5;
+		.main-container{
+		  // transform: translateZ(0);
+			// width: 100%;
+			// height: 100%;
+		}
 	}
 </style>

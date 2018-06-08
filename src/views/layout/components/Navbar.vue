@@ -1,19 +1,18 @@
-<template>
+<!-- <template>
   <el-menu class="navbar" mode="horizontal">
     <div class="navbar_left left">
-      <!-- 展开收起 -->
       <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
-      <!-- 顶部菜单导航 -->
+      顶部菜单导航
       <div class="topMenu">
         <span class="item" v-for="(item,index) in topMenuList" :key="index" @click="clickTabTitle(index)" :class="curIndex==index?'active' : ''" > {{item}} </span>
       </div>
     </div>
-    <!-- <breadcrumb class="breadcrumb-container"></breadcrumb> -->
-    <!-- 顶部右边菜单 -->
+    <breadcrumb class="breadcrumb-container"></breadcrumb>
+    顶部右边菜单
     <div class="right-menu">
       <el-dropdown class="avatar-container right-menu-item" trigger="hover">
         <div class="avatar-wrapper">
-          <!-- <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'"> -->
+          <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
           shiliangl
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -30,49 +29,48 @@
     </div>
     
   </el-menu>
+</template> -->
+
+<template>
+  <el-menu class="navbar" mode="horizontal">
+
+
+    <div class="right-menu">
+      
+      <el-dropdown class="avatar-container right-menu-item" trigger="click">
+        <div class="avatar-wrapper">
+          <!-- <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'"> -->
+          shiliangl
+          <i class="el-icon-caret-bottom"></i>
+        </div>
+        <el-dropdown-menu slot="dropdown">
+          <router-link to="/">
+            <el-dropdown-item>
+              {{$t('navbar.dashboard')}}
+            </el-dropdown-item>
+          </router-link>
+          
+          <el-dropdown-item divided>
+            <span @click="logout" style="display:block;">{{$t('navbar.logOut')}}</span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+  </el-menu>
 </template>
 
+
 <script>
-import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 
 export default {
   data() {
     return {
-      curIndex: 1,
-      topMenuList: [
-        '后台首页',
-        '运营中心',
-        '供应链',
-        '财务中心',
-        '系统管理'
-      ]
+      curIndex: 1
     }
   },
   components: {
-    Breadcrumb,
     Hamburger
-  },
-  computed: {
-    ...mapGetters([
-      'sidebar',
-      'name',
-      'avatar'
-    ])
-  },
-  methods: {
-    clickTabTitle(index) {
-      this.curIndex = index
-    },
-    toggleSideBar() {
-      this.$store.dispatch('toggleSideBar')
-    },
-    logout() {
-      this.$store.dispatch('LogOut').then(() => {
-        location.reload()// In order to re-instantiate the vue-router object to avoid bugs
-      })
-    }
   }
 }
 </script>
@@ -84,6 +82,7 @@ export default {
   line-height: 50px;
   border-radius: 0px !important;
   position: relative;
+  // background-color: rgb(70, 76, 90);
   .hamburger-container {
     line-height: 58px;
     height: 50px;

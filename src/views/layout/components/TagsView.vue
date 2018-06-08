@@ -153,10 +153,10 @@ export default {
       }
       &.active {
         background-color: #fff;
-        color: #40a9ff;
-        border-color: #40a9ff;
+        color: #1cbc9c;
+        border-color: #1cbc9c;
         .dot{
-          background-color: #40a9ff;
+          background-color: #1cbc9c;
         }
         &::before {
           content: '';

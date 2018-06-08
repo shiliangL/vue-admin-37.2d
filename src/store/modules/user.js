@@ -11,6 +11,7 @@ const user = {
     avatar: '',
     introduction: '',
     roles: [],
+    menuList: [],
     setting: {
       articlePlatform: []
     }
@@ -19,6 +20,9 @@ const user = {
   mutations: {
     SET_CODE: (state, code) => {
       state.code = code
+    },
+    SET_MENULIST: (state, menuList) => {
+      state.menuList = menuList
     },
     SET_TOKEN: (state, token) => {
       state.token = token
@@ -131,6 +135,11 @@ const user = {
           resolve()
         })
       })
+    },
+
+    // 设置路由
+    VX_setMenuList({ commit }, menuList) {
+      commit('SET_MENULIST', menuList)
     }
   }
 }

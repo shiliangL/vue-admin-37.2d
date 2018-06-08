@@ -1,5 +1,5 @@
 <template>
-  <scroll-bar class="scroll-bar">
+  <scroll-bar id="sider-scroll-bar">
     <div class="logo-layout">
       <a href="#/" class="logo">
         <span>厨满满</span>
@@ -8,9 +8,9 @@
     <el-menu mode="vertical" 
       :default-active="$route.path" 
       :collapse="isCollapse" 
-      background-color="#001529" 
-      text-color="#bfcbd9" 
-      active-text-color="#409EFF" 
+      background-color="#f9f9f9" 
+      text-color="#606266" 
+      active-text-color="#1cbc9c" 
       :unique-opened="true">
       <sidebar-item :routes="permission_routers"></sidebar-item>
     </el-menu>
@@ -27,31 +27,37 @@ export default {
   computed: {
     ...mapGetters([
       'permission_routers',
+      'menuList',
       'sidebar'
     ]),
     isCollapse() {
       return !this.sidebar.opened
     }
+  },
+  mounted() {
+    setTimeout(() => {
+      console.log(this.permission_routers)
+    }, 200)
   }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.scroll-bar {
-  -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);
-  box-shadow: 2px 0 6px rgba(0,21,41,.35);
+#sider-scroll-bar {
+  // -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);
+  // box-shadow: 2px 0 6px rgba(0,21,41,.35);
+  background-color: #f9f9f9;
 }
 .logo-layout {
+    color: #cccccc;
     height: 50px;
     position: relative;
     line-height: 50px;
     -webkit-transition: all .3s;
     transition: all .3s;
-    background: #002140;
     overflow: hidden;
     vertical-align:middle
   a {
-    color: #1890ff;
     background-color: transparent;
     text-decoration: none;
     outline: none;
@@ -65,7 +71,7 @@ export default {
     text-align: center;
     span {
       width: 80px;
-      color: #fff;
+      color: #787a7d;
       font-size: 20px;
       font-family: Myriad Pro,Helvetica Neue,Arial,Helvetica,sans-serif;
       font-weight: 600;

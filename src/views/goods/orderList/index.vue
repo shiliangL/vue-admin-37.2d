@@ -1,11 +1,9 @@
 <!-- 订单列表 -->
 <template>
     <div class="orderList">
-			 <div class="tab-title-layout">
-				<ul class="clearfix">
-					<li :key="index" v-for="(item, index) in tabTitles" :class="curIndex==index?'active' : ''"  @click="clickTabTitle(index)">{{item}}</li>
-				</ul>
-  		</div>
+
+      <Tabs :data="tabTitles"></Tabs>
+ 
       <search-bar :data="searchBarData" @search="searchAction" @add="showAdd()" @command="clickMoreCommand"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
@@ -17,10 +15,14 @@
           </el-table-column>
           <el-table-column prop="orderNo" label="订单编号" align="center"></el-table-column>
           <el-table-column prop="makeOrderTime" label="下单日期" align="center"></el-table-column>
-          <el-table-column prop="status" label="客户名称" align="center"></el-table-column>
+          <el-table-column prop="customerName" label="客户名称" align="center"></el-table-column>
           <el-table-column prop="shopName" label="订单来源" align="center"></el-table-column>
           <el-table-column prop="purchaseCount" label="支付类型" align="center"></el-table-column>
-          <el-table-column prop="purchaseMoney" label="订单状态" align="center"></el-table-column>
+          <el-table-column prop="status" label="订单状态" align="center">
+            <template slot-scope="scope" align="center">
+              
+            </template>
+          </el-table-column>
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">订单查看</el-button>
@@ -28,7 +30,7 @@
             </template>
           </el-table-column>
         </el-table>
-
+        <!-- status;//状态  0代表待发货  1 代表待收货状态  2 代表退换货状态  3 代表已完成  4代表已取消 5代表已关闭  6 代表待付款 -->
         <el-pagination
           slot="footer"
           @size-change="handleSizeChange"
@@ -50,11 +52,13 @@
 <script>
 import Add from './add'
 import model from '@/public/listModel.js'
+import { Tabs } from '@/components/base.js'
 export default {
   name: 'orderList',
   mixins: [model],
   components: {
-    Add
+    Add,
+    Tabs
   },
   data() {
     return {
@@ -78,7 +82,7 @@ export default {
             { label: '启用', value: 1 },
             { label: '禁用', value: 0 }]
           },
-          { type: 'date', value: null, key: 'buyDate', class: 'w180', placeholder: '下单日期' },
+          { type: 'date', value: null, key: 'buyDate', width: '2000px', placeholder: '下单日期' },
           { type: 'input', value: null, key: 'nameOrCode', class: 'w180', placeholder: '输入订单编号／客户名称检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
@@ -91,7 +95,10 @@ export default {
     }
   },
   created() {
-    console.log(this)
+    this.table.data = [
+      { orderNo: ' XSDD180530000010', customerName: '张三' },
+      { orderNo: ' XSDD180530000012', customerName: '王五' }
+    ]
   },
   mounted() {
     this.fecthList()
@@ -138,34 +145,6 @@ export default {
   height: 100%;
   .content {
     padding: 20px;
-  }
-  .tab-title-layout {
-    width: 100%;
-    height: 40px;
-    border-bottom: 1px solid #eaeaea;
-    ul {
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 20px;
-    }
-    li {
-      cursor: pointer;
-      list-style: none;
-      float: left;
-      height: 40px;
-      line-height: 40px;
-      padding-left: 20px;
-      margin-right: 20px;
-      padding-right: 20px;
-      color: #333333;
-      font-size: 14px;
-    }
-    .active {
-			color: #1cbc9c;
-      border-bottom: 2px solid #1cbc9c;
-    }
   }
 }
 </style>

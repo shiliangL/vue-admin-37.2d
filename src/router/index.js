@@ -25,6 +25,12 @@ export const constantRouterMap = [
 ]
 
 // 异步权限路由
+// '后台首页',
+// '运营中心',
+// '供应链',
+// '财务中心',
+// '系统管理'
+
 export const asyncRouterMap = [
   {
     path: '/users',
