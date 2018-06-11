@@ -6,7 +6,8 @@
 				<topNavBar></topNavBar>
 				<tags-view></tags-view>
 			</StickyBar>
-			<app-main></app-main>
+			<app-main>
+      </app-main>
 		</div>
 	</div>
 </template>
@@ -14,7 +15,8 @@
 <script>
 import { Navbar, Sidebar, AppMain, TagsView, topNavBar } from './components'
 import { StickyBar } from '@/components/base.js'
-import menuList from './menuList.json'
+// import menuList from './menuList.json'
+import { fetchMenuList } from '@/api/layout.js'
 import { mapActions } from 'vuex'
 
 export default {
@@ -33,22 +35,27 @@ export default {
     }
   },
   created() {
-    console.log('xx')
+
   },
   mounted() {
     this.fetchMenu()
   },
   methods: {
     ...mapActions([
-      'VX_setMenuList'
+      'VX_SET_MENULIST'
     ]),
     fetchMenu() {
-      const data = this.initMenuList(menuList.data)
-      if (Array.isArray(data) && data.length > 0) {
-        this.VX_setMenuList(data)
-      } else {
-        this.VX_setMenuList([])
-      }
+      fetchMenuList().then(res => {
+        const result = res.data
+        const data = this.initMenuList(result)
+        if (Array.isArray(data) && data.length > 0) {
+          this.VX_SET_MENULIST(data)
+        } else {
+          this.VX_SET_MENULIST([])
+        }
+      }).catch(e => {
+        console.log(e)
+      })
     },
     // 初始化菜单列表
     initMenuList(data) {
@@ -96,7 +103,6 @@ export default {
       data.forEach(item => {
         const { flag, parentId } = item
         const parent = temp[parentId]
-
         if (parent && parent.flag && flag) {
           item.text = item.title
           if (!parent['children']) {

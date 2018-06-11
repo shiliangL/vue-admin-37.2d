@@ -11,19 +11,24 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/rtusapi/': { //这里是我配置的名字
-        // target: 'http://10.0.5.189:8050',
-        target: 'http://www.rtuol.com',
-        changeOrigin: true, //开启代理
-        pathRewrite: {
-          '^/rtusapi': '/rtusapi'
-        }
+      // '/rtusapi/': { //这里是我配置的名字
+      //   // target: 'http://10.0.5.189:8050',
+      //   target: 'http://www.rtuol.com',
+      //   changeOrigin: true, //开启代理
+      //   pathRewrite: {
+      //     '^/rtusapi': '/rtusapi'
+      //   }
+      // }
+      '/': {
+        target: 'http://cmm.ngrok.xiaomiqiu.cn',
+        changeOrigin: true,
       }
     },
 
     // Various Dev Server settings
     // host: '10.80.84.72', // can be overwritten by process.env.HOST
     host: 'localhost', // can be overwritten by process.env.HOST
+    // host: '192.168.2.25', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,

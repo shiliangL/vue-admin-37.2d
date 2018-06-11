@@ -1,7 +1,7 @@
 <template>
  <div class="tab-title-layout">
 		<ul class="clearfix">
-			<li :key="index" v-for="(item, index) in data" :class="curIndex==index?'active' : ''"  @click="clickTabTitle(item,index)">{{item}}</li>
+			<li :key="index" v-for="(item, index) in data" :class="curIndex==index?'active' : ''"  @click="clickTabTitle(item,index)">{{item.title}}</li>
 		</ul>
 	</div>
 </template>

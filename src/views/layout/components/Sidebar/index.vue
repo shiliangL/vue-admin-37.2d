@@ -5,6 +5,7 @@
         <span>厨满满</span>
       </a>
     </div>
+
     <el-menu mode="vertical" 
       :default-active="$route.path" 
       :collapse="isCollapse" 
@@ -12,7 +13,8 @@
       text-color="#606266" 
       active-text-color="#1cbc9c" 
       :unique-opened="true">
-      <sidebar-item :routes="permission_routers"></sidebar-item>
+      <!-- <sidebar-item :routes="permission_routers"></sidebar-item> -->
+      <sidebar-item :routes="siderBarMenu"></sidebar-item>
     </el-menu>
   </scroll-bar>
 </template>
@@ -28,10 +30,18 @@ export default {
     ...mapGetters([
       'permission_routers',
       'menuList',
+      'curMenuIndex',
       'sidebar'
     ]),
     isCollapse() {
       return !this.sidebar.opened
+    },
+    siderBarMenu() {
+      if (Array.isArray(this.menuList) && this.menuList.length > 0) {
+        return this.menuList[this.curMenuIndex].children
+      } else {
+        return []
+      }
     }
   },
   mounted() {

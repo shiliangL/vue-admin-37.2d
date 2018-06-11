@@ -14,18 +14,15 @@ export function loginByUsername(username, password) {
   })
 }
 
-export function logout() {
+// 获取订单列表
+export function orderList(data) {
   return request({
-    url: 'operator/logout',
-    method: 'get'
-  })
-}
-
-export function getUserInfo(token) {
-  // 登录成功后 根据 token 获取客户信息
-  return request({
-    url: 'rtusapi/users/getuserinfo',
-    method: 'get'
-    // params: { token }
+    url: 'scmSalesOrder/list',
+    method: 'get',
+    params: {
+      index: data.index || 1,
+      size: data.size || 10,
+      ...data
+    }
   })
 }

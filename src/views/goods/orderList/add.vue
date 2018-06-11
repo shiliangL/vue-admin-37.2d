@@ -21,16 +21,6 @@
             <toFollow></toFollow>
           </template>
 
-          <el-button type="text" size="mini" @click.stop="dialogVisible=true">测试</el-button>
-
-          <el-dialog append-to-body
-              title="提示" :visible.sync="dialogVisible" width="30%">
-              <span>这是一段信息</span>
-              <span slot="footer" class="dialog-footer">
-
-              </span>
-            </el-dialog>
-
         </div>
       </div>
       <!-- <el-form :model="form" :rules="rules" ref="form" label-width="100px" id="form" :inline="true">
@@ -61,7 +51,6 @@ export default {
   },
   data() {
     return {
-      dialogVisible: false,
       form: {
         subPropList: []
       },
@@ -106,6 +95,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.el-dialog__wrapper{
+  min-height: 100%;
+  min-height: 700px;
+}
 .content-box {
   width: 100%;
   .header-bar {

@@ -3,15 +3,36 @@
 			<el-row>
 				<el-col :span="24">
           <div class="topBar">
+
 					  <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
             <div class="nav">
               <!-- <span> {{menuList}} </span> -->
               <span class="nav-item" v-for="(item,index) in menuList" :key="index" v-cloak :class="curIndex==index?'active' : ''"  @click="clickTabTitle(item,index)">{{item.title}}</span>
             </div>
+
+            <div class="userInfo">
+              <el-dropdown class="avatar-container right-menu-item" trigger="hover">
+              <div class="avatar-wrapper">
+                <!-- <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'"> -->
+                shiliangl
+              </div>
+              <el-dropdown-menu slot="dropdown">
+                <router-link to="/">
+                  <el-dropdown-item>
+                    {{$t('navbar.dashboard')}}
+                  </el-dropdown-item>
+                </router-link>
+                <el-dropdown-item divided>
+                  <span @click="logout" style="display:block;">{{$t('navbar.logOut')}}</span>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+              </el-dropdown>
+            </div>
+
           </div>
-					<div class="breadcrumb">
+					<!-- <div class="breadcrumb">
             <breadcrumb class="breadcrumb-container"></breadcrumb>
-          </div>
+          </div> -->
 				</el-col>
 			</el-row>
 
@@ -21,6 +42,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { Hamburger, Breadcrumb } from '@/components/base.js'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'topNavBar',
@@ -34,12 +56,15 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['sidebar', 'menuList', 'name', 'avatar'])
+    ...mapGetters(['sidebar', 'menuList', 'name', 'avatar', 'curMenuIndex'])
   },
   methods: {
+    ...mapActions([
+      'VX_SET_CURMENUINDEX'
+    ]),
     clickTabTitle(item, index) {
       this.curIndex = index
-      this.$emit('callback', index)
+      this.VX_SET_CURMENUINDEX(index)
     },
     toggleSideBar() {
       this.$store.dispatch('toggleSideBar')
@@ -82,6 +107,12 @@ export default {
   .breadcrumb {
     height: 40px;
     background: #fff;
+  }
+  .userInfo{
+    position: fixed;
+    top: 0px;
+    right: 20px;
+    z-index: 100;
   }
 }
 </style>

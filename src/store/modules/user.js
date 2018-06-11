@@ -12,6 +12,7 @@ const user = {
     introduction: '',
     roles: [],
     menuList: [],
+    curMenuIndex: 0,
     setting: {
       articlePlatform: []
     }
@@ -20,6 +21,9 @@ const user = {
   mutations: {
     SET_CODE: (state, code) => {
       state.code = code
+    },
+    SET_CURMENUINDEX: (state, curMenuIndex) => {
+      state.curMenuIndex = curMenuIndex
     },
     SET_MENULIST: (state, menuList) => {
       state.menuList = menuList
@@ -138,8 +142,12 @@ const user = {
     },
 
     // 设置路由
-    VX_setMenuList({ commit }, menuList) {
+    VX_SET_MENULIST({ commit }, menuList) {
       commit('SET_MENULIST', menuList)
+    },
+    // vuex 设置顶部订单菜单
+    VX_SET_CURMENUINDEX({ commit }, curMenuIndex) {
+      commit('SET_CURMENUINDEX', curMenuIndex)
     }
   }
 }

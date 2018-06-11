@@ -2,9 +2,9 @@
 <template>
     <div class="orderList">
 
-      <Tabs :data="tabTitles"></Tabs>
+      <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
  
-      <search-bar :data="searchBarData" @search="searchAction" @add="showAdd()" @command="clickMoreCommand"></search-bar>
+      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction" @add="showAdd()" @command="clickMoreCommand"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -53,6 +53,7 @@
 import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs } from '@/components/base.js'
+import { orderList } from '@/api/goods.js'
 export default {
   name: 'orderList',
   mixins: [model],
@@ -61,16 +62,18 @@ export default {
     Tabs
   },
   data() {
+    // 0代表待发货 1 代表待收货状态 2 代表退换货状态 3 代表已完成 4代表已取消 5代表已关闭 6 代表待付款
+
     return {
       curIndex: 0,
       tabTitles: [
-        '全部',
-        '待付款',
-        '待发货',
-        '待收货',
-        '退/换货',
-        '已取消',
-        '已关闭'
+        { title: '全部', value: '' },
+        { title: '待付款', value: 6 },
+        { title: '待发货', value: 0 },
+        { title: '待收货', value: 1 },
+        { title: '退/换货', value: 2 },
+        { title: '已取消', value: 4 },
+        { title: '已关闭', value: 5 }
       ],
       searchBarData: [
         [
@@ -82,39 +85,45 @@ export default {
             { label: '启用', value: 1 },
             { label: '禁用', value: 0 }]
           },
-          { type: 'date', value: null, key: 'buyDate', width: '2000px', placeholder: '下单日期' },
-          { type: 'input', value: null, key: 'nameOrCode', class: 'w180', placeholder: '输入订单编号／客户名称检索' },
+          { type: 'date', value: null, key: 'buyDate', width: '200px', placeholder: '下单日期' },
+          { type: 'input', value: null, key: 'orderNoOrName', class: 'w180', placeholder: '输入订单编号／客户名称检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
         [
-          { type: 'button', name: '导出' }
+          { type: 'button', name: '导出Excel' }
           // { type: 'more', labels: ['导入', '上传图片'] }
         ]
       ]
     }
   },
   created() {
-    this.table.data = [
-      { orderNo: ' XSDD180530000010', customerName: '张三' },
-      { orderNo: ' XSDD180530000012', customerName: '王五' }
-    ]
+
   },
   mounted() {
     this.fecthList()
   },
   methods: {
-    clickTabTitle(index) {
-      this.curIndex = index
-    },
     searchAction(params) {
-      console.log(params)
+      console.log(params, 'xx')
+      const data = {
+        status: this.status,
+        orderNoOrName: params.orderNoOrName || '',
+        sendTime: params.sendTime || ''
+      }
+      this.fecthList(data)
     },
     clickMoreCommand(command) {
       this.$message({ type: 'success', message: command, duration: 0, showClose: true })
     },
     // 数据请求
-    fecthList() {
+    fecthList(params) {
+      orderList(params).then(({ data }) => {
+        this.table.data = data.rows
+        this.pagination.total = data.total
+      }).catch(e => {
+        console.log(e)
+      })
       console.log('请求数据')
     },
     // 分页操作区域
@@ -133,6 +142,12 @@ export default {
     },
     refrehList() {
 
+    },
+    tabsCallBack(item) {
+      this.curIndex = item.value
+      this.$nextTick().then(() => {
+        this.$refs['searchBar'].sendSearchParams()
+      })
     }
 
   }

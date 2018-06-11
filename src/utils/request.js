@@ -6,7 +6,7 @@ import { getToken } from '@/utils/auth'
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.BASE_API, // api的base_url
-  timeout: 5000 // request timeout
+  timeout: 8000 // request timeout
 })
 
 // request interceptor
@@ -24,7 +24,20 @@ service.interceptors.request.use(config => {
 
 // respone interceptor
 service.interceptors.response.use(
-  response => response,
+  response => {
+    const res = response.data
+    if (res.code !== '0') {
+      // if (res.msg && res.msg === 'NoLogin') {
+      //   Message({ message: `登录过期`, type: 'error', duration: 400, showClose: true })
+      //   store.dispatch('FedLogOut').then(() => {
+      //     location.reload()// 为了重新实例化vue-router对象 避免bug
+      //   })
+      // }
+      return Promise.reject(res)
+    } else {
+      return response.data
+    }
+  },
   /**
     * 下面的注释为通过response自定义code来标示请求状态，当code返回如下情况为权限有问题，登出并返回到登录页
     * 如通过xmlhttprequest 状态码标识 逻辑可写在下面error中

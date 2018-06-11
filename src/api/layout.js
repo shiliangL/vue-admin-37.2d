@@ -17,15 +17,15 @@ export function loginByUsername(username, password) {
 export function logout() {
   return request({
     url: 'operator/logout',
-    method: 'get'
+    method: 'post'
   })
 }
 
-export function getUserInfo(token) {
-  // 登录成功后 根据 token 获取客户信息
+export function fetchMenuList(params) {
+  // 获取权限菜单列表
   return request({
-    url: 'rtusapi/users/getuserinfo',
-    method: 'get'
-    // params: { token }
+    url: 'resource/list4CurrentOperator',
+    method: 'get',
+    params
   })
 }
