@@ -7,32 +7,24 @@
         <el-card class="box-card">
           <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
             <div class="title-container">
-              <span class="title">{{$t('login.title')}}</span>
+              <span class="title">{{ loginTitle }}</span>
             </div>
             <el-form-item prop="username">
-              <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username" />
+              <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username">
+               <i slot="prefix" class="el-input__icon el-icon-menu"></i>
+               </el-input >
             </el-form-item>
 
             <el-form-item prop="password">
-              <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="password" />
+              <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="password">
+               <i slot="prefix" class="el-input__icon el-icon-view"></i>
+              </el-input>
             </el-form-item>
 
             <el-button type="primary" style="width:100%;margin-bottom:30px;" class="button-login" :loading="loading" @click.native.prevent="handleLogin">{{$t('login.logIn')}}</el-button>
 
-            <!-- <div class="tips">
-              <span>{{$t('login.username')}} : admin</span>
-              <span>{{$t('login.password')}} : {{$t('login.any')}}</span>
-            </div>
-            <div class="tips">
-              <span style="margin-right:18px;">{{$t('login.username')}} : editor</span>
-              <span>{{$t('login.password')}} : {{$t('login.any')}}</span>
-            </div> -->
-
-            <!-- <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{$t('login.thirdparty')}}</el-button> -->
           </el-form>
-        <!-- <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog" append-to-body>
-          {{$t('login.thirdpartyTips')}}
-        </el-dialog> -->
+
         </el-card>
         <div class="copyright">
           <p> Copyright © www.chumanduo.com, All Rights Reserved. </p>
@@ -63,6 +55,7 @@ export default {
     }
   },
   created() {
+    this.loginTitle = '厨满满商城后台管理系统'
     // window.addEventListener('hashchange', this.afterQRScan)
   },
   mounted() {
@@ -136,6 +129,7 @@ export default {
   } 
 
   .form-group {
+    margin-top: -150px;
     background: transparent;
     // width: 300px; // 重新设置卡片阴影
     .title-container{

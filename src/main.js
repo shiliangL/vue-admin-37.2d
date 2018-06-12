@@ -11,6 +11,7 @@ import i18n from './lang' // Internationalization
 import './permission' // permission control
 import './icons' // icon
 import './public' // 全局公用方法
+import './components' // 全局组件
 
 import router from './router'
 

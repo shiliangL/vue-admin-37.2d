@@ -1,6 +1,6 @@
 <template>
    <div class="loading loading-group">
-        <div class="sk-cube-grid">
+        <div class="sk-cube-grid" v-if="progress">
           <div class="sk-cube sk-cube1"></div>
           <div class="sk-cube sk-cube2"></div>
           <div class="sk-cube sk-cube3"></div>
@@ -11,18 +11,57 @@
           <div class="sk-cube sk-cube8"></div>
           <div class="sk-cube sk-cube9"></div>
         </div>
-        <div class="title">加载中...</div>
+        <p v-if="text" class="loading-text">{{ loadText }}</p>
+        <p v-if="error" class="error-text">{{ errorText}} 加载失败 </p>
+        <el-button type="primary" size="mini" v-if="refresh"  @click="handleRefresh">刷新</el-button>
       </div>
 </template>
 
 <script>
 export default {
-  name: 'Loading'
+  name: 'Loading',
+  props: ['loading', 'loadingText'],
+  data() {
+    return {
+      progress: true,
+      error: false,
+      text: true,
+      refresh: false,
+      loadText: '正在载入..',
+      errorText: ''
+    }
+  },
+  methods: {
+    handleError() {
+      setTimeout(() => {
+        this.progress = false
+        this.text = false
+        this.errorText = JSON.stringify(this.loadingText.message)
+        this.error = true
+        this.refresh = true
+      }, 1000)
+    },
+    handleRefresh() {
+      this.error = false
+      this.refresh = false
+      this.text = '正在载入..'
+      this.text = true
+      this.progress = true
+      this.$emit('loadingRefresh', -1)
+    }
+  },
+  watch: {
+    loadingText() {
+      this.handleError()
+    }
+  }
 }
 </script>
 
 <style scoped lang="scss">
 .loading-group {
+  min-width: 100%;
+  min-height: 100%;
   height: 100%;
   width: 100%;
   display: flex;
@@ -33,14 +72,19 @@ export default {
   background: -webkit-linear-gradient(to top, #d7dde8, #757f9a);
   background: linear-gradient(to top, #d7dde8, #757f9a);
 }
-.title {
+.loading-text {
   color: #fff;
   font-weight: bold;
   font-size: 14px;
-  margin-top: 20px;
+  margin-top: 10px;
   margin-bottom: 10px;
   letter-spacing: 0.2em;
 }
+
+.error-text{
+  color:red; padding-top: 20px;
+}
+
 .sub-title {
   color: #fff;
   font-size: 10px;

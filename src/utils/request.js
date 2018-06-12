@@ -27,12 +27,12 @@ service.interceptors.response.use(
   response => {
     const res = response.data
     if (res.code !== '0') {
-      // if (res.msg && res.msg === 'NoLogin') {
-      //   Message({ message: `登录过期`, type: 'error', duration: 400, showClose: true })
-      //   store.dispatch('FedLogOut').then(() => {
-      //     location.reload()// 为了重新实例化vue-router对象 避免bug
-      //   })
-      // }
+      if (res.code && res.code === '1015') {
+        Message({ message: `登录过期`, type: 'error', duration: 400, showClose: true })
+        store.dispatch('FedLogOut').then(() => {
+          location.reload()// 为了重新实例化vue-router对象 避免bug
+        })
+      }
       return Promise.reject(res)
     } else {
       return response.data

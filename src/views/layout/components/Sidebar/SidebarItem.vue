@@ -59,21 +59,21 @@
               <template v-if="!child.resourceUrl">
                 <el-menu-item :index="child.resourceUrl || child.id"  :key="child.id">
                   <!-- <svg-icon v-if="child&&child.icon" :icon-class="child.icon"></svg-icon> -->
-                  <span v-if="child&&child.title"> {{ item.title }} </span>
+                  <span v-if="child&&child.title"> {{ child.title }} </span>
                 </el-menu-item>
               </template>
               <template v-if="child.resourceUrl">
                 <router-link :to="child.resourceUrl" :key="child.id">
                   <el-menu-item :index="child.resourceUrl || child.id">
                     <!-- <svg-icon v-if="child&&child.icon" :icon-class="child.icon"></svg-icon> -->
-                    <span v-if="child&&child.title"> {{ item.title }} </span>
+                    <span v-if="child&&child.title"> {{ child.title }} </span>
                   </el-menu-item>
                 </router-link>
               </template>
             </template>
-          
-        </template>
-      </el-submenu>
+            
+          </template>
+        </el-submenu>
 
       </template>
 

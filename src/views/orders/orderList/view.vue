@@ -82,23 +82,24 @@
           <div class="row-item">
             <div class="row-title">商品信息</div>
             <div class="row-content">
-              <el-table :data="tableData" size="small" :max-height="300" style="width: 100%;" highlight-current-row>
+              <el-table :data="viewData.saleDtails" size="small" :max-height="300" style="width: 100%;" highlight-current-row>
                 <el-table-column label="序号" width="50" align="center">
                   <template slot-scope="scope">
                     <span>{{scope.$index + 1}}</span>
                   </template>
                 </el-table-column>
                 <el-table-column prop="orderNo" label="商品图片" align="center"></el-table-column>
-                <el-table-column prop="makeOrderTime" label="商品名称" align="center"></el-table-column>
+                <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
                 <el-table-column prop="customerName" label="规格" align="center"></el-table-column>
+                <el-table-column prop="price" label="价格" align="center"></el-table-column>
                 <el-table-column prop="shopName" label="下单数量" align="center"></el-table-column>
                 <el-table-column prop="purchaseCount" label="下单金额" align="center"></el-table-column>
                 <el-table-column prop="purchaseCount" label="分拣数量" align="center"></el-table-column>
                 <el-table-column prop="purchaseCount" label="分拣金额" align="center"></el-table-column>
                 <el-table-column prop="status" label="退/换货状态" align="center">
-                  <template slot-scope="scope" align="center">
+                  <!-- <template slot-scope="scope" align="center">
                     
-                  </template>
+                  </template> -->
                 </el-table-column>
               </el-table>
               <div class="tips">
@@ -106,7 +107,7 @@
               </div>
             </div>
           </div>
-          <div class="row-item">
+          <!-- <div class="row-item">
             <div class="row-title">费用信息</div>
             <div class="row-content">
               <el-row>
@@ -142,16 +143,38 @@
                 </el-col>
               </el-row>
             </div>
-          </div>
+          </div> -->
     </div>
 </template>
 
 <script>
 export default {
   name: 'toView',
+  props: {
+    data: {
+      type: Object
+    }
+  },
   data() {
     return {
-      tableData: [{}, {}, {}]
+      viewData: {
+        saleDtails: [],
+        scmOrder: {},
+        sendTime: {}
+      }
+    }
+  },
+  created() {
+
+  },
+  watch: {
+    data: {
+      handler(value) {
+        console.log(value)
+        if (value) {
+          this.viewData = value
+        }
+      }
     }
   }
 }

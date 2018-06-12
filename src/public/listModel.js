@@ -9,7 +9,7 @@ export default {
       pagination: {
         pageSizes: [10, 20, 50, 100], // 默认分页可选择的每页显示的页数
         size: 10, // 分页每页默认显示10条
-        page: 1, // 当前默认第一页
+        index: 1, // 当前默认第一页
         total: 0 // 总条数
       },
       table: {
@@ -20,7 +20,10 @@ export default {
       add: {
         visiable: false, // 是否显示新增组件
         data: null // 新增组件绑定的数据
-      }
+      },
+      // loading
+      loading: true,
+      loadingText: null
     }
   }
 }

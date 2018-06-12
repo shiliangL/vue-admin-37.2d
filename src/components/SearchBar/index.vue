@@ -6,6 +6,9 @@
         <template v-if="item.type === 'date'">
           <el-date-picker :style="{width:'140px'}" size="small" v-model="item.value" value-format="yyyy-MM-dd" type="date" :placeholder="item.placeholder"></el-date-picker>
         </template>
+        <template v-else-if="item.type === 'datetime'">
+          <el-date-picker :style="{width:'200px'}" size="small" v-model="item.value" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" :placeholder="item.placeholder"></el-date-picker>
+        </template>
         <template v-else-if="item.type === 'option'">
           <el-select :class="item.class?item.class:'w90'" size="small" v-model="item.value" clearable filterable :placeholder="item.placeholder">
             <el-option v-for="sub in item.options" :key="sub.value" :label="sub.label" :value="sub.value" :class="item.class"></el-option>
@@ -81,7 +84,7 @@ export default {
       const params = {}
       if (this.data.length > 0 && this.data[0] && this.data[0].length > 0) {
         const items = this.data[0]
-        const commonlyTypes = ['input', 'select', 'option', 'date']
+        const commonlyTypes = ['input', 'select', 'option', 'date', 'datetime']
         for (let i = 0; i < items.length; i++) {
           const item = items[i]
           if (commonlyTypes.indexOf(item['type']) !== -1) {

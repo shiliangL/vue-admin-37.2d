@@ -23,27 +23,31 @@ export const constantRouterMap = [
     }]
   }
 ]
-
-// 异步权限路由
-// '后台首页',
-// '运营中心',
-// '供应链',
-// '财务中心',
-// '系统管理'
-
 export const asyncRouterMap = [
+  // {
+  //   path: '/users',
+  //   component: Layout,
+  //   redirect: 'noredirect',
+  //   name: 'users',
+  //   meta: {
+  //     title: 'users',
+  //     icon: 'component'
+  //   },
+  //   children: [
+  //     { path: 'userList', component: _import('users/userList/index'), name: 'userList', meta: { title: 'userList' }},
+  //     { path: 'userInfo', component: _import('users/userInfo/index'), name: 'userInfo', meta: { title: 'userInfo' }}
+  //   ]
+  // },
   {
-    path: '/users',
+    path: '/orders',
     component: Layout,
-    redirect: 'noredirect',
-    name: 'users',
+    name: 'orders',
     meta: {
-      title: 'users',
+      title: 'orders',
       icon: 'component'
     },
     children: [
-      { path: 'userList', component: _import('users/userList/index'), name: 'userList', meta: { title: 'userList' }},
-      { path: 'userInfo', component: _import('users/userInfo/index'), name: 'userInfo', meta: { title: 'userInfo' }}
+      { path: 'orderList', component: _import('orders/orderList/index'), name: 'orderList', meta: { title: 'orderList' }}
     ]
   },
   {
@@ -55,7 +59,8 @@ export const asyncRouterMap = [
       icon: 'component'
     },
     children: [
-      { path: 'orderList', component: _import('goods/orderList/index'), name: 'orderList', meta: { title: 'orderList' }},
+      { path: 'goodsList', component: _import('goods/goodsList/index'), name: 'goodsList', meta: { title: 'goodsList' }},
+      { path: 'goodsProfile', component: _import('goods/goodsProfile/index'), name: 'goodsProfile', meta: { title: 'goodsProfile' }},
       { path: 'goodsClass', component: _import('goods/goodsClass/index'), name: 'goodsClass', meta: { title: 'goodsClass' }}
     ]
   },

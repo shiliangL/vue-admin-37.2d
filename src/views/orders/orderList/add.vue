@@ -14,15 +14,16 @@
         </div>
         <div class="content-bar">
           <template v-if="this.data.type === 'view'">
-            <toView></toView>
+            <toView :data="viewData"></toView>
           </template>
 
           <template v-if="this.data.type === 'follow'">
             <toFollow></toFollow>
           </template>
-
+          
         </div>
       </div>
+      <Loading v-if="loading" @loadingRefresh="onRefresh" :loadingText="loadingText" class="Loading"></Loading>
       <!-- <el-form :model="form" :rules="rules" ref="form" label-width="100px" id="form" :inline="true">
           测试数据弹层
           <h1>测试</h1>
@@ -41,6 +42,7 @@ import addModel from '@/public/addModel.js'
 import toView from './view'
 import toFollow from './follow'
 import { ScrollBar } from '@/components/base.js'
+import { orderDetail } from '@/api/orders.js'
 
 export default {
   mixins: [addModel],
@@ -54,7 +56,8 @@ export default {
       form: {
         subPropList: []
       },
-      rules: {}
+      rules: {},
+      viewData: null
     }
   },
   created() {
@@ -63,19 +66,17 @@ export default {
   },
   mounted() {
     if (this.data.type === 'view') {
-      // this.loadInfo()
+      const id = this.data.obj.id
+      if (!id) return
+      this.fecthByID(id)
     }
+    setTimeout(() => {
+      this.loadingText = '加载错误'
+    }, 3000)
   },
   methods: {
     closeDialog() {
       this.$emit('input', false)
-    },
-    click2add() {
-      this.form.subPropList.push({
-        name: null,
-        featureValue: null,
-        status: 1
-      })
     },
     success() {
       this.$message({ type: 'success', message: this.dialog.title + '成功' })
@@ -89,6 +90,24 @@ export default {
     error(data) {
       this.$message({ type: 'error', message: data.message })
       this.$setKeyValue(this.button, { loading: false, text: '确定' })
+    },
+    onRefresh() {
+      console.log('刷新')
+      if (this.data.type === 'view') {
+        const id = this.data.obj.id
+        if (!id) return
+        this.fecthByID(id)
+      }
+    },
+    fecthByID(id) {
+      orderDetail({ id }).then(({ data }) => {
+        this.viewData = data
+        setTimeout(() => {
+          this.loading = false
+        }, 2000)
+      }).catch(e => {
+        this.loadingText = '加载错误'
+      })
     }
   }
 }
@@ -96,11 +115,13 @@ export default {
 
 <style scoped lang="scss">
 .el-dialog__wrapper{
+  transform: translateZ(0);
   min-height: 100%;
   min-height: 700px;
 }
 .content-box {
   width: 100%;
+  position: relative;
   .header-bar {
     padding: 0 10px;
     height: 40px;
@@ -114,6 +135,13 @@ export default {
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.23);
     // border-bottom: 1px solid #cccccc;
   }
-
 }
+.Loading{
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 10;
+  }
 </style>

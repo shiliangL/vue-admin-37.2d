@@ -1,6 +1,6 @@
 <template>
     <div>
-        goodsProfile
+        辅助材料
     </div>
 </template>
 
