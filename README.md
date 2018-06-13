@@ -1,7 +1,3 @@
-# vue-cmm
-
-> A Vue.js project
-
 ## Build Setup
 
 ``` bash
@@ -18,4 +14,6 @@ npm run build
 npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+> 商品管理-辅助材料 接口模型 product-package-info-controller
+
+> 商品管理-商品分类 接口模型 product-category-controller

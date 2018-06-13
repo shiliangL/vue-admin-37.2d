@@ -14,11 +14,11 @@
         </div>
         <div class="content-bar">
           <template v-if="this.data.type === 'view'">
-            <toView :data="viewData"></toView>
+
           </template>
 
           <template v-if="this.data.type === 'follow'">
-            <toFollow></toFollow>
+
           </template>
           
         </div>
@@ -39,15 +39,11 @@
 
 <script>
 import addModel from '@/public/addModel.js'
-import toView from './view'
-import toFollow from './follow'
 import { orderDetail } from '@/api/orders.js'
 
 export default {
   mixins: [addModel],
   components: {
-    toView,
-    toFollow
   },
   data() {
     return {

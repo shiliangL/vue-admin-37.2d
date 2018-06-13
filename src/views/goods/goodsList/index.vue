@@ -46,22 +46,20 @@
 
       </table-contain>
 
-        <!-- 弹层 -->
-        <!-- <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add> -->
+      <!-- 弹层 -->
+      <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add>
     </div>
 </template>
 
 <script>
-// import Add from './add'
+import Add from './add'
 import model from '@/public/listModel.js'
-import { Tabs } from '@/components/base.js'
 import { orderList } from '@/api/orders.js'
 export default {
   name: 'goodsList',
   mixins: [model],
   components: {
-    // Add,
-    Tabs
+    Add
   },
   data() {
     return {
@@ -159,7 +157,7 @@ export default {
         this.table.data = data.rows
         this.pagination.total = data.total
       }).catch(e => {
-        this.$message({ type: 'error', message: e, duration: 0, showClose: true })
+        this.$message({ type: 'error', message: '列表加载失败', duration: 0, showClose: true })
       })
     },
     // 分页操作区域
@@ -177,6 +175,9 @@ export default {
     },
     click2follow(index, row) {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'follow', obj: row }})
+    },
+    showAdd(index, row) {
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: row }})
     },
     refrehList() {
 

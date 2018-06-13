@@ -108,7 +108,7 @@ export default {
       this.$emit('add')
     },
     clickBtn(item) {
-      this.$emit(item.eventName || 'button')
+      this.$emit('clickBtn', item)
     },
     clickCommand(command) {
       this.$emit('command', command)

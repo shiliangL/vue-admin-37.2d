@@ -4,7 +4,7 @@
 
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
  
-      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction" @add="showAdd()" @reset="resetSearchBar" @command="clickMoreCommand"></search-bar>
+      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction" @reset="resetSearchBar" @command="clickMoreCommand"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -13,8 +13,8 @@
               <span>{{scope.$index + 1}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="orderNo" label="订单编号" align="center"></el-table-column>
-          <el-table-column prop="createdOn" label="下单日期" align="center"></el-table-column>
+          <el-table-column prop="orderNo" label="订单编号" width="170" align="center"></el-table-column>
+          <el-table-column prop="createdOn" label="下单日期" width="170" align="center"></el-table-column>
           <el-table-column prop="customerName" label="客户名称" align="center"></el-table-column>
 
           <el-table-column prop="orderSource" label="订单来源" align="center">
