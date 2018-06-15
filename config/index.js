@@ -23,6 +23,10 @@ module.exports = {
         target: 'http://cmm.ngrok.xiaomiqiu.cn',
         changeOrigin: true,
       }
+      // '/': {
+      //   target: 'http://192.168.2.75:9001/',
+      //   changeOrigin: true,
+      // }
     },
 
     // Various Dev Server settings

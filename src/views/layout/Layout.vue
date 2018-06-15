@@ -54,7 +54,7 @@ export default {
           this.VX_SET_MENULIST([])
         }
       }).catch(e => {
-        console.log(e)
+        this.$message({ type: 'error', message: '菜单获取失败,请刷新', duration: 0, showClose: true })
       })
     },
     // 初始化菜单列表

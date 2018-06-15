@@ -14,13 +14,14 @@
         </div>
         <div class="content-bar">
           <template v-if="this.data.type === 'view'">
-
+            <toView></toView>
           </template>
 
           <template v-if="this.data.type === 'follow'">
 
           </template>
-          
+
+          <toEditor></toEditor>
         </div>
       </div>
       <Loading v-if="loading" @loadingRefresh="onRefresh" :loadingText="loadingText" class="Loading"></Loading>
@@ -40,10 +41,14 @@
 <script>
 import addModel from '@/public/addModel.js'
 import { orderDetail } from '@/api/orders.js'
+import toView from './toView'
+import toEditor from './toEditor'
 
 export default {
   mixins: [addModel],
   components: {
+    toView,
+    toEditor
   },
   data() {
     return {
@@ -62,11 +67,13 @@ export default {
     if (this.data.type === 'view') {
       const id = this.data.obj.id
       if (!id) return
-      this.fecthByID(id)
+      // this.fecthByID(id)
+      setTimeout(() => {
+        this.loading = false
+      }, 2000)
+    } else if (this.data.type === 'add') {
+      this.loading = false
     }
-    setTimeout(() => {
-      this.loadingText = '加载错误'
-    }, 3000)
   },
   methods: {
     closeDialog() {

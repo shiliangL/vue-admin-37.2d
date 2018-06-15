@@ -1,0 +1,417 @@
+<template>
+    <div class="toEditor">
+			<el-form :model="form" :rules="rules" ref="form" label-width="120px" :inline="true">
+
+				<div class="row-item">
+						<div class="row-title">基本信息</div>
+						<div class="row-content basicInfo">
+							<el-row>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									{{category}}
+									<el-form-item label="商品分类:" prop="title" :rules="rules.input">
+										<el-cascader size="small" clearable  style="width:180px" class="w180" 
+										placeholder="请选择" expand-trigger="hover" filterable :options="options.goodClass" v-model="category" @change="selectCategory"> </el-cascader>
+									</el-form-item>
+								</el-col>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									<el-form-item label="商品名称:" prop="title" :rules="rules.input">
+										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
+									</el-form-item>
+								</el-col>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									<el-form-item label="商品子名称:" prop="title" :rules="rules.input">
+										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
+									</el-form-item>
+								</el-col>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									<el-form-item label="商品别名:">
+										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.aliasTitle"></el-input>
+									</el-form-item>
+								</el-col>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									<el-form-item label="简称:">
+										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
+									</el-form-item>
+								</el-col>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									<el-form-item label="简称字母:">
+										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
+									</el-form-item>
+								</el-col>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									<el-form-item label="商品品牌:">
+										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
+									</el-form-item>
+								</el-col>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									<el-form-item label="所属仓库:" :rules="rules.input">
+										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
+									</el-form-item>
+								</el-col>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									<el-form-item label="所在仓位:" :rules="rules.input">
+										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
+									</el-form-item>
+								</el-col>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									<el-form-item label="采购类型:" :rules="rules.input">
+										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
+									</el-form-item>
+								</el-col>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									<el-form-item label="采购员/供应商:" :rules="rules.input">
+										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
+									</el-form-item>
+								</el-col>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									<el-form-item label="产地">
+										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
+									</el-form-item>
+								</el-col>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									<el-form-item label="生产日期:">
+										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
+									</el-form-item>
+								</el-col>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									<el-form-item label="保质期:">
+										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
+									</el-form-item>
+								</el-col>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									<el-form-item label="储存方式:">
+										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
+									</el-form-item>
+								</el-col>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									<el-form-item label="标签:">
+										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
+									</el-form-item>
+								</el-col>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									<el-form-item label="简要介绍:">
+										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
+									</el-form-item>
+								</el-col>
+							</el-row>
+						</div>
+				</div>
+				<div class="row-item">
+					<div class="row-title">商品图片 <span class="desc">大小≤6MB，支持JPG、PNG、JPEG</span></div>
+					<div class="row-content">
+						<el-row>
+								<div class="bannerImg">
+								<el-upload
+									class="avatar-uploader"
+									action="http://up-z2.qiniu.com/"
+									:show-file-list="false"
+									:on-success="handleAvatarSuccess"
+									:before-upload="beforeAvatarUpload">
+									<img v-if="imageUrl" :src="imageUrl" class="avatar">
+									<i v-else class="el-icon-plus avatar-uploader-icon"></i>
+								</el-upload>
+								</div>
+						</el-row>
+					</div>
+				</div>
+				<div class="row-item">
+					<div class="row-title">商品售价</div>
+					<div class="row-content">
+						<el-table :data="form.skuList" class="skuListTbale" size="small" :max-height="500" style="width: 100%;" highlight-current-row>
+
+							<el-table-column label="操作" width="50" align="center">
+								<template slot-scope="scope">
+									<i class="el-icon-plus" style="cursor: pointer;" @click.stop="clickToAddSkuLis"></i>
+									<i class="el-icon-minus" v-if="form.skuList && form.skuList.length>1 && scope.$index" style="cursor: pointer;" @click.stop="clickToDelSkuLis(scope.$index,scope.$row)"></i>
+								</template>
+							</el-table-column>
+							<el-table-column label="序号" width="50" align="center">
+								<template slot-scope="scope">
+									<span>{{scope.$index + 1}}</span>
+								</template>
+							</el-table-column>
+
+							<el-table-column prop="orderNo" label="规格" align="center">
+								<template slot-scope="scope">
+									<div>基本单位</div>
+									<div>分拣时按基础单位</div>
+								</template>
+							</el-table-column>
+							<el-table-column prop="productName" label="规格备注" align="center">
+								<template slot-scope="scope">
+									<el-input type="textarea" :autosize="{ minRows: 1, maxRows: 4}" placeholder="请输入内容" v-model.trim="form.textarea" />
+								</template>
+							</el-table-column>
+							<el-table-column prop="customerName" label="最近一次采购" align="center">
+								<template slot-scope="scope">
+
+									<el-form-item label="" label-width="0px">
+										<el-input size="small" class="w110"  placeholder="请输入" v-model.trim="form.title"></el-input>
+									</el-form-item>
+
+								</template>
+							</el-table-column>
+							<el-table-column prop="price" label="市场公开售价" align="center"></el-table-column>
+							<el-table-column prop="price" label="实际售价" align="center">
+								<template slot-scope="scope">
+
+									<el-form-item label="" label-width="0px">
+										<el-input size="small" class="w110"  placeholder="请输入" v-model.trim="form.title"></el-input>
+									</el-form-item>
+
+								</template>
+							</el-table-column>
+							<!-- <el-table-column prop="purchaseCount" label="客户类型价" align="center" width="400">
+
+								<template slot-scope="scope">
+
+									<div>
+										<span class="label">中小餐饮</span>
+										<el-form-item label="" label-width="0px">
+											<el-input size="small" class="w110"  placeholder="请输入" v-model.trim="form.title"></el-input>
+										</el-form-item>
+									</div>
+									<div>
+
+									</div>
+
+								</template>
+
+							</el-table-column> -->
+						</el-table>
+					</div>
+				</div>
+				<div class="row-item">
+					<div class="row-title">图文详情描述 <span class="desc">支持JPG、PNG、JPEG,最多允许上传5张图片</span></div>
+					<div class="row-content">
+						<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 8}" placeholder="请输入内容" v-model.trim="form.summary" />
+					</div>
+				</div>
+			</el-form>
+    </div>
+</template>
+
+<script>
+import addModel from '@/public/addModel.js'
+import rules from '@/public/rules.js'
+import { fecthGoodsClass, fetchToken } from '@/api/goodsList.js'
+
+export default {
+  name: 'toEditor',
+  mixins: [rules, addModel],
+  data() {
+    return {
+      imageUrl: '',
+      category: [],
+      form: {
+        'aliasTitle': '货品别名', // 货品别名
+        'bannerIds': 'string',
+        'barCode': 'string',
+        'buyerId': 'string', // 采购员 id
+        'categoryId': 'string', // 类型 id
+        'categoryName': 'string', // 类型名称
+        'details': 'string', // 详细介绍 这里的详情，是否类似淘宝 图片详情 二进制数据
+        'goodsImage': 'string',
+        'goodsImageId': 'string', // 图片Url
+        'goodsStatus': 0, // 商品状态, 0 代表上架，1代表下架
+        'itemNumber': 'string', // 货号
+        'productDetail': [ // 货品详细信息表
+          {
+            'test': 'string'
+          }
+        ],
+        'purchasePrice': 0, // 进价
+        'purchaseType': 0, // 采购类型 1：供货，2：自采，3：未指定
+        'sellingPrice': 1000, // 公开售价
+        'shortCode': 'string', // 简称字母 ,
+        'shortTitle': 'string', // 简称
+        'skuList': [ // 商品SKU 生成商品 定义多个SKU 每个SKU 对应一个属性 多个销售地区
+          {
+            'areaIds': [
+              {
+                'areaId': 0,
+                'productId': 'string',
+                'purchasePrice': 0,
+                'sellingPrice': 0,
+                'skuId': 'string',
+                'stockQuantity': 0
+              }
+            ],
+            'baseUnitId': 'string',
+            'baseUnitName': 'string',
+            'price': 1998,
+            'productId': 'string',
+            'quantity': 0,
+            'rate': 0,
+            'skuTitle': 'string',
+            'summary': 'string',
+            'unitId': 'string',
+            'unitName': 'string'
+          }
+        ],
+        'specificationId': 'string', // 规格ID
+        'stockQuantity': 0, // 库存
+        'subTitle': 0, // 子名称
+        'summary': 'string', // 简要介绍
+        'supplyId': 'string', // 供应商Id
+        'tags': 'string', // 标签
+        'title': '麻辣大螃蟹' // 名称
+      },
+      options: {
+        goodClass: [{
+          value: 'ids',
+          label: '指南',
+          children: [{
+            value: 'shejiyuanze',
+            label: '设计原则'
+          }]
+        }]
+      },
+      uploadDatas: {
+        token: null
+      }
+    }
+  },
+  mounted() {
+    this.fetchGoodClass()
+    this.fetchUpPicToken()
+  },
+  methods: {
+    // 获取七牛上传 token
+    fetchUpPicToken() {
+      fetchToken().then(({ data }) => {
+        console.log(data, 'token')
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+    fetchGoodClass() {
+      // 加载商品大类
+      fecthGoodsClass().then(({ data }) => {
+        if (!Array.isArray(data) && data.length <= 0) return
+        const result = []
+        this.tempGoodClass = data // 临时存储
+        for (const item of data) {
+          if (item.parentId === '0') {
+            result.push({
+              children: [],
+              label: item.title,
+              value: item.id
+            })
+          }
+        }
+        for (const item of this.tempGoodClass) {
+          if (item.parentId !== '0') {
+            for (const parent of result) {
+              if (item.parentId === parent.value) {
+                parent.children.push({
+                  label: item.title,
+                  value: item.id
+                })
+              }
+            }
+          }
+        }
+        this.options.goodClass = result
+        console.log(result, 'xx')
+      }).catch(e => {
+        this.$message({ type: 'error', message: '加载分类失败失败' })
+      })
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw)
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
+    },
+    clickToAddSkuLis() {
+      console.log(this.form.skuList.push({}))
+    },
+    clickToDelSkuLis(index, row) {
+      this.form.skuList.splice(index, 1)
+    },
+    selectCategory(value) {
+      console.log(value)
+    }
+  }
+}
+</script>
+
+<style scoped lang="scss">
+  .row-item {
+    padding: 4px 0;
+    .row-title {
+      border-left: 2px solid #1cbc9c;
+      padding-left: 8px;
+      .desc{
+        font-size: 12px;
+        padding-left: 16px;
+        color: rgb(128, 132, 143);
+      }
+    }
+    .row-content {
+      padding: 10px;
+      .label{
+        color: #696767;
+        font-size: 14px;
+        font-weight: 600;
+      }
+    }
+    .el-col{
+      padding: 5px 0;
+    }
+    .tips{
+      padding: 10px 0;
+		}
+
+		.bannerImg {
+			margin: 10px 0;
+			border: 1px dashed #d9d9d9;
+			width: 90px;
+			height: 90px;
+			border-radius: 6px;
+			cursor: pointer;
+			position: relative;
+			overflow: hidden;
+		}
+		.avatar-uploader .el-upload:hover {
+			border-color: #409EFF;
+		}
+		.avatar-uploader-icon {
+			font-size: 28px;
+			color: #8c939d;
+			width: 90px;
+			height: 90px;
+			line-height: 90px;
+			text-align: center;
+		}
+		.avatar {
+			width: 90px;
+			height: 90px;
+			display: block;
+		}
+	}
+	.basicInfo{
+		.el-form-item{
+			width: 330px;
+			height: 40px;
+			margin-bottom: 6px;
+		}
+	}
+	.el-form-item{
+		margin-bottom: 0;
+	}
+	.textarea{
+		margin-top: 10px;
+		margin-left: 10px;
+	}
+</style>

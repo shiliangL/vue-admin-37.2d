@@ -11,24 +11,33 @@
               <span>{{scope.$index + 1}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="orderNo" label="商品图片" align="center"></el-table-column>
-          <el-table-column prop="createdOn" label="商品分类" align="center"></el-table-column>
-          <el-table-column prop="customerName" label="商品名称" align="center"></el-table-column>
-          <el-table-column prop="customerName" label="单位" align="center"></el-table-column>
-          <el-table-column prop="customerName" label="市场价" align="center"></el-table-column>
-          <el-table-column prop="customerName" label="别名" align="center"></el-table-column>
-          <el-table-column prop="customerName" label="采购类型" align="center"></el-table-column>
+          <el-table-column prop="goodsImage" label="商品图片" align="center"></el-table-column>
+          <el-table-column prop="shortTitle" label="商品分类" align="center"></el-table-column>
+          <el-table-column prop="title" label="商品名称" align="center"></el-table-column>
+          <el-table-column prop="baseUnitId" label="单位" align="center"></el-table-column>
+          <el-table-column prop="sellingPrice" label="市场价" align="center"></el-table-column>
+          <el-table-column prop="aliasTitle" label="别名" align="center"></el-table-column>
+          <el-table-column prop="purchaseType" label="采购类型" align="center">
+             <template slot-scope="scope" align="center">
+               <span v-if="scope.row.purchaseType ===1">供货</span>
+               <span v-if="scope.row.purchaseType ===2">自采</span>
+               <span v-if="scope.row.purchaseType ===3">未指定</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="customerName" label="采购员/供应商" align="center"></el-table-column>
 
-          <el-table-column prop="status" label="状态" align="center">
+          <el-table-column prop="goodsStatus" label="状态" align="center">
             <template slot-scope="scope" align="center">
-              {{ scope.row.status | filterStatus}}
+               <el-tag size="small" v-if="scope.row.goodsStatus ===0">上架</el-tag>
+               <el-tag size="small" type="warning" v-if="scope.row.goodsStatus ===1">下架</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
-              <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">订单查看</el-button>
-              <el-button type="text" size="mini" @click.stop="click2follow(scope.$index, scope.row)">订单跟踪</el-button>
+              <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">详情</el-button>
+              <el-button type="text" v-if="scope.row.goodsStatus ===0" size="mini" @click.stop="clickToUpOrDown(scope.$index, scope.row)">下架</el-button>
+              <el-button type="text" v-if="scope.row.goodsStatus ===1" size="mini" @click.stop="clickToUpOrDown(scope.$index, scope.row)">上架</el-button>
+              <el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index, scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -54,7 +63,7 @@
 <script>
 import Add from './add'
 import model from '@/public/listModel.js'
-import { orderList } from '@/api/orders.js'
+import { list, fecthGoodsClass, deletepProduct, productsDown, productsUp } from '@/api/goodsList.js'
 export default {
   name: 'goodsList',
   mixins: [model],
@@ -73,12 +82,16 @@ export default {
         { title: '已取消', value: 4 },
         { title: '已关闭', value: 5 }
       ],
+      options: {
+        goodsClass: []
+      },
       searchBarData: [
         [
-          { type: 'option', value: null, key: 'orderSource', class: 'w110', placeholder: '分类', options: [
-            { label: 'App', value: 0 },
-            { label: '微信公众号', value: 1 },
-            { label: '微信小程序', value: 2 }]
+          { type: 'option', value: null, key: 'categoryId', class: 'w110', placeholder: '一级分类', options: [
+            // { label: '水产冻货', value: 0 },
+            // { label: '调料干货', value: 1 },
+            // { label: '米面粮油', value: 2 }
+          ]
           },
           //   商品状态, 0 上架，1 下架
           { type: 'option', value: null, key: 'goodsStatus', class: 'w110', placeholder: '全部状态', options: [
@@ -99,7 +112,13 @@ export default {
           { type: 'add', name: '新增' }
           // { type: 'more', labels: ['导入', '上传图片'] }
         ]
-      ]
+      ],
+      searchParams: {
+        title: null,
+        categoryId: null,
+        purchaseType: null,
+        goodsStatus: null
+      }
     }
   },
   created() {
@@ -107,6 +126,7 @@ export default {
   },
   mounted() {
     this.fecthList()
+    this.fecthGoodsClass()
   },
   filters: {
     // <!-- status;//状态  0 待发货  1 待收货  2 退换货  3 已完成  4已取消 5 已关闭  6 待付款 -->
@@ -134,10 +154,11 @@ export default {
   methods: {
     searchAction(params) {
       console.log(params, 'xx')
-      this.paramsData = {
-        status: this.curIndex,
-        orderNoOrName: params.orderNoOrName || '',
-        sendTime: params.sendTime || ''
+      this.searchParams = {
+        title: params.title,
+        categoryId: params.categoryId,
+        purchaseType: params.purchaseType,
+        goodsStatus: params.goodsStatus
       }
       this.fecthList()
     },
@@ -150,14 +171,30 @@ export default {
       const data = {
         index,
         size,
-        status: this.curIndex,
-        ...this.paramsData
+        ...this.searchParams
       }
-      orderList(data).then(({ data }) => {
+      list(data).then(({ data }) => {
         this.table.data = data.rows
         this.pagination.total = data.total
       }).catch(e => {
         this.$message({ type: 'error', message: '列表加载失败', duration: 0, showClose: true })
+      })
+    },
+    fecthGoodsClass() {
+      fecthGoodsClass().then(({ data }) => {
+        if (!Array.isArray(data) && data.length <= 0) return
+        const result = []
+        for (const item of data) {
+          if (item.parentId === '0') {
+            result.push({
+              label: item.title,
+              value: item.title
+            })
+          }
+        }
+        this.searchBarData[0][0].options = result
+      }).catch(e => {
+        this.$message({ type: 'error', message: '加载分类失败失败' })
       })
     },
     // 分页操作区域
@@ -182,16 +219,49 @@ export default {
     refrehList() {
 
     },
-    tabsCallBack(item) {
-      this.curIndex = item.value
-      this.$nextTick().then(() => {
-        this.$refs['searchBar'].sendSearchParams()
-      })
-    },
     resetSearchBar() {
-      this.curIndex = 0
+      console.log('重置')
+    },
+    clickToUpOrDown(index, item) {
+      const msg = item.goodsStatus === 0 ? '是否确定下架操作？' : '是否确定上架操作？'
+      this.$confirm(msg, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        if (!item.id) return
+        if (item.goodsStatus === 0) {
+          productsDown({ ids: item.id }).then(res => {
+            this.$message({ type: 'success', message: `${res.msg}` })
+            this.fecthList()
+          }).catch(() => {
+            this.$message({ type: 'error', message: '操作失败' })
+          })
+        } else {
+          productsUp({ ids: item.id }).then(res => {
+            this.$message({ type: 'success', message: `${res.msg}` })
+            this.fecthList()
+          }).catch(() => {
+            this.$message({ type: 'error', message: '操作失败' })
+          })
+        }
+      }).catch(() => {})
+    },
+    clickToDelete(index, item) {
+      this.$confirm('是否确定删除数据?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        if (!item.id) return
+        deletepProduct({ ids: item.id }).then(res => {
+          this.$message({ type: 'success', message: `${res.msg}` })
+          this.fecthList()
+        }).catch(() => {
+          this.$message({ type: 'error', message: '删除失败' })
+        })
+      }).catch(() => {})
     }
-
   }
 }
 </script>
