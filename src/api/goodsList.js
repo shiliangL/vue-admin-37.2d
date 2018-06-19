@@ -7,6 +7,7 @@ export function list(params) {
     params
   })
 }
+// 获取分类
 export function fecthGoodsClass(params) {
   return request({
     url: 'productCategory/listAll',
@@ -14,6 +15,39 @@ export function fecthGoodsClass(params) {
     params
   })
 }
+// 获取计量单位
+export function fecthUnit(params) {
+  return request({
+    url: 'productUnitInfo/listAll',
+    method: 'get',
+    params
+  })
+}
+// 根据选择的销售单位, 的到基本到位
+export function fecthSwitchUnit(params) {
+  return request({
+    url: 'productUnitInfo/getCon',
+    method: 'get',
+    params
+  })
+}
+// 获取所有供应商
+export function fecthSupplierList(params) {
+  return request({
+    url: 'supplierCategory/listAll',
+    method: 'get',
+    params
+  })
+}
+// 获取所有采购员
+export function fecthSalerList(params) {
+  return request({
+    url: 'purchaseStaffRelation/queryNormalStateList',
+    method: 'get',
+    params
+  })
+}
+
 // 删除
 export function deletepProduct(params) {
   return request({
@@ -47,11 +81,11 @@ export function productDetail(params) {
     params
   })
 }
-
-export function fetchToken(params) {
+// 新增
+export function productCreate(data) {
   return request({
-    url: 'oss/upToken',
-    method: 'get',
-    params
+    url: 'productInfo/createProductInfoDao',
+    method: 'post',
+    data
   })
 }

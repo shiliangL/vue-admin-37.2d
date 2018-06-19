@@ -45,17 +45,13 @@ export default {
     }
   },
   mounted() {
-    setTimeout(() => {
-      console.log(this.permission_routers)
-    }, 200)
+
   }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 #sider-scroll-bar {
-  // -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);
-  // box-shadow: 2px 0 6px rgba(0,21,41,.35);
   background-color: #f9f9f9;
 }
 .logo-layout {

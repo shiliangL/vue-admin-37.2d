@@ -6,41 +6,36 @@
       <div class="content-box">
         <!-- 固定顶部操作菜单+位置明示 -->
         <div class="header-bar" slot="title">
-           <div class="left"> 订单详情 </div>
+           <div class="left"> {{currentTitle}} </div>
            <div class="right">
+             <template v-if="isShowView">
+                <el-button type="text" size="mini" @click.stop="isShowView = false">编辑</el-button>
+             </template>
+              <template v-else>
+                <el-button type="text" size="mini" @click.stop="validateForm">保存</el-button>
+             </template>
               <el-button type="text" size="mini" @click.stop="dialog.visiable = false">返回</el-button>
-              <el-button type="text" size="mini">刷新</el-button>
+              <!-- <el-button type="text" size="mini" v-if="this.data.type !== 'add'">刷新</el-button> -->
             </div>
         </div>
         <div class="content-bar">
-          <template v-if="this.data.type === 'view'">
+          <template v-if="isShowView">
             <toView></toView>
           </template>
-
-          <template v-if="this.data.type === 'follow'">
-
+          <template v-if="!isShowView">
+            <toEditor ref="toEditor" @callBack="callBackToSubmit"></toEditor>
           </template>
-
-          <toEditor></toEditor>
         </div>
       </div>
       <Loading v-if="loading" @loadingRefresh="onRefresh" :loadingText="loadingText" class="Loading"></Loading>
-      <!-- <el-form :model="form" :rules="rules" ref="form" label-width="100px" id="form" :inline="true">
-          测试数据弹层
-          <h1>测试</h1>
-      </el-form>
 
-      <div slot="footer" class="dialog-footer">
-        <el-button :loading="button.loading" size="small" type="primary" @click="clickSaveOrUpdate('form')">{{button.text}}</el-button>
-        <el-button size="small" @click="dialog.visiable = false">取 消</el-button>
-      </div> -->
     </el-dialog>
   </div>
 </template>
 
 <script>
 import addModel from '@/public/addModel.js'
-import { orderDetail } from '@/api/orders.js'
+import { productDetail, productCreate } from '@/api/goodsList.js'
 import toView from './toView'
 import toEditor from './toEditor'
 
@@ -56,6 +51,8 @@ export default {
         subPropList: []
       },
       rules: {},
+      isShowView: false,
+      currentTitle: null,
       viewData: null
     }
   },
@@ -65,6 +62,8 @@ export default {
   },
   mounted() {
     if (this.data.type === 'view') {
+      this.isShowView = true
+      this.currentTitle = '商品详情'
       const id = this.data.obj.id
       if (!id) return
       // this.fecthByID(id)
@@ -72,6 +71,7 @@ export default {
         this.loading = false
       }, 2000)
     } else if (this.data.type === 'add') {
+      this.currentTitle = '新增商品'
       this.loading = false
     }
   },
@@ -101,13 +101,31 @@ export default {
       }
     },
     fecthByID(id) {
-      orderDetail({ id }).then(({ data }) => {
+      productDetail({ id }).then(({ data }) => {
         this.viewData = data
         setTimeout(() => {
           this.loading = false
         }, 2000)
       }).catch(e => {
         this.loadingText = '加载错误'
+      })
+    },
+    validateForm() {
+      if (this.$refs['toEditor']) {
+        this.$refs['toEditor'].validateForm()
+      }
+    },
+    callBackToSubmit(data) {
+      console.log(data)
+      if (!data) return
+      productCreate(data).then(res => {
+        if (res.code === '0') {
+          this.$message({ type: 'success', message: res.msg })
+          this.dialog.visiable = false
+          this.$emit('add')
+        }
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
       })
     }
   }

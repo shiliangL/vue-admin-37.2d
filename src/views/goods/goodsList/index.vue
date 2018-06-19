@@ -11,8 +11,12 @@
               <span>{{scope.$index + 1}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="goodsImage" label="商品图片" align="center"></el-table-column>
-          <el-table-column prop="shortTitle" label="商品分类" align="center"></el-table-column>
+          <el-table-column prop="goodsImage" label="商品图片" align="center">
+             <template slot-scope="scope">
+               <img :src="`${baseImgUrl}${scope.row.goodsImage}`">
+            </template>
+          </el-table-column>
+          <el-table-column prop="categoryName" label="商品分类" align="center"></el-table-column>
           <el-table-column prop="title" label="商品名称" align="center"></el-table-column>
           <el-table-column prop="baseUnitId" label="单位" align="center"></el-table-column>
           <el-table-column prop="sellingPrice" label="市场价" align="center"></el-table-column>
@@ -64,6 +68,8 @@
 import Add from './add'
 import model from '@/public/listModel.js'
 import { list, fecthGoodsClass, deletepProduct, productsDown, productsUp } from '@/api/goodsList.js'
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'goodsList',
   mixins: [model],
@@ -101,8 +107,8 @@ export default {
           //   1：供货，2：自采，3：未指定
           { type: 'option', value: null, key: 'purchaseType', class: 'w110', placeholder: '采购类型', options: [
             { label: '供应商直供', value: 1 },
-            { label: '市场自采购', value: 2 },
-            { label: '未指定', value: 3 }]
+            { label: '市场自采购', value: 2 }
+          ]
           },
           { type: 'input', value: null, key: 'title', class: 'w180', placeholder: '输入订单编号／客户名称检索' },
           { type: 'search', name: '查询' },
@@ -122,34 +128,15 @@ export default {
     }
   },
   created() {
-
   },
   mounted() {
     this.fecthList()
     this.fecthGoodsClass()
   },
-  filters: {
-    // <!-- status;//状态  0 待发货  1 待收货  2 退换货  3 已完成  4已取消 5 已关闭  6 待付款 -->
-    filterStatus(status) {
-      switch (status) {
-        case 0:
-          return '待发货'
-        case 1:
-          return '待收货'
-        case 2:
-          return '退换货'
-        case 3:
-          return '已完成'
-        case 4:
-          return '已取消'
-        case 5:
-          return '已关闭'
-        case 6:
-          return '待付款'
-        default:
-          return ''
-      }
-    }
+  computed: {
+    ...mapGetters([
+      'baseImgUrl'
+    ])
   },
   methods: {
     searchAction(params) {
@@ -217,7 +204,7 @@ export default {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: row }})
     },
     refrehList() {
-
+      this.fecthList()
     },
     resetSearchBar() {
       console.log('重置')

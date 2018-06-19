@@ -1,4 +1,5 @@
 import { loginByUsername, logout, getUserInfo } from '@/api/login'
+import { fetchToken } from '@/api/layout'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -13,6 +14,7 @@ const user = {
     roles: [],
     menuList: [],
     curMenuIndex: 0,
+    qNtoken: null,
     setting: {
       articlePlatform: []
     }
@@ -21,6 +23,9 @@ const user = {
   mutations: {
     SET_CODE: (state, code) => {
       state.code = code
+    },
+    SET_QNTOKEN: (state, qNtoken) => {
+      state.qNtoken = qNtoken
     },
     SET_CURMENUINDEX: (state, curMenuIndex) => {
       state.curMenuIndex = curMenuIndex
@@ -148,6 +153,17 @@ const user = {
     // vuex 设置顶部订单菜单
     VX_SET_CURMENUINDEX({ commit }, curMenuIndex) {
       commit('SET_CURMENUINDEX', curMenuIndex)
+    },
+    // 设置七牛 token
+    VX_SET_QNTOKEN({ commit }) {
+      return new Promise((resolve, reject) => {
+        fetchToken().then(({ data }) => {
+          commit('SET_QNTOKEN', data.token)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
     }
   }
 }

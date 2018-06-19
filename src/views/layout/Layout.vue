@@ -15,9 +15,8 @@
 <script>
 import { Navbar, Sidebar, AppMain, TagsView, topNavBar } from './components'
 import { StickyBar } from '@/components/base.js'
-// import menuList from './menuList.json'
 import { fetchMenuList } from '@/api/layout.js'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'layout',
@@ -30,6 +29,9 @@ export default {
     topNavBar
   },
   computed: {
+    ...mapGetters([
+      'qNtoken'
+    ]),
     sidebar() {
       return this.$store.state.app.sidebar
     }
@@ -39,10 +41,14 @@ export default {
   },
   mounted() {
     this.fetchMenu()
+    if (!this.qNtoken) {
+      this.VX_SET_QNTOKEN()
+    }
   },
   methods: {
     ...mapActions([
-      'VX_SET_MENULIST'
+      'VX_SET_MENULIST',
+      'VX_SET_QNTOKEN'
     ]),
     fetchMenu() {
       fetchMenuList().then(res => {

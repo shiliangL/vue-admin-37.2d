@@ -21,10 +21,19 @@ export function logout() {
   })
 }
 
+// 获取权限菜单列表
 export function fetchMenuList(params) {
-  // 获取权限菜单列表
   return request({
     url: 'resource/list4CurrentOperator',
+    method: 'get',
+    params
+  })
+}
+
+// 获取权七牛 token
+export function fetchToken(params) {
+  return request({
+    url: 'oss/upToken',
     method: 'get',
     params
   })
