@@ -2,33 +2,105 @@
 <template>
     <div class="goodsList">
 
-      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction" @add="showAdd()" @reset="resetSearchBar" @command="clickMoreCommand"></search-bar>
+      <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
+
+      <div class="search-bar">
+        <div class="left">
+          <el-select class="w110" size="small" v-model="levelFirst" clearable filterable placeholder="一级分类">
+            <el-option v-for="sub in searchBarOptons.categoryOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
+          </el-select>
+        </div>
+
+         <div class="left" v-if="searchBarOptons.levelTowOption.length"> 
+          <el-select class="w110" size="small" v-model="levelFecond" clearable filterable placeholder="二级分类">
+            <el-option v-for="sub in searchBarOptons.levelTowOption" :key="sub.id" :label="sub.title" :value="sub.id"></el-option>
+          </el-select>
+        </div>
+
+        <div class="left">
+          <el-select class="w110" size="small" v-model="searchParams.purchaseType" clearable filterable placeholder="采购类型">
+            <el-option v-for="sub in searchBarOptons.purchaseTypeOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
+          </el-select>
+        </div>
+
+        <template  v-if="searchParams.purchaseType ===1">
+          <div class="left">
+            <!-- 供应商 -->
+            <el-select class="w110" size="small" v-model="supplyType" clearable filterable placeholder="供应商类别" @change="selectSupplyTypeChange">
+              <el-option v-for="sub in searchBarOptons.supplyTypeOption" :key="sub.pk" :label="sub.title" :value="sub.pk"></el-option>
+            </el-select>
+
+
+            <el-select class="w110" size="small" v-model="searchParams.supplyId" clearable filterable placeholder="供应商">
+              <el-option v-for="sub in searchBarOptons.supplierList" :key="sub.pk" :label="sub.title" :value="sub.pk"></el-option>
+            </el-select>
+          </div>
+
+        </template>
+
+        <template  v-if="searchParams.purchaseType ===2">
+          <div class="left">
+            <!-- 采购员 -->
+            <el-select class="w90" size="small" v-model="searchParams.buyerId" clearable filterable placeholder="采购员">
+              <el-option v-for="sub in searchBarOptons.salerList" :key="sub.pk" :label="sub.staffName" :value="sub.pk"></el-option>
+            </el-select>
+          </div>
+        </template>
+
+        <div class="left">
+          <el-input style="width:180px" v-model="searchParams.title" size="small" @keyup.enter.native="clickToSearch" placeholder="输入商品名称检索"></el-input>
+        </div>
+         <div class="left">
+            <el-button  type="primary" size="small" @click.stop="clickToSearch" > 搜索 </el-button>
+        </div>
+        <div class="left">
+            <el-button size="small" @click.stop="reset" > 重置 </el-button>
+        </div>
+        <div class="right">
+          <div class="left">
+            <el-button size="small" @click.stop="showAdd" > 新增 </el-button>
+          </div>
+           <el-dropdown class="right" trigger="click" @command="clickCommand">
+              <el-button size="small"> 批量操作 <i class="el-icon-arrow-down el-icon--right"></i></el-button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item v-for="label in options.moreOptins" :key="label" :command="label">{{label}}</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+        </div>
+      </div>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
-        <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
+        <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row
+          ref="multipleTable"
+          @row-click="clickTableRow"
+          @selection-change="selectOneAndMore"
+          @select-all="selectAll">
+
+          <el-table-column type="selection" width="40"></el-table-column>
+
           <el-table-column label="序号" width="50" align="center">
             <template slot-scope="scope">
               <span>{{scope.$index + 1}}</span>
             </template>
           </el-table-column>
+
           <el-table-column prop="goodsImage" label="商品图片" align="center">
              <template slot-scope="scope">
-               <img :src="`${baseImgUrl}${scope.row.goodsImage}`">
+               <div class="picBox">
+                <img :src="`${scope.row.goodsImage}`">
+               </div>
             </template>
           </el-table-column>
           <el-table-column prop="categoryName" label="商品分类" align="center"></el-table-column>
           <el-table-column prop="title" label="商品名称" align="center"></el-table-column>
-          <el-table-column prop="baseUnitId" label="单位" align="center"></el-table-column>
-          <el-table-column prop="sellingPrice" label="市场价" align="center"></el-table-column>
-          <el-table-column prop="aliasTitle" label="别名" align="center"></el-table-column>
+          <el-table-column prop="titlePrace" label="市场价格(全国)" align="center"></el-table-column>
           <el-table-column prop="purchaseType" label="采购类型" align="center">
              <template slot-scope="scope" align="center">
-               <span v-if="scope.row.purchaseType ===1">供货</span>
-               <span v-if="scope.row.purchaseType ===2">自采</span>
-               <span v-if="scope.row.purchaseType ===3">未指定</span>
+               <span v-if="scope.row.purchaseType ===1">供应商直供</span>
+               <span v-if="scope.row.purchaseType ===2">市场自采</span>
             </template>
           </el-table-column>
-          <el-table-column prop="customerName" label="采购员/供应商" align="center"></el-table-column>
+          <el-table-column prop="titleName" label="采购员/供应商" align="center"></el-table-column>
 
           <el-table-column prop="goodsStatus" label="状态" align="center">
             <template slot-scope="scope" align="center">
@@ -41,7 +113,7 @@
               <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">详情</el-button>
               <el-button type="text" v-if="scope.row.goodsStatus ===0" size="mini" @click.stop="clickToUpOrDown(scope.$index, scope.row)">下架</el-button>
               <el-button type="text" v-if="scope.row.goodsStatus ===1" size="mini" @click.stop="clickToUpOrDown(scope.$index, scope.row)">上架</el-button>
-              <el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index, scope.row)">删除</el-button>
+              <el-button type="text" v-if="scope.row.goodsStatus !==0" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index, scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -67,28 +139,22 @@
 <script>
 import Add from './add'
 import model from '@/public/listModel.js'
-import { list, fecthGoodsClass, deletepProduct, productsDown, productsUp } from '@/api/goodsList.js'
+import { Tabs } from '@/components/base.js'
+import { list, fecthGoodsClass, deletepProduct, productsDown, productsUp, fecthSupplierList, fecthSalerList, fecthByCategoryId } from '@/api/goodsList.js'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'goodsList',
   mixins: [model],
   components: {
-    Add
+    Add,
+    Tabs
   },
   data() {
     return {
       curIndex: 0,
-      tabTitles: [
-        { title: '全部', value: '' },
-        { title: '待付款', value: 6 },
-        { title: '待发货', value: 0 },
-        { title: '待收货', value: 1 },
-        { title: '退/换货', value: 2 },
-        { title: '已取消', value: 4 },
-        { title: '已关闭', value: 5 }
-      ],
       options: {
+        moreOptins: ['批量上架', '批量下架', '批量删除'],
         goodsClass: []
       },
       searchBarData: [
@@ -99,7 +165,7 @@ export default {
             // { label: '米面粮油', value: 2 }
           ]
           },
-          //   商品状态, 0 上架，1 下架
+          //   商品状态, 0 上架，1 下架 goodsStatus
           { type: 'option', value: null, key: 'goodsStatus', class: 'w110', placeholder: '全部状态', options: [
             { label: '上架', value: 0 },
             { label: '下架', value: 1 }]
@@ -119,19 +185,42 @@ export default {
           // { type: 'more', labels: ['导入', '上传图片'] }
         ]
       ],
+      supplyType: '', // 过渡变量供应商类别
       searchParams: {
         title: null,
         categoryId: null,
         purchaseType: null,
-        goodsStatus: null
-      }
+        supplyId: null,
+        buyerId: null,
+        goodsStatus: 0
+      },
+      searchBarOptons: {
+        categoryOption: [],
+        levelTowOption: [],
+        purchaseTypeOption: [
+          { label: '供应商直供', value: 1 },
+          { label: '市场自采购', value: 2 }
+        ],
+        supplierList: [],
+        supplyTypeOption: [],
+        salerList: []
+      },
+      levelFirst: '',
+      levelFecond: '',
+      selectArray: [],
+      levelTypeOption: []
     }
   },
   created() {
+    this.tabTitles = [
+      { title: '上架', value: 0 },
+      { title: '下架', value: 1 }]
   },
   mounted() {
     this.fecthList()
     this.fecthGoodsClass()
+    this.fecthSalerList()
+    this.fecthSupplierList()
   },
   computed: {
     ...mapGetters([
@@ -139,18 +228,24 @@ export default {
     ])
   },
   methods: {
-    searchAction(params) {
-      console.log(params, 'xx')
+    reset() {
       this.searchParams = {
-        title: params.title,
-        categoryId: params.categoryId,
-        purchaseType: params.purchaseType,
-        goodsStatus: params.goodsStatus
+        title: null,
+        categoryId: null,
+        purchaseType: null
       }
+    },
+    tabsCallBack(item) {
+      this.searchParams.goodsStatus = item.value
       this.fecthList()
     },
-    clickMoreCommand(command) {
-      this.$message({ type: 'success', message: command, duration: 0, showClose: true })
+    clickToSearch() {
+      if (this.levelFecond) {
+        this.searchParams.categoryId = this.levelFecond
+      } else {
+        this.searchParams.categoryId = this.levelFirst
+      }
+      this.fecthList()
     },
     // 数据请求
     fecthList() {
@@ -161,7 +256,21 @@ export default {
         ...this.searchParams
       }
       list(data).then(({ data }) => {
-        this.table.data = data.rows
+        if (Array.isArray(data.rows) && data.rows.length > 0) {
+          for (const item of data.rows) {
+            if (item.mixPrice && item.maxPrice) {
+              item.titlePrace = `¥${item.mixPrice}  ~  ${item.maxPrice}`
+            } else {
+              item.titlePrace = `¥${item.maxPrice}`
+            }
+            if (item.purchaseType === 1) {
+              item.titleName = item.supplierName
+            } else {
+              item.titleName = item.buyerName
+            }
+          }
+          this.table.data = data.rows
+        }
         this.pagination.total = data.total
       }).catch(e => {
         this.$message({ type: 'error', message: '列表加载失败', duration: 0, showClose: true })
@@ -175,11 +284,12 @@ export default {
           if (item.parentId === '0') {
             result.push({
               label: item.title,
-              value: item.title
+              value: item.id
             })
           }
         }
-        this.searchBarData[0][0].options = result
+        this.levelTypeOption = data
+        this.searchBarOptons.categoryOption = result
       }).catch(e => {
         this.$message({ type: 'error', message: '加载分类失败失败' })
       })
@@ -205,9 +315,6 @@ export default {
     },
     refrehList() {
       this.fecthList()
-    },
-    resetSearchBar() {
-      console.log('重置')
     },
     clickToUpOrDown(index, item) {
       const msg = item.goodsStatus === 0 ? '是否确定下架操作？' : '是否确定上架操作？'
@@ -248,6 +355,136 @@ export default {
           this.$message({ type: 'error', message: '删除失败' })
         })
       }).catch(() => {})
+    },
+    clickTableRow(row) {
+      if (this.table.data.length > 0) {
+        this.$refs.multipleTable.toggleRowSelection(row)
+      }
+    },
+    selectOneAndMore(selectArray) {
+      if (selectArray.length > 0) {
+        this.selectArray = selectArray
+      } else {
+        this.selectArray = []
+      }
+    },
+    selectAll(selectArray) {
+      if (selectArray.length > 0) {
+        this.selectArray = selectArray
+      } else {
+        this.selectArray = []
+      }
+    },
+    clickCommand(command) {
+      //   商品状态, 0 上架，1 下架 goodsStatus
+      if (Array.isArray(this.selectArray) && this.selectArray.length === 0) {
+        this.$message({ type: 'warning', message: '请选择商品' })
+        return
+      }
+      switch (command) {
+        case '批量上架': {
+          const ids = []
+          for (const item of this.selectArray) {
+            if (item.goodsStatus === 1) {
+              ids.push(item.id)
+            }
+          }
+          if (ids.length === 0) return
+          productsUp({ ids: ids.toString() }).then(res => {
+            this.$message({ type: 'success', message: `${res.msg}` })
+            this.selectArray = []
+            this.fecthList()
+          }).catch(() => {
+            this.$message({ type: 'error', message: '操作失败' })
+          })
+          break
+        }
+        case '批量下架': {
+          const ids = []
+          for (const item of this.selectArray) {
+            if (item.goodsStatus === 0) {
+              ids.push(item.id)
+            }
+          }
+          if (ids.length === 0) return
+          productsDown({ ids: ids.toString() }).then(res => {
+            this.$message({ type: 'success', message: `${res.msg}` })
+            this.selectArray = []
+            this.fecthList()
+          }).catch(() => {
+            this.$message({ type: 'error', message: '操作失败' })
+          })
+          break
+        }
+        case '批量删除': {
+          const ids = []
+          for (const item of this.selectArray) {
+            if (item.goodsStatus === 1) {
+              ids.push(item.id)
+            }
+          }
+          if (ids.length === 0) return
+          deletepProduct({ ids: ids.toString() }).then(res => {
+            this.selectArray = []
+            this.$message({ type: 'success', message: `${res.msg}` })
+            this.fecthList()
+          }).catch(() => {
+            this.$message({ type: 'error', message: '删除失败' })
+          })
+          break
+        }
+        default:
+          break
+      }
+    },
+    // 加载供应商类别
+    fecthSupplierList() {
+      fecthSupplierList().then(({ data }) => {
+        if (Array.isArray(data) && data.length > 0) {
+          this.searchBarOptons.supplyTypeOption = data
+        }
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+    selectSupplyTypeChange(val) {
+      if (!val) return
+      fecthByCategoryId({ categoryId: val }).then(({ data }) => {
+        if (Array.isArray(data) && data.length > 0) {
+          this.searchBarOptons.supplierList = data
+        }
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+    // 加载采购员
+    fecthSalerList() {
+      fecthSalerList().then(({ data }) => {
+        this.searchBarOptons.salerList = data
+      }).catch(e => {
+        console.log(e)
+      })
+    }
+  },
+  watch: {
+    levelFirst: {
+      handler(val, old) {
+        if (val) {
+          const arr = []
+          for (const item of this.levelTypeOption) {
+            if (val === item.parentId) {
+              arr.push(item)
+            }
+          }
+          this.searchBarOptons.levelTowOption = arr
+        } else {
+          this.levelFecond = ''
+          this.searchBarOptons.levelTowOption = []
+        }
+        if (val && old) {
+          this.levelFecond = ''
+        }
+      }
     }
   }
 }
@@ -259,6 +496,16 @@ export default {
   height: 100%;
   .content {
     padding: 20px;
+  }
+  .picBox{
+    width: 120px;
+    height: 40px;
+    text-align: center;
+    display: inline-block;
+    overflow: hidden;
+    img{
+      height: 100%;
+    }
   }
 }
 </style>

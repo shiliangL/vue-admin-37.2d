@@ -9,7 +9,7 @@
            <div class="left"> {{currentTitle}} </div>
            <div class="right">
              <template v-if="isShowView">
-                <el-button type="text" size="mini" @click.stop="isShowView = false">编辑</el-button>
+                <el-button type="text" size="mini" @click.stop="clickToEdit">编辑</el-button>
              </template>
               <template v-else>
                 <el-button type="text" size="mini" @click.stop="validateForm">保存</el-button>
@@ -20,10 +20,10 @@
         </div>
         <div class="content-bar">
           <template v-if="isShowView">
-            <toView></toView>
+            <toView :viewData="viewData"></toView>
           </template>
-          <template v-if="!isShowView">
-            <toEditor ref="toEditor" @callBack="callBackToSubmit"></toEditor>
+          <template v-if="isShowEditor">
+            <toEditor :viewData="viewData" ref="toEditor" @callBack="callBackToSubmit" :typeIseditor="typeIseditor"></toEditor>
           </template>
         </div>
       </div>
@@ -35,7 +35,7 @@
 
 <script>
 import addModel from '@/public/addModel.js'
-import { productDetail, productCreate } from '@/api/goodsList.js'
+import { productDetail, productCreate, productUpdate } from '@/api/goodsList.js'
 import toView from './toView'
 import toEditor from './toEditor'
 
@@ -52,8 +52,10 @@ export default {
       },
       rules: {},
       isShowView: false,
+      isShowEditor: false,
       currentTitle: null,
-      viewData: null
+      viewData: null,
+      typeIseditor: false
     }
   },
   created() {
@@ -62,20 +64,23 @@ export default {
   },
   mounted() {
     if (this.data.type === 'view') {
-      this.isShowView = true
+      // this.isShowView = true
       this.currentTitle = '商品详情'
       const id = this.data.obj.id
       if (!id) return
-      // this.fecthByID(id)
-      setTimeout(() => {
-        this.loading = false
-      }, 2000)
+      this.fecthProductDetail(id)
     } else if (this.data.type === 'add') {
       this.currentTitle = '新增商品'
+      this.isShowEditor = true
       this.loading = false
     }
   },
   methods: {
+    clickToEdit() {
+      this.typeIseditor = true // 点击判断编辑修改提交
+      this.isShowView = false
+      this.isShowEditor = true
+    },
     closeDialog() {
       this.$emit('input', false)
     },
@@ -93,21 +98,21 @@ export default {
       this.$setKeyValue(this.button, { loading: false, text: '确定' })
     },
     onRefresh() {
-      console.log('刷新')
       if (this.data.type === 'view') {
         const id = this.data.obj.id
         if (!id) return
-        this.fecthByID(id)
+        this.fecthProductDetail(id)
       }
     },
-    fecthByID(id) {
+    fecthProductDetail(id) {
       productDetail({ id }).then(({ data }) => {
         this.viewData = data
+        this.isShowView = true
         setTimeout(() => {
           this.loading = false
-        }, 2000)
+        }, 200)
       }).catch(e => {
-        this.loadingText = '加载错误'
+        this.loadingText = e
       })
     },
     validateForm() {
@@ -116,17 +121,80 @@ export default {
       }
     },
     callBackToSubmit(data) {
-      console.log(data)
       if (!data) return
-      productCreate(data).then(res => {
-        if (res.code === '0') {
-          this.$message({ type: 'success', message: res.msg })
-          this.dialog.visiable = false
-          this.$emit('add')
+      if (this.typeIseditor) {
+        const update = {
+          id: data.id,
+          aliasTitle: data.aliasTitle,
+          bannerIds: data.bannerIds,
+          barCode: data.barCode,
+          basePrice: data.basePrice,
+          baseUnit: data.baseUnit,
+          baseUnitName: data.baseUnitName,
+          categoryId: data.categoryId,
+          categoryName: data.categoryName,
+          details: data.details,
+          goodsImage: data.goodsImage,
+          goodsStatus: data.goodsStatus,
+          itemNumber: data.itemNumber,
+          purchasePrice: data.purchasePrice,
+          purchaseType: data.purchaseType,
+          sellingPrice: data.sellingPrice,
+          shortCode: data.shortCode,
+          shortTitle: data.shortTitle,
+          sortFlag: data.sortFlag,
+          specificationId: data.specificationId,
+          stockQuantity: data.stockQuantity,
+          subTitle: data.subTitle,
+          summary: data.summary,
+          tags: data.tags,
+          title: data.title,
+          type: data.type
         }
-      }).catch(e => {
-        this.$message({ type: 'error', message: e.msg })
-      })
+        update.skuList = data.skuList
+        update.supply = {
+          id: data.supplyTempId,
+          supplierId: data.supplyId
+        }
+        update.buyer = {
+          id: data.buyerTempId,
+          buyerId: data.buyerId
+        }
+        // if (data.supplyId) {
+        //   update.supply = {
+        //     id: data.supplyTempId,
+        //     supplierId: data.supplyId
+        //   }
+        //   update.buyer = null
+        // } else if (data.buyerId) {
+        //   update.buyer = {
+        //     id: data.buyerTempId,
+        //     buyerId: data.buyerId
+        //   }
+        //   update.supply = null
+        // }
+        console.log(update)
+        debugger
+        productUpdate(update).then(res => {
+          if (res.code === '0') {
+            this.$message({ type: 'success', message: res.msg })
+            this.dialog.visiable = false
+            this.$emit('add')
+          }
+        }).catch(e => {
+          this.$message({ type: 'error', message: e.msg })
+        })
+      } else {
+        productCreate(data).then(res => {
+          if (res.code === '0') {
+            this.$message({ type: 'success', message: res.msg })
+            this.dialog.visiable = false
+            this.$emit('add')
+          }
+        }).catch(e => {
+          this.$message({ type: 'error', message: e.msg })
+        })
+      }
     }
   }
 }

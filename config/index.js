@@ -19,20 +19,20 @@ module.exports = {
       //     '^/rtusapi': '/rtusapi'
       //   }
       // }
-      '/': {
-        target: 'http://cmm.ngrok.xiaomiqiu.cn',
-        changeOrigin: true,
-      }
       // '/': {
-      //   target: 'http://192.168.2.75:9001/',
+      //   target: 'http://cmm.ngrok.xiaomiqiu.cn',
       //   changeOrigin: true,
       // }
+      '/': {
+        target: 'http://192.168.2.77:5858/',
+        changeOrigin: true,
+      }
     },
 
     // Various Dev Server settings
     // host: '10.80.84.72', // can be overwritten by process.env.HOST
     host: 'localhost', // can be overwritten by process.env.HOST
-    // host: '192.168.2.25', // can be overwritten by process.env.HOST
+    // host: '192.168.2.26', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,

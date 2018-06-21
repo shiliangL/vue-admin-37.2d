@@ -59,3 +59,10 @@ Vue.prototype.$compareObjValue = (original, obj) => {
   }
   return true
 }
+
+Vue.prototype.$arrayAttrGetObj = (array, attr, str) => {
+  for (var i = 0; i < array.length; i++) {
+    if (array[i][attr] === str) { return array[i] }
+  }
+  return null
+}

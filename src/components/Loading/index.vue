@@ -12,7 +12,7 @@
           <div class="sk-cube sk-cube9"></div>
         </div>
         <p v-if="text" class="loading-text">{{ loadText }}</p>
-        <p v-if="error" class="error-text">{{ errorText}} 加载失败 </p>
+        <p v-if="error" class="error-text">{{ errorText}} </p>
         <el-button type="primary" size="mini" v-if="refresh"  @click="handleRefresh">刷新</el-button>
       </div>
 </template>
@@ -36,7 +36,8 @@ export default {
       setTimeout(() => {
         this.progress = false
         this.text = false
-        this.errorText = JSON.stringify(this.loadingText.message)
+        // this.errorText = JSON.stringify(this.loadingText.msg)
+        this.errorText = this.loadingText.msg
         this.error = true
         this.refresh = true
       }, 1000)

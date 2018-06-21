@@ -24,20 +24,6 @@ export const constantRouterMap = [
   }
 ]
 export const asyncRouterMap = [
-  // {
-  //   path: '/users',
-  //   component: Layout,
-  //   redirect: 'noredirect',
-  //   name: 'users',
-  //   meta: {
-  //     title: 'users',
-  //     icon: 'component'
-  //   },
-  //   children: [
-  //     { path: 'userList', component: _import('users/userList/index'), name: 'userList', meta: { title: 'userList' }},
-  //     { path: 'userInfo', component: _import('users/userInfo/index'), name: 'userInfo', meta: { title: 'userInfo' }}
-  //   ]
-  // },
   {
     path: '/orders',
     component: Layout,

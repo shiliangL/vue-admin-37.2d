@@ -56,7 +56,8 @@ export default {
     commodity: '商品档案',
     goodsClass: '商品分类',
     goodsProfile: '辅助资料',
-    goodsImgs: '商品图片'
+    goodsList: '商品列表',
+    orderList: '销售订单'
   },
   navbar: {
     logOut: '退出登录',

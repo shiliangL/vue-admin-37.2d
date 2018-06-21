@@ -15,7 +15,7 @@ export function fecthGoodsClass(params) {
     params
   })
 }
-// 获取计量单位
+// 获取计量单位 - 基本单位
 export function fecthUnit(params) {
   return request({
     url: 'productUnitInfo/listAll',
@@ -31,7 +31,7 @@ export function fecthSwitchUnit(params) {
     params
   })
 }
-// 获取所有供应商
+// 获取所有供应商类别
 export function fecthSupplierList(params) {
   return request({
     url: 'supplierCategory/listAll',
@@ -39,6 +39,15 @@ export function fecthSupplierList(params) {
     params
   })
 }
+// 根据供应商 id 加载供应商
+export function fecthByCategoryId(params) {
+  return request({
+    url: 'supplier/listByCategoryId',
+    method: 'get',
+    params
+  })
+}
+
 // 获取所有采购员
 export function fecthSalerList(params) {
   return request({
@@ -86,6 +95,14 @@ export function productCreate(data) {
   return request({
     url: 'productInfo/createProductInfoDao',
     method: 'post',
+    data
+  })
+}
+// 更新
+export function productUpdate(data) {
+  return request({
+    url: 'productInfo/updateProductInfo',
+    method: 'PUT',
     data
   })
 }
