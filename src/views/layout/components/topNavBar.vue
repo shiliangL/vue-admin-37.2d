@@ -14,7 +14,7 @@
               <el-dropdown class="avatar-container right-menu-item" trigger="hover">
               <div class="avatar-wrapper">
                 <!-- <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'"> -->
-                shiliangl
+                Admin
               </div>
               <el-dropdown-menu slot="dropdown">
                 <router-link to="/">

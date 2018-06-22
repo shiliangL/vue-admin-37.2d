@@ -255,7 +255,6 @@ import { fecthGoodsClass, fecthUnit, fecthSupplierList, fecthSalerList, fecthByC
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: 'toEditor',
   mixins: [rules, addModel],
   props: {
     viewData: {

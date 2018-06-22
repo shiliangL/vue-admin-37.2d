@@ -1,52 +1,33 @@
 import request from '@/utils/request'
 
-// 获取订单列表
-export function orderList(params) {
-  return request({
-    url: 'scmSalesOrder/list',
-    method: 'get',
-    params
-  })
-}
-
-// 加载订单列表明细
-export function orderDetail(params) {
-  return request({
-    url: 'scmSalesOrder/detail',
-    method: 'get',
-    params
-  })
-}
-
-// 加载包装单位列表
+// 加载列表
 export function packagingList(params) {
   return request({
-    url: 'productPackageInfo/getProductList',
+    url: 'productUnitInfo/getProductList',
     method: 'get',
     params
   })
 }
-// 新增包装单位
+// 新增
 export function createPackaging(data) {
   return request({
-    url: 'productPackageInfo/createProductPackag',
+    url: 'productUnitInfo/createProductUnit',
     method: 'post',
     data
   })
 }
-
-// 删除包装单位 id
+// 删除
 export function deletePackaging(params) {
   return request({
-    url: 'productPackageInfo/deleteProductCategory',
+    url: 'productUnitInfo/deleteProductUnit',
     method: 'delete',
     params
   })
 }
-// 加载明细包装单位 id
+// 加载明细 by id
 export function packagingInfo(params) {
   return request({
-    url: 'productPackageInfo/getProductPackag',
+    url: 'productUnitInfo/getProductUnit',
     method: 'get',
     params
   })
@@ -54,7 +35,7 @@ export function packagingInfo(params) {
 // 更新包装单位 id
 export function packagingUpdate(data) {
   return request({
-    url: 'productPackageInfo/updateProductPackag',
+    url: 'productUnitInfo/updateProductUnit',
     method: 'PUT',
     data
   })

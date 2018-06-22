@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function list(params) {
+export function fecthList(params) {
   return request({
     url: 'productInfo/listProductInfo',
     method: 'get',

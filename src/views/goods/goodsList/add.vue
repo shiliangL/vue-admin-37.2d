@@ -1,6 +1,5 @@
 <template>
 <!-- 全屏固定表头弹层组件 -->
-<!-- :title="dialog.title" -->
   <div>
     <el-dialog :visible.sync="dialog.visiable" @close="closeDialog" :show-close="false" :fullscreen="true" :modal-append-to-body="false">
       <div class="content-box">
@@ -23,7 +22,7 @@
             <toView :viewData="viewData"></toView>
           </template>
           <template v-if="isShowEditor">
-            <toEditor :viewData="viewData" ref="toEditor" @callBack="callBackToSubmit" :typeIseditor="typeIseditor"></toEditor>
+            <toEditor :viewData="viewData" ref="toEditor" @callBack="callBackToSubmit"></toEditor>
           </template>
         </div>
       </div>
@@ -51,6 +50,7 @@ export default {
         subPropList: []
       },
       rules: {},
+      test: false,
       isShowView: false,
       isShowEditor: false,
       currentTitle: null,
@@ -68,7 +68,7 @@ export default {
       this.currentTitle = '商品详情'
       const id = this.data.obj.id
       if (!id) return
-      this.fecthProductDetail(id)
+      this.fecthDerDetailById(id)
     } else if (this.data.type === 'add') {
       this.currentTitle = '新增商品'
       this.isShowEditor = true
@@ -101,10 +101,10 @@ export default {
       if (this.data.type === 'view') {
         const id = this.data.obj.id
         if (!id) return
-        this.fecthProductDetail(id)
+        this.fecthDerDetailById(id)
       }
     },
-    fecthProductDetail(id) {
+    fecthDerDetailById(id) {
       productDetail({ id }).then(({ data }) => {
         this.viewData = data
         this.isShowView = true
@@ -160,21 +160,6 @@ export default {
           id: data.buyerTempId,
           buyerId: data.buyerId
         }
-        // if (data.supplyId) {
-        //   update.supply = {
-        //     id: data.supplyTempId,
-        //     supplierId: data.supplyId
-        //   }
-        //   update.buyer = null
-        // } else if (data.buyerId) {
-        //   update.buyer = {
-        //     id: data.buyerTempId,
-        //     buyerId: data.buyerId
-        //   }
-        //   update.supply = null
-        // }
-        console.log(update)
-        debugger
         productUpdate(update).then(res => {
           if (res.code === '0') {
             this.$message({ type: 'success', message: res.msg })

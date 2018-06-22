@@ -23,20 +23,18 @@
           </el-select>
         </div>
 
-        <template  v-if="searchParams.purchaseType ===1">
+        <!-- 供应商 -->
+        <!-- <template  v-if="searchParams.purchaseType ===1">
           <div class="left">
-            <!-- 供应商 -->
             <el-select class="w110" size="small" v-model="supplyType" clearable filterable placeholder="供应商类别" @change="selectSupplyTypeChange">
               <el-option v-for="sub in searchBarOptons.supplyTypeOption" :key="sub.pk" :label="sub.title" :value="sub.pk"></el-option>
             </el-select>
-
 
             <el-select class="w110" size="small" v-model="searchParams.supplyId" clearable filterable placeholder="供应商">
               <el-option v-for="sub in searchBarOptons.supplierList" :key="sub.pk" :label="sub.title" :value="sub.pk"></el-option>
             </el-select>
           </div>
-
-        </template>
+        </template> -->
 
         <template  v-if="searchParams.purchaseType ===2">
           <div class="left">
@@ -68,6 +66,15 @@
             </el-dropdown>
         </div>
       </div>
+
+    <div>
+      <BoxToSearch
+        @change="selectChange"
+        :id.sync="brandIds"
+        :name.sync="brandNames"
+        multiple>
+      </BoxToSearch>
+    </div>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row
@@ -140,15 +147,16 @@
 import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs } from '@/components/base.js'
-import { list, fecthGoodsClass, deletepProduct, productsDown, productsUp, fecthSupplierList, fecthSalerList, fecthByCategoryId } from '@/api/goodsList.js'
+import { fecthList, fecthGoodsClass, deletepProduct, productsDown, productsUp, fecthSupplierList, fecthSalerList, fecthByCategoryId } from '@/api/goodsList.js'
 import { mapGetters } from 'vuex'
-
+import { BoxToSearch } from '@/components/base.js'
 export default {
   name: 'goodsList',
   mixins: [model],
   components: {
     Add,
-    Tabs
+    Tabs,
+    BoxToSearch
   },
   data() {
     return {
@@ -208,7 +216,9 @@ export default {
       levelFirst: '',
       levelFecond: '',
       selectArray: [],
-      levelTypeOption: []
+      levelTypeOption: [],
+      brandIds: null,
+      brandNames: null
     }
   },
   created() {
@@ -228,7 +238,12 @@ export default {
     ])
   },
   methods: {
+    selectChange(data) {
+      console.log(data)
+    },
     reset() {
+      this.levelFirst = ''
+      this.levelFecond = ''
       this.searchParams = {
         title: null,
         categoryId: null,
@@ -255,8 +270,8 @@ export default {
         size,
         ...this.searchParams
       }
-      list(data).then(({ data }) => {
-        if (Array.isArray(data.rows) && data.rows.length > 0) {
+      fecthList(data).then(({ data }) => {
+        if (Array.isArray(data.rows)) {
           for (const item of data.rows) {
             if (item.mixPrice && item.maxPrice) {
               item.titlePrace = `¥${item.mixPrice}  ~  ${item.maxPrice}`

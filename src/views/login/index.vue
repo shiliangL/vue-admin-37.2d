@@ -1,22 +1,20 @@
 <template>
   <div class="login-container">
     <div class="container">
-      <!-- logo部分 -->
-      <!-- 表单部分 -->
       <div class="form-group">
         <el-card class="box-card">
-          <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
+          <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="rules" ref="loginForm" label-position="left">
             <div class="title-container">
               <span class="title">{{ loginTitle }}</span>
             </div>
-            <el-form-item prop="username">
-              <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username">
+            <el-form-item prop="username" :rules="rules.input">
+              <el-input name="username" type="text" v-model.trim="loginForm.username" autoComplete="on" placeholder="username">
                <i slot="prefix" class="el-input__icon el-icon-menu"></i>
                </el-input >
             </el-form-item>
 
-            <el-form-item prop="password">
-              <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="password">
+            <el-form-item prop="password" :rules="rules.input">
+              <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model.trim="loginForm.password" autoComplete="on" placeholder="password">
                <i slot="prefix" class="el-input__icon el-icon-view"></i>
               </el-input>
             </el-form-item>
@@ -37,26 +35,28 @@
 
 <script>
 import { LangSelect } from '@/components/base.js'
+import rules from '@/public/rules.js'
 export default {
   components: {
     LangSelect
   },
   name: 'login',
+  mixins: [rules],
   data() {
     return {
       loginForm: {
-        username: 'test',
-        password: '11111111'
+        'imageCode': 'string',
+        'password': '123456',
+        'rememberMe': false,
+        'username': 'admin01'
       },
       loginRules: {},
       passwordType: 'password',
-      loading: false,
-      showDialog: false
+      loading: false
     }
   },
   created() {
     this.loginTitle = '厨满满商城后台管理系统'
-    // window.addEventListener('hashchange', this.afterQRScan)
   },
   mounted() {
     // 初始化例子插件

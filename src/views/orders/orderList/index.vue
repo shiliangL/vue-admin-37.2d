@@ -41,7 +41,7 @@
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">订单查看</el-button>
-              <el-button type="text" size="mini" @click.stop="click2follow(scope.$index, scope.row)">订单跟踪</el-button>
+              <!-- <el-button type="text" size="mini" @click.stop="click2follow(scope.$index, scope.row)">订单跟踪</el-button> -->
             </template>
           </el-table-column>
         </el-table>
@@ -107,10 +107,16 @@ export default {
           { type: 'reset', name: '重置' }
         ],
         [
-          { type: 'button', name: '导出Excel' }
+          // { type: 'button', name: '导出Excel' }
           // { type: 'more', labels: ['导入', '上传图片'] }
         ]
-      ]
+      ],
+      paramsData: {
+        orderNoOrName: null,
+        orderTime: null,
+        paymentType: null,
+        orderSource: null
+      }
     }
   },
   created() {
@@ -144,11 +150,11 @@ export default {
   },
   methods: {
     searchAction(params) {
-      console.log(params, 'xx')
       this.paramsData = {
-        status: this.curIndex,
-        orderNoOrName: params.orderNoOrName || '',
-        sendTime: params.sendTime || ''
+        orderNoOrName: params.orderNoOrName,
+        orderTime: params.orderTime,
+        paymentType: params.paymentType,
+        orderSource: params.orderSource
       }
       this.fecthList()
     },

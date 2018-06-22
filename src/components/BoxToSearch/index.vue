@@ -12,9 +12,9 @@
 
 			<div class="search-layout" ref="searchLayout" v-show="showTable || showTags">
 				<div class="tags-box" v-show="showTags">
-					<span :key="index" :title="tag[showKey]" v-for="(tag,index) in selectList" class="el-tag el-tag--primary" >
+					<span :key="index" :title="tag[showKey]" v-for="(tag,index) in selectList" class="el-tag el-tag--small" >
 				      <i @click.stop="handleTagClose(tag, 2)" class="el-tag__close el-icon-close"></i>
-				        <span class="tag-txt" > {{tag[showKey]}} </span>
+				      <span class="tag-txt" > {{tag[showKey]}} </span>
 				    </span>
 				    <div style="text-align: center; margin: 15px 0 5px;">
 				    	<el-button size="mini" @click="clearAll">一键清空</el-button>
@@ -30,24 +30,22 @@
 					    		</el-checkbox>
 					    	</template>
 					    </el-table-column>
-					    <el-table-column prop="code" label="编码"></el-table-column>
 					    <el-table-column prop="name" label="名称"></el-table-column>
+					    <el-table-column prop="code" label="编码"></el-table-column>
 					</el-table>
+
+          <el-pagination
+            @current-change="handlePageChange"
+            :page-sizes="[10, 20, 50, 100]"
+            :current-page="page"
+            :page-size="size"
+            layout="total, sizes, prev, pager, next"
+            :total="total">
+				  </el-pagination>		
 
 					<div style="clear: both;text-align: center;margin-top: 6px;">
 						共 {{tableData.length}} 条
 					</div>
-
-					<!-- <el-pagination  
-						small @current-change="handlePageChange"
-						:current-page="page"
-						:page-size="size"
-						layout="prev, pager, next, slot" 
-						:total="total">
-							<select @change="handlePageSizeChange" v-model="size">
-								<option :key="index" v-for="(item,index) in [5, 10, 20, 30, 50]"  :value="item"> {{item}} 条/页 </option>
-							</select>
-					</el-pagination> -->
 
 					<loading v-show="loadError"  @refresh="getList"  :loadingError="loadingError"> </loading>
 		      	</div>
@@ -63,7 +61,7 @@
 					选中{{selectList.length}}个
 				</el-button>
 
-				<span :key="index" style="margin-right: 0" :style="maxTagWidth" :title="tag[showKey]" v-if="selectList.length === 1" v-for="(tag,index) in selectList" class="el-tag el-tag--primary" >
+				<span :key="index" style="margin-right: 0" :style="maxTagWidth" :title="tag[showKey]" v-if="selectList.length === 1" v-for="(tag,index) in selectList" class="el-tag el-tag--small" >
 			    <i @click.stop="handleTagClose(tag)" class="el-tag__close el-icon-close"></i>
 			    <span class="tag-txt" > {{tag[showKey]}} </span>
 				</span>
@@ -125,7 +123,8 @@ table {
   .input-layout {
     position: relative;
     width: 100%;
-    height: 36px;
+    height: 34px;
+    line-height: 34px;
     background-color: #fff;
     background-image: none;
     border: #c8c8c8 solid 1px;
@@ -145,10 +144,15 @@ table {
 
     input {
       width: 100%;
-      line-height: 34px;
+      height: 32px;
+      line-height: 32px;
       display: inline-block;
+      outline:none;
       border: 0 !important;
       margin: 0 !important;
+    }
+    input:focus{
+      outline: none;
     }
 
     .select-btn {

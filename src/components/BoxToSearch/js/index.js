@@ -1,10 +1,10 @@
 import model from './model'
 import { on, off } from 'element-ui/src/utils/dom'
 import Loading from '../loading.vue'
-import { fetchBranch } from '@/api/userInfo'
+import { fecthList } from '@/api/goodsList'
 
 export default {
-  name: 'multipleSelectBox',
+  name: 'BoxToSearch',
   components: {
     Loading
   },
@@ -164,26 +164,25 @@ export default {
 
       this.loading = true
       this.timer = setTimeout(() => {
-        fetchBranch(url, { ...params, ...request.data, codeOrname }).then(res => {
-          if (res.resultCode === 0) {
+        fecthList(url, { ...params, ...request.data, codeOrname }).then(res => {
+          console.log(res)
+          if (res.code === '0') {
             this.loading = false
-            let ret = res.data.content
+            let ret = res.data
             if (!ret) {
               ret = {}
-              ret = []
-              ret.totalElements = 0
+              ret.rows = []
+              ret.total = 0
             }
-            const content = ret || []
+            const content = ret.rows || []
 
-            if (this.modal === 'goods') {
-              content.forEach((item) => {
-                item.code = item.goodsCode
-                item.name = item.goodsName
-              })
-            }
+            content.forEach((item) => {
+              item.code = item.goodsCode
+              item.name = item.title
+            })
             this.tableData = content
             this.updatePopper()
-            this.total = ret.totalElements
+            this.total = ret.total
             this.isFocusLoad = false
             this.loadError = false
           }

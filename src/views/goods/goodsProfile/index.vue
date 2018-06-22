@@ -49,8 +49,7 @@
 			</el-form>
 			<div slot="footer" class="dialog-footer">
 				<el-button size="small" @click.stop="dialogVisible = false">取 消</el-button>
-				<!-- <el-button size="small" type="primary" @click.stop="clickSaveOrUpdate('form')">确 定</el-button> -->
-        <el-button :loading="button.loading" size="small" type="primary" @click="clickSaveOrUpdate('form')">{{button.text}}</el-button>
+        <el-button :loading="button.loading" size="small" type="primary" @click.stop="clickSaveOrUpdate('form')">{{button.text}}</el-button>
 			</div>
 		</el-dialog>
 
@@ -163,6 +162,7 @@ export default {
           this.$setKeyValue(this.button, { loading: true, text: '提交中..' })
           if (this.isEdit) {
             packagingUpdate(this.form).then(res => {
+              this.isEdit = false
               this.dialogVisible = false
               this.$message({ type: 'success', message: `${res.msg}!` })
               this.fecthList()

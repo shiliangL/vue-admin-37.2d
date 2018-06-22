@@ -8,46 +8,49 @@
         <div class="header-bar" slot="title">
            <div class="left"> 订单详情 </div>
            <div class="right">
+
+              <el-button v-if="!isEditStatus" type="text" size="mini" @click="clickToEdit">编辑</el-button>
+
+              <template v-if="isEditStatus">
+                <el-button type="text" size="mini" @click="validateForm">保存</el-button>
+                <el-button type="text" size="mini" @click="disMiss">取消</el-button>
+              </template>
+
               <el-button type="text" size="mini" @click.stop="dialog.visiable = false">返回</el-button>
-              <el-button type="text" size="mini">刷新</el-button>
             </div>
         </div>
         <div class="content-bar">
-          <template v-if="this.data.type === 'view'">
-            <toView :data="viewData"></toView>
+
+          <template v-if="isShowView">
+            <toView :loadID="loadID"></toView>
           </template>
 
-          <template v-if="this.data.type === 'follow'">
-            <toFollow></toFollow>
+          <template v-if="isShowEditor">
+            <toEditor ref="toEditor"  @callBack="callBackToSubmit" :loadID="loadID"></toEditor>
           </template>
+
+          <!-- <template v-if="this.data.type === 'follow'">
+            <toFollow></toFollow>
+          </template> -->
           
         </div>
       </div>
-      <Loading v-if="loading" @loadingRefresh="onRefresh" :loadingText="loadingText" class="Loading"></Loading>
-      <!-- <el-form :model="form" :rules="rules" ref="form" label-width="100px" id="form" :inline="true">
-          测试数据弹层
-          <h1>测试</h1>
-      </el-form>
-
-      <div slot="footer" class="dialog-footer">
-        <el-button :loading="button.loading" size="small" type="primary" @click="clickSaveOrUpdate('form')">{{button.text}}</el-button>
-        <el-button size="small" @click="dialog.visiable = false">取 消</el-button>
-      </div> -->
+ 
     </el-dialog>
   </div>
 </template>
 
 <script>
 import addModel from '@/public/addModel.js'
-import toView from './view'
-import toFollow from './follow'
-import { orderDetail } from '@/api/orders.js'
+import toView from './toView'
+import toEditor from './toEditor'
+import { orderDetailUpdate } from '@/api/orders.js'
 
 export default {
   mixins: [addModel],
   components: {
     toView,
-    toFollow
+    toEditor
   },
   data() {
     return {
@@ -55,7 +58,10 @@ export default {
         subPropList: []
       },
       rules: {},
-      viewData: null
+      loadID: null,
+      isShowView: false,
+      isShowEditor: false,
+      isEditStatus: false
     }
   },
   created() {
@@ -66,15 +72,85 @@ export default {
     if (this.data.type === 'view') {
       const id = this.data.obj.id
       if (!id) return
-      this.fecthByID(id)
+      this.isShowView = true
+      this.isShowEditor = false
+      this.loadID = id
     }
-    setTimeout(() => {
-      this.loadingText = '加载错误'
-    }, 3000)
   },
   methods: {
     closeDialog() {
       this.$emit('input', false)
+    },
+    clickToEdit() {
+      this.isEditStatus = true
+      this.isShowView = false
+      this.isShowEditor = true
+    },
+    disMiss() {
+      this.isEditStatus = false
+      this.isShowView = true
+      this.isShowEditor = false
+    },
+    validateForm() {
+      if (this.$refs['toEditor']) {
+        this.$refs['toEditor'].validateForm()
+      }
+    },
+    callBackToSubmit(data) {
+      if (data) {
+        const upDate = {
+          'address': data.scmOrder.address,
+          'contacts': data.scmOrder.contacts,
+          'customerId': data.scmOrder.customerId,
+          'customerName': data.scmOrder.customerName,
+          'id': data.scmOrder.pk,
+          'mobile': data.scmOrder.mobile,
+          'offerAmount': data.scmOrder.offerAmount,
+          'orderNo': data.scmOrder.orderNo,
+          'orderSource': data.scmOrder.orderSource,
+          'orderSum': data.scmOrder.orderSum,
+          'paymentType': data.scmOrder.paymentType,
+          'phone': data.scmOrder.phone,
+          'remark': data.scmOrder.remark,
+          'sendTime': {
+            'beginTime': data.sendTime.beginTime,
+            'endTime': data.sendTime.endTime,
+            'id': data.sendTime.pk,
+            'remark': data.sendTime.remark,
+            'status': data.sendTime.status,
+            'title': data.sendTime.title
+          },
+          'status': data.scmOrder.title
+        }
+
+        const arr = []
+        for (const item of data.saleDtails) {
+          arr.push({
+            'giftFlag': item.giftFlag,
+            'id': item.id,
+            'orderId': item.orderId,
+            'orderQuantity': item.orderQuantity,
+            'productId': item.productId,
+            'productName': item.productName,
+            'productPrice': item.productPrice,
+            'remark': item.remark,
+            'skuId': item.skuId,
+            'skuName': item.skuId,
+            'sum': item.sum
+          })
+        }
+        upDate.saleDtails = arr
+        orderDetailUpdate(upDate).then(res => {
+          debugger
+          if (res.code === '0') {
+            this.$message({ type: 'success', message: res.msg })
+            this.dialog.visiable = false
+            this.$emit('add')
+          }
+        }).catch(e => {
+          this.$message({ type: 'error', message: e.msg })
+        })
+      }
     },
     success() {
       this.$message({ type: 'success', message: this.dialog.title + '成功' })
@@ -88,24 +164,6 @@ export default {
     error(data) {
       this.$message({ type: 'error', message: data.message })
       this.$setKeyValue(this.button, { loading: false, text: '确定' })
-    },
-    onRefresh() {
-      console.log('刷新')
-      if (this.data.type === 'view') {
-        const id = this.data.obj.id
-        if (!id) return
-        this.fecthByID(id)
-      }
-    },
-    fecthByID(id) {
-      orderDetail({ id }).then(({ data }) => {
-        this.viewData = data
-        setTimeout(() => {
-          this.loading = false
-        }, 2000)
-      }).catch(e => {
-        this.loadingText = '加载错误'
-      })
     }
   }
 }
@@ -131,7 +189,6 @@ export default {
     z-index: 900;
     background: #e8f8f5 !important;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.23);
-    // border-bottom: 1px solid #cccccc;
   }
 }
 .Loading{
