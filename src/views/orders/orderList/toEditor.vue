@@ -11,11 +11,11 @@
                       <span v-cloak>{{form.scmOrder.orderNo}}</span>
 									</el-form-item>
 								</el-col>
-								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
+								 <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="下单时间:">
                       <span v-cloak>{{form.scmOrder.createdOn}}</span>
 									</el-form-item>
-								</el-col>
+								</el-col> -->
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="客户名称:">
                       <span v-cloak>{{form.scmOrder.customerName}}</span>
@@ -42,15 +42,20 @@
 
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="要求送达日期:">
-                      <span v-cloak>{{form.sendTime.beginTime}}</span>
+                      <span v-cloak>{{form.sendTime.sendDate}}</span>
 									</el-form-item>
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="要求送达日期:" prop="sendTime.endTime" :rules="rules.input">
-										 <el-date-picker size="small" style="width:200px" v-model="form.sendTime.endTime" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间"> </el-date-picker>
-                      <!-- <span v-cloak>{{form.sendTime.endTime}}</span> -->
-									</el-form-item>
-								</el-col>
+										<div style="width:410px">
+											<el-form-item label="要求送达时间:" prop="sendTime.endTime" :rules="rules.input">
+												<el-time-select style="width:130px" v-model="form.sendTime.beginTime" :picker-options="{ start: '00:00', step: '00:30', end: '24:00',maxTime: form.sendTime.endTime }"> </el-time-select>
+											</el-form-item>
+
+											<el-form-item label="" prop="sendTime.endTime" :rules="rules.input" label-width="0">
+												<el-time-select style="width:130px" v-model="form.sendTime.endTime" :picker-options="{ start: '00:00', step: '00:30', end: '24:00', minTime: form.sendTime.beginTime}"> </el-time-select>
+											</el-form-item>
+										</div>
+									</el-col>
 
  
               </el-row>

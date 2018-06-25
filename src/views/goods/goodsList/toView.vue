@@ -171,12 +171,12 @@
 					</div>
 				</div>
 
-				<div class="row-item">
+				<!-- <div class="row-item">
 					<div class="row-title">图文详情描述</div>
 					<div class="row-content">
 						<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 8}" placeholder="请输入内容" v-model.trim="form.details" />
 					</div>
-				</div>
+				</div> -->
 			</el-form>
     </div>
 </template>

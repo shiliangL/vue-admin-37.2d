@@ -11,11 +11,11 @@
                       <span v-cloak>{{form.scmOrder.orderNo}}</span>
 									</el-form-item>
 								</el-col>
-								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
+								 <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="下单时间:" prop="categoryId">
                       <span v-cloak>{{form.scmOrder.createdOn}}</span>
 									</el-form-item>
-								</el-col>
+								</el-col> -->
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="客户名称:" prop="categoryId">
                       <span v-cloak>{{form.scmOrder.customerName}}</span>
@@ -42,11 +42,12 @@
 
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="要求送达日期:" prop="categoryId">
-                      <span v-cloak>{{form.sendTime.beginTime}}</span>
+                      <span v-cloak>{{form.sendTime.sendDate}}</span>
 									</el-form-item>
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="要求送达日期:" prop="categoryId">
+									<el-form-item label="要求送达时间:" prop="categoryId">
+                      <span v-cloak>{{form.sendTime.beginTime}}</span> -
                       <span v-cloak>{{form.sendTime.endTime}}</span>
 									</el-form-item>
 								</el-col>
