@@ -91,8 +91,7 @@
 						<el-row>
 							<el-col :xs="24" :sm="10" :md="8" :lg="8">
 								<el-form-item label="下单金额:" >
-										<span v-cloak>{{form.totalOrderQuantityPrice}}</span>
-										<el-input size="small" class="w110" type="number" placeholder="请输入" v-model.trim.number="form.totalOrderQuantityPrice"></el-input>
+										<span v-cloak>{{totalOrderQuantityPrice}}</span>
 								</el-form-item>
 							</el-col>
 
@@ -185,20 +184,20 @@
 							<el-table-column prop="orderQuantity" label="下单数量" align="center">
 								<template slot-scope="scope">
 
-									<el-form-item label="" label-width="0px" :prop="'saleDtails.'+scope.$index+'.orderQuantity'" :rules="rules.input">
+									<el-form-item label="" label-width="0px" :prop="'saleDtails.'+scope.$index+'.orderQuantity'" :rules="[{trigger: 'change', validator: rules.validNumberR2}]">
 										<el-input size="small" class="w110" @change="changeNumber(scope.row)" placeholder="请输入" v-model.trim="scope.row.orderQuantity"></el-input>
 									</el-form-item>
 
 								</template>
 							</el-table-column>
 							<el-table-column prop="orderQuantityPrice" label="下单金额" align="center">
-									<template slot-scope="scope">
+								<!-- <template slot-scope="scope">
 
 									<el-form-item label="" label-width="0px" :prop="'saleDtails.'+scope.$index+'.orderQuantityPrice'" :rules="rules.input">
 										<el-input size="small" class="w110" type="number" placeholder="请输入" v-model.trim="scope.row.orderQuantityPrice"></el-input>
 									</el-form-item>
 
-								</template>
+								</template> -->
 							</el-table-column>
 
 							<el-table-column prop="exchanage" label="操作" align="center">
@@ -274,15 +273,17 @@ export default {
         unpaidAmount: 0,
         paidAmount: 0
       },
-      validNumberR2: (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('请输入'))
+      rules: {
+        validNumberR2: (rule, value, callback) => {
+          if (!value) {
+            return callback(new Error('请输入'))
+          }
+          var reg = /^([0-9][\d]{0,5})(\.[\d]{1,2})?$/
+          if (!reg.test(value)) {
+            return callback(new Error('请输入有效数字'))
+          }
+          callback()
         }
-        var reg = /^([0-9][\d]{0,5})(\.[\d]{1,2})?$/
-        if (!reg.test(value)) {
-          return callback(new Error('请输入有效数字'))
-        }
-        callback()
       }
     }
   },
@@ -292,7 +293,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['baseImgUrl'])
+    ...mapGetters(['baseImgUrl']),
+    totalOrderQuantityPrice() {
+      let sum = 0
+      for (const item of 	this.form.saleDtails) {
+        sum += parseInt(item.orderQuantityPrice)
+      }
+      return sum
+    }
   },
   methods: {
     fecthDerDetailById() {
@@ -369,6 +377,11 @@ export default {
 	.el-form-item {
 		// width: 320px;
 		margin-bottom: 0;
+	}
+}
+.skuListTbale{
+	.el-form-item {
+		padding: 15px;
 	}
 }
 .el-form-item {
