@@ -249,6 +249,16 @@ export default {
         'supplyId': null, // 供应商Id
         'tags': null, // 标签
         'title': null // 名称
+      },
+      validNumberR2: (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请输入'))
+        }
+        var reg = /^([0-9][\d]{0,5})(\.[\d]{1,2})?$/
+        if (!reg.test(value)) {
+          return callback(new Error('请输入有效数字'))
+        }
+        callback()
       }
     }
   },

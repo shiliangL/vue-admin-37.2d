@@ -2,7 +2,6 @@
     <div class="toView">
 			<el-form :model="form" :rules="rules" ref="form" label-width="120px" :inline="true">
         <!--基本信息-->
-
 		    <div class="row-item">
 						<div class="row-title">基本信息</div>
 						<div class="row-content basicInfo">
@@ -84,67 +83,12 @@
           </div>
         </div>
 
-  			<!--商品信息-->
-				<div class="row-item">
-					<div class="row-title">商品信息</div>
-					<div class="row-content">
-						<el-table :data="form.saleDtails.rows" class="skuListTbale" size="small" :max-height="500" style="width: 100%;" highlight-current-row>
- 
-							<el-table-column label="序号" width="50" align="center">
-								<template slot-scope="scope">
-									<span>{{scope.$index + 1}}</span>
-								</template>
-							</el-table-column>
-
-							<el-table-column prop="goodsImage" label="商品图片" align="center">
-								<template slot-scope="scope">
-									<div class="picBox">
-										<img :src="`${scope.row.goodsImage}`">
-									</div>
-								</template>
-							</el-table-column>
-
-							<el-table-column prop="productName" label="名称" align="center"></el-table-column>
-							<el-table-column prop="skuName" label="规格" align="center"></el-table-column>
-							<el-table-column prop="orderQuantityPrice" label="下单数量" align="center"></el-table-column>
-							<el-table-column prop="orderQuantityPrice" label="下单金额" align="center"></el-table-column>
-							<el-table-column prop="finalQuantity" label="分拣量(斤)" align="center"></el-table-column>
-							<el-table-column prop="sumPrice" label="实际金额" align="center"></el-table-column>
-
-							<el-table-column prop="exchanage" label="退/换货状态" align="center">
-								<template slot-scope="scope">
-									<span v-cloak v-if="form.scmOrder.exchanage ===0">退货</span>
-									<span v-cloak v-if="form.scmOrder.exchanage ===1">换货 </span>
-								</template>
-							</el-table-column>
-							 
-						</el-table>
-
-						 <el-pagination
-								slot="footer"
-								@size-change="handleSizeChange"
-								@current-change="handleCurrentChange"
-								:current-page="pagination.page"
-								:page-sizes="pagination.pageSizes"
-								:page-size="pagination.size"
-								layout="total, sizes, prev, pager, next, jumper"
-								:total="pagination.total">
-							</el-pagination>
-					</div>
-				</div>
-
-				<!-- 订单备注 -->
-				<div class="row-item">
-					<div class="row-title">订单备注:</div>
-					<div class="row-content">
-						<span v-cloak>{{form.scmOrder.remark}}</span>
-					</div>
-				</div>
-
+ 				<!--费用信息-->
 				<div class="row-item">
 					<div class="row-title">费用信息</div>
 					<div class="row-content">
-						 
+						<el-row>
+
 						 <el-col :xs="24" :sm="10" :md="8" :lg="8">
 								<el-form-item label="下单金额:" >
 										<span v-cloak>{{form.totalOrderQuantityPrice}}</span>
@@ -205,9 +149,67 @@
 								</el-form-item>
 							</el-col>
 
+   					</el-row>
 					</div>
 				</div>
+
+  			<!--商品信息-->
+				<div class="row-item">
+					<div class="row-title">商品信息</div>
+					<div class="row-content">
+						<el-table :data="form.saleDtails.rows" class="skuListTbale" size="small" :max-height="500" style="width: 100%;" highlight-current-row>
  
+							<el-table-column label="序号" width="50" align="center">
+								<template slot-scope="scope">
+									<span>{{scope.$index + 1}}</span>
+								</template>
+							</el-table-column>
+
+							<el-table-column prop="goodsImage" label="商品图片" align="center">
+								<template slot-scope="scope">
+									<div class="picBox">
+										<img :src="`${scope.row.goodsImage}`">
+									</div>
+								</template>
+							</el-table-column>
+
+							<el-table-column prop="productName" label="名称" align="center"></el-table-column>
+							<el-table-column prop="skuName" label="规格" align="center"></el-table-column>
+							<el-table-column prop="orderQuantityPrice" label="下单数量" align="center"></el-table-column>
+							<el-table-column prop="orderQuantityPrice" label="下单金额" align="center"></el-table-column>
+							<el-table-column prop="finalQuantity" label="分拣量(斤)" align="center"></el-table-column>
+							<el-table-column prop="sumPrice" label="实际金额" align="center"></el-table-column>
+
+							<el-table-column prop="exchanage" label="退/换货状态" align="center">
+								<template slot-scope="scope">
+									<span v-cloak v-if="form.scmOrder.exchanage ===0">退货</span>
+									<span v-cloak v-if="form.scmOrder.exchanage ===1">换货 </span>
+								</template>
+							</el-table-column>
+							 
+						</el-table>
+
+						 <el-pagination
+								slot="footer"
+								@size-change="handleSizeChange"
+								@current-change="handleCurrentChange"
+								:current-page="pagination.page"
+								:page-sizes="pagination.pageSizes"
+								:page-size="pagination.size"
+								layout="total, sizes, prev, pager, next, jumper"
+								:total="pagination.total">
+							</el-pagination>
+					</div>
+				</div>
+
+				<!-- 订单备注 -->
+				<div class="row-item">
+					<div class="row-title">订单备注:</div>
+					<div class="row-content">
+						<span v-cloak>{{form.scmOrder.remark}}</span>
+					</div>
+				</div>
+
 			</el-form>
       <Loading v-if="loading" @loadingRefresh="onRefresh" :loadingText="loadingText" class="Loading"></Loading>
     </div>
@@ -223,6 +225,11 @@ import model from '@/public/listModel.js'
 export default {
   mixins: [rules, addModel, model],
   name: 'toView',
+  props: {
+    isAllowToShow: {
+      type: Boolean
+    }
+  },
   data() {
     return {
       form: {
@@ -284,6 +291,11 @@ export default {
       orderDetail(data).then(({ data }) => {
         this.form = data
         this.pagination.total = data.saleDtails.total
+        if (this.form.scmOrder.paymentType === 0 && this.form.scmOrder.status === 0) {
+          setTimeout(() => {
+            this.$emit('update:isAllowToShow', true)
+          }, 100)
+        }
         setTimeout(() => {
           this.loading = false
         }, 200)

@@ -66,15 +66,7 @@
             </el-dropdown>
         </div>
       </div>
-
-    <div>
-      <BoxToSearch
-        @change="selectChange"
-        :id.sync="brandIds"
-        :name.sync="brandNames"
-        multiple>
-      </BoxToSearch>
-    </div>
+ 
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row
@@ -149,14 +141,12 @@ import model from '@/public/listModel.js'
 import { Tabs } from '@/components/base.js'
 import { fecthList, fecthGoodsClass, deletepProduct, productsDown, productsUp, fecthSupplierList, fecthSalerList, fecthByCategoryId } from '@/api/goodsList.js'
 import { mapGetters } from 'vuex'
-import { BoxToSearch } from '@/components/base.js'
 export default {
   name: 'goodsList',
   mixins: [model],
   components: {
     Add,
-    Tabs,
-    BoxToSearch
+    Tabs
   },
   data() {
     return {
@@ -249,6 +239,7 @@ export default {
         categoryId: null,
         purchaseType: null
       }
+      this.fecthList()
     },
     tabsCallBack(item) {
       this.searchParams.goodsStatus = item.value

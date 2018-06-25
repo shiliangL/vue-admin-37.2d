@@ -591,6 +591,9 @@ export default {
                 }
                 if (!item.response && item.url) imgs.push(item.url)
               }
+            } else {
+              this.$message({ type: 'warning', message: '至少上传一张图片' })
+              return
             }
             if (imgs.length > 0) {
               this.form.goodsImage = imgs[0]

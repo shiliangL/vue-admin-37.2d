@@ -4,7 +4,7 @@
 <template>
 	<div class="goodsProfile">
         
-    <search-bar ref="searchBar" :data="searchBarData" @add="showAdd" @search="searchAction"></search-bar>
+    <search-bar ref="searchBar" :data="searchBarData" @add="showAdd" @search="searchAction" @reset="reset"></search-bar>
 
     <!-- 表格 -->
     <table-contain  :height.sync="table.maxHeight">
@@ -103,6 +103,9 @@ export default {
     },
     searchAction(data) {
       this.searchTitle = data.title
+      this.fecthList()
+    },
+    reset() {
       this.fecthList()
     },
     // 分页操作区域

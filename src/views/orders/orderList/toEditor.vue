@@ -84,77 +84,12 @@
           </div>
         </div>
 
-  			<!--商品信息-->
-				<div class="row-item">
-					<div class="row-title">商品信息</div>
-					<div class="row-content">
-
-						<div class="add-bar">
-							<!-- 商品添加模块 -->
-							
-						</div>
-
-						<el-table :data="form.saleDtails" class="skuListTbale" size="small" :max-height="500" style="width: 100%;" highlight-current-row>
-
-							<el-table-column label="序号" width="50" align="center">
-								<template slot-scope="scope">
-									<span>{{scope.$index + 1}}</span>
-								</template>
-							</el-table-column>
-
-							<el-table-column prop="goodsImage" label="商品图片" align="center">
-								<template slot-scope="scope">
-									<div class="picBox">
-										<img :src="`${scope.row.goodsImage}`">
-									</div>
-								</template>
-							</el-table-column>
-
-							<el-table-column prop="productName" label="名称" align="center"></el-table-column>
-							<el-table-column prop="skuName" label="规格" align="center"></el-table-column>
-							<el-table-column prop="productPrice" label="价格" align="center"></el-table-column>
-							<el-table-column prop="orderQuantity" label="下单数量" align="center">
-								<template slot-scope="scope">
-
-									<el-form-item label="" label-width="0px" :prop="'saleDtails.'+scope.$index+'.orderQuantity'" :rules="rules.input">
-										<el-input size="small" class="w110" type="number" placeholder="请输入" v-model.trim.number="scope.row.orderQuantity"></el-input>
-									</el-form-item>
-
-								</template>
-							</el-table-column>
-							<el-table-column prop="orderQuantityPrice" label="下单金额" align="center">
-									<template slot-scope="scope">
-
-									<el-form-item label="" label-width="0px" :prop="'saleDtails.'+scope.$index+'.orderQuantityPrice'" :rules="rules.input">
-										<el-input size="small" class="w110" type="number" placeholder="请输入" v-model.trim.number="scope.row.orderQuantityPrice"></el-input>
-									</el-form-item>
-
-								</template>
-							</el-table-column>
-
-							<el-table-column prop="exchanage" label="操作" align="center">
-								<template slot-scope="scope">
-              <el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index, scope.row)">删除</el-button>
-								</template>
-							</el-table-column>
-								
-						</el-table>
- 
-					</div>
-				</div>
-
-				<div class="row-item">
-				 	<div class="row-title">订单备注:</div>
-							<div class="row-content">
-								<el-input type="textarea" :autosize="{ minRows: 1, maxRows: 2}" placeholder="请输入内容" v-model.trim="form.scmOrder.remark" />
-							</div>
-				</div>
-
-				<div class="row-item">
-					<div class="row-title">费用信息</div>
-					<div class="row-content">
-						 
-						 <el-col :xs="24" :sm="10" :md="8" :lg="8">
+				<!-- 费用信息 -->
+ 				<div class="row-item">
+          <div class="row-title"> 费用信息 </div>
+  				<div class="row-content"> 
+						<el-row>
+							<el-col :xs="24" :sm="10" :md="8" :lg="8">
 								<el-form-item label="下单金额:" >
 										<span v-cloak>{{form.totalOrderQuantityPrice}}</span>
 										<el-input size="small" class="w110" type="number" placeholder="请输入" v-model.trim.number="form.totalOrderQuantityPrice"></el-input>
@@ -214,9 +149,77 @@
 										<span v-cloak>{{form.paidAmount}}</span>
 								</el-form-item>
 							</el-col>
+   					</el-row>
+					</div>
+        </div>
 
+  			<!--商品信息-->
+				<div class="row-item">
+					<div class="row-title">商品信息</div>
+					<div class="row-content">
+
+						<div class="add-bar">
+							<!-- 商品添加模块 -->
+							
+						</div>
+
+						<el-table :data="form.saleDtails" class="skuListTbale" size="small" :max-height="500" style="width: 100%;" highlight-current-row>
+
+							<el-table-column label="序号" width="50" align="center">
+								<template slot-scope="scope">
+									<span>{{scope.$index + 1}}</span>
+								</template>
+							</el-table-column>
+
+							<el-table-column prop="goodsImage" label="商品图片" align="center">
+								<template slot-scope="scope">
+									<div class="picBox">
+										<img :src="`${scope.row.goodsImage}`">
+									</div>
+								</template>
+							</el-table-column>
+
+							<el-table-column prop="productName" label="名称" align="center"></el-table-column>
+							<el-table-column prop="skuName" label="规格" align="center"></el-table-column>
+							<el-table-column prop="productPrice" label="价格" align="center"></el-table-column>
+							<el-table-column prop="orderQuantity" label="下单数量" align="center">
+								<template slot-scope="scope">
+
+									<el-form-item label="" label-width="0px" :prop="'saleDtails.'+scope.$index+'.orderQuantity'" :rules="rules.input">
+										<el-input size="small" class="w110" @change="changeNumber(scope.row)" placeholder="请输入" v-model.trim="scope.row.orderQuantity"></el-input>
+									</el-form-item>
+
+								</template>
+							</el-table-column>
+							<el-table-column prop="orderQuantityPrice" label="下单金额" align="center">
+									<template slot-scope="scope">
+
+									<el-form-item label="" label-width="0px" :prop="'saleDtails.'+scope.$index+'.orderQuantityPrice'" :rules="rules.input">
+										<el-input size="small" class="w110" type="number" placeholder="请输入" v-model.trim="scope.row.orderQuantityPrice"></el-input>
+									</el-form-item>
+
+								</template>
+							</el-table-column>
+
+							<el-table-column prop="exchanage" label="操作" align="center">
+								<template slot-scope="scope">
+              <el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index, scope.row)">删除</el-button>
+								</template>
+							</el-table-column>
+								
+						</el-table>
+ 
 					</div>
 				</div>
+				
+				<!-- 订单备注 -->
+				<div class="row-item">
+				 	<div class="row-title">订单备注:</div>
+							<div class="row-content">
+								<el-input type="textarea" :autosize="{ minRows: 1, maxRows: 2}" placeholder="请输入内容" v-model.trim="form.scmOrder.remark" />
+							</div>
+				</div>
+
 			</el-form>
       <Loading v-if="loading" @loadingRefresh="onRefresh" :loadingText="loadingText" class="Loading"></Loading>
 
@@ -270,6 +273,16 @@ export default {
         amountPay: 0,
         unpaidAmount: 0,
         paidAmount: 0
+      },
+      validNumberR2: (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请输入'))
+        }
+        var reg = /^([0-9][\d]{0,5})(\.[\d]{1,2})?$/
+        if (!reg.test(value)) {
+          return callback(new Error('请输入有效数字'))
+        }
+        callback()
       }
     }
   },
@@ -314,6 +327,14 @@ export default {
           return
         }
       })
+    },
+    changeNumber(item) {
+      console.log(item.orderQuantity, '修改了数量')
+      if (!isNaN(item.orderQuantity)) {
+        item.orderQuantityPrice = item.orderQuantity * item.productPrice
+      } else {
+        item.orderQuantityPrice = 0
+      }
     }
   }
 }

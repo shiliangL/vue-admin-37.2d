@@ -204,6 +204,7 @@ export default {
     },
     resetSearchBar() {
       this.curIndex = 0
+      this.fecthList()
     }
 
   }

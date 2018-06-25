@@ -8,9 +8,7 @@
         <div class="header-bar" slot="title">
            <div class="left"> 订单详情 </div>
            <div class="right">
-
-              <el-button v-if="!isEditStatus" type="text" size="mini" @click="clickToEdit">编辑</el-button>
-
+              <el-button v-if="isAllowToShow" type="text" size="mini" @click="clickToEdit">编辑</el-button>
               <template v-if="isEditStatus">
                 <el-button type="text" size="mini" @click="validateForm">保存</el-button>
                 <el-button type="text" size="mini" @click="disMiss">取消</el-button>
@@ -22,7 +20,7 @@
         <div class="content-bar">
 
           <template v-if="isShowView">
-            <toView :loadID="loadID"></toView>
+            <toView :isAllowToShow.sync="isAllowToShow" :loadID="loadID"></toView>
           </template>
 
           <template v-if="isShowEditor">
@@ -61,7 +59,8 @@ export default {
       loadID: null,
       isShowView: false,
       isShowEditor: false,
-      isEditStatus: false
+      isEditStatus: false,
+      isAllowToShow: false // 是否显示编辑
     }
   },
   created() {
@@ -85,6 +84,7 @@ export default {
       this.isEditStatus = true
       this.isShowView = false
       this.isShowEditor = true
+      this.isAllowToShow = false
     },
     disMiss() {
       this.isEditStatus = false

@@ -288,7 +288,19 @@ util.date = {
     v = v.replace(/E/g, weekDayString)
     return v
   },
-  chsDay: ['日', '一', '二', '三', '四', '五', '六']
+  chsDay: ['日', '一', '二', '三', '四', '五', '六'],
+  getLocalTime: function(i = 8) {
+    // 参数i为时区值数字，比如北京为东八区则输进8,西5输入-5
+    if (typeof i !== 'number') return
+    var d = new Date()
+    // 得到1970年一月一日到现在的秒数
+    var len = d.getTime()
+    // 本地时间与GMT时间的时间偏移差
+    var offset = d.getTimezoneOffset() * 60000
+    // 得到现在的格林尼治时间
+    var utcTime = len + offset
+    return new Date(utcTime + 3600000 * i)
+  }
 }
 
 // 默认地址坐标
