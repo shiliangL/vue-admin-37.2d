@@ -47,7 +47,7 @@
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="要求送达日期:" prop="sendTime.endTime" :rules="rules.input">
-										 <el-date-picker size="small" style="width:200px" v-model="form.sendTime.endTime" type="datetime" placeholder="选择日期时间"> </el-date-picker>
+										 <el-date-picker size="small" style="width:200px" v-model="form.sendTime.endTime" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间"> </el-date-picker>
                       <!-- <span v-cloak>{{form.sendTime.endTime}}</span> -->
 									</el-form-item>
 								</el-col>

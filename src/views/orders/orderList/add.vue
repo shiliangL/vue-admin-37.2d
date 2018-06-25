@@ -141,7 +141,6 @@ export default {
         }
         upDate.saleDtails = arr
         orderDetailUpdate(upDate).then(res => {
-          debugger
           if (res.code === '0') {
             this.$message({ type: 'success', message: res.msg })
             this.dialog.visiable = false
