@@ -181,7 +181,7 @@
 
 							<el-table-column prop="productName" label="名称" align="center"></el-table-column>
 							<el-table-column prop="skuName" label="规格" align="center"></el-table-column>
-							<el-table-column prop="productPrice" label="价格" align="center"></el-table-column>
+							<el-table-column prop="skuPrice" label="价格" align="center"></el-table-column>
 							<el-table-column prop="orderQuantity" label="下单数量" align="center">
 								<template slot-scope="scope">
 
@@ -319,7 +319,6 @@ export default {
     },
     validateForm() {
       this.$refs['form'].validate((valid) => {
-        console.log('xxx')
         if (valid) {
           this.$emit('callBack', this.form)
         } else {
@@ -331,7 +330,7 @@ export default {
     changeNumber(item) {
       console.log(item.orderQuantity, '修改了数量')
       if (!isNaN(item.orderQuantity)) {
-        item.orderQuantityPrice = item.orderQuantity * item.productPrice
+        item.orderQuantityPrice = item.orderQuantity * item.skuPrice
       } else {
         item.orderQuantityPrice = 0
       }
