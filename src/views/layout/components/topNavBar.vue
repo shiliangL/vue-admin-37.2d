@@ -6,8 +6,9 @@
 
 					  <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
             <div class="nav">
-              <!-- <span> {{menuList}} </span> -->
-              <span class="nav-item" v-for="(item,index) in menuList" :key="index" v-cloak :class="curIndex==index?'active' : ''"  @click="clickTabTitle(item,index)">{{item.title}}</span>
+              <ScrollPane class="nav-scroll-bar">
+                <span class="nav-item" v-for="(item,index) in menuList" :key="index" v-cloak :class="curIndex==index?'active' : ''"  @click="clickTabTitle(item,index)">{{item.title}}</span>
+              </ScrollPane>
             </div>
 
             <div class="userInfo">
@@ -40,6 +41,7 @@
 </template>
 
 <script>
+import ScrollPane from '@/components/ScrollPane'
 import { mapGetters } from 'vuex'
 import { Hamburger, Breadcrumb } from '@/components/base.js'
 import { mapActions } from 'vuex'
@@ -48,6 +50,7 @@ export default {
   name: 'topNavBar',
   components: {
     Hamburger,
+    ScrollPane,
     Breadcrumb
   },
   data() {
@@ -90,6 +93,11 @@ export default {
     }
     .nav {
       color: #77787b;
+      width: 100%;
+      .nav-scroll-bar{
+        width: 100%;
+        height: 60px;
+      }
       span {
         cursor: pointer;
         display: inline-block;
