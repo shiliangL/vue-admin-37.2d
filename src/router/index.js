@@ -50,6 +50,34 @@ export const asyncRouterMap = [
       { path: 'goodsClass', component: _import('goods/goodsClass/index'), name: 'goodsClass', meta: { title: 'goodsClass' }}
     ]
   },
+  {
+    path: '/buy',
+    component: Layout,
+    name: 'buy',
+    meta: {
+      title: 'buy',
+      icon: 'component'
+    },
+    children: [
+      { path: 'example', component: _import('buy/example/index'), name: 'example', meta: { title: 'example' }},
+      { path: 'buyPlan', component: _import('buy/buyPlan/index'), name: 'buyPlan', meta: { title: 'buyPlan' }},
+      { path: 'buyOrders', component: _import('buy/buyOrders/index'), name: 'buyOrders', meta: { title: 'buyOrders' }},
+      { path: 'buyReturn', component: _import('buy/buyReturn/index'), name: 'buyReturn', meta: { title: 'buyReturn' }}
+    ]
+  },
+  {
+    path: '/buyAudit',
+    component: Layout,
+    name: 'buyAudit',
+    meta: {
+      title: 'buyAudit',
+      icon: 'component'
+    },
+    children: [
+      { path: 'audit', component: _import('buyAudit/audit/index'), name: 'audit', meta: { title: 'audit' }},
+      { path: 'clearing', component: _import('buyAudit/clearing/index'), name: 'clearing', meta: { title: 'clearing' }}
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 
