@@ -6,16 +6,16 @@
 				 <el-card class="TipsBar-item" shadow="always">
           <div class="top">
             <span class="label"> 
-              <span class="date">  昨日 </span>
-              <span class="desc">（送货时间6月20日）</span>
+              <span class="date" v-cloak> {{item.title}} </span>
+              <span class="desc" v-cloak> （送货时间 ${{item.date}} 日）</span>
             </span>
             <span class="bnt">
-              <el-button type="text" size="mini">查看明细</el-button>
+              <el-button type="text" size="mini" @click.stop="clickCallBack(item,index)">查看明细</el-button>
             </span>
           </div>
           <div class="dowm">
-            <div class="desc">销售订单需采购商品：10</div>
-            <div class="desc">未生成采购计划商品：2</div>
+            <div class="desc" v-cloak>销售订单需采购商品: <span class="num">{{item.goodsNumber || 0}}</span> </div>
+            <div class="desc" v-cloak>未生成采购计划商品:  <span class="num"> {{item.goodsNotPrchase || 0}} </span> </div>
           </div>
         </el-card>
 			</el-col>
@@ -31,12 +31,12 @@
         type: Array
       }
     },
-    data() {
-      return {
-  
+    methods: {
+      clickCallBack(item, index) {
+        if (!item) return
+        this.$emit('TipsBarCallBack', item)
       }
     }
-  
   }
 </script>
 
@@ -56,6 +56,9 @@
       .desc{
           color:#7e8188;
           margin-bottom: 6px;
+          .num{
+            color:#49c9b0;
+          }
         }
     }
 }

@@ -109,13 +109,13 @@ export default {
     },
     // 数据请求
     fecthList() {
-      const { index, size } = this.pagination
-      const data = {
-        index,
-        size,
-        status: this.curIndex,
-        ...this.paramsData
-      }
+      // const { index, size } = this.pagination
+      // const data = {
+      //   index,
+      //   size,
+      //   status: this.curIndex,
+      //   ...this.paramsData
+      // }
       // orderList(data).then(({ data }) => {
       //   this.table.data = data.rows
       //   this.pagination.total = data.total

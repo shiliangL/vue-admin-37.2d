@@ -1,7 +1,7 @@
 
 <template>
     <div class="buyPlan">
-      <TipsBar :data="data"></TipsBar>
+      <TipsBar :data="TipsBarData" @TipsBarCallBack="TipsBarCallBack"></TipsBar>
 
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
 
@@ -58,6 +58,8 @@ import TipsBar from '../components/TipsBar'
 import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs } from '@/components/base.js'
+import { fecthList, fecthTipsBar } from '@/api/buy/buyPlan.js'
+
 export default {
   name: 'buyPlan',
   mixins: [model],
@@ -68,17 +70,18 @@ export default {
   },
   data() {
     return {
+      curIndex: 0,
+      TipsBarData: [],
       searchBarData: [
         [
-          // 0 代表app 1 微信公众号 2 微信小程序
-          { type: 'option', value: null, key: 'orderSource', class: 'w110', placeholder: '计划来源', options: [
-            { label: 'App', value: 0 },
-            { label: '微信公众号', value: 1 },
-            { label: '微信小程序', value: 2 }]
+          { type: 'option', value: null, key: 'sourceType', class: 'w110', placeholder: '计划来源', options: [
+            { label: '全部', value: 0 },
+            { label: '销售订单', value: 1 },
+            { label: '后台新增', value: 2 }]
           },
-          { type: 'date', value: null, key: 'orderTime', width: '200px', placeholder: '创建时间' },
-          { type: 'date', value: null, key: 'orderTime', width: '200px', placeholder: '申请时间' },
-          { type: 'input', value: null, key: 'orderNoOrName', class: 'w180', placeholder: '输入采购计划单号检索' },
+          { type: 'date', value: null, key: 'generationTime', width: '200px', placeholder: '创建时间' },
+          { type: 'date', value: null, key: 'applicationDate', width: '200px', placeholder: '申请时间' },
+          { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '输入采购计划单号检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
@@ -90,11 +93,6 @@ export default {
     }
   },
   created() {
-    this.data = [
-      { title: '昨日' },
-      { title: '今日' },
-      { title: '明日' }
-    ]
     this.tabTitles = [
       { title: '全部', value: 0 },
       { title: '待申请', value: 1 },
@@ -103,39 +101,70 @@ export default {
       { title: '已拒绝', value: 4 }
     ]
   },
+  mounted() {
+    this.fecthList()
+  },
   methods: {
     tabsCallBack(item) {
+      this.curIndex = item.value
       this.$nextTick().then(() => {
         this.$refs['searchBar'].sendSearchParams()
       })
     },
     searchAction(params) {
       this.paramsData = {
-        orderNoOrName: params.orderNoOrName,
-        orderTime: params.orderTime,
-        paymentType: params.paymentType,
-        orderSource: params.orderSource
+        auditStatus: params.auditStatus,
+        sourceType: params.sourceType,
+        generationTime: params.generationTime,
+        applicationDate: params.applicationDate,
+        orderNo: params.orderNo
       }
       this.fecthList()
     },
     clickMoreCommand(command) {
       this.$message({ type: 'success', message: command, duration: 0, showClose: true })
     },
+    TipsBarCallBack(value) {
+      console.log(value)
+    },
+    fecthTipsBar() {
+      fecthTipsBar().then(({ data }) => {
+        console.log(data, '数据')
+        const type = Object.prototype.toString.call(data)
+        if (data && type === '[object Object]') {
+          const arr = []
+          for (const key in data) {
+            if (data.hasOwnProperty(key)) {
+              const element = data[key]
+              const title = key === 'yesterday' ? '昨日' : key === 'today' ? '今日' : '明日'
+              arr.push({
+                title,
+                ...element
+              })
+            }
+          }
+          this.TipsBarData = arr
+        }
+      }).catch(e => {
+        this.$message({ type: 'error', message: e })
+      })
+    },
     // 数据请求
     fecthList() {
+      this.fecthTipsBar()
       const { index, size } = this.pagination
       const data = {
         index,
         size,
-        status: this.curIndex,
+        auditStatus: this.curIndex,
         ...this.paramsData
       }
-      // orderList(data).then(({ data }) => {
-      //   this.table.data = data.rows
-      //   this.pagination.total = data.total
-      // }).catch(e => {
-      //   this.$message({ type: 'error', message: e, duration: 0, showClose: true })
-      // })
+      fecthList(data).then(({ data }) => {
+        this.table.data = data.rows
+        this.pagination.total = data.total
+      }).catch(e => {
+        this.$message({ type: 'error', message: e })
+      })
     },
     // 分页操作区域
     handleSizeChange(value) {

@@ -2,11 +2,20 @@ import request from '@/utils/request'
 
 export function fecthList(params) {
   return request({
-    url: 'productInfo/listProductInfo',
+    url: 'purchaseOrderRequest/page',
     method: 'get',
     params
   })
 }
+// 获取今天昨天明天数据
+export function fecthTipsBar(params) {
+  return request({
+    url: 'scmSalesOrder/getCountData',
+    method: 'get',
+    params
+  })
+}
+
 // 获取分类
 export function fecthGoodsClass(params) {
   return request({

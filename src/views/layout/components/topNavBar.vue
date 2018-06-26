@@ -96,7 +96,7 @@ export default {
       width: 100%;
       .nav-scroll-bar{
         width: 100%;
-        height: 60px;
+        height: 50px;
       }
       span {
         cursor: pointer;
