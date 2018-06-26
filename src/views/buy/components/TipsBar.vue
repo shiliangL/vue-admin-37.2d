@@ -7,7 +7,7 @@
           <div class="top">
             <span class="label"> 
               <span class="date" v-cloak> {{item.title}} </span>
-              <span class="desc" v-cloak> （送货时间 ${{item.date}} 日）</span>
+              <span class="desc" v-cloak> （送货时间 {{item.date}} 日）</span>
             </span>
             <span class="bnt">
               <el-button type="text" size="mini" @click.stop="clickCallBack(item,index)">查看明细</el-button>

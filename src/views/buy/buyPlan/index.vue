@@ -1,11 +1,11 @@
-
+<!-- 采购计划 -->
 <template>
     <div class="buyPlan">
       <TipsBar :data="TipsBarData" @TipsBarCallBack="TipsBarCallBack"></TipsBar>
 
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
 
-      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction" @reset="resetSearchBar" @command="clickMoreCommand"></search-bar>
+      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction"  @add="showAdd"  @reset="resetSearchBar" @command="clickMoreCommand"></search-bar>
 
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
@@ -49,6 +49,9 @@
         </el-pagination>
 
       </table-contain>
+
+      <!-- 弹层 -->
+      <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add>
       
     </div>
 </template>
@@ -86,7 +89,7 @@ export default {
           { type: 'reset', name: '重置' }
         ],
         [
-          { type: 'button', name: '新增' }
+          { type: 'add', name: '新增' }
           // { type: 'more', labels: ['导入', '上传图片'] }
         ]
       ]
@@ -102,6 +105,7 @@ export default {
     ]
   },
   mounted() {
+    this.table.data = [{}]
     this.fecthList()
   },
   methods: {
@@ -123,9 +127,6 @@ export default {
     },
     clickMoreCommand(command) {
       this.$message({ type: 'success', message: command, duration: 0, showClose: true })
-    },
-    TipsBarCallBack(value) {
-      console.log(value)
     },
     fecthTipsBar() {
       fecthTipsBar().then(({ data }) => {
@@ -177,10 +178,16 @@ export default {
     },
     // 弹层操作
     click2view(index, row) {
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row }})
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '采购计划详情' }})
     },
     click2follow(index, row) {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'follow', obj: row }})
+    },
+    showAdd() {
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, title: '新增采购计划（后台新增可预采购商品）' }})
+    },
+    TipsBarCallBack(value) {
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: {}, title: '销售订单采购计划' }})
     },
     refrehList() {
 
