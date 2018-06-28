@@ -291,7 +291,6 @@ export default {
     },
     clearSearch() {
       this.codeOrname = null
-      debugger
     }
   },
   beforeDestroy() {

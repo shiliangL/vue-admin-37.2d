@@ -33,11 +33,12 @@
 								</template>
 							</el-table-column>
 
-							<el-table-column prop="buyerOrSupplier" label="采购员/供应商" align="center">
+							<el-table-column label="采购员/供应商" align="center">
 								<template slot-scope="scope">
-
-									 
-
+                  <div class="clearfix">
+                    <span  v-cloak> {{scope.row.supplierInfoList[0].personnelName}} </span>
+                    <el-button type="text" size="mini" @click.stop="clickToChange(scope.$index, scope.row)">更改</el-button>
+                  </div>
 								</template>
 							</el-table-column>
 							<el-table-column prop="price" label="操作" align="center">
@@ -52,7 +53,11 @@
 						</div>
 					</div>
 				</div>
- 
+
+        <el-dialog width="700px" title="更改采购员/供应商" :visible.sync="innerVisible" append-to-body center>
+          <changeDialog v-if="innerVisible" @close="innerVisible = false"></changeDialog>
+        </el-dialog>
+
 			</el-form>
     </div>
 </template>
@@ -60,6 +65,8 @@
 <script>
 import addModel from '@/public/addModel.js'
 import rules from '@/public/rules.js'
+import changeDialog from './changeDialog'
+
 import { BoxToSearch, CascaderBox } from '@/components/base.js'
 
 // import { fecthGoodsClass, fecthUnit, fecthSupplierList, fecthSalerList, fecthByCategoryId } from '@/api/goodsList.js'
@@ -73,13 +80,15 @@ export default {
   },
   components: {
     BoxToSearch,
-    CascaderBox
+    CascaderBox,
+    changeDialog
   },
   data() {
     return {
       goods: null,
       goodIds: null,
       goodNames: null,
+      innerVisible: false,
       form: {
         dataList: [
           //   {
@@ -136,6 +145,9 @@ export default {
   mounted() {
   },
   methods: {
+    clickToChange() {
+      this.innerVisible = true
+    },
     selectChange(value) {
       if (!value) return
       this.goods = value
@@ -151,17 +163,26 @@ export default {
         this.$message({ type: 'warning', message: '请选择一个商品' })
         return
       }
-      if (this.$refs['clearSearch']) { this.$refs['clearSearch'].clearSearch() }
+      if (this.$refs['BoxToSearch']) { this.$refs['BoxToSearch'].clearSearch() }
       for (const item of this.goods) {
         if (!this.onlyOne(item.id)) {
           console.log('没有重复的')
+          console.log(item)
+
           this.form.dataList.push({
             productId: item.id,
             productName: item.name,
             baseUnitName: item.baseUnitName,
             availableQuantity: item.availableQuantity || 0,
             planQuantity: 1,
-            buyerOrSupplier: null
+            supplierInfoList: [
+              {
+                personnelId: item.purchaseType === 1 ? item.supplierId : item.buyerId, // 人员id(供应商/采购员)
+                personnelName: item.purchaseType === 1 ? item.supplierName : item.buyerName, // 人员姓名(供应商/采购员)
+                purchaseType: item.purchaseType, // 采购类型(1:市场自采,2:供应商直供)
+                quantity: 0 // 数量
+              }
+            ]
           })
         } else {
           console.log('重复')

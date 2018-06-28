@@ -3,30 +3,25 @@
     <div class="CascaderBox">
 			<div class="clearfix">
 				<el-form :model="form" :rules="rules" ref="form" label-width="120px" :inline="true">
-						<div class="left">
-							<el-form-item label="" label-width="0" prop="searchParams.purchaseType" :rules="rules.select">
-								<el-select class="w110" size="small" v-model="form.searchParams.purchaseType" placeholder="采购类型">
-									<el-option v-for="sub in form.searchBarOptons.type" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
-								</el-select>
-							</el-form-item>
-						</div>
 
-						<div class="left" v-if="form.searchParams.purchaseType ===2">
-								<el-form-item label="" label-width="0" prop="searchParams.buyerId" :rules="rules.select">
-									<el-select class="w90" size="small" v-model="form.searchParams.buyerId" clearable filterable placeholder="采购员">
-										<el-option v-for="sub in form.searchBarOptons.salerList" :key="sub.pk" :label="sub.staffName" :value="sub.pk"></el-option>
-									</el-select>
-								</el-form-item>
-						</div>
+          <el-form-item label="" label-width="0" prop="searchParams.purchaseType" :rules="rules.select">
+            <el-select class="w110" size="small" v-model="form.searchParams.purchaseType" placeholder="采购类型">
+              <el-option v-for="sub in form.searchBarOptons.type" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
+            </el-select>
+          </el-form-item>
 
-						<!-- 供应商 -->
-						<div class="left" v-if="form.searchParams.purchaseType ===1">
-							<el-form-item label="" label-width="0" prop="searchParams.supplyDto" :rules="rules.select">
-								<el-cascader v-model="supplyDto" size="small" :options="form.options" @active-item-change="handleItemChange" :props="form.props" ></el-cascader>
-							</el-form-item>
-						</div>
+          <el-form-item label="" label-width="0" prop="searchParams.buyerId" :rules="rules.select"  v-if="form.searchParams.purchaseType ===2">
+            <el-select class="w90" size="small" v-model="form.searchParams.buyerId" clearable filterable placeholder="采购员">
+              <el-option v-for="sub in form.searchBarOptons.salerList" :key="sub.pk" :label="sub.staffName" :value="sub.pk"></el-option>
+            </el-select>
+          </el-form-item>
 
-						 <el-button  type="primary" size="small" @click.stop="clickToAdd" > 测试验证 </el-button>
+        <!-- 供应商 -->
+          <el-form-item label="" label-width="0" prop="searchParams.supplyDto" :rules="rules.select"  v-if="form.searchParams.purchaseType ===1">
+            <el-cascader v-model="supplyDto" size="small" :options="form.options" @active-item-change="handleItemChange" :props="form.props" ></el-cascader>
+          </el-form-item>
+
+          <!-- <el-button  type="primary" size="small" @click.stop="clickToAdd" > 测试验证 </el-button> -->
 				</el-form>
 			</div>
     </div>
@@ -202,6 +197,8 @@ export default {
 
 <style scoped lang="scss">
 .CascaderBox {
-   
+  .el-form-item{
+    margin-bottom: 0px;
+	}
 }
 </style>
