@@ -17,21 +17,14 @@
             </div>
         </div>
         <div class="content-bar">
-            <h1> 测试内容 </h1>
 
-						<el-button type="text" @click="dialogVisible = true">点击打开 Dialog</el-button>
+            <template v-if="this.data.type === 'add'">
+              <addview></addview>
+            </template>
 
-            <el-dialog
-                title="提示"
-								append-to-body
-                :visible.sync="dialogVisible"
-                width="30%">
-                <span>这是一段信息</span>
-                <span slot="footer" class="dialog-footer">
-                    <el-button @click="dialogVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-                </span>
-                </el-dialog>
+            <template v-if="this.data.type === 'check'">
+              <addcheck></addcheck>
+            </template>
         </div>
       </div>
 
@@ -43,10 +36,15 @@
 
 <script>
 import addModel from '@/public/addModel.js'
+import addview from './addview'
+import addcheck from './addcheck'
 
 export default {
   mixins: [addModel],
-  components: {},
+  components: {
+    addview,
+    addcheck
+  },
   data() {
     return {
       dialogVisible: false,

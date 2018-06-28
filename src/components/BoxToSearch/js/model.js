@@ -102,7 +102,7 @@ export default {
   computed: {
     url() {
       if (this.request.url) return this.request.url
-      if (this.modal === 'itemType') return 'foundation/v1.0/api/foundationOptionItem/queryOptionItemByType'
+      if (this.modal === 'itemType') return 'productInfo/listProductInfo'
     },
     maxTagWidth() {
       return this.showPopover ? { maxWidth: '50%' } : ''

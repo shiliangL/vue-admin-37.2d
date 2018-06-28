@@ -22,7 +22,7 @@
 			    </div>
 			    <div v-show="showTable">
 					<el-table  :max-height="maxHeight" v-loading="loading" element-loading-text="数据加载中" ref="table" class="search-input-table" @row-click="toggleRow" :data="tableData" size="small">
-					    <el-table-column width="50" align="center">
+					    <el-table-column width="50" type="selection" align="center">
 							<template slot-scope="scope">
 					    		<el-checkbox 
 					    			style="pointer-events: none;" 
@@ -43,9 +43,9 @@
             :total="total">
 				  </el-pagination>		
 
-					<div style="clear: both;text-align: center;margin-top: 6px;">
+					<!-- <div style="clear: both;text-align: center;margin-top: 6px;">
 						共 {{tableData.length}} 条
-					</div>
+					</div> -->
 
 					<loading v-show="loadError"  @refresh="getList"  :loadingError="loadingError"> </loading>
 		      	</div>

@@ -17,18 +17,22 @@
             </template>
           </el-table-column>
  
-          <el-table-column prop="categoryName" label="采购计划单号" align="center"></el-table-column>
-          <el-table-column prop="categoryName" label="采购计划来源" align="center"></el-table-column>
-          <el-table-column prop="categoryName" label="采购计划创建时间" align="center"></el-table-column>
-          <el-table-column prop="categoryName" label="采购申请时间" align="center"></el-table-column>
-          <el-table-column prop="categoryName" label="采购申请状态" align="center">
+          <el-table-column prop="orderNo" label="采购计划单号" align="center"></el-table-column>
+          <el-table-column prop="sourceType" label="采购计划来源" align="center">
             <template slot-scope="scope" align="center">
-               <el-tag size="small" v-if="scope.row.goodsStatus ===0">上架</el-tag>
-               <el-tag size="small" type="warning" v-if="scope.row.goodsStatus ===1">下架</el-tag>
+              <span v-cloak v-if="scope.row.sourceType ===1"> 销售订单 </span>
+              <span v-cloak v-if="scope.row.sourceType ===2"> 后台新增 </span>
             </template>
           </el-table-column>
-          <el-table-column prop="categoryName" label="创建人" align="center"></el-table-column>
-          <el-table-column prop="categoryName" label="申请人" align="center"></el-table-column>
+          <el-table-column prop="createdOn" label="采购计划创建时间" align="center"></el-table-column>
+          <el-table-column prop="applicationDate" label="采购申请时间" align="center"></el-table-column>
+          <el-table-column prop="auditStatus" label="采购申请状态" align="center">
+             <template slot-scope="scope" align="center">
+              <span v-cloak> {{scope.row.auditStatus | filterStatus }} </span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="createdName" label="创建人" align="center"></el-table-column>
+          <el-table-column prop="purchaserName" label="申请人" align="center"></el-table-column>
  
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
@@ -93,6 +97,24 @@ export default {
           // { type: 'more', labels: ['导入', '上传图片'] }
         ]
       ]
+    }
+  },
+  filters: {
+    filterStatus(status) {
+      switch (status) {
+        case 0:
+          return '全部'
+        case 1:
+          return '待申请'
+        case 2:
+          return '待审核'
+        case 3:
+          return '已通过'
+        case 4:
+          return '已拒绝'
+        default:
+          return ''
+      }
     }
   },
   created() {
@@ -187,7 +209,7 @@ export default {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, title: '新增采购计划（后台新增可预采购商品）' }})
     },
     TipsBarCallBack(value) {
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: {}, title: '销售订单采购计划' }})
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'check', obj: {}, title: '销售订单采购计划' }})
     },
     refrehList() {
 

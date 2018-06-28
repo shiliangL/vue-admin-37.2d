@@ -1,7 +1,7 @@
 
 <template>
     <div class="example">
-      <h3>example测试页面</h3>
+      <h3>常规表格 tabs切换组件,table列表组件,收搜 Bar组件</h3>
       <search-bar ref="searchBar" :data="searchBarData" @search="searchAction" @reset="resetSearchBar" @command="clickMoreCommand"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
@@ -46,6 +46,19 @@
 
       </table-contain>
       
+      <div style="height:700px"> 
+        <h3>分页检索组件</h3> 
+        <BoxToSearch
+          multiple
+         @change="selectChange"
+        :id.sync="brandIds"
+        :name.sync="brandNames">
+        </BoxToSearch>
+        <div>
+          选择 {{brandNames}}
+        </div>
+      </div>
+
 			<!-- 弹层 -->
       <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add>
     </div>
@@ -54,14 +67,20 @@
 <script>
 import Add from './add'
 import model from '@/public/listModel.js'
+import { BoxToSearch } from '@/components/base.js'
 export default {
   name: 'example',
   mixins: [model],
   components: {
-    Add
+    Add,
+    BoxToSearch
   },
   data() {
     return {
+      brand: null,
+      brandIds: null, // 多选
+      brandNames: null,
+
       searchBarData: [
         [
           // 0 代表app 1 微信公众号 2 微信小程序
@@ -94,6 +113,9 @@ export default {
     ]
   },
   methods: {
+    selectChange(value) {
+      this.brandNames = value
+    },
     tabsCallBack(item) {
       this.$nextTick().then(() => {
         this.$refs['searchBar'].sendSearchParams()

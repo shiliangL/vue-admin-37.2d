@@ -13,7 +13,7 @@ export default {
     this.$nextTick(() => {
       on(document, 'click', this.$refs.searchPopover.handleDocumentClick)
     })
-    this.codeOrname = this.request.data.codeOrname
+    // this.codeOrname = this.request.data.title
     this.copyRequest = this.copy(this.request)
     this.setSelect()
     this.$watch('$attrs.' + this.rowKey, this.rowKeyChange)
@@ -28,7 +28,7 @@ export default {
       handler(val, old) {
         try {
           if (JSON.stringify(val) !== JSON.stringify(this.copyRequest)) {
-            this.codeOrname = val.data.codeOrname
+            // this.codeOrname = val.data.title
             this.copyRequest = this.copy(this.request)
             this.update()
           }
@@ -153,6 +153,8 @@ export default {
         page: this.page - 1,
         size: this.size
       }
+      const key = this.request.key || 'codeOrname'
+      params[key] = codeOrname
 
       if (!url) {
         return
@@ -164,8 +166,7 @@ export default {
 
       this.loading = true
       this.timer = setTimeout(() => {
-        fecthList(url, { ...params, ...request.data, codeOrname }).then(res => {
-          console.log(res)
+        fecthList({ ...params, ...request.data }).then(res => {
           if (res.code === '0') {
             this.loading = false
             let ret = res.data
@@ -241,6 +242,7 @@ export default {
       this.showTable = !this.showTags
     },
     toggleRow(row) {
+      // this.codeOrname = null
       if (this.multiple) {
         if (this.isActiveRow(row)) {
           this.removeSelectItem(row)
@@ -286,6 +288,10 @@ export default {
       if (evt.keyCode === 13) {
         this.$emit('enter')
       }
+    },
+    clearSearch() {
+      this.codeOrname = null
+      debugger
     }
   },
   beforeDestroy() {
