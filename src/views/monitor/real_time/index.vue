@@ -2,7 +2,8 @@
   <div class="page" style="width: 100%">
     <div class="flex-box">
       <div>
-        <SearchTree clitkType="get" class="SearchTree" @clickSelect="clickSelect" v-model="SetupConfig"></SearchTree>
+        <!-- <SearchTree clitkType="get" class="SearchTree" @clickSelect="clickSelect" v-model="SetupConfig"></SearchTree> -->
+        <TableTree></TableTree>
       </div>
        <transition name="el-fade-in">
         <div class="content" v-if="SetupConfig">
@@ -61,11 +62,11 @@
 </template>
  
 <script>
-import { SearchTree } from '@/components/indexEx.js'
+import TableTree from '../components/TableTree'
 export default {
   name: 'real_time',
   components: {
-    SearchTree
+    TableTree
   },
   data() {
     return {

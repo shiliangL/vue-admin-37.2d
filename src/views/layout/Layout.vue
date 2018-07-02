@@ -5,6 +5,7 @@
 		</div>
     <sidebar class="sidebar-container"></sidebar>
     <div class="main-container">
+      <div class="sideClose" @click.stop="toggleSideBar"> </div>
       <div class="page-tags"></div>
       <div class="view-tips"></div>
       <app-main></app-main>
@@ -27,6 +28,11 @@ export default {
     sidebar() {
       return this.$store.state.app.sidebar
     }
+  },
+  methods: {
+    toggleSideBar() {
+      this.$store.dispatch('ToggleSideBar')
+    }
   }
 }
 </script>
@@ -43,8 +49,20 @@ export default {
 }
  .main-container{
     position: relative;
-   
  }
+
+ .main-container .sideClose{
+   position: absolute;
+   cursor: pointer;
+   width: 10px;
+   height: 100%;
+   background: #ccc;
+ }
+
+ .main-container .sideClose:hover{
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,.3);
+ }
+
  .main-container .page-tags{
    padding-top: 80px;
     height: 30px;
