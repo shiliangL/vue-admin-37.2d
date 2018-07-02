@@ -54,8 +54,8 @@
 					</div>
 				</div>
 
-        <el-dialog width="700px" title="更改采购员/供应商" :visible.sync="innerVisible" append-to-body center>
-          <changeDialog v-if="innerVisible" @close="innerVisible = false"></changeDialog>
+        <el-dialog width="700px" title="更改采购员/供应商" :visible.sync="innerVisible" append-to-body center @close="closeDialog" :modal="false">
+          <changeDialog v-model="dialogData" @callBack="changeDialogCallBack" v-if="innerVisible" @close="innerVisible = false"></changeDialog>
         </el-dialog>
 
 			</el-form>
@@ -89,21 +89,10 @@ export default {
       goodIds: null,
       goodNames: null,
       innerVisible: false,
+      dialogData: null,
+      curIndex: null,
       form: {
-        dataList: [
-          //   {
-          //   'planQuantity': 0, // 计划采购量
-          //   'productId': 'string', // productId
-          //   'supplierInfoList': [
-          //     {
-          //       'personnelId': 'string', // 人员id(供应商/采购员)
-          //       'personnelName': 'string', // 人员姓名(供应商/采购员)
-          //       'purchaseType': 0, // 采购类型(1:市场自采,2:供应商直供)
-          //       'quantity': 0 // 数量
-          //     }
-          //   ]
-          // }
-        ]
+        dataList: []
       },
       request: {
         key: 'title',
@@ -145,8 +134,13 @@ export default {
   mounted() {
   },
   methods: {
-    clickToChange() {
+    closeDialog() {
+      // console.log('关闭对话框')
+    },
+    clickToChange(index, item) {
       this.innerVisible = true
+      this.curIndex = index
+      this.dialogData = item
     },
     selectChange(value) {
       if (!value) return
@@ -167,23 +161,31 @@ export default {
       for (const item of this.goods) {
         if (!this.onlyOne(item.id)) {
           console.log('没有重复的')
-          console.log(item)
-
-          this.form.dataList.push({
+          const data = {
             productId: item.id,
+            supplierCategoryId: item.supplierCategoryId,
             productName: item.name,
             baseUnitName: item.baseUnitName,
             availableQuantity: item.availableQuantity || 0,
             planQuantity: 1,
             supplierInfoList: [
               {
+                buyerId: item.buyerId,
+                buyerName: item.buyerName,
+                supplierId: item.supplierId,
+                supplierName: item.supplierName,
                 personnelId: item.purchaseType === 1 ? item.supplierId : item.buyerId, // 人员id(供应商/采购员)
                 personnelName: item.purchaseType === 1 ? item.supplierName : item.buyerName, // 人员姓名(供应商/采购员)
                 purchaseType: item.purchaseType, // 采购类型(1:市场自采,2:供应商直供)
-                quantity: 0 // 数量
+                quantity: 1, // 数量
+                supplyDto: []
               }
             ]
-          })
+          }
+          if (item.purchaseType === 1) {
+            data.supplierInfoList[0].supplyDto = [item.supplierCategoryId, item.supplierId]
+          }
+          this.form.dataList.push(data)
         } else {
           console.log('重复')
         }
@@ -200,6 +202,20 @@ export default {
         }
       }
       return false
+    },
+    changeDialogCallBack(item) {
+      this.form.dataList[this.curIndex].supplierInfoList = item.table
+    },
+    // 触发校验 处理参数
+    validateForm() {
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          this.$emit('callBack', this.form.dataList)
+        } else {
+          this.$message({ type: 'warning', message: '请核实表单' })
+          return
+        }
+      })
     }
   }
 }

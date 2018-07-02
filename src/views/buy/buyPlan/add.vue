@@ -19,7 +19,7 @@
         <div class="content-bar">
 
             <template v-if="this.data.type === 'add'">
-              <addview></addview>
+              <addview ref="addview" @callBack="callBackToSubmit"></addview>
             </template>
 
             <template v-if="this.data.type === 'check'">
@@ -38,7 +38,7 @@
 import addModel from '@/public/addModel.js'
 import addview from './addview'
 import addcheck from './addcheck'
-
+import { save } from '@/api/buy/buyPlan.js'
 export default {
   mixins: [addModel],
   components: {
@@ -105,9 +105,45 @@ export default {
       }
     },
     validateForm() {
-      if (this.$refs['toEditor']) {
-        this.$refs['toEditor'].validateForm()
+      if (this.$refs['addview']) {
+        this.$refs['addview'].validateForm()
       }
+    },
+    callBackToSubmit(data) {
+      if (!data) return
+      const result = []
+      for (const item of data) {
+        const key = {
+          planQuantity: item.planQuantity,
+          productId: item.productId,
+          supplierInfoList: []
+        }
+        if (Array.isArray(item.supplierInfoList)) {
+          for (const list of item.supplierInfoList) {
+            const keyList = {
+              purchaseType: list.purchaseType,
+              quantity: list.quantity,
+              personnelName: list.purchaseType === 1 ? list.supplierName : list.buyerName,
+              personnelId: list.purchaseType === 1 ? list.supplyDto[1] : list.buyerId
+            }
+            key.supplierInfoList.push(keyList)
+          }
+        }
+        result.push(key)
+      }
+      if (result.length === 0) {
+        this.$message({ type: 'warning', message: '请添加一条数据' })
+        return
+      }
+      save(result).then(res => {
+        if (res.code === '0') {
+          this.$message({ type: 'success', message: res.msg })
+          this.dialog.visiable = false
+          this.$emit('add')
+        }
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
     }
   }
 }

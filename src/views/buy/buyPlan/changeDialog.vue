@@ -3,7 +3,6 @@
 
 			<el-form :model="form" :rules="rules" ref="form" >
 				 <!-- 表格 -->
-				  <!-- v-if="form.table && form.table.length>1" -->
         <el-table :data="form.table" size="small" :max-height="300" style="width: 100%;" highlight-current-row>
 
           <el-table-column label="操作" align="center" width="90">
@@ -17,19 +16,36 @@
             </template>
           </el-table-column>
 
-          <el-table-column prop="quantity" label="采购量" align="center" width="180">
-             <template slot-scope="scope">
+					<el-table-column prop="quantity" label="采购量" align="center"  width="180">
+						<template slot-scope="scope">
 
-							<el-form-item label="" label-width="0px" :prop="'table'+scope.$index+'.quantity'" :rules="[{trigger: 'change', validator: rules.validNumberR2}]">
+							<el-form-item label="" label-width="0px" :prop="'table.'+scope.$index+'.quantity'" :rules="[{trigger: 'change', validator: rules.validNumberR2}]">
 								<el-input size="small" class="w110" @change="changeNumber(scope.row)" placeholder="请输入" v-model.trim="scope.row.quantity"></el-input>
 							</el-form-item>
 
-            </template>
-          </el-table-column>
+						</template>
+					</el-table-column>
 
           <el-table-column prop="goodsImage" label="采购员/供应商" align="center">
              <template slot-scope="scope">
-               <CascaderBox></CascaderBox>
+               
+              <el-form-item label="" style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.purchaseType'"  :rules="rules.select">
+                <el-select class="w110" size="small" v-model="scope.row.purchaseType" placeholder="采购类型">
+                  <el-option v-for="sub in searchBarOptons.type" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
+                </el-select>
+              </el-form-item>
+
+
+              <el-form-item label=""  style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.buyerId'"  :rules="rules.select"  v-if="scope.row.purchaseType ===2">
+                <el-select style="180px" size="small" v-model="scope.row.buyerId" clearable filterable placeholder="请选择" @change="selectSaler($event,scope.row)">
+                  <el-option v-for="sub in searchBarOptons.salerList" :key="sub.pk" :label="sub.staffName" :value="sub.pk"></el-option>
+                </el-select>
+              </el-form-item>
+
+              <el-form-item label=""  style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.supplyDto'"  :rules="rules.select"  v-if="scope.row.purchaseType ===1">
+                <el-cascader style="180px" v-model="scope.row.supplyDto" size="small" :options="searchBarOptons.supplierList"  @change="selectSupply($event,scope.row)">></el-cascader>
+              </el-form-item>
+
             </template>
           </el-table-column>
  
@@ -39,7 +55,7 @@
 			</el-form>
 
 			<div class="footer-block">
-				<el-button type="primary" size="small" @click.stop="dialogFormVisible = false">确 定</el-button>
+				<el-button type="primary" size="small" @click.stop="submitForm('form')">确 定</el-button>
 				<el-button size="small" @click.stop="close">取 消</el-button>
 			</div>
 
@@ -47,21 +63,30 @@
 </template>
 
 <script>
-import { CascaderBox } from '@/components/base.js'
+import { fecthTree } from '@/api/buy/buyPlan.js'
+import { fecthSalerList } from '@/api/goodsList.js'
+import rules from '@/public/rules.js'
 export default {
   name: 'changeDialog',
-  components: {
-    CascaderBox
+  props: {
+    value: {
+      type: Object
+    }
   },
+  mixins: [rules],
   data() {
     return {
       form: {
-        table: [{
-          'personnelId': 'string', // 人员id(供应商/采购员)
-          'personnelName': 'string', // 人员姓名(供应商/采购员)
-          'purchaseType': 0, // 采购类型(1:市场自采,2:供应商直供)
-          'quantity': 0 // 数量
-        }]
+        table: []
+      },
+      searchBarOptons: {
+        type: [
+          { label: '供应商直供', value: 1 },
+          { label: '市场自采购', value: 2 }
+        ],
+        salerList: [],
+        supplyType: [],
+        supplierList: []
       },
       rules: {
         validNumberR2: (rule, value, callback) => {
@@ -77,16 +102,49 @@ export default {
       }
     }
   },
+  created() {
+    if (this.value) {
+      const data = JSON.parse(JSON.stringify(this.value))
+      this.form.table = data.supplierInfoList
+      console.log(data.supplierInfoList)
+    }
+  },
+  mounted() {
+    this.fecthTree()
+    this.fecthSalerList()
+  },
   methods: {
     close() {
       this.$emit('close')
     },
+    fecthTree() {
+      fecthTree().then(({ data }) => {
+        if (Array.isArray(data) && data.length) {
+          this.searchBarOptons.supplierList = data
+        }
+      }).catch(e => {
+        this.$message({ type: 'error', message: e })
+      })
+    },
+    fecthSalerList() {
+      fecthSalerList().then(({ data }) => {
+        if (Array.isArray(data) && data.length) {
+          this.searchBarOptons.salerList = data
+        }
+      }).catch(e => {
+        this.$message({ type: 'error', message: e })
+      })
+    },
     clickToAdd() {
       this.form.table.push({
-        'personnelId': 'string', // 人员id(供应商/采购员)
-        'personnelName': 'string', // 人员姓名(供应商/采购员)
-        'purchaseType': 0, // 采购类型(1:市场自采,2:供应商直供)
-        'quantity': 0 // 数量
+        buyerId: null,
+        buyerName: null,
+        supplierId: null,
+        supplierName: null,
+        personnelId: null, // 人员id(供应商/采购员)
+        personnelName: null, // 人员姓名(供应商/采购员)
+        purchaseType: 1, // 采购类型(1:市场自采,2:供应商直供)
+        quantity: 1 // 数量
       })
     },
     clickToDelete(index, item) {
@@ -95,6 +153,46 @@ export default {
       } else {
         this.$message({ type: 'warning', message: '不能为空' })
       }
+    },
+    changeNumber(item) {
+      console.log(item)
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          let sum = 0
+          for (const item of 	this.form.table) {
+            sum += parseInt(item.quantity)
+          }
+          if (sum === this.value.planQuantity * 1) {
+            this.$emit('callBack', this.form)
+            this.$emit('close')
+          } else {
+            this.$message({ type: 'error', message: '采购量之和等于计划采购量' })
+          }
+        } else {
+          this.$message({ type: 'warning', message: '请核实表单' })
+          return
+        }
+      })
+    },
+    selectSaler(val, item) {
+      if (!val) return
+      const obj = this.$arrayAttrGetObj(this.searchBarOptons.salerList, 'pk', val)
+      if (!obj) return
+      item.buyerName = obj.staffName
+      item.personnelName = obj.staffName
+    },
+    selectSupply(val, item) {
+      console.log(val)
+      if (!val) return
+      const obj = this.$arrayAttrGetObj(this.searchBarOptons.supplierList, 'value', val[0])
+      if (!obj) return
+      const arr = this.$arrayAttrGetObj(obj.children, 'value', val[1])
+      if (!arr) return
+      item.personnelName = arr.label
+      item.supplierName = arr.label
+      item.supplierId = arr.value
     }
   }
 }

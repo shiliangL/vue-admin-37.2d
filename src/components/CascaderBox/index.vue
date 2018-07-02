@@ -11,14 +11,14 @@
           </el-form-item>
 
           <el-form-item label="" label-width="0" prop="searchParams.buyerId" :rules="rules.select"  v-if="form.searchParams.purchaseType ===2">
-            <el-select class="w90" size="small" v-model="form.searchParams.buyerId" clearable filterable placeholder="采购员">
+            <el-select style="180px" size="small" v-model="form.searchParams.buyerId" clearable filterable placeholder="请选择">
               <el-option v-for="sub in form.searchBarOptons.salerList" :key="sub.pk" :label="sub.staffName" :value="sub.pk"></el-option>
             </el-select>
           </el-form-item>
 
         <!-- 供应商 -->
           <el-form-item label="" label-width="0" prop="searchParams.supplyDto" :rules="rules.select"  v-if="form.searchParams.purchaseType ===1">
-            <el-cascader v-model="supplyDto" size="small" :options="form.options" @active-item-change="handleItemChange" :props="form.props" ></el-cascader>
+            <el-cascader style="180px" v-model="supplyDto" size="small" :options="form.options" @active-item-change="handleItemChange" :props="form.props" ></el-cascader>
           </el-form-item>
 
           <!-- <el-button  type="primary" size="small" @click.stop="clickToAdd" > 测试验证 </el-button> -->
@@ -38,13 +38,18 @@ import {
 export default {
   name: 'CascaderBox',
   mixins: [rules],
+  props: {
+    value: {
+      type: Object
+    }
+  },
   data() {
     return {
       supplyDto: null,
       timer: null,
       form: {
         searchParams: {
-          purchaseType: 2,
+          purchaseType: null,
           buyerId: null,
           supplyId: null,
           supplyDto: null
@@ -69,7 +74,14 @@ export default {
       }
     }
   },
-  created() {},
+  created() {
+    console.log(this.value, 'bb')
+    if (this.value && this.value.purchaseType === 1) {
+      // 供应商
+      this.form.searchParams.purchaseType = this.value.purchaseType
+      this.supplyDto = [this.value.supplierCategoryId, this.value.buyerId]
+    }
+  },
   mounted() {
     this.fecthSupplierList()
     this.fecthSalerList()

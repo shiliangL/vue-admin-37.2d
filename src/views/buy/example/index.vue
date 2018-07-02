@@ -59,6 +59,16 @@
         </div>
       </div>
 
+      <div class="page-block">
+        {{selectedOptions}}
+        <el-cascader
+          :options="options2"
+          v-model="selectedOptions"
+          @active-item-change="handleItemChange"
+          :props="props"
+          ></el-cascader>
+      </div>
+
 			<!-- 弹层 -->
       <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add>
     </div>
@@ -99,7 +109,19 @@ export default {
           { type: 'button', name: '新增' }
           // { type: 'more', labels: ['导入', '上传图片'] }
         ]
-      ]
+      ],
+      options2: [{
+        label: '江苏',
+        cities: []
+      }, {
+        label: '浙江',
+        cities: []
+      }],
+      props: {
+        value: 'label',
+        children: 'cities'
+      },
+      selectedOptions: ['浙江', '杭州']
     }
   },
   created() {
@@ -171,6 +193,20 @@ export default {
     resetSearchBar() {
       this.curIndex = 0
       this.fecthList()
+    },
+    handleItemChange(val) {
+      console.log('active item:', val)
+      setTimeout(_ => {
+        if (val.indexOf('江苏') > -1 && !this.options2[0].cities.length) {
+          this.options2[0].cities = [{
+            label: '南京'
+          }]
+        } else if (val.indexOf('浙江') > -1 && !this.options2[1].cities.length) {
+          this.options2[1].cities = [{
+            label: '杭州'
+          }]
+        }
+      }, 300)
     }
   }
 }

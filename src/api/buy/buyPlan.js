@@ -16,6 +16,13 @@ export function fecthList(params) {
     params
   })
 }
+export function fecthTree(params) {
+  return request({
+    url: 'supplier/listSupplierTree',
+    method: 'get',
+    params
+  })
+}
 // 新增
 export function save(data) {
   return request({

@@ -212,7 +212,7 @@ export default {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'check', obj: {}, title: '销售订单采购计划' }})
     },
     refrehList() {
-
+      this.fecthList()
     },
     resetSearchBar() {
       this.curIndex = 0
