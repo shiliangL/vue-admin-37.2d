@@ -35,7 +35,6 @@
                 </el-select>
               </el-form-item>
 
-
               <el-form-item label=""  style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.buyerId'"  :rules="rules.select"  v-if="scope.row.purchaseType ===2">
                 <el-select style="180px" size="small" v-model="scope.row.buyerId" clearable filterable placeholder="请选择" @change="selectSaler($event,scope.row)">
                   <el-option v-for="sub in searchBarOptons.salerList" :key="sub.pk" :label="sub.staffName" :value="sub.pk"></el-option>
@@ -105,8 +104,23 @@ export default {
   created() {
     if (this.value) {
       const data = JSON.parse(JSON.stringify(this.value))
-      this.form.table = data.supplierInfoList
+      for (const item of data.supplierInfoList) {
+        if (item.purchaseType === 1) {
+          item.buyerId = item.buyerId ? item.buyerId : null
+          item.buyerName = item.buyerName ? item.buyerName : null
+          item.supplierId = item.personnelId
+          item.supplierName = item.personnelName
+          item.supplyDto = item.supplyDto ? item.supplyDto : [item.supplierCategoryId, item.personnelId]
+        } else if (item.purchaseType === 2) {
+          item.buyerId = item.buyerId ? item.buyerId : null
+          item.buyerName = item.buyerName ? item.buyerName : null
+          item.supplierId = item.supplierId ? item.supplierId : null
+          item.supplierName = item.supplierName ? item.supplierName : null
+          item.supplyDto = item.supplyDto ? item.supplyDto : []
+        }
+      }
       console.log(data.supplierInfoList)
+      this.form.table = data.supplierInfoList
     }
   },
   mounted() {
@@ -164,7 +178,7 @@ export default {
           for (const item of 	this.form.table) {
             sum += parseInt(item.quantity)
           }
-          if (sum === this.value.planQuantity * 1) {
+          if (sum === this.value.applyQuantity * 1) {
             this.$emit('callBack', this.form)
             this.$emit('close')
           } else {
@@ -189,9 +203,11 @@ export default {
       if (!obj) return
       const arr = this.$arrayAttrGetObj(obj.children, 'value', val[1])
       if (!arr) return
+      item.supplierCategoryId = val[0]
       item.personnelName = arr.label
       item.supplierName = arr.label
       item.supplierId = arr.value
+      console.log(item)
     }
   }
 }

@@ -54,7 +54,7 @@
 					</div>
 				</div>
 
-        <el-dialog width="700px" title="更改采购员/供应商" :visible.sync="innerVisible" append-to-body center @close="closeDialog" :modal="false">
+        <el-dialog width="700px" title="更改采购员/供应商" :visible.sync="innerVisible" append-to-body center :modal="false">
           <changeDialog v-model="dialogData" @callBack="changeDialogCallBack" v-if="innerVisible" @close="innerVisible = false"></changeDialog>
         </el-dialog>
 
@@ -134,9 +134,6 @@ export default {
   mounted() {
   },
   methods: {
-    closeDialog() {
-      // console.log('关闭对话框')
-    },
     clickToChange(index, item) {
       this.innerVisible = true
       this.curIndex = index
@@ -160,7 +157,7 @@ export default {
       if (this.$refs['BoxToSearch']) { this.$refs['BoxToSearch'].clearSearch() }
       for (const item of this.goods) {
         if (!this.onlyOne(item.id)) {
-          console.log('没有重复的')
+          // console.log('没有重复的')
           const data = {
             productId: item.id,
             supplierCategoryId: item.supplierCategoryId,

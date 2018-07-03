@@ -8,11 +8,12 @@
            <div class="left"> {{currentTitle}} </div>
            <div class="right">
              <template v-if="isShowView">
-                <el-button type="text" size="mini" @click.stop="clickToEdit">编辑</el-button>
+                <!-- <el-button v-if="this.data.type === 'add'" type="text" size="mini" @click.stop="clickToEdit">编辑</el-button> -->
              </template>
               <template v-else>
-                <el-button type="text" size="mini" @click.stop="validateForm">保存</el-button>
+                <el-button type="text" v-if="this.data.type === 'add'" size="mini" @click.stop="validateForm">保存</el-button>
              </template>
+              <el-button v-if="this.data.type === 'view' && this.data.obj.auditStatus ===1" type="text" size="mini" @click.stop="validatePass">申请</el-button>
               <el-button type="text" size="mini" @click.stop="dialog.visiable = false">返回</el-button>
             </div>
         </div>
@@ -24,6 +25,10 @@
 
             <template v-if="this.data.type === 'check'">
               <addcheck></addcheck>
+            </template>
+
+            <template v-if="this.data.type === 'view'">
+              <toView ref="toView" :loadID="loadID"  @callBack="callBackToPass"></toView>
             </template>
         </div>
       </div>
@@ -38,12 +43,14 @@
 import addModel from '@/public/addModel.js'
 import addview from './addview'
 import addcheck from './addcheck'
-import { save } from '@/api/buy/buyPlan.js'
+import toView from './toView'
+import { save, applyCreate } from '@/api/buy/buyPlan.js'
 export default {
   mixins: [addModel],
   components: {
     addview,
-    addcheck
+    addcheck,
+    toView
   },
   data() {
     return {
@@ -52,7 +59,7 @@ export default {
         subPropList: []
       },
       rules: {},
-      test: false,
+      loadID: null,
       isShowView: false,
       isShowEditor: false,
       currentTitle: null,
@@ -67,7 +74,8 @@ export default {
   mounted() {
     this.currentTitle = this.data.title || ''
     if (this.data.type === 'view') {
-      console.log('x')
+      const id = this.data.obj.pk
+      if (id) this.loadID = id
     } else if (this.data.type === 'add') {
       console.log('x')
     }
@@ -136,6 +144,52 @@ export default {
         return
       }
       save(result).then(res => {
+        if (res.code === '0') {
+          this.$message({ type: 'success', message: res.msg })
+          this.dialog.visiable = false
+          this.$emit('add')
+        }
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
+    validatePass() {
+      if (this.$refs['toView']) {
+        this.$refs['toView'].validateForm()
+      }
+    },
+    callBackToPass(data) {
+      // console.log(JSON.stringify(data))
+      debugger
+      if (!data) return
+      if (this.data.obj.auditStatus !== 1) return
+      const params = {
+        remark: null,
+        requestId: this.data.obj.pk,
+        status: 2
+      }
+      const arr = JSON.parse(JSON.stringify(data))
+      for (const item of arr) {
+        const arrItem = item.supplierInfoList
+        for (const key of arrItem) {
+          if (key.buyerId || key.supplierId) {
+            if (key.purchaseType === 1) {
+              key.personnelId = key.supplyDto[1]
+              key.personnelName = key.supplierName
+            } else if (key.purchaseType === 1) {
+              key.personnelId = key.buyerId
+              key.personnelName = key.buyerName
+            }
+            delete key.supplyDto
+            delete key.supplierName
+            delete key.supplierId
+            delete key.buyerId
+            delete key.buyerName
+          }
+        }
+      }
+      params.requestDetailsList = arr
+      applyCreate(params).then(res => {
         if (res.code === '0') {
           this.$message({ type: 'success', message: res.msg })
           this.dialog.visiable = false

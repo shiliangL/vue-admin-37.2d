@@ -152,7 +152,6 @@ export default {
     },
     fecthTipsBar() {
       fecthTipsBar().then(({ data }) => {
-        console.log(data, '数据')
         const type = Object.prototype.toString.call(data)
         if (data && type === '[object Object]') {
           const arr = []

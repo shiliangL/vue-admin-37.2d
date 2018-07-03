@@ -45,7 +45,7 @@
 
 <script>
 import model from '@/public/listModel.js'
-// import { fecthList, fecthTipsBar } from '@/api/buy/buyPlan.js'
+import { purchaseList } from '@/api/buy/buyPlan.js'
 export default {
   name: 'addcheck',
   mixins: [model],
@@ -58,6 +58,7 @@ export default {
           { type: 'date', value: null, key: 'generationTime', width: '200px', placeholder: '送货时间' },
           { type: 'date', value: null, key: 'applicationDate', width: '200px', placeholder: '申请时间' },
           { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '输入采购计划单号检索' },
+          { type: 'buyer', value: null, key: 'orderNo', class: 'w180', placeholder: '输入采购计划单号检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
@@ -87,20 +88,15 @@ export default {
     },
     // 数据请求
     fecthList() {
-      // this.fecthTipsBar()
-      // const { index, size } = this.pagination
-      // const data = {
-      //   index,
-      //   size,
-      //   auditStatus: this.curIndex,
-      //   ...this.paramsData
-      // }
-      // fecthList(data).then(({ data }) => {
-      //   this.table.data = data.rows
-      //   this.pagination.total = data.total
-      // }).catch(e => {
-      //   this.$message({ type: 'error', message: e })
-      // })
+      this.fecthTipsBar()
+      const data = {
+      }
+      purchaseList(data).then(({ data }) => {
+        console.log(data)
+        // this.table.data = data.rows
+      }).catch(e => {
+        this.$message({ type: 'error', message: e })
+      })
     },
     // 分页操作区域
     handleSizeChange(value) {

@@ -32,11 +32,35 @@ export function save(data) {
   })
 }
 
-// 详情
-export function detail(params) {
+// 详情H
+export function headerDetail(params) {
   return request({
     url: 'purchaseOrderRequest/getDetail',
     method: 'get',
     params
+  })
+}
+// 详情B
+export function bodyDetail(params) {
+  return request({
+    url: 'purchaseOrderRequestDetails/checkList',
+    method: 'get',
+    params
+  })
+}
+// 申请采购计划
+export function applyCreate(data) {
+  return request({
+    url: 'purchaseOrderRequestProcess/create',
+    method: 'POST',
+    data
+  })
+}
+// 采购清单
+export function purchaseList(data) {
+  return request({
+    url: 'scmSalesOrder/productPurchase',
+    method: 'POST',
+    data
   })
 }

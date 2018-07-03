@@ -1,34 +1,23 @@
 <!-- 采购员供应商级联选择组件 -->
 <template>
     <div class="CascaderBox">
-			<div class="clearfix">
-				<el-form :model="form" :rules="rules" ref="form" label-width="120px" :inline="true">
 
-          <el-form-item label="" label-width="0" prop="searchParams.purchaseType" :rules="rules.select">
-            <el-select class="w110" size="small" v-model="form.searchParams.purchaseType" placeholder="采购类型">
-              <el-option v-for="sub in form.searchBarOptons.type" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
-            </el-select>
-          </el-form-item>
+      <el-select class="w110" size="small" v-model="form.searchParams.purchaseType" placeholder="采购类型">
+        <el-option v-for="sub in form.searchBarOptons.type" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
+      </el-select>
 
-          <el-form-item label="" label-width="0" prop="searchParams.buyerId" :rules="rules.select"  v-if="form.searchParams.purchaseType ===2">
-            <el-select style="180px" size="small" v-model="form.searchParams.buyerId" clearable filterable placeholder="请选择">
-              <el-option v-for="sub in form.searchBarOptons.salerList" :key="sub.pk" :label="sub.staffName" :value="sub.pk"></el-option>
-            </el-select>
-          </el-form-item>
+      <el-select style="180px" size="small" v-model="form.searchParams.buyerId" clearable filterable placeholder="请选择">
+        <el-option v-for="sub in form.searchBarOptons.salerList" :key="sub.pk" :label="sub.staffName" :value="sub.pk"></el-option>
+      </el-select>
 
-        <!-- 供应商 -->
-          <el-form-item label="" label-width="0" prop="searchParams.supplyDto" :rules="rules.select"  v-if="form.searchParams.purchaseType ===1">
-            <el-cascader style="180px" v-model="supplyDto" size="small" :options="form.options" @active-item-change="handleItemChange" :props="form.props" ></el-cascader>
-          </el-form-item>
-
-          <!-- <el-button  type="primary" size="small" @click.stop="clickToAdd" > 测试验证 </el-button> -->
-				</el-form>
-			</div>
+      <!-- 供应商 -->
+      <el-cascader style="180px" v-model="supplyDto" size="small" :options="form.options" @active-item-change="handleItemChange" :props="form.props" ></el-cascader>
+      
     </div>
 </template>
 
 <script>
-import rules from '@/public/rules.js'
+
 import {
   fecthSupplierList,
   fecthSalerList,
@@ -37,7 +26,6 @@ import {
 
 export default {
   name: 'CascaderBox',
-  mixins: [rules],
   props: {
     value: {
       type: Object
