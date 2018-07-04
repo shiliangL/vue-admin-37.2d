@@ -1,13 +1,55 @@
 <template>
-    <div>
-      <!-- 搜索 -->
-			<search-bar ref="searchBar" :data="searchBarData" @search="searchAction"  @add="showAdd"  @reset="resetSearchBar" @command="clickMoreCommand"></search-bar>
+    <div class="addcheck">
+      <!-- 搜索 
+        :clearable="false"
+      -->
+      <div class="search-bar">
+        <div class="left">
+          <el-date-picker :style="{width:'140px'}" 
+            size="small"
+            v-model="searchBarData.sendTime" 
+            value-format="yyyy-MM-dd" 
+            type="date" placeholder="送货时间">
+            </el-date-picker>
+        </div>
+
+        <div class="left">
+          <el-select class="w110" size="small" v-model="searchBarData.purchaseStatus" clearable filterable placeholder="采购计划状态">
+            <el-option v-for="sub in options.purchaseType" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
+          </el-select>
+        </div>
+
+        <div class="left">
+          <CascaderBox></CascaderBox>
+        </div>
+
+        <div class="left">
+          <el-input style="width:180px" v-model="searchBarData.goodName" size="small" @keyup.enter.native="fecthList" placeholder="输入商品名称检索"></el-input>
+        </div>
+         <div class="left">
+            <el-button  type="primary" size="small" @click.stop="fecthList" > 搜索 </el-button>
+        </div>
+        <div class="left">
+            <el-button size="small" @click.stop="reset" > 重置 </el-button>
+        </div>
+        <div class="right">
+          <div class="left">
+            <el-button size="small" @click.stop="clickToCreate" > 生成采购计划 </el-button>
+          </div>
+        </div>
+      </div>
+
 			<!-- 提示 -->
 			<div class="tipsNum">
-				商品共计：10      未生成采购计划商品：2
+        <span class="Num-iteml" v-cloak>商品共计: <span>{{tableData.length}}</span>  </span>
+        <span class="Num-itemr" v-cloak>未生成采购计划商品: <span>{{unfinishedTotal}}</span>  </span>
 			</div>
 			<!-- 表格 -->
-			<el-table :data="table.data" :size="table.size" max-height="450" style="width: 100%;" highlight-current-row>
+			<el-table :data="tableData" size="small" ref="multipleTable" max-height="450" style="width: 100%;" 
+        highlight-current-row
+        @selection-change="selectionChange">
+
+      <el-table-column width="50" type="selection" align="center" :selectable="checkSelectable"></el-table-column>
 
 				<el-table-column label="序号" width="50" align="center">
 					<template slot-scope="scope">
@@ -15,124 +57,165 @@
 					</template>
 				</el-table-column>
 
-				<el-table-column prop="orderNo" label="采购计划单号" align="center"></el-table-column>
-				<el-table-column prop="sourceType" label="采购计划来源" align="center">
-					<template slot-scope="scope" align="center">
-						<span v-cloak v-if="scope.row.sourceType ===1"> 销售订单 </span>
-						<span v-cloak v-if="scope.row.sourceType ===2"> 后台新增 </span>
-					</template>
-				</el-table-column>
-				<el-table-column prop="createdOn" label="采购计划创建时间" align="center"></el-table-column>
-				<el-table-column prop="applicationDate" label="采购申请时间" align="center"></el-table-column>
-				<el-table-column prop="createdName" label="创建人" align="center"></el-table-column>
-				<el-table-column prop="purchaserName" label="申请人" align="center"></el-table-column>
-
-				<el-table-column label="操作" align="center" width="180">
-					<template slot-scope="scope" align="center">
-						<el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">查看</el-button>
-					</template>
-				</el-table-column>
+				<el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
+				<el-table-column prop="baseUnitName" label="基本单位" align="center"></el-table-column>
+				<el-table-column prop="orderQuantity" label="下单数量" align="center"></el-table-column>
+				<el-table-column prop="buyerOrSupplyName" label="采购员/供应商" align="center"></el-table-column>
 			</el-table>
 
     </div>
 </template>
 
 <script>
-    export default {
-      name: 'addcheck'
-    }
-</script>
-
-<script>
-import model from '@/public/listModel.js'
-import { purchaseList } from '@/api/buy/buyPlan.js'
+import { CascaderBox } from '@/components/base.js'
+import { purchaseList, saveList } from '@/api/buy/buyPlan.js'
 export default {
   name: 'addcheck',
-  mixins: [model],
+  components: {
+    CascaderBox
+  },
   data() {
     return {
-      curIndex: 0,
-      TipsBarData: [],
-      searchBarData: [
-        [
-          { type: 'date', value: null, key: 'generationTime', width: '200px', placeholder: '送货时间' },
-          { type: 'date', value: null, key: 'applicationDate', width: '200px', placeholder: '申请时间' },
-          { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '输入采购计划单号检索' },
-          { type: 'buyer', value: null, key: 'orderNo', class: 'w180', placeholder: '输入采购计划单号检索' },
-          { type: 'search', name: '查询' },
-          { type: 'reset', name: '重置' }
-        ],
-        [
-          { type: 'add', name: '新增' }
-          // { type: 'more', labels: ['导入', '上传图片'] }
-        ]
-      ]
+      tableData: [],
+      searchBarData: {
+        sendTime: null,
+        purchaseStatus: null,
+        buyerOrSupplyId: null,
+        goodName: null
+      },
+      options: {
+
+      },
+      selectArray: null
+    }
+  },
+  created() {
+    this.options.purchaseType = [
+      { value: 0, label: '未生成' },
+      { value: 1, label: '已生成' }
+    ]
+  },
+  computed: {
+    unfinishedTotal() {
+      let total = 0
+      this.tableData.map(item => {
+        if (item.purchaseStatus === 0) {
+          total += 1
+        }
+      })
+      return total
     }
   },
   mounted() {
-    this.table.data = [{}]
+    if (this.$attrs.data) this.searchBarData.sendTime = this.$attrs.data
+    this.fecthList()
   },
   methods: {
-    searchAction(params) {
-      this.paramsData = {
-        auditStatus: params.auditStatus,
-        sourceType: params.sourceType,
-        generationTime: params.generationTime,
-        applicationDate: params.applicationDate,
-        orderNo: params.orderNo
-      }
-      this.fecthList()
-    },
-    clickMoreCommand(command) {
-      this.$message({ type: 'success', message: command, duration: 0, showClose: true })
-    },
     // 数据请求
     fecthList() {
-      this.fecthTipsBar()
-      const data = {
+      const params = {
+        ...this.searchBarData
       }
-      purchaseList(data).then(({ data }) => {
-        console.log(data)
-        // this.table.data = data.rows
+      purchaseList(params).then(({ data }) => {
+        if (Array.isArray(data)) {
+          for (const item of data) {
+            if (item.purchaseStatus === null) {
+              item.purchaseStatus = 1
+            }
+          }
+          this.tableData = data
+
+          setTimeout(() => {
+            for (const item of this.tableData) {
+              this.$refs['multipleTable'].toggleRowSelection(item, true)
+            }
+          }, 200)
+        }
       }).catch(e => {
-        this.$message({ type: 'error', message: e })
+        this.$message({ type: 'error', message: e.msg })
       })
     },
-    // 分页操作区域
-    handleSizeChange(value) {
-      this.pagination.size = value
-      this.fecthList()
+    checkSelectable(row) {
+      return row.purchaseStatus === 0
     },
-    handleCurrentChange(value) {
-      this.pagination.index = value
-      this.fecthList()
-    },
-    // 弹层操作
-    click2view(index, row) {
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '采购计划详情' }})
-    },
-    click2follow(index, row) {
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'follow', obj: row }})
-    },
-    showAdd() {
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, title: '新增采购计划（后台新增可预采购商品）' }})
-    },
-    TipsBarCallBack(value) {
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'check', obj: {}, title: '销售订单采购计划' }})
+    reset() {
+      this.searchBarData = {
+        sendTime: null,
+        purchaseStatus: null,
+        buyerOrSupplyId: null,
+        goodName: null
+      }
     },
     refrehList() {
 
     },
-    resetSearchBar() {
-      this.curIndex = 0
-      this.fecthList()
+    clickToCreate() {
+      if (!this.selectArray || this.selectArray.length === 0) {
+        this.$message({ type: 'warning', message: '数据不能为空' })
+        return
+      }
+      this.$confirm('是否需要将勾选数据生成采购计划?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const arr = []
+        for (const item of this.selectArray) {
+          if (item.purchaseStatus === 0) {
+            if (item.supplyId) {
+              item.purchaseType = 1
+              item.personnelId = item.supplyId
+              item.personnelName = item.supplyName
+            } else {
+              item.purchaseType = 2
+              item.personnelId = item.purchaseId
+              item.personnelName = item.purchaseName
+            }
+            const data = {
+              orderDetailIdList: item.orderDetailIds.split(','),
+              planQuantity: item.orderQuantity,
+              productId: item.productId,
+              supplierInfoList: [
+                {
+                  purchaseType: item.purchaseType,
+                  quantity: item.orderQuantity,
+                  personnelId: item.personnelId,
+                  personnelName: item.personnelName
+                }
+              ]
+            }
+            arr.push(data)
+          }
+        }
+        saveList(arr).then(res => {
+          this.$message({ type: 'success', message: `${res.msg}成功!` })
+          this.$emit('close')
+        }).catch(() => {
+          this.$message({ type: 'error', message: '删除失败' })
+        })
+      }).catch(() => {})
+    },
+    selectionChange(item) {
+      this.selectArray = item
     }
+
   }
 }
 </script>
 
-<style scoped>
-.tipsNum{
-	padding: 10px;
-}
+<style scoped lang="scss">
+ .tipsNum{
+    padding-bottom: 10px;
+    padding-left: 10px;
+    font-weight: 50;
+    font-size: 14px;
+    .Num-itemr{
+      margin-left: 10px;
+    }
+    .Num-itemr{
+      span{
+        color:#1cbc9c;
+      }
+    }
+ }
 </style>

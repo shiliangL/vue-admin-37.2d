@@ -24,7 +24,7 @@
             </template>
 
             <template v-if="this.data.type === 'check'">
-              <addcheck></addcheck>
+              <addcheck :data="data.obj.date" @close="addCheckClose"></addcheck>
             </template>
 
             <template v-if="this.data.type === 'view'">
@@ -160,7 +160,6 @@ export default {
     },
     callBackToPass(data) {
       // console.log(JSON.stringify(data))
-      debugger
       if (!data) return
       if (this.data.obj.auditStatus !== 1) return
       const params = {
@@ -198,6 +197,10 @@ export default {
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
+    },
+    addCheckClose() {
+      this.dialog.visiable = false
+      this.$emit('add')
     }
   }
 }

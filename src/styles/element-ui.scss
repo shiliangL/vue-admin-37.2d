@@ -139,9 +139,7 @@
  .el-table .cell,
  .el-table th div {
      padding-right: 0
- }
-
- // .el-table--mini td, .el-table--mini th {
+ } // .el-table--mini td, .el-table--mini th {
  //   padding: 6px 0;
  // }
  .cell .el-button--mini,
@@ -176,4 +174,12 @@
 
  .el-dialog__title {
      font-size: 14px !important;
+ }
+
+ .search-bar {
+     .CascaderBox {
+         .el-cascader__label {
+             padding-top: 7px !important;
+         }
+     }
  }

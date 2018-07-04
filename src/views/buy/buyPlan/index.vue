@@ -208,7 +208,7 @@ export default {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, title: '新增采购计划（后台新增可预采购商品）' }})
     },
     TipsBarCallBack(value) {
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'check', obj: {}, title: '销售订单采购计划' }})
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'check', obj: value, title: '销售订单采购计划' }})
     },
     refrehList() {
       this.fecthList()

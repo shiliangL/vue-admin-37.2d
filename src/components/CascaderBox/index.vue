@@ -6,13 +6,16 @@
         <el-option v-for="sub in form.searchBarOptons.type" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
       </el-select>
 
-      <el-select style="180px" size="small" v-model="form.searchParams.buyerId" clearable filterable placeholder="请选择">
-        <el-option v-for="sub in form.searchBarOptons.salerList" :key="sub.pk" :label="sub.staffName" :value="sub.pk"></el-option>
-      </el-select>
+      <template v-if="form.searchParams.purchaseType===2">
+        <el-select style="180px" size="small" v-model="form.searchParams.buyerId" clearable filterable placeholder="请选择">
+          <el-option v-for="sub in form.searchBarOptons.salerList" :key="sub.pk" :label="sub.staffName" :value="sub.pk"></el-option>
+        </el-select>
+      </template>
 
-      <!-- 供应商 -->
-      <el-cascader style="180px" v-model="supplyDto" size="small" :options="form.options" @active-item-change="handleItemChange" :props="form.props" ></el-cascader>
-      
+      <template v-if="form.searchParams.purchaseType===1">
+        <el-cascader style="180px" v-model="supplyDto" size="small" :options="form.options" @active-item-change="handleItemChange" :props="form.props" ></el-cascader>
+      </template>
+
     </div>
 </template>
 
@@ -63,9 +66,7 @@ export default {
     }
   },
   created() {
-    console.log(this.value, 'bb')
     if (this.value && this.value.purchaseType === 1) {
-      // 供应商
       this.form.searchParams.purchaseType = this.value.purchaseType
       this.supplyDto = [this.value.supplierCategoryId, this.value.buyerId]
     }
@@ -185,10 +186,7 @@ export default {
     },
     'supplyDto': {
       handler(val) {
-        console.log(val)
-        if (!val) return
-        this.form.searchParams.supplyDto = val.toString()
-        // this.resetForm()
+
       }
     }
   }
@@ -196,9 +194,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.CascaderBox {
-  .el-form-item{
-    margin-bottom: 0px;
-	}
-}
+ 
 </style>

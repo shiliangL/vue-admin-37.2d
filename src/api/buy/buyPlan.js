@@ -26,7 +26,7 @@ export function fecthTree(params) {
 // 新增
 export function save(data) {
   return request({
-    url: 'purchaseOrderRequest/save',
+    url: 'purchaseOrderRequest/save?sourceType=2',
     method: 'post',
     data
   })
@@ -57,10 +57,19 @@ export function applyCreate(data) {
   })
 }
 // 采购清单
-export function purchaseList(data) {
+export function purchaseList(params) {
   return request({
     url: 'scmSalesOrder/productPurchase',
-    method: 'POST',
+    method: 'get',
+    params
+  })
+}
+
+// 采购审核
+export function saveList(data) {
+  return request({
+    url: 'purchaseOrderRequest/save?sourceType=1',
+    method: 'post',
     data
   })
 }
