@@ -13,7 +13,7 @@
       </template>
 
       <template v-if="form.searchParams.purchaseType===1">
-        <el-cascader style="180px" v-model="supplyDto" size="small" :options="form.options" @active-item-change="handleItemChange" :props="form.props" ></el-cascader>
+        <el-cascader style="180px" v-model="form.searchParams.supplyDto" size="small" :options="form.options" @active-item-change="handleItemChange" :props="form.props" ></el-cascader>
       </template>
 
     </div>
@@ -36,14 +36,13 @@ export default {
   },
   data() {
     return {
-      supplyDto: null,
       timer: null,
       form: {
         searchParams: {
           purchaseType: null,
           buyerId: null,
           supplyId: null,
-          supplyDto: null
+          supplyDto: []
         },
         options: [
 
@@ -66,23 +65,13 @@ export default {
     }
   },
   created() {
-    if (this.value && this.value.purchaseType === 1) {
-      this.form.searchParams.purchaseType = this.value.purchaseType
-      this.supplyDto = [this.value.supplierCategoryId, this.value.buyerId]
-    }
+
   },
   mounted() {
     this.fecthSupplierList()
     this.fecthSalerList()
   },
   methods: {
-    clickToAdd() {
-      this.$refs['form'].validate(valid => {
-        if (valid) {
-          console.log('通过验证')
-        }
-      })
-    },
     // 加载供应商类别
     fecthSupplierList() {
       fecthSupplierList()
@@ -126,7 +115,6 @@ export default {
         })
     },
     handleItemChange(value) {
-      console.log(value)
       const arr = this.form.options
       let item = null
       for (let i = 0; i < arr.length; i++) {
@@ -167,7 +155,6 @@ export default {
   watch: {
     'form.searchParams.purchaseType': {
       handler(val) {
-        console.log(val)
         if (val === 1) {
           console.log('选择供应商')
           // 选择供应商
@@ -179,14 +166,24 @@ export default {
           // 选择采购员
 
           // 清空供应商
-          this.supplyDto = null
-          this.form.searchParams.supplyDto = null
+          this.form.searchParams.supplyDto = []
         }
       }
     },
-    'supplyDto': {
+    'form.searchParams': {
       handler(val) {
-
+        this.$emit('input', val)
+      },
+      deep: true
+    },
+    value: {
+      handler(val) {
+        if (val === null) {
+          this.form.searchParams.purchaseType = null
+          this.form.searchParams.buyerId = null
+          this.form.searchParams.supplyId = null
+          this.form.searchParams.supplyDto = []
+        }
       }
     }
   }

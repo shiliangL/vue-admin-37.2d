@@ -20,7 +20,7 @@
         </div>
 
         <div class="left">
-          <CascaderBox></CascaderBox>
+          <CascaderBox v-model="CascaderBoxDTO"></CascaderBox>
         </div>
 
         <div class="left">
@@ -81,6 +81,7 @@ export default {
   data() {
     return {
       tableData: [],
+      CascaderBoxDTO: null,
       searchBarData: {
         sendTime: null,
         purchaseStatus: null,
@@ -143,6 +144,7 @@ export default {
       return row.purchaseStatus === 0
     },
     reset() {
+      this.CascaderBoxDTO = null
       this.searchBarData = {
         sendTime: null,
         purchaseStatus: null,

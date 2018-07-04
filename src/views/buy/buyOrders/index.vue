@@ -79,11 +79,7 @@ export default {
       searchBarData: [
         [
           { type: 'date', value: null, key: 'createTime', width: '200px', placeholder: '订单创建时间' },
-          { type: 'option', value: null, key: 'sourceType', class: 'w110', placeholder: '采购员/供应商', options: [
-            { label: '全部', value: 0 },
-            { label: '销售订单', value: 1 },
-            { label: '后台新增', value: 2 }]
-          },
+          { type: 'buyer', value: null, key: 'sourceType', class: 'w110', placeholder: '采购员/供应商' },
           { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '输入采购订单编号检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }

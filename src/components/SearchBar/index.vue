@@ -28,8 +28,9 @@
         </template>
 
          <template v-else-if="item.type === 'buyer'">
+           {{item}}
           <!-- <el-button size="small" @click="clickReset">{{item.name}}</el-button> -->
-          <!-- <CascaderBox></CascaderBox> -->
+          <CascaderBox></CascaderBox>
         </template>
 
       </div>
@@ -59,9 +60,12 @@
 </template>
 
 <script>
-
+import { CascaderBox } from '@/components/base.js'
 export default {
   name: 'SearchBar',
+  components: {
+    CascaderBox
+  },
   props: {
     data: {
       type: Array,
