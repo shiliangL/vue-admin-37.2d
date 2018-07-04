@@ -1,9 +1,11 @@
+<!-- 采购订单 -->
 <template>
     <div class="buyOrders">
 
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
 
-      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction" @reset="resetSearchBar" @command="clickMoreCommand"></search-bar>
+      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction"  @add="showAdd"  @reset="resetSearchBar" @command="clickMoreCommand"></search-bar>
+
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -14,18 +16,22 @@
             </template>
           </el-table-column>
  
-          <el-table-column prop="categoryName" label="采购计划单号" align="center"></el-table-column>
-          <el-table-column prop="categoryName" label="采购计划来源" align="center"></el-table-column>
-          <el-table-column prop="categoryName" label="采购计划创建时间" align="center"></el-table-column>
-          <el-table-column prop="categoryName" label="采购申请时间" align="center"></el-table-column>
-          <el-table-column prop="categoryName" label="采购申请状态" align="center">
+          <el-table-column prop="orderNo" label="采购订单编号" align="center"></el-table-column>
+          <el-table-column prop="createdOn" label="采购订创建时间" align="center"></el-table-column>
+
+          <el-table-column prop="sourceType" label="采购类型" align="center">
             <template slot-scope="scope" align="center">
-               <el-tag size="small" v-if="scope.row.goodsStatus ===0">上架</el-tag>
-               <el-tag size="small" type="warning" v-if="scope.row.goodsStatus ===1">下架</el-tag>
+              <span v-cloak v-if="scope.row.purchaseType ===1"> 供应商直供 </span>
+              <span v-cloak v-if="scope.row.purchaseType ===2"> 市场自采 </span>
             </template>
           </el-table-column>
-          <el-table-column prop="categoryName" label="创建人" align="center"></el-table-column>
-          <el-table-column prop="categoryName" label="申请人" align="center"></el-table-column>
+          <el-table-column prop="personnelName" label="采购员/供应商" align="center"></el-table-column>
+
+          <el-table-column prop="auditStatus" label="采购订单状态" align="center">
+             <template slot-scope="scope" align="center">
+              <span v-cloak> {{scope.row.procurementStatus | filterStatus }} </span>
+            </template>
+          </el-table-column>
  
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
@@ -46,61 +52,93 @@
         </el-pagination>
 
       </table-contain>
+
+      <!-- 弹层 -->
+      <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add>
       
     </div>
 </template>
 
 <script>
-import TipsBar from '../components/TipsBar'
 import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs } from '@/components/base.js'
+import { fecthList } from '@/api/buy/buyOrders.js'
+
 export default {
   name: 'buyPlan',
   mixins: [model],
   components: {
-    TipsBar,
     Tabs,
     Add
   },
   data() {
     return {
+      curIndex: 0,
+      TipsBarData: [],
       searchBarData: [
         [
-          { type: 'date', value: null, key: 'orderTime', width: '200px', placeholder: '创建时间' },
-          { type: 'date', value: null, key: 'orderTime', width: '200px', placeholder: '申请时间' },
-          { type: 'input', value: null, key: 'orderNoOrName', class: 'w180', placeholder: '输入采购的订单编号' },
+          { type: 'date', value: null, key: 'createTime', width: '200px', placeholder: '订单创建时间' },
+          { type: 'option', value: null, key: 'sourceType', class: 'w110', placeholder: '采购员/供应商', options: [
+            { label: '全部', value: 0 },
+            { label: '销售订单', value: 1 },
+            { label: '后台新增', value: 2 }]
+          },
+          { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '输入采购订单编号检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
         [
-          { type: 'button', name: '新增' }
+          { type: 'add', name: '新增' }
           // { type: 'more', labels: ['导入', '上传图片'] }
         ]
       ]
     }
   },
+  filters: {
+    filterStatus(status) {
+      switch (status) {
+        case 0:
+          return '全部'
+        case 1:
+          return '待采购'
+        case 2:
+          return '采购中'
+        case 3:
+          return '待收货'
+        case 4:
+          return '已收货'
+        default:
+          return ''
+      }
+    }
+  },
   created() {
     this.tabTitles = [
-      { title: '全部', value: 0 },
+      { title: '全部', value: null },
       { title: '待采购', value: 1 },
       { title: '采购中', value: 2 },
       { title: '待收货', value: 3 },
       { title: '已收货', value: 4 }
     ]
   },
+  mounted() {
+    this.fecthList()
+  },
   methods: {
     tabsCallBack(item) {
+      this.curIndex = item.value
       this.$nextTick().then(() => {
         this.$refs['searchBar'].sendSearchParams()
       })
     },
     searchAction(params) {
       this.paramsData = {
-        orderNoOrName: params.orderNoOrName,
-        orderTime: params.orderTime,
-        paymentType: params.paymentType,
-        orderSource: params.orderSource
+        auditStatus: params.auditStatus,
+        sourceType: params.sourceType,
+        generationTime: params.generationTime,
+        applicationDate: params.applicationDate,
+        orderNo: params.orderNo
       }
       this.fecthList()
     },
@@ -109,19 +147,19 @@ export default {
     },
     // 数据请求
     fecthList() {
-      // const { index, size } = this.pagination
-      // const data = {
-      //   index,
-      //   size,
-      //   status: this.curIndex,
-      //   ...this.paramsData
-      // }
-      // orderList(data).then(({ data }) => {
-      //   this.table.data = data.rows
-      //   this.pagination.total = data.total
-      // }).catch(e => {
-      //   this.$message({ type: 'error', message: e, duration: 0, showClose: true })
-      // })
+      const { index, size } = this.pagination
+      const data = {
+        index,
+        size,
+        procurementStatus: this.curIndex,
+        ...this.paramsData
+      }
+      fecthList(data).then(({ data }) => {
+        this.table.data = data.rows
+        this.pagination.total = data.total
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
     },
     // 分页操作区域
     handleSizeChange(value) {
@@ -134,13 +172,13 @@ export default {
     },
     // 弹层操作
     click2view(index, row) {
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row }})
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '采购计划详情' }})
     },
-    click2follow(index, row) {
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'follow', obj: row }})
+    showAdd() {
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, title: '新增采购计划（后台新增可预采购商品）' }})
     },
     refrehList() {
-
+      this.fecthList()
     },
     resetSearchBar() {
       this.curIndex = 0
@@ -151,7 +189,7 @@ export default {
 </script>
 
 <style scoped>
-.buyOrders{
+.buyPlan{
   background: #fff;
 }
 </style>

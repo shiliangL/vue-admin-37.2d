@@ -6,8 +6,7 @@
 				<topNavBar></topNavBar>
 				<tags-view></tags-view>
 			</StickyBar>
-			<app-main>
-      </app-main>
+			<app-main></app-main>
 		</div>
 	</div>
 </template>
