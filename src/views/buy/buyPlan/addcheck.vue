@@ -118,6 +118,15 @@ export default {
   methods: {
     // 数据请求
     fecthList() {
+      if (this.CascaderBoxDTO) {
+        if (this.CascaderBoxDTO.buyerId) {
+          this.searchBarData.buyerOrSupplyId = this.CascaderBoxDTO.buyerId
+        } else {
+          if (Array.isArray(this.CascaderBoxDTO.supplyDto) && this.CascaderBoxDTO.supplyDto.length >= 2) {
+            this.searchBarData.buyerOrSupplyId = this.CascaderBoxDTO.supplyDto[1]
+          }
+        }
+      }
       const params = {
         ...this.searchBarData
       }

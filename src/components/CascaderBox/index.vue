@@ -13,7 +13,7 @@
       </template>
 
       <template v-if="form.searchParams.purchaseType===1">
-        <el-cascader style="180px" v-model="form.searchParams.supplyDto" size="small" :options="form.options" @active-item-change="handleItemChange" :props="form.props" ></el-cascader>
+        <el-cascader style="180px" v-model="form.searchParams.supplyDto" size="small" filterable :options="form.options" @active-item-change="handleItemChange" :props="form.props" ></el-cascader>
       </template>
 
     </div>

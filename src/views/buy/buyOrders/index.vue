@@ -4,9 +4,38 @@
 
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
 
-      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction"  @add="showAdd"  @reset="resetSearchBar" @command="clickMoreCommand">
-         <CascaderBox slot="buyer"></CascaderBox>
-      </search-bar>
+      <div class="search-bar">
+        <div class="left">
+          <el-date-picker :style="{width:'140px'}" 
+            size="small"
+            v-model="searchBarData.createTime" 
+            value-format="yyyy-MM-dd" 
+            type="date" placeholder="订单创建时间">
+            </el-date-picker>
+        </div>
+
+        <div class="left">
+          <CascaderBox v-model="CascaderBoxDTO"></CascaderBox>
+        </div>
+
+        <div class="left">
+          <el-input style="width:180px" v-model="searchBarData.orderNo" size="small" @keyup.enter.native="fecthList" placeholder="输入商品名称检索"></el-input>
+        </div>
+
+         <div class="left">
+            <el-button  type="primary" size="small" @click.stop="fecthList" > 搜索 </el-button>
+        </div>
+
+        <div class="left">
+            <el-button size="small" @click.stop="reset" > 重置 </el-button>
+        </div>
+
+        <div class="right">
+          <div class="left">
+            <!-- <el-button size="small"> 导出Excel </el-button> -->
+          </div>
+        </div>
+      </div>
 
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
@@ -78,20 +107,14 @@ export default {
   data() {
     return {
       curIndex: 0,
+      CascaderBoxDTO: null,
       TipsBarData: [],
-      searchBarData: [
-        [
-          { type: 'date', value: null, key: 'createTime', width: '200px', placeholder: '订单创建时间' },
-          { type: 'buyer', value: null, key: 'sourceType', class: 'w110', placeholder: '采购员/供应商' },
-          { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '输入采购订单编号检索' },
-          { type: 'search', name: '查询' },
-          { type: 'reset', name: '重置' }
-        ],
-        [
-          { type: 'add', name: '新增' }
-          // { type: 'more', labels: ['导入', '上传图片'] }
-        ]
-      ]
+      searchBarData: {
+        createTime: null,
+        orderNo: null,
+        purchaseType: null,
+        personnelId: null
+      }
     }
   },
   filters: {
@@ -127,18 +150,6 @@ export default {
   methods: {
     tabsCallBack(item) {
       this.curIndex = item.value
-      this.$nextTick().then(() => {
-        this.$refs['searchBar'].sendSearchParams()
-      })
-    },
-    searchAction(params) {
-      this.paramsData = {
-        auditStatus: params.auditStatus,
-        sourceType: params.sourceType,
-        generationTime: params.generationTime,
-        applicationDate: params.applicationDate,
-        orderNo: params.orderNo
-      }
       this.fecthList()
     },
     clickMoreCommand(command) {
@@ -146,12 +157,24 @@ export default {
     },
     // 数据请求
     fecthList() {
+      if (this.CascaderBoxDTO) {
+        this.searchBarData.purchaseType = this.CascaderBoxDTO.purchaseType
+        if (this.CascaderBoxDTO.purchaseType) {
+          if (this.CascaderBoxDTO.purchaseType === 1) {
+            if (Array.isArray(this.CascaderBoxDTO.supplyDto) && this.CascaderBoxDTO.supplyDto.length >= 2) {
+              this.searchBarData.personnelId = this.CascaderBoxDTO.supplyDto[1]
+            }
+          } else if (this.CascaderBoxDTO.purchaseType === 2) {
+            this.searchBarData.personnelId = this.CascaderBoxDTO.buyerId
+          }
+        }
+      }
       const { index, size } = this.pagination
       const data = {
         index,
         size,
         procurementStatus: this.curIndex,
-        ...this.paramsData
+        ...this.searchBarData
       }
       fecthList(data).then(({ data }) => {
         this.table.data = data.rows
@@ -179,7 +202,14 @@ export default {
     refrehList() {
       this.fecthList()
     },
-    resetSearchBar() {
+    reset() {
+      this.CascaderBoxDTO = null
+      this.searchBarData = {
+        createTime: null,
+        orderNo: null,
+        purchaseType: null,
+        personnelId: null
+      }
       this.curIndex = 0
       this.fecthList()
     }
