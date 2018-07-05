@@ -27,13 +27,12 @@
           <el-button size="small" @click="clickReset">{{item.name}}</el-button>
         </template>
 
-         <template v-else-if="item.type === 'buyer'">
-           {{item}}
-          <!-- <el-button size="small" @click="clickReset">{{item.name}}</el-button> -->
-          <CascaderBox></CascaderBox>
+        <template v-else-if="item.type === 'buyer'">
+          <slot name="buyer"></slot>
         </template>
 
       </div>
+
       <template v-esle-if="data.length > 1">
         <div class="right" v-show="rightVisible">
           <div class="left" v-for="(item, index) in data[1]" :key="index">
@@ -60,12 +59,8 @@
 </template>
 
 <script>
-import { CascaderBox } from '@/components/base.js'
 export default {
   name: 'SearchBar',
-  components: {
-    CascaderBox
-  },
   props: {
     data: {
       type: Array,

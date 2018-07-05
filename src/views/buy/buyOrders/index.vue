@@ -4,7 +4,9 @@
 
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
 
-      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction"  @add="showAdd"  @reset="resetSearchBar" @command="clickMoreCommand"></search-bar>
+      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction"  @add="showAdd"  @reset="resetSearchBar" @command="clickMoreCommand">
+         <CascaderBox slot="buyer"></CascaderBox>
+      </search-bar>
 
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
@@ -62,7 +64,7 @@
 <script>
 import Add from './add'
 import model from '@/public/listModel.js'
-import { Tabs } from '@/components/base.js'
+import { Tabs, CascaderBox } from '@/components/base.js'
 import { fecthList } from '@/api/buy/buyOrders.js'
 
 export default {
@@ -70,7 +72,8 @@ export default {
   mixins: [model],
   components: {
     Tabs,
-    Add
+    Add,
+    CascaderBox
   },
   data() {
     return {
