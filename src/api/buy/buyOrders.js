@@ -15,4 +15,12 @@ export function Detail(params) {
     params
   })
 }
+// 详情tbale
+export function tableDetail(params) {
+  return request({
+    url: 'purchaseOrderDetails/page',
+    method: 'get',
+    params
+  })
+}
 
