@@ -78,6 +78,19 @@ export const asyncRouterMap = [
       { path: 'clearing', component: _import('buyAudit/clearing/index'), name: 'clearing', meta: { title: 'clearing' }}
     ]
   },
+  {
+    path: '/customer',
+    component: Layout,
+    name: 'customer',
+    meta: {
+      title: 'customer',
+      icon: 'component'
+    },
+    children: [
+      { path: 'customerClass', component: _import('customer/customerClass/index'), name: 'customerClass', meta: { title: 'customerClass' }},
+      { path: 'customerType', component: _import('customer/customerType/index'), name: 'customerType', meta: { title: 'customerType' }}
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 

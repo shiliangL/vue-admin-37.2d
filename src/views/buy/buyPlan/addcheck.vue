@@ -119,13 +119,7 @@ export default {
     // 数据请求
     fecthList() {
       if (this.CascaderBoxDTO) {
-        if (this.CascaderBoxDTO.buyerId) {
-          this.searchBarData.buyerOrSupplyId = this.CascaderBoxDTO.buyerId
-        } else {
-          if (Array.isArray(this.CascaderBoxDTO.supplyDto) && this.CascaderBoxDTO.supplyDto.length >= 2) {
-            this.searchBarData.buyerOrSupplyId = this.CascaderBoxDTO.supplyDto[1]
-          }
-        }
+        this.searchBarData.buyerOrSupplyId = this.CascaderBoxDTO.supplyOrBuyerId
       }
       const params = {
         ...this.searchBarData
@@ -154,12 +148,11 @@ export default {
     },
     reset() {
       this.CascaderBoxDTO = null
-      this.searchBarData = {
-        sendTime: null,
-        purchaseStatus: null,
-        buyerOrSupplyId: null,
-        goodName: null
-      }
+
+      this.searchBarData.purchaseStatus = null
+      this.searchBarData.buyerOrSupplyId = null
+      this.searchBarData.goodName = null
+      this.fecthList()
     },
     refrehList() {
 

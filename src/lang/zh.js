@@ -62,7 +62,10 @@ export default {
     buyPlan: '采购计划',
     buyOrders: '采购订单',
     audit: '采购审核',
-    clearing: '采购结算'
+    clearing: '采购结算',
+
+    customerClass: '客户档案',
+    customerType: '客户类别'
   },
   navbar: {
     logOut: '退出登录',

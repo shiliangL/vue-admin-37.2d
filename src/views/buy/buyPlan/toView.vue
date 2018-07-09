@@ -83,6 +83,10 @@
 										<el-form-item label="" label-width="0px" :prop="'table.'+scope.$index+'.applyQuantity'" :rules="[{trigger: 'change', validator: rules.validNumberR2}]">
 											<el-input size="small" class="w110" placeholder="请输入" v-model.trim="scope.row.applyQuantity"></el-input>
 										</el-form-item>
+
+                    <el-tooltip content="非标品商品默认分拣时按基本单位" placement="top" effect="light">
+                      <i class="el-icon-warning msg"></i>
+                    </el-tooltip>
 									</template>
 							</el-table-column>
 							<el-table-column prop="goodsImage" label="采购员/供应商" align="center">
@@ -209,5 +213,8 @@ export default {
 .pages{
 	text-align: center;
 	padding: 20px;
+}
+.msg{
+  margin-top: 10px;
 }
 </style>

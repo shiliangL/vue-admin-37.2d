@@ -238,12 +238,33 @@
 					</div>
 				</div>
 
-				<!-- <div class="row-item">
-					<div class="row-title">图文详情描述</div>
+				<div class="row-item">
+					<div class="row-title">
+            图文详情描述  
+            <el-popover placement="right" width="600" trigger="click">  
+              <div>
+                一、基本要求
+                <p>1、商品详情总体要求：图片或文字，图片不超过20张，文字不超过5000字；建议：所有图片都是本商品相关的图片。</p>
+                二、图片大小
+                <p> 1、建议使用宽度480 ~ 620像素、高度小于等于960像素的图片，比例1:2；</p>
+                <p> 2、格式为：JPG\JEPG\GIF\PNG； 举例：可以上传一张宽度为480，高度为960像素，格式为JPG的图片。</p>
+                三、文字要求
+                <p> 1、每次插入文字不能超过500个字，标点、特殊字符按照一个字计算；</p>
+                <p> 2、请手动输入文字，不要复制粘贴网页上的文字，防止出现乱码；</p>
+                <p> 3、以下特殊字符   “<”、“>”、“"”、“'”、“\”  会被替换为空。</p>
+                建议：不要添加太多的文字，这样看起来更清晰。
+              </div>
+              <el-button slot="reference" style="font-size: 14px;margin-left: 10px;" type="text" size="mini" > 上传说明 </el-button>
+            </el-popover>
+          </div>
 					<div class="row-content">
-						<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 8}" placeholder="请输入内容" v-model.trim="form.details" />
+						<!-- <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 8}" placeholder="请输入内容" v-model.trim="form.details" /> -->
+            <div class="editor_wrap">
+              {{content}}
+                <VueEditor ref="VueEditor" id="editor" :options="VueEditorOptions" v-model="content" :init-content="initContent" :text.sync="text"></VueEditor>
+            </div>
 					</div>
-				</div> -->
+				</div>
 			</el-form>
     </div>
 </template>
@@ -251,15 +272,19 @@
 <script>
 import addModel from '@/public/addModel.js'
 import rules from '@/public/rules.js'
+import VueEditor from 'vue-wangeditor-simple'
 import { fecthGoodsClass, fecthUnit, fecthSupplierList, fecthSalerList, fecthByCategoryId } from '@/api/goodsList.js'
 import { mapActions, mapGetters } from 'vuex'
-
+const tk = 'EWkspi65eSucaBPHWa-3RihMmVmFcc8KcCr9-beA:u-JFXu8Tg9e1qM8yKBPdyo5W76E=:eyJzY29wZSI6ImNtbWJ1Y2tldCIsImNhbGxiYWNrVXJsIjoiaHR0cDovL2x3cS50dW5uZWwucXlkZXYuY29tL2NhbGxiYWNrL3Fpbml1X29zc191cGxvYWQiLCJkZWFkbGluZSI6MTUzMDg1OTY0MywiY2FsbGJhY2tCb2R5IjoibmFtZVx1MDAzZCQoZm5hbWUpXHUwMDI2YnVja2V0XHUwMDNkJChidWNrZXQpXHUwMDI2a2V5XHUwMDNkJChrZXkpXHUwMDI2aGFzaFx1MDAzZCQoZXRhZylcdTAwMjZleHRcdTAwM2QkKHg6ZXh0KSJ9'
 export default {
   mixins: [rules, addModel],
   props: {
     viewData: {
       type: Object
     }
+  },
+  components: {
+    VueEditor
   },
   data() {
     return {
@@ -337,6 +362,40 @@ export default {
         supplierList: [],
         supplierType: [],
         salerList: []
+      },
+      // 文本
+      initContent: '<p>要初始化的内容</p>',
+      content: '',
+      text: '', // 不含html标签，纯文本
+      VueEditorOptions: {
+        width: '750px', // 自定义单位，字符串
+        height: '420px', // 自定义单位，字符串
+        // 更多配置项请看官网或者官网文档
+        // qiniu: true,
+        uploadImgServer: 'http://up-z2.qiniu.com',
+        uploadFileName: 'file',
+        uploadImgHooks: {
+
+        },
+        uploadImgParams: {
+          token: tk
+        },
+        menus: [
+          'head', // 标题
+          'bold', // 粗体
+          'fontSize', // 字号
+          'italic', // 斜体
+          'underline', // 下划线
+          'strikeThrough', // 删除线
+          'foreColor', // 文字颜色
+          'backColor', // 背景颜色
+          'list', // 列表
+          'justify', // 对齐方式
+          'image', // 插入图片
+          'undo', // 撤销
+          'redo' // 重复
+        ],
+        pasteFilterStyle: true // 打开/关闭粘贴样式的过滤
       }
     }
   },
@@ -406,6 +465,7 @@ export default {
     if (!this.qNtoken) {
       this.VX_SET_QNTOKEN()
     }
+    console.log(this.$refs['VueEditor'])
   },
   computed: {
     ...mapGetters([

@@ -172,7 +172,23 @@ export default {
     },
     'form.searchParams': {
       handler(val) {
-        this.$emit('input', val)
+        if (val) {
+          const obj = {
+            purchaseType: null,
+            supplyOrBuyerId: null
+          }
+          obj.purchaseType = val.purchaseType
+          if (val.purchaseType === 1) {
+            if (Array.isArray(val.supplyDto) && val.supplyDto.length >= 2) {
+              obj.supplyOrBuyerId = val.supplyDto[1]
+            }
+          } else if (val.purchaseType === 2) {
+            obj.supplyOrBuyerId = val.buyerId
+          }
+          this.$emit('input', obj)
+        } else {
+          this.$emit('input', null)
+        }
       },
       deep: true
     },

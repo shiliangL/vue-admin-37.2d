@@ -159,15 +159,7 @@ export default {
     fecthList() {
       if (this.CascaderBoxDTO) {
         this.searchBarData.purchaseType = this.CascaderBoxDTO.purchaseType
-        if (this.CascaderBoxDTO.purchaseType) {
-          if (this.CascaderBoxDTO.purchaseType === 1) {
-            if (Array.isArray(this.CascaderBoxDTO.supplyDto) && this.CascaderBoxDTO.supplyDto.length >= 2) {
-              this.searchBarData.personnelId = this.CascaderBoxDTO.supplyDto[1]
-            }
-          } else if (this.CascaderBoxDTO.purchaseType === 2) {
-            this.searchBarData.personnelId = this.CascaderBoxDTO.buyerId
-          }
-        }
+        this.searchBarData.personnelId = this.CascaderBoxDTO.supplyOrBuyerId
       }
       const { index, size } = this.pagination
       const data = {
