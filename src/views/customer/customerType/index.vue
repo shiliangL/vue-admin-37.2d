@@ -107,6 +107,7 @@ export default {
       this.form.remark = null
       this.form.title = null
       this.$refs['form'].resetFields()
+      this.$setKeyValue(this.form, { remark: null, title: null, id: null })
       this.$setKeyValue(this.button, { loading: false, text: '确定' })
     },
     searchAction(data) {
@@ -144,12 +145,12 @@ export default {
         })
     },
     clickToEdit(index, item) {
-      if (!item.pk) return
-      detail({ id: item.pk })
+      if (!item.id) return
+      detail({ id: item.id })
         .then(({ data }) => {
           this.form.remark = data.remark
           this.form.title = data.title
-          this.form.id = data.pk
+          this.form.id = data.id
 
           this.dialogTitle = '编辑'
           this.isEdit = true
