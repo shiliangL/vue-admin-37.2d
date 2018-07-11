@@ -81,11 +81,11 @@
 									</el-form-item>
 								</el-col>
  
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+								<!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="客户头像:" prop="portraitId">
 										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.patUser.portraitId"></el-input>
 									</el-form-item>
-								</el-col>
+								</el-col> -->
  
               </el-row>
 						</div>
@@ -169,6 +169,7 @@ export default {
         managerId: null,
         driverId: null,
         managerPhone: null,
+        categoryId: null,
         orderResource: 3,
         status: 1
         // qqNumber: null,

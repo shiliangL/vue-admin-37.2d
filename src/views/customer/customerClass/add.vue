@@ -17,6 +17,14 @@
                   <el-button type="text" size="mini" @click.stop="validatePassForm">同意</el-button>
                 </template>
              </template>
+
+              <template v-if="this.data.type === 'view' && this.data.obj.status ===3">
+                <el-button v-if="!isEditor" type="text" size="mini" @click.stop="clickToEditor">编辑</el-button>
+                <template v-if="isEditor">
+                  <el-button type="text" size="mini" @click.stop="validateEditorForm">保存</el-button>
+                </template>
+              </template>
+
               <el-button type="text" size="mini" @click.stop="dialog.visiable = false">返回</el-button>
             </div>
         </div>
@@ -56,6 +64,7 @@ export default {
     return {
       basicObj: null,
       isAddView: false,
+      isEditor: false,
       isAudit: false,
       dialogVisible: false,
       curIndex: 0,
@@ -88,6 +97,12 @@ export default {
   methods: {
     clickToAudit() {
       this.isAudit = true
+      this.isEditor = false
+      this.isAddView = true
+    },
+    clickToEditor() {
+      this.isAudit = false
+      this.isEditor = true
       this.isAddView = true
     },
     closeDialog() {
@@ -148,9 +163,10 @@ export default {
         this.basicObj.status = 2
         update(this.basicObj).then(res => {
           this.$message({ type: 'success', message: `${res.msg}!` })
-          this.fecthList()
+          this.dialog.visiable = false
+          this.$emit('add')
         }).catch(() => {
-          this.$message({ type: 'error', message: '删除失败' })
+          this.$message({ type: 'error', message: '操作失败' })
         })
       }).catch(() => {})
     },
@@ -164,9 +180,26 @@ export default {
         this.basicObj.status = 3
         update(this.basicObj).then(res => {
           this.$message({ type: 'success', message: `${res.msg}!` })
-          this.fecthList()
+          this.dialog.visiable = false
+          this.$emit('add')
         }).catch(() => {
-          this.$message({ type: 'error', message: '删除失败' })
+          this.$message({ type: 'error', message: '操作失败' })
+        })
+      }).catch(() => {})
+    },
+    validateEditorForm() {
+      this.$confirm('是否确定提交保存修改?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        if (!this.basicObj) return
+        update(this.basicObj).then(res => {
+          this.$message({ type: 'success', message: `${res.msg}!` })
+          this.dialog.visiable = false
+          this.$emit('add')
+        }).catch(() => {
+          this.$message({ type: 'error', message: '操作失败' })
         })
       }).catch(() => {})
     }

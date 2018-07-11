@@ -4,7 +4,60 @@
 
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
 
-      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction"  @add="showAdd"  @reset="resetSearchBar" @command="clickMoreCommand"></search-bar>
+      <div class="search-bar">
+        <div class="left">
+          <el-select size="small" v-model="searchBarData.categoryId" clearable filterable placeholder="客户类别">
+            <el-option v-for="sub in options.categoryOption" :key="sub.pk" :label="sub.title" :value="sub.pk" ></el-option>
+          </el-select>
+        </div>
+
+        <div class="left">
+          <el-select size="small" v-model="searchBarData.staffId" clearable filterable placeholder="客户经理">
+            <el-option v-for="sub in options.managerOption" :key="sub.staffId" :label="sub.staffName" :value="sub.staffId" ></el-option>
+          </el-select>
+        </div>
+
+        <div class="left">
+          <el-select size="small" v-model="searchBarData.regionId" clearable filterable placeholder="配送区域">
+            <el-option v-for="sub in options.areaOption" :key="sub.id" :label="sub.title" :value="sub.id" ></el-option>
+          </el-select>
+        </div>
+
+        <div class="left">
+          <el-select size="small" v-model="searchBarData.categoryId" clearable filterable placeholder="配送员">
+            <el-option v-for="sub in options.categoryOption" :key="sub.pk" :label="sub.title" :value="sub.pk" ></el-option>
+          </el-select>
+        </div>
+
+        <div class="left">
+          <el-select size="small" v-model="searchBarData.categoryId" clearable filterable placeholder="创建渠道">
+            <el-option v-for="sub in options.channelOption" :key="sub.label" :label="sub.title" :value="sub.label" ></el-option>
+          </el-select>
+        </div>
+
+        <div class="left">
+            <el-date-picker :style="{width:'140px'}" size="small" v-model="searchBarData.createdOn" value-format="yyyy-MM-dd" type="date"></el-date-picker>
+        </div>
+
+        <div class="left">
+          <el-input style="width:180px" v-model="searchBarData.orderNo" size="small" @keyup.enter.native="fecthList" placeholder="输入商品名称检索"></el-input>
+        </div>
+
+         <div class="left">
+            <el-button  type="primary" size="small" @click.stop="fecthList" > 搜索 </el-button>
+        </div>
+
+        <div class="left">
+            <el-button size="small" @click.stop="resetSearchBar" > 重置 </el-button>
+        </div>
+
+        <div class="right">
+          <div class="left">
+            <el-button size="small" @click="showAdd"> 新增 </el-button>
+          </div>
+        </div>
+      </div>
+
 
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
@@ -88,49 +141,20 @@ export default {
     return {
       curIndex: 0,
       TipsBarData: [],
-      searchBarData: [
-        [
-          { type: 'option', value: null, key: 'sourceType', class: 'w110', placeholder: '客户类别', options: [
-            { label: '全部', value: 0 },
-            { label: '销售订单', value: 1 },
-            { label: '后台新增', value: 2 }]
-          },
-          { type: 'option', value: null, key: 'sourceType', class: 'w110', placeholder: '客户经理', options: [
-            { label: '全部', value: 0 },
-            { label: '销售订单', value: 1 },
-            { label: '后台新增', value: 2 }]
-          },
-          { type: 'option', value: null, key: 'sourceType', class: 'w110', placeholder: '配送区域', options: [
-            { label: '全部', value: 0 },
-            { label: '销售订单', value: 1 },
-            { label: '后台新增', value: 2 }]
-          },
-          { type: 'option', value: null, key: 'sourceType', class: 'w110', placeholder: '配送员', options: [
-            { label: '全部', value: 0 },
-            { label: '销售订单', value: 1 },
-            { label: '后台新增', value: 2 }]
-          },
-          { type: 'option', value: null, key: 'sourceType', class: 'w110', placeholder: '创建渠道', options: [
-            { label: 'App', value: 0 },
-            { label: '公众号', value: 1 },
-            { label: '小程序', value: 2 },
-            { label: '后台', value: 3 }]
-          },
-          { type: 'date', value: null, key: 'generationTime', width: '200px', placeholder: '创建时间' },
-          { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '输入客户名称/客户账号检索' },
-          { type: 'search', name: '查询' },
-          { type: 'reset', name: '重置' }
-        ],
-        [
-          { type: 'add', name: '新增' }
-          // { type: 'more', labels: ['导入', '上传图片'] }
-        ]
-      ],
+      searchBarData: {
+        categoryId: null,
+        staffId: null,
+        regionId: null,
+        driverId: null,
+        createdOn: null,
+        orderResource: null
+      },
       options: {
         managerOption: [],
         driverOption: [],
         categoryOption: [],
-        areaOption: []
+        areaOption: [],
+        channelOption: [{ label: 0, title: 'App' }, { label: 1, title: '公众号' }, { label: 2, title: '小程序' }, { label: 3, title: '后台' }]
       }
     }
   },
