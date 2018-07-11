@@ -98,22 +98,22 @@
 					     <el-row>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="QQ账号:">
-
+                    <span v-cloak> {{form.patUser.qqNumber}} </span>
 									</el-form-item>
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="微信账号:">
-									 
+                    <span v-cloak> {{form.patUser.wechat}} </span>
 									</el-form-item>
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="新浪微博账号:">
-
+                    <span v-cloak> {{form.patUser.weibo}} </span>
 									</el-form-item>
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="支付宝账号:">
-
+                    <span v-cloak> {{form.patUser.alipay}} </span>
 									</el-form-item>
 								</el-col>
               </el-row>
@@ -158,6 +158,10 @@ export default {
       form: {
         patUser: {
           status: 1,
+          alipay: null,
+          qqNumber: null,
+          wechat: null,
+          weibo: null,
           portraitId: null
         },
         dto: {
@@ -172,10 +176,6 @@ export default {
         categoryId: null,
         orderResource: 3,
         status: 1
-        // qqNumber: null,
-        // wechat: null,
-        // weibo: null,
-        // alipay: null
       },
       options: {
         managerOption: [],
@@ -193,9 +193,6 @@ export default {
   },
   mounted() {
     this.fetchOptions()
-    // if (this.data.type === 'view') {
-    //   this.fecthDetail()
-    // }
   },
   methods: {
     fetchOptions() {
@@ -229,9 +226,11 @@ export default {
     validateForm() {
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          this.$emit('callBack', this.form)
+          this.$emit('update:isPass', true)
+          if (this.data.type === 'add') this.$emit('callBack', this.form)
         } else {
           this.$message({ type: 'warning', message: '请核实表单' })
+          this.$emit('update:isPass', false)
           return
         }
       })

@@ -15,10 +15,10 @@
         </el-table-column>
         <el-table-column prop="title" label="客户类别名称" align="center"></el-table-column>
         <el-table-column prop="remark" label="简要说明" align="center"></el-table-column>
-        <el-table-column prop="createdOn" label="创建时间" align="center"></el-table-column>
-        <el-table-column prop="createdBy" label="创建人" align="center"></el-table-column>
-        <el-table-column prop="updatedOn" label="最近修改时间" align="center"></el-table-column>
-        <el-table-column prop="updatedBy" label="修改人" align="center"></el-table-column>
+        <el-table-column prop="createdTime" label="创建时间" align="center"></el-table-column>
+        <el-table-column prop="createdName" label="创建人" align="center"></el-table-column>
+        <el-table-column prop="updatedTime" label="最近修改时间" align="center"></el-table-column>
+        <el-table-column prop="updatedName" label="修改人" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope" align="center">
             <el-button type="text" size="mini" @click.stop="clickToEdit(scope.$index,scope.row)">编辑</el-button>
@@ -150,7 +150,7 @@ export default {
         .then(({ data }) => {
           this.form.remark = data.remark
           this.form.title = data.title
-          this.form.id = data.id
+          this.form.id = data.pk
 
           this.dialogTitle = '编辑'
           this.isEdit = true

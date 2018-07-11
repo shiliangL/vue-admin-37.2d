@@ -32,12 +32,11 @@
 		      <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
 
            <template v-if="curIndex===0">
-             {{basicObj}}
-             <basicFrom ref="basicFrom" v-model="basicObj" :isAddView="isAddView" :data="data" @callBack="basicFromCallBack"></basicFrom>
+             <basicFrom ref="basicFrom" :isPass.sync="isPass" v-model="basicObj" :isAddView="isAddView" :data="data" @callBack="basicFromCallBack"></basicFrom>
            </template>
 
            <template v-if="curIndex===1">
-             地址相关
+             <!-- 地址相关 -->
            </template>
         </div>
       </div>
@@ -68,6 +67,7 @@ export default {
       isAudit: false,
       dialogVisible: false,
       curIndex: 0,
+      isPass: false, // 验证是否通过
       form: {
         subPropList: []
       },
@@ -154,6 +154,8 @@ export default {
       console.log(item)
     },
     validateNoPassForm() {
+      if (this.$refs['basicFrom']) this.$refs['basicFrom'].validateForm()
+      if (!this.isPass) return
       this.$confirm('确定要拒绝该客户提交的资料信息吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -171,6 +173,8 @@ export default {
       }).catch(() => {})
     },
     validatePassForm() {
+      if (this.$refs['basicFrom']) this.$refs['basicFrom'].validateForm()
+      if (!this.isPass) return
       this.$confirm('是否确定通过审核?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -188,6 +192,8 @@ export default {
       }).catch(() => {})
     },
     validateEditorForm() {
+      if (this.$refs['basicFrom']) this.$refs['basicFrom'].validateForm()
+      if (!this.isPass) return
       this.$confirm('是否确定提交保存修改?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

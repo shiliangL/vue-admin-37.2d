@@ -91,6 +91,19 @@ export const asyncRouterMap = [
       { path: 'customerType', component: _import('customer/customerType/index'), name: 'customerType', meta: { title: 'customerType' }}
     ]
   },
+  {
+    path: '/warehouse',
+    component: Layout,
+    name: 'warehouse',
+    meta: {
+      title: 'warehouse',
+      icon: 'component'
+    },
+    children: [
+      { path: 'customerClass', component: _import('customer/customerClass/index'), name: 'customerClass', meta: { title: 'customerClass' }},
+      { path: 'customerType', component: _import('customer/customerType/index'), name: 'customerType', meta: { title: 'customerType' }}
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 

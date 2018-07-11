@@ -6,41 +6,41 @@
 
       <div class="search-bar">
         <div class="left">
-          <el-select size="small" v-model="searchBarData.categoryId" clearable filterable placeholder="客户类别">
+          <el-select size="small" style="width: 120px;" v-model="searchBarData.categoryId" clearable filterable placeholder="客户类别">
             <el-option v-for="sub in options.categoryOption" :key="sub.pk" :label="sub.title" :value="sub.pk" ></el-option>
           </el-select>
         </div>
 
         <div class="left">
-          <el-select size="small" v-model="searchBarData.staffId" clearable filterable placeholder="客户经理">
+          <el-select size="small" style="width: 120px;" v-model="searchBarData.staffId" clearable filterable placeholder="客户经理">
             <el-option v-for="sub in options.managerOption" :key="sub.staffId" :label="sub.staffName" :value="sub.staffId" ></el-option>
           </el-select>
         </div>
 
         <div class="left">
-          <el-select size="small" v-model="searchBarData.regionId" clearable filterable placeholder="配送区域">
+          <el-select size="small" style="width: 140px;" v-model="searchBarData.regionId" clearable filterable placeholder="配送区域" @change="selectRegionChange">
             <el-option v-for="sub in options.areaOption" :key="sub.id" :label="sub.title" :value="sub.id" ></el-option>
           </el-select>
         </div>
 
         <div class="left">
-          <el-select size="small" v-model="searchBarData.categoryId" clearable filterable placeholder="配送员">
-            <el-option v-for="sub in options.categoryOption" :key="sub.pk" :label="sub.title" :value="sub.pk" ></el-option>
+          <el-select size="small" style="width: 140px;" v-model="searchBarData.driverId" clearable filterable placeholder="配送员">
+            <el-option v-for="sub in options.driverOption" :key="sub.driverId" :label="sub.name" :value="sub.driverId" ></el-option>
           </el-select>
         </div>
 
         <div class="left">
-          <el-select size="small" v-model="searchBarData.categoryId" clearable filterable placeholder="创建渠道">
+          <el-select size="small" style="width: 90px;" v-model="searchBarData.orderResource" clearable filterable placeholder="创建渠道">
             <el-option v-for="sub in options.channelOption" :key="sub.label" :label="sub.title" :value="sub.label" ></el-option>
           </el-select>
         </div>
 
         <div class="left">
-            <el-date-picker :style="{width:'140px'}" size="small" v-model="searchBarData.createdOn" value-format="yyyy-MM-dd" type="date"></el-date-picker>
+            <el-date-picker :style="{width:'140px'}" size="small" v-model="searchBarData.createdOn" value-format="yyyy-MM-dd" placeholder="创建时间" type="date"></el-date-picker>
         </div>
 
         <div class="left">
-          <el-input style="width:180px" v-model="searchBarData.orderNo" size="small" @keyup.enter.native="fecthList" placeholder="输入商品名称检索"></el-input>
+          <el-input style="width:180px" v-model="searchBarData.loginNameOrCustomerName" size="small" @keyup.enter.native="fecthList" placeholder="输入客户名称/账号检索"></el-input>
         </div>
 
          <div class="left">
@@ -139,7 +139,7 @@ export default {
   },
   data() {
     return {
-      curIndex: 0,
+      curIndex: null,
       TipsBarData: [],
       searchBarData: {
         categoryId: null,
@@ -147,6 +147,7 @@ export default {
         regionId: null,
         driverId: null,
         createdOn: null,
+        loginNameOrCustomerName: null,
         orderResource: null
       },
       options: {
@@ -184,7 +185,6 @@ export default {
     ]
   },
   mounted() {
-    this.table.data = [{}]
     this.fecthList()
     this.fetchOptions()
   },
@@ -200,18 +200,6 @@ export default {
     },
     tabsCallBack(item) {
       this.curIndex = item.value
-      this.$nextTick().then(() => {
-        this.$refs['searchBar'].sendSearchParams()
-      })
-    },
-    searchAction(params) {
-      this.paramsData = {
-        auditStatus: params.auditStatus,
-        sourceType: params.sourceType,
-        generationTime: params.generationTime,
-        applicationDate: params.applicationDate,
-        orderNo: params.orderNo
-      }
       this.fecthList()
     },
     clickMoreCommand(command) {
@@ -223,8 +211,8 @@ export default {
       const data = {
         index,
         size,
-        auditStatus: this.curIndex,
-        ...this.paramsData
+        status: this.curIndex,
+        ...this.searchBarData
       }
       fetchList(data).then(({ data }) => {
         this.table.data = data.rows
@@ -253,8 +241,24 @@ export default {
       this.fecthList()
     },
     resetSearchBar() {
-      this.curIndex = 0
+      this.curIndex = null
+      this.$setKeyValue(this.searchBarData, {
+        categoryId: null,
+        staffId: null,
+        regionId: null,
+        driverId: null,
+        createdOn: null,
+        loginNameOrCustomerName: null,
+        orderResource: null })
       this.fecthList()
+    },
+    selectRegionChange(val) {
+      this.searchBarData.driverId = null
+      this.options.driverOption = []
+      if (val) {
+        const obj = this.$arrayAttrGetObj(this.options.areaOption, 'id', val)
+        if (obj) this.options.driverOption = obj.scmDriver
+      }
     }
   }
 }
