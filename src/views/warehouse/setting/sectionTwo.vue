@@ -10,7 +10,7 @@
 
 					<el-col :xs="24" :sm="10" :md="8" :lg="6">
 						<el-form-item label="仓库:" prop="stockId" :rules="rules.select">
-							<el-select size="small" style="width:180px" v-model="form.stockId" placeholder="请选择">
+							<el-select size="small" style="width:180px" v-model="form.stockId" placeholder="请选择" clearable filterable>
 								<el-option v-for="item in options.categoryTypeOption" :key="item.value" :label="item.label" :value="item.value"> </el-option>
 							</el-select> 
 						</el-form-item>
