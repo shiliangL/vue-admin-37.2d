@@ -1,0 +1,303 @@
+<!-- 仓库设置 -->
+<template>
+    <div class="setting">
+
+      <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
+
+			<search-bar v-if="curIndex===0" :data="searchBarDataOne" @search="searchActionOne" @reset="fecthList"  @add="showAdd" @clickBtn="clickBtnToAddSet"></search-bar>
+			<search-bar v-if="curIndex===1" :data="searchBarDataTwo" @search="searchActionTwo" @reset="fecthTableList"  @add="showAdd"></search-bar>
+
+      <!-- 表格 -->
+			<div v-if="curIndex===0" :key="curIndex">
+				<el-table :data="tableOne" size="small" :max-height="300" style="width: 100%;" highlight-current-row>
+					<el-table-column label="序号" width="50" align="center">
+						<template slot-scope="scope">
+							<span>{{scope.$index + 1}}</span>
+						</template>
+					</el-table-column>
+
+					<el-table-column prop="title" label="仓库名称" align="center"></el-table-column>
+					<el-table-column prop="address" label="仓库地址" align="center"></el-table-column>
+					<el-table-column prop="contacts" label="联系人" align="center"></el-table-column>
+					<el-table-column prop="phone" label="联系电话" align="center"></el-table-column>
+					<el-table-column prop="categoryName" label="仓库类别" align="center"></el-table-column>
+					<el-table-column prop="staffName" label="仓管员" align="center"></el-table-column>
+					<el-table-column prop="createdTime" label="创建时间" align="center"></el-table-column>
+					<el-table-column prop="createdName" label="创建人" align="center"></el-table-column>
+					<el-table-column prop="updatedTime" label="最近修改时间" align="center"></el-table-column>
+					<el-table-column prop="updatedName" label="修改人" align="center"></el-table-column>
+					<el-table-column label="操作" align="center" width="180">
+						<template slot-scope="scope" align="center">
+							<el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">编辑</el-button>
+							<el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index,scope.row)">删除</el-button>
+						</template>
+					</el-table-column>
+				</el-table>
+				<div class="footer-block">
+					<span class="page" v-cloak> 共 {{tableOne.length}} 条</span>
+				</div>
+			</div>
+
+      <table-contain  :height.sync="table.maxHeight"  v-if="curIndex===1" :key="curIndex">
+        <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
+
+          <el-table-column label="序号" width="50" align="center">
+            <template slot-scope="scope">
+              <span>{{scope.$index + 1}}</span>
+            </template>
+          </el-table-column>
+ 
+ 				<el-table-column prop="number" label="仓位编号" align="center"></el-table-column>
+				<el-table-column label="仓位属性（单位:米）" align="center">
+					 <template slot-scope="scope">
+              <span  v-cloak >长:{{scope.row.lasting}};宽:{{scope.row.width}};高:{{scope.row.high}}</span>
+            </template>
+				</el-table-column>
+				<el-table-column prop="description" label="描述" align="center"></el-table-column>
+				<el-table-column prop="stockName" label="仓库" align="center"></el-table-column>
+				<el-table-column prop="createdTime" label="创建时间" align="center"></el-table-column>
+				<el-table-column prop="createdName" label="创建人" align="center"></el-table-column>
+				<el-table-column prop="updatedTime" label="最近修改时间" align="center"></el-table-column>
+				<el-table-column prop="updatedName" label="修改人" align="center"></el-table-column>
+ 
+          <el-table-column label="操作" align="center" width="180">
+            <template slot-scope="scope" align="center">
+              <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">编辑</el-button>
+							<el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index,scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        
+        <el-pagination
+          slot="footer"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="pagination.page"
+          :page-sizes="pagination.pageSizes"
+          :page-size="pagination.size"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="pagination.total">
+        </el-pagination>
+
+      </table-contain>
+
+      <!-- 弹层 -->
+      <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add>
+      
+    </div>
+</template>
+
+<script>
+import Add from './add'
+import model from '@/public/listModel.js'
+import { Tabs, CascaderBox, SearchBar } from '@/components/base.js'
+import { fecthList, fecthTableList, stockCategory, fetchStock, deleteCK, deleteCW } from '@/api/warehouse/setting.js'
+
+export default {
+  name: 'buyPlan',
+  mixins: [model],
+  components: {
+    Add,
+    Tabs,
+    SearchBar,
+    CascaderBox
+  },
+  data() {
+    return {
+      curIndex: 0,
+      CascaderBoxDTO: null,
+      tableOne: [],
+      tableTwo: [],
+      tabTitles: [],
+      searchBarDataOne: [
+        [
+          { type: 'option', value: null, key: 'categoryId', class: 'w150', placeholder: '仓库类别', options: [] },
+          { type: 'input', value: null, key: 'title', class: 'w180', placeholder: '输入仓库名称检索' },
+          { type: 'search', name: '查询' },
+          { type: 'reset', name: '重置' }
+        ],
+        [
+          { type: 'add', name: '新增' },
+          { type: 'button', name: '仓库类别设置' }
+        ]
+      ],
+      searchBarDataTwo: [
+        [
+          { type: 'option', value: null, key: 'stockId', class: 'w150', placeholder: '仓库', options: [] },
+          { type: 'input', value: null, key: 'number', class: 'w180', placeholder: '输入仓位名称检索' },
+          { type: 'search', name: '查询' },
+          { type: 'reset', name: '重置' }
+        ],
+        [
+          { type: 'add', name: '新增' }
+        ]
+      ],
+      options: {
+        stockCategory: [],
+        stock: []
+      }
+    }
+  },
+  created() {
+    this.tabTitles = [
+      { title: '仓库信息', value: 0 },
+      { title: '仓位信息', value: 1 }
+    ]
+  },
+  mounted() {
+    this.fecthList()
+    this.fecthStockCategory()
+    this.fetchStock()
+  },
+  methods: {
+    tabsCallBack(item) {
+      this.curIndex = item.value
+      if (this.curIndex === 1) {
+        this.fecthTableList()
+      } else {
+        this.fecthList()
+      }
+    },
+    fecthStockCategory() {
+      // 加载仓库类别下拉
+      stockCategory().then(({ data }) => {
+        for (const item of data) {
+          item.label = item.title
+          item.value = item.pk
+        }
+        this.searchBarDataOne[0][0].options = data
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
+    fetchStock() {
+      // 加载仓库下拉
+      fetchStock().then(({ data }) => {
+        for (const item of data) {
+          item.label = item.title
+          item.value = item.id
+        }
+        this.searchBarDataTwo[0][0].options = data
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
+    // 数据请求
+    fecthList() {
+      fecthList().then(({ data }) => {
+        this.tableOne = data
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
+    fecthTableList() {
+      const { index, size } = this.pagination
+      const data = {
+        index,
+        size
+      }
+      fecthTableList(data).then(({ data }) => {
+        this.table.data = data.rows
+        this.pagination.total = data.total
+      }).catch(e => {
+        this.$message({ type: 'error', message: e })
+      })
+    },
+    searchActionOne(item) {
+      const data = {
+        categoryId: item.categoryId,
+        title: item.title
+      }
+      fecthList(data).then(({ data }) => {
+        this.tableOne = data
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
+    searchActionTwo(item) {
+      if (!item) return
+      const { index, size } = this.pagination
+      const data = {
+        index,
+        size,
+        ...item
+      }
+      fecthTableList(data).then(({ data }) => {
+        this.table.data = data.rows
+        this.pagination.total = data.total
+      }).catch(e => {
+        this.$message({ type: 'error', message: e })
+      })
+    },
+    // 分页操作区域
+    handleSizeChange(value) {
+      this.pagination.size = value
+      this.fecthTableList()
+    },
+    handleCurrentChange(value) {
+      this.pagination.index = value
+      this.fecthTableList()
+    },
+    clickMoreCommand(command) {
+      this.$message({ type: 'success', message: command, duration: 0, showClose: true })
+    },
+    // 弹层操作
+    clickToEditor(index, row) {
+      const title = this.curIndex === 0 ? '编辑仓库' : '编辑仓位'
+      const tab = this.curIndex === 0 ? 'sectionOne' : 'sectionTwo'
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, isEditor: true, title: title, tab: tab }})
+    },
+    showAdd() {
+      const title = this.curIndex === 0 ? '新增仓库' : '新增仓位'
+      const tab = this.curIndex === 0 ? 'sectionOne' : 'sectionTwo'
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, isEditor: false, title: title, tab: tab }})
+    },
+    refrehList() {
+      if (this.curIndex === 0) {
+        this.fecthList()
+        this.fecthStockCategory()
+      } else {
+        this.fecthTableList()
+        this.fetchStock()
+      }
+    },
+    clickBtnToAddSet(item) {
+      const title = this.curIndex === 0 ? '仓库类别设置' : ''
+      const tab = 'sectionOne-setType'
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, isEditor: false, title: title, tab: tab }})
+    },
+    clickToDelete(index, item) {
+      this.$confirm('是否需要删除数据?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        if (this.curIndex === 0) {
+          deleteCK({ id: item.id }).then(res => {
+            this.$message({ type: 'success', message: `${res.msg}!` })
+            this.fecthList()
+          }).catch(() => {
+            this.$message({ type: 'error', message: '删除失败' })
+          })
+        } else {
+          deleteCW({ id: item.id }).then(res => {
+            this.$message({ type: 'success', message: `${res.msg}!` })
+            this.fecthTableList()
+          }).catch(() => {
+            this.$message({ type: 'error', message: '删除失败' })
+          })
+        }
+      }).catch(() => {})
+    }
+  }
+}
+</script>
+
+<style scoped lang="scss">
+.setting{
+	/* background: #fff; */
+	.page{
+		font-size: 13px;
+	}
+}
+</style>

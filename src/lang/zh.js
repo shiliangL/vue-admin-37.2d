@@ -65,7 +65,10 @@ export default {
     clearing: '采购结算',
 
     customerClass: '客户档案',
-    customerType: '客户类别'
+    customerType: '客户类别',
+
+    setting: '仓库设置'
+
   },
   navbar: {
     logOut: '退出登录',
