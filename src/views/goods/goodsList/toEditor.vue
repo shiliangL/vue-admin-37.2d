@@ -241,8 +241,9 @@
                   <img :src="item.path" class="image">
                   <div>
                     <div class="bottom clearfix">
-                      <el-button type="text" class="left">设为主图</el-button>
-                      <el-button type="text" class="right">删除图片</el-button>
+                      <el-button type="text" v-if="index===0" class="left">商品主图</el-button>
+                      <el-button @click.stop="setBannerPic(item,index)" type="text" v-else class="left">设为主图</el-button>
+                      <el-button @click.stop="delBannerPic(item,index)" type="text" style="color:red" class="right">删除图片</el-button>
                     </div>
                   </div>
                 </div>
@@ -256,7 +257,7 @@
 					<div class="row-title">
             图文详情描述  
             <el-popover placement="right" width="600" trigger="click">  
-              <div>
+              <div class="desc">
                 一、基本要求
                 <p>1、商品详情总体要求：图片或文字，图片不超过20张，文字不超过5000字；建议：所有图片都是本商品相关的图片。</p>
                 二、图片大小
@@ -274,8 +275,8 @@
 					<div class="row-content">
 						<!-- <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 8}" placeholder="请输入内容" v-model.trim="form.details" /> -->
             <div class="editor_wrap">
-              {{content}}
-              <NqQuillEditor v-model="content"></NqQuillEditor>
+              <!-- {{content}} -->
+              <NqQuillEditor class="NqQuillEditor" v-model="content"></NqQuillEditor>
             </div>
 					</div>
 				</div>
@@ -284,7 +285,7 @@
 
 
       <el-dialog width="40%" title="图片上传" :visible.sync="innerVisible" append-to-body>
-          <UploadImg v-model="UploadImgArr" @callBack="callBackUploadImg" v-if="innerVisible" @close="innerVisible=false"></UploadImg>
+          <UploadImg @callBack="callBackUploadImg" v-if="innerVisible" @close="innerVisible=false"></UploadImg>
       </el-dialog>
 
     </div>
@@ -683,12 +684,25 @@ export default {
     },
     callBackUploadImg(data) {
       if (!data) return
-      for (const item of data) {
-        item.path = `${this.baseImgUrl}${item.url}`
+      console.log(data, 'xxx')
+      for (let i = 0; i < data.length; i++) {
+        const item = data[i]
+        if (this.UploadImgArr.length < 5) {
+          item.path = `${this.baseImgUrl}${item.url}`
+          this.UploadImgArr.push(item)
+        } else {
+          this.$message({ type: 'error', message: '图片不能大于5张' })
+          break
+        }
       }
-      const arr = [...this.UploadImgArr, ...data]
-      this.UploadImgArr = arr
-      console.log(data)
+    },
+    delBannerPic(item, index) {
+      this.UploadImgArr.splice(index, 1)
+    },
+    setBannerPic(item, index) {
+      if (this.UploadImgArr.length >= 2) {
+        this.UploadImgArr.splice(0, 1, ...this.UploadImgArr.splice(index, 1, this.UploadImgArr[0]))
+      }
     }
   },
   watch: {
@@ -766,6 +780,12 @@ export default {
       width: 148px;
       height: 148px;
       overflow: hidden;
+    }
+  }
+  .NqQuillEditor{
+    width: 750px;
+    .ql-container {
+      height: 480px;
     }
   }
 </style>

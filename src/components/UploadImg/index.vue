@@ -12,6 +12,7 @@
 		  :on-error="uploadError"
 		  :on-remove="uploadRemove"
       :before-upload="beforeAvatarUpload"
+      :on-exceed="overNumber"
 		  :accept="accept">
 		  <i class="el-icon-plus"></i>
 		</el-upload>
@@ -67,6 +68,9 @@ export default {
     }
   },
   methods: {
+    overNumber() {
+      this.$message({ type: 'warning', message: '图片选择小于5张' })
+    },
     uploadSuccess({ code, data }, file, fileList) {
       if (code !== '0') {
         fileList.splice(fileList.length - 1, 1)

@@ -44,13 +44,10 @@ export default {
       uploadType: null,
       content: '',
       editorOption: {
-        placeholder: '测试',
+        placeholder: '...',
         modules: {
           toolbar: [
             ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-            [{ header: 1 }, { header: 2 }], // custom button values
-            [{ list: 'ordered' }, { list: 'bullet' }],
-            [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
             [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
             [{ direction: 'rtl' }], // text direction
 
@@ -74,9 +71,9 @@ export default {
       }
     }, 20)
 
-    fetchToken().then(({ data }) => {
-      if (data.code === '0') {
-        this.el_uploadData.token = data.data.token
+    fetchToken().then(res => {
+      if (res.code === '0') {
+        this.el_uploadData.token = res.data.token
       }
     }).catch(e => {
       console.log(e)
@@ -84,7 +81,7 @@ export default {
   },
   methods: {
     onEditorChange(item) {
-      this.$emit('input', item)
+      this.$emit('input', item.html)
     },
     imgHandler(state) {
       if (state) {
@@ -105,6 +102,7 @@ export default {
       if (e.code === '0') {
         const url = e.data.key
         if (url) {
+          debugger
           this.addRange = this.$refs.upload.quill.getSelection()
           this.$refs.upload.quill.insertEmbed(
             this.addRange !== null ? this.addRange.index : 0,
@@ -134,5 +132,25 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+.quill-editor {
+  width: 750px;
+  .ql-container {
+    min-height: 480px;
+  }
+}
+
+.limit {
+  height: 30px;
+  border: 1px solid #ccc;
+  line-height: 30px;
+  text-align: right;
+  span {
+    color: #ee2a7b;
+  }
+}
+
+.ql-snow .ql-editor img {
+  max-width: 480px;
+}
 </style>
