@@ -214,9 +214,9 @@
 				</div>
 
         <div class="row-item">
-					<div class="row-title">商品图片 <span class="desc">大小≤6MB，支持JPG、PNG、JPEG,最多支持5张图片</span></div>
+					<div class="row-title">商品图片 <span class="desc">大小≤2MB，支持JPG、PNG、JPEG,最多支持5张图片</span></div>
 					<div class="row-content">
-						<el-row>
+						<!-- <el-row>
 								<div class="bannerImg">
 									<el-upload
 										ref="upload"
@@ -234,7 +234,21 @@
                     <i class="el-icon-plus"></i>
 									</el-upload>
 								</div>
-						</el-row>
+						</el-row> -->
+            <div class="img-items">
+              <div style="display:flex; align-items: center">
+                <div v-for="(item,index) in UploadImgArr" :key="index" class="card-imgs el-upload-list__item"> 
+                  <img :src="item.path" class="image">
+                  <div>
+                    <div class="bottom clearfix">
+                      <el-button type="text" class="left">设为主图</el-button>
+                      <el-button type="text" class="right">删除图片</el-button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="el-upload el-upload--picture-card"  @click.stop="innerVisible=true"> <i class="el-icon-plus"></i> </div>
+            </div>
 					</div>
 				</div>
 
@@ -261,21 +275,27 @@
 						<!-- <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 8}" placeholder="请输入内容" v-model.trim="form.details" /> -->
             <div class="editor_wrap">
               {{content}}
-                <VueEditor ref="VueEditor" id="editor" :options="VueEditorOptions" v-model="content" :init-content="initContent" :text.sync="text"></VueEditor>
+              <NqQuillEditor v-model="content"></NqQuillEditor>
             </div>
 					</div>
 				</div>
 			</el-form>
+
+
+
+      <el-dialog width="40%" title="图片上传" :visible.sync="innerVisible" append-to-body>
+          <UploadImg v-model="UploadImgArr" @callBack="callBackUploadImg" v-if="innerVisible" @close="innerVisible=false"></UploadImg>
+      </el-dialog>
+
     </div>
 </template>
 
 <script>
 import addModel from '@/public/addModel.js'
 import rules from '@/public/rules.js'
-import VueEditor from 'vue-wangeditor-simple'
+import { UploadImg, NqQuillEditor } from '@/components/base.js'
 import { fecthGoodsClass, fecthUnit, fecthSupplierList, fecthSalerList, fecthByCategoryId } from '@/api/goodsList.js'
 import { mapActions, mapGetters } from 'vuex'
-const tk = 'EWkspi65eSucaBPHWa-3RihMmVmFcc8KcCr9-beA:u-JFXu8Tg9e1qM8yKBPdyo5W76E=:eyJzY29wZSI6ImNtbWJ1Y2tldCIsImNhbGxiYWNrVXJsIjoiaHR0cDovL2x3cS50dW5uZWwucXlkZXYuY29tL2NhbGxiYWNrL3Fpbml1X29zc191cGxvYWQiLCJkZWFkbGluZSI6MTUzMDg1OTY0MywiY2FsbGJhY2tCb2R5IjoibmFtZVx1MDAzZCQoZm5hbWUpXHUwMDI2YnVja2V0XHUwMDNkJChidWNrZXQpXHUwMDI2a2V5XHUwMDNkJChrZXkpXHUwMDI2aGFzaFx1MDAzZCQoZXRhZylcdTAwMjZleHRcdTAwM2QkKHg6ZXh0KSJ9'
 export default {
   mixins: [rules, addModel],
   props: {
@@ -284,10 +304,14 @@ export default {
     }
   },
   components: {
-    VueEditor
+    NqQuillEditor,
+    UploadImg
   },
   data() {
     return {
+      content: null,
+      UploadImgArr: [],
+      innerVisible: false,
       checked: false,
       category: [],
       supplyData: [],
@@ -362,41 +386,8 @@ export default {
         supplierList: [],
         supplierType: [],
         salerList: []
-      },
-      // 文本
-      initContent: '<p>要初始化的内容</p>',
-      content: '',
-      text: '', // 不含html标签，纯文本
-      VueEditorOptions: {
-        width: '750px', // 自定义单位，字符串
-        height: '420px', // 自定义单位，字符串
-        // 更多配置项请看官网或者官网文档
-        // qiniu: true,
-        uploadImgServer: 'http://up-z2.qiniu.com',
-        uploadFileName: 'file',
-        uploadImgHooks: {
-
-        },
-        uploadImgParams: {
-          token: tk
-        },
-        menus: [
-          'head', // 标题
-          'bold', // 粗体
-          'fontSize', // 字号
-          'italic', // 斜体
-          'underline', // 下划线
-          'strikeThrough', // 删除线
-          'foreColor', // 文字颜色
-          'backColor', // 背景颜色
-          'list', // 列表
-          'justify', // 对齐方式
-          'image', // 插入图片
-          'undo', // 撤销
-          'redo' // 重复
-        ],
-        pasteFilterStyle: true // 打开/关闭粘贴样式的过滤
       }
+      // 文本
     }
   },
   created() {
@@ -689,6 +680,15 @@ export default {
           item.baseUnitName = value.title
         }
       }
+    },
+    callBackUploadImg(data) {
+      if (!data) return
+      for (const item of data) {
+        item.path = `${this.baseImgUrl}${item.url}`
+      }
+      const arr = [...this.UploadImgArr, ...data]
+      this.UploadImgArr = arr
+      console.log(data)
     }
   },
   watch: {
@@ -752,5 +752,20 @@ export default {
 	.textarea{
 		margin-top: 10px;
 		margin-left: 10px;
-	}
+  }
+  .img-items{
+    display: flex;
+    align-items: center;
+  }
+  .card-imgs{
+    margin-right: 10px;
+    width: 148px;
+    height: 148px;
+    border: 1px solid #c0ccda;
+    img{
+      width: 148px;
+      height: 148px;
+      overflow: hidden;
+    }
+  }
 </style>

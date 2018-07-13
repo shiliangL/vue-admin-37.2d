@@ -1,7 +1,9 @@
+import request from '@/utils/request'
+
 export default class Util {
   isEmpty(str) {
-    if (str == null || str == undefined || str == '') return true
-    if (str.replace(' ', '').length == 0) return true
+    if (str == null || str === undefined || str === '') return true
+    if (str.replace(' ', '').length === 0) return true
     return false
   }
 
@@ -30,7 +32,7 @@ export default class Util {
 
   arrayAttrToIndex(array, attr, str) {
     for (var i = 0; i < array.length; i++) {
-      if (array[i][attr] == str) { return i }
+      if (array[i][attr] === str) { return i }
     }
     return -1
   }
@@ -86,6 +88,15 @@ export default class Util {
     const key = Math.random().toString(36).substring(3, 10)
     data.randomKey = data.randomKey || key
     return key
+  }
+
+  // 获取权七牛 token
+  fetchQnToken(params) {
+    return request({
+      url: 'oss/upToken',
+      method: 'get',
+      params
+    })
   }
 }
 

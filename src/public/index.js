@@ -66,3 +66,4 @@ Vue.prototype.$arrayAttrGetObj = (array, attr, str) => {
   }
   return null
 }
+
