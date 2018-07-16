@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Element from 'element-ui'
 // import 'element-ui/lib/theme-chalk/index.css'
 import 'normalize.css/normalize.css'// CSS resets
+import VueLazyLoad from 'vue-lazyload'
+
 import '@/styles/index.scss' // global css
 import '@/styles/element-cmm.scss' //
 
@@ -16,6 +18,12 @@ import './components' // 全局组件
 import router from './router'
 
 Vue.config.productionTip = false
+
+// Vue.use(VueLazyLoad, {
+//   error: './static/error.png',
+//   loading: './static/loading.png'
+// })
+Vue.use(VueLazyLoad)
 
 Vue.use(Element, {
   size: 'medium', // set element-ui default size

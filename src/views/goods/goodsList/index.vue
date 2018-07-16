@@ -11,39 +11,15 @@
           </el-select>
         </div>
 
-         <div class="left" v-if="searchBarOptons.levelTowOption.length"> 
+        <div class="left" v-if="searchBarOptons.levelTowOption.length"> 
           <el-select class="w110" size="small" v-model="levelFecond" clearable filterable placeholder="二级分类">
             <el-option v-for="sub in searchBarOptons.levelTowOption" :key="sub.id" :label="sub.title" :value="sub.id"></el-option>
           </el-select>
         </div>
 
         <div class="left">
-          <el-select class="w110" size="small" v-model="searchParams.purchaseType" clearable filterable placeholder="采购类型">
-            <el-option v-for="sub in searchBarOptons.purchaseTypeOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
-          </el-select>
+          <CascaderBox v-model="CascaderBoxDTO"></CascaderBox>
         </div>
-
-        <!-- 供应商 -->
-        <!-- <template  v-if="searchParams.purchaseType ===1">
-          <div class="left">
-            <el-select class="w110" size="small" v-model="supplyType" clearable filterable placeholder="供应商类别" @change="selectSupplyTypeChange">
-              <el-option v-for="sub in searchBarOptons.supplyTypeOption" :key="sub.pk" :label="sub.title" :value="sub.pk"></el-option>
-            </el-select>
-
-            <el-select class="w110" size="small" v-model="searchParams.supplyId" clearable filterable placeholder="供应商">
-              <el-option v-for="sub in searchBarOptons.supplierList" :key="sub.pk" :label="sub.title" :value="sub.pk"></el-option>
-            </el-select>
-          </div>
-        </template> -->
-
-        <template  v-if="searchParams.purchaseType ===2">
-          <div class="left">
-            <!-- 采购员 -->
-            <el-select class="w90" size="small" v-model="searchParams.buyerId" clearable filterable placeholder="采购员">
-              <el-option v-for="sub in searchBarOptons.salerList" :key="sub.pk" :label="sub.staffName" :value="sub.pk"></el-option>
-            </el-select>
-          </div>
-        </template>
 
         <div class="left">
           <el-input style="width:180px" v-model="searchParams.title" size="small" @keyup.enter.native="clickToSearch" placeholder="输入商品名称检索"></el-input>
@@ -86,7 +62,7 @@
           <el-table-column prop="goodsImage" label="商品图片" align="center">
              <template slot-scope="scope">
                <div class="picBox">
-                <img :src="`${scope.row.goodsImage}`">
+                <img v-lazy="`${scope.row.goodsImage}`">
                </div>
             </template>
           </el-table-column>
@@ -138,7 +114,7 @@
 <script>
 import Add from './add'
 import model from '@/public/listModel.js'
-import { Tabs } from '@/components/base.js'
+import { Tabs, CascaderBox } from '@/components/base.js'
 import { fecthList, fecthGoodsClass, deletepProduct, productsDown, productsUp, fecthSupplierList, fecthSalerList, fecthByCategoryId } from '@/api/goodsList.js'
 import { mapGetters } from 'vuex'
 export default {
@@ -146,7 +122,8 @@ export default {
   mixins: [model],
   components: {
     Add,
-    Tabs
+    Tabs,
+    CascaderBox
   },
   data() {
     return {
@@ -155,6 +132,7 @@ export default {
         moreOptins: ['批量上架', '批量下架', '批量删除'],
         goodsClass: []
       },
+      CascaderBoxDTO: null,
       searchBarData: [
         [
           { type: 'option', value: null, key: 'categoryId', class: 'w110', placeholder: '一级分类', options: [
@@ -189,8 +167,7 @@ export default {
         categoryId: null,
         purchaseType: null,
         supplyId: null,
-        buyerId: null,
-        goodsStatus: 0
+        buyerId: null
       },
       searchBarOptons: {
         categoryOption: [],
@@ -228,21 +205,21 @@ export default {
     ])
   },
   methods: {
-    selectChange(data) {
-      console.log(data)
-    },
     reset() {
-      this.levelFirst = ''
-      this.levelFecond = ''
+      this.CascaderBoxDTO = null
+      this.levelFirst = null
+      this.levelFecond = null
       this.searchParams = {
         title: null,
         categoryId: null,
-        purchaseType: null
+        purchaseType: null,
+        supplyId: null,
+        buyerId: null
       }
       this.fecthList()
     },
     tabsCallBack(item) {
-      this.searchParams.goodsStatus = item.value
+      this.curIndex = item.value
       this.fecthList()
     },
     clickToSearch() {
@@ -255,10 +232,19 @@ export default {
     },
     // 数据请求
     fecthList() {
+      if (this.CascaderBoxDTO) {
+        this.searchParams.purchaseType = this.CascaderBoxDTO.purchaseType
+        if (this.CascaderBoxDTO.purchaseType === 0) {
+          this.searchParams.buyerId = this.CascaderBoxDTO.purchaseType
+        } else {
+          this.searchParams.supplyId = this.CascaderBoxDTO.supplyOrBuyerId
+        }
+      }
       const { index, size } = this.pagination
       const data = {
         index,
         size,
+        goodsStatus: this.curIndex,
         ...this.searchParams
       }
       fecthList(data).then(({ data }) => {
