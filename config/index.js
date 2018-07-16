@@ -23,14 +23,14 @@ module.exports = {
       //   target: 'http://cmm.ngrok.xiaomiqiu.cn',
       //   changeOrigin: true,
       // }
-      '/': {
-        target: 'http://192.168.2.77:5858/', // 本地主机
-        changeOrigin: true,
-      },
       // '/': {
-      //   target: 'http://192.168.2.75:9001/', // 本地王艳
+      //   target: 'http://192.168.2.77:5858/', // 本地主机
       //   changeOrigin: true,
-      // }
+      // },
+      '/': {
+        target: 'http://192.168.2.75:9001/', // 本地王艳
+        changeOrigin: true,
+      }
     },
 
     // Various Dev Server settings

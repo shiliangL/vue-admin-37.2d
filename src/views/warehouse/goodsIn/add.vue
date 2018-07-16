@@ -1,54 +1,17 @@
 <template>
   <div class="add">
-		<div class="header-bar clearfix" slot="title">
-			<div class="left"> 左边 </div>
-			<div class="right">
-				<el-button type="text" size="mini" @click.stop="closeAdd">返回</el-button>
-			</div>
-		</div>
-		<div class="mc">
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-			<h1>内容</h1>
-		</div>
+      <h1>测试</h1>
   </div>
 </template>
 
 <script>
 import addModel from '@/public/addModel.js'
-import { StickyBar } from '@/components/base.js'
 import { createCK, createCW, updateCK, updateCW } from '@/api/warehouse/setting.js'
 
 export default {
   mixins: [addModel],
   components: {
-    StickyBar
+
   },
   data() {
     return {
@@ -63,7 +26,8 @@ export default {
   },
   methods: {
     closeAdd() {
-      this.$emit('update:visiable', false)
+      this.dialog.visiable = false
+      this.$emit('add')
     },
     clickToEdit() {
       this.typeIseditor = true // 点击判断编辑修改提交
@@ -161,30 +125,30 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.add{
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 100%;
-	background: #ccc;
-	transform: translateZ(0);
+.el-dialog__wrapper {
+    transform: translateZ(0);
+    min-height: 100%;
+    min-height: 700px;
 }
-
-.header-bar {
-		.left {
-				color: #1cbc9c;
-		}
-		padding: 0 10px;
-		height: 40px;
-		line-height: 40px;
-		width: 100%;
-		position: fixed;
-		left: 0;
-		top: 0;
-		background: #e8f8f5 !important;
-		box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.23);
+.content-box {
+    width: 100%;
+    position: relative;
+    .header-bar {
+        .left {
+            color: #1cbc9c;
+        }
+        padding: 0 10px;
+        height: 40px;
+        line-height: 40px;
+        width: 100%;
+        position: fixed;
+        top: 0px;
+        left: 0;
+        z-index: 900;
+        background: #e8f8f5 !important;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.23);
+    }
 }
-		
 .Loading {
     position: fixed;
     top: 0;
@@ -192,9 +156,5 @@ export default {
     bottom: 0;
     right: 0;
     z-index: 10;
-}
-.mc{
-	max-height: 100%;
-	overflow-y: auto;
 }
 </style>

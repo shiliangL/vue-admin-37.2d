@@ -100,7 +100,8 @@ export const asyncRouterMap = [
       icon: 'component'
     },
     children: [
-      { path: 'setting', component: _import('warehouse/setting/index'), name: 'setting', meta: { title: 'setting' }}
+      { path: 'setting', component: _import('warehouse/setting/index'), name: 'setting', meta: { title: 'setting' }},
+      { path: 'goodsIn', component: _import('warehouse/goodsIn/index'), name: 'goodsIn', meta: { title: 'goodsIn' }}
     ]
   },
   { path: '*', redirect: '/404', hidden: true }
