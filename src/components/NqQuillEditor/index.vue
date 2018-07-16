@@ -3,13 +3,13 @@
     <quill-editor ref="upload"
       :on-success='upScuccess'
       :before-upload='beforeUpload'
-      :content="content"
+      :content="value"
       :options = "editorOption"
       @change="onEditorChange($event)">
     </quill-editor>
 
     <el-upload class="upload-demo" 
-      :action="qnLocation" 
+      :action="qnLocation"
       :before-upload='el_beforeUpload' 
       :data="el_uploadData" 
       :on-success='el_upScuccess' 

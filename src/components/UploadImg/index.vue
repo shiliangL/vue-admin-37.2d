@@ -1,4 +1,5 @@
 <template>
+  <!-- :before-upload="beforeAvatarUpload" -->
 	<div class="upload-img-component">
 		<el-upload
 		  :action="action"
@@ -11,8 +12,8 @@
 		  :on-progress="uploadProgress"
 		  :on-error="uploadError"
 		  :on-remove="uploadRemove"
-      :before-upload="beforeAvatarUpload"
       :on-exceed="overNumber"
+      :before-upload="beforeAvatarUpload"
 		  :accept="accept">
 		  <i class="el-icon-plus"></i>
 		</el-upload>
@@ -135,22 +136,16 @@ export default {
       this.$emit('close')
     },
     beforeAvatarUpload(file) {
-      // console.log(file)
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isLt2M) {
+        this.$message({ type: 'warning', message: '上传图片大小不能超过 2MB!' })
+      }
+      return isLt2M
     }
   }
 }
 </script>
 
 <style scope lang="scss">
-.upload-img-component {
-    .title {
-        margin: 10px 0 10px;
-        font-size: 16px;
-    }
-
-    .img-title {
-        border-bottom: 1px solid #eee;
-        padding-bottom: 10px;
-    }
-}
+ 
 </style>

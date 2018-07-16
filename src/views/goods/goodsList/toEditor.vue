@@ -2,287 +2,317 @@
     <div class="toEditor">
 			<el-form :model="form" :rules="rules" ref="form" label-width="120px" :inline="true">
 
-				<div class="row-item">
-						<div class="row-title">基本信息</div>
-						<div class="row-content basicInfo">
-							<el-row>
+		    <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
 
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="商品分类:" prop="categoryId" :rules="rules.select">
-                      <el-cascader
-                        size="small" 
-                        clearable  
-                        style="width:180px" 
-                        placeholder="请选择" 
-                        expand-trigger="hover" 
-                        filterable 
-                        :options="options.goodClass" 
-                        v-model="category" 
-                        @change="selectCategory"> 
-                      </el-cascader>
-									</el-form-item>
-								</el-col>
+        <div v-show="ifInfo">
+          <div class="row-item">
+              <div class="row-title">基本信息</div>
+              <div class="row-content basicInfo">
+                <el-row>
 
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="商品类型:" prop="type" :rules="rules.select">
-                    <el-select size="small" style="width:180px" v-model="form.type" placeholder="请选择">
-											<el-option size="small" style="width:180px" v-for="item in options.categoryTypeOption" :key="item.value" :label="item.label" :value="item.value"> </el-option>
-										</el-select> 
-									</el-form-item>
-								</el-col>
-                
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="商品名称:" prop="title" :rules="rules.input">
-										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
-									</el-form-item>
-								</el-col>
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="商品分类:" prop="categoryId" :rules="rules.select">
+                        <el-cascader
+                          size="small" 
+                          clearable  
+                          style="width:180px" 
+                          placeholder="请选择" 
+                          expand-trigger="hover" 
+                          filterable 
+                          :options="options.goodClass" 
+                          v-model="category" 
+                          @change="selectCategory"> 
+                        </el-cascader>
+                    </el-form-item>
+                  </el-col>
 
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="商品子名称:">
-										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.subTitle"></el-input>
-									</el-form-item>
-								</el-col>
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="商品别名:">
-										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.aliasTitle"></el-input>
-									</el-form-item>
-								</el-col>
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="简称:">
-										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.shortTitle"></el-input>
-									</el-form-item>
-								</el-col>
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="简称字母:">
-										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.shortCode"></el-input>
-									</el-form-item>
-								</el-col>
-								<!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="商品品牌:">
-										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
-									</el-form-item>
-								</el-col>
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="所属仓库:" :rules="rules.input">
-										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
-									</el-form-item>
-								</el-col>
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="所在仓位:" :rules="rules.input">
-										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
-									</el-form-item>
-								</el-col> -->
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="商品类型:" prop="type" :rules="rules.select">
+                      <el-select size="small" style="width:180px" v-model="form.type" placeholder="请选择">
+                        <el-option size="small" style="width:180px" v-for="item in options.categoryTypeOption" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+                      </el-select> 
+                    </el-form-item>
+                  </el-col>
+                  
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="商品名称:" prop="title" :rules="rules.input">
+                      <el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
+                    </el-form-item>
+                  </el-col>
 
-									<el-form-item label="采购类型:" :rules="rules.select">
-										<el-select v-model="form.purchaseType" placeholder="请选择" @change="changePurchaseType" filterable>
-											<el-option size="small" style="width:180px" v-for="item in options.purchaseType" :key="item.value" :label="item.label" :value="item.value"> </el-option>
-										</el-select>
-									</el-form-item>
-								</el-col>
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="商品子名称:">
+                      <el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.subTitle"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="商品别名:">
+                      <el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.aliasTitle"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="简称:">
+                      <el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.shortTitle"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="简称字母:">
+                      <el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.shortCode"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="商品品牌:">
+                      <el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="所属仓库:" :rules="rules.input">
+                      <el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="所在仓位:" :rules="rules.input">
+                      <el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
+                    </el-form-item>
+                  </el-col> -->
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
 
-									<el-form-item label="供应商类别:" v-if="form.purchaseType===1"  :rules="rules.select" prop="supplyType" filterable>
-                    <el-select size="small" style="width:180px" v-model="form.supplyType" placeholder="请选择" @change="supplyTypeChange">
-											<el-option size="small" style="width:180px" v-for="item in options.supplierType" :key="item.pk" :label="item.title" :value="item.pk"> </el-option>
-										</el-select> 
-                   
-									</el-form-item>
+                    <el-form-item label="采购类型:" :rules="rules.select">
+                      <el-select v-model="form.purchaseType" placeholder="请选择" @change="changePurchaseType" filterable>
+                        <el-option size="small" style="width:180px" v-for="item in options.purchaseType" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
 
-									<el-form-item label="采购员:" :rules="rules.select" v-else  prop="buyerId">
-                    <el-select size="small" style="width:180px" v-model="form.buyerId" placeholder="请选择" filterable>
-											<el-option size="small" style="width:180px" v-for="item in options.salerList" :key="item.pk" :label="item.staffName" :value="item.pk"> </el-option>
-										</el-select>
+                    <el-form-item label="供应商类别:" v-if="form.purchaseType===1"  :rules="rules.select" prop="supplyType" filterable>
+                      <el-select size="small" style="width:180px" v-model="form.supplyType" placeholder="请选择" @change="supplyTypeChange">
+                        <el-option size="small" style="width:180px" v-for="item in options.supplierType" :key="item.pk" :label="item.title" :value="item.pk"> </el-option>
+                      </el-select> 
+                    
+                    </el-form-item>
 
-									</el-form-item>
+                    <el-form-item label="采购员:" :rules="rules.select" v-else  prop="buyerId">
+                      <el-select size="small" style="width:180px" v-model="form.buyerId" placeholder="请选择" filterable>
+                        <el-option size="small" style="width:180px" v-for="item in options.salerList" :key="item.pk" :label="item.staffName" :value="item.pk"> </el-option>
+                      </el-select>
 
-								</el-col>
+                    </el-form-item>
 
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+                  </el-col>
 
-									<el-form-item label="供应商:" :rules="rules.select"  v-if="form.purchaseType===1" prop="supplyId">
-										<el-select v-model="form.supplyId" placeholder="请选择">
-											<el-option size="small" style="width:180px" v-for="item in options.supplierList" :key="item.value" :label="item.title" :value="item.pk"> </el-option>
-										</el-select>
-									</el-form-item>
-								</el-col>
-								<!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="简要介绍:">
-										<el-input size="small" type="textarea" style="width:180px" class="w180"  placeholder="小于50字" v-model.trim="form.summary"></el-input>
-									</el-form-item>
-								</el-col> -->
-							</el-row>
-						</div>
-				</div>
-        
-				<div class="row-item">
-						<div class="row-title"> 商品价格 </div>
-						<div class="row-content basicInfo">
-							<el-row>
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="基本单位:" prop="baseUnit" :rules="rules.select">
-                    <el-select v-model="form.baseUnit" placeholder="请选择" size="small" style="width:180px" filterable @change="selectBaseUnitChange">
-                      <el-option v-for="item in options.UnitOpton" :key="item.id" :label="item.title" :value="item.id"> </el-option> 
-                    </el-select>
-									</el-form-item>
-								</el-col>
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="最近一次采购价:">
-										<!-- <el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.subTitle"></el-input> -->
-									</el-form-item>
-								</el-col>
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="基本单位价格:" prop="basePrice" :rules="rules.input">
-										<el-input size="small" style="width:180px" class="w180" type="number"  placeholder="请输入" v-model.trim="form.basePrice"></el-input>
-									</el-form-item>
-								</el-col>
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="">
-										 <el-checkbox :disabled="sortFlagType" v-model="form.sortFlag">分拣时按基本单位</el-checkbox> 
-                     <el-tooltip content="非标品商品默认分拣时按基本单位" placement="top" effect="light">
-                        <i class="el-icon-warning"></i>
-                      </el-tooltip>
-									</el-form-item>
-								</el-col>
- 
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="">
-                    <label class="el-checkbox is-disabled is-checked">
-                      <span class="el-checkbox__input is-disabled is-checked">
-                        <span class="el-checkbox__inner"></span>
-                      </span>
-                      <span class="el-checkbox__label">销售汇总时按基本单位</span>
-                    </label>
-									</el-form-item>
-								</el-col>
- 
-							</el-row>
-						</div>
-				</div>
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
 
-				<div class="row-item">
-					<div class="row-title">商品规格</div>
-					<div class="row-content">
+                    <el-form-item label="供应商:" :rules="rules.select"  v-if="form.purchaseType===1" prop="supplyId">
+                      <el-select size="small" v-model="form.supplyId" placeholder="请选择">
+                        <el-option size="small" style="width:180px" v-for="item in options.supplierList" :key="item.value" :label="item.title" :value="item.pk"> </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="简要介绍:">
+                      <el-input size="small" type="textarea" style="width:180px" class="w180"  placeholder="小于50字" v-model.trim="form.summary"></el-input>
+                    </el-form-item>
+                  </el-col> -->
+                </el-row>
+              </div>
+          </div>
 
-						<el-table :data="form.skuList" class="skuListTbale" size="small" :max-height="500" style="width: 100%;" highlight-current-row>
+          <div class="row-item">
+            <div class="row-title">商品图片  <span class="desc">大小≤2MB，支持JPG、PNG、JPEG,最多支持5张图片</span></div>
+            <div class="row-content">
+              <div class="img-items">
 
-							<el-table-column label="操作" width="50" align="center">
-								<template slot-scope="scope">
-									<i class="el-icon-plus" style="cursor: pointer;" @click.stop="clickToAddSkuLis"></i>
-									<i class="el-icon-minus" v-if="form.skuList && form.skuList.length>1 && scope.$index" style="cursor: pointer;" @click.stop="clickToDelSkuLis(scope.$index,scope.$row)"></i>
-								</template>
-							</el-table-column>
-							<el-table-column label="序号" width="50" align="center">
-								<template slot-scope="scope">
-									<span>{{scope.$index + 1}}</span>
-								</template>
-							</el-table-column>
-
-							<el-table-column prop="orderNo" label="规格" align="center">
-								<template slot-scope="scope">
-
-	                <el-form-item label="" label-width="0px" :prop="'skuList.'+scope.$index+'.unitId'" :rules="rules.select">
-                    <el-select style="width:110px;padding-top: 2px;" v-model="scope.row.unitId" placeholder="请选择" size="small" filterable @change="selectChangeUnit($event,scope.row)">
-                      <el-option v-for="item in options.UnitOpton" :key="item.id" :label="item.title" :value="item.id"> </el-option> 
-                    </el-select>
-	                </el-form-item>
-
-									<el-form-item label="" label-width="0px" :prop="'skuList.'+scope.$index+'.rate'" :rules="rules.input">
-									=	<el-input style="width:110px" type="number" placeholder="正整数" size="small" v-model.trim="scope.row.rate"></el-input> {{scope.row.baseUnitName}}
-									</el-form-item>
-
-								</template>
-							</el-table-column>
-							<el-table-column prop="productName" label="规格备注" align="center">
-								<template slot-scope="scope">
-									<el-input type="textarea" :autosize="{ minRows: 1, maxRows: 4}" placeholder="小于10字" v-model.trim="scope.row.summary" />
-								</template>
-							</el-table-column>
- 
-							<el-table-column prop="price" label="市场价格(全国)" align="center">
-								<template slot-scope="scope">
-
-									<el-form-item label="" label-width="0px" :prop="'skuList.'+scope.$index+'.price'" :rules="rules.input">
-										<el-input size="small" class="w110" type="number" placeholder="请输入" v-model.trim="scope.row.price"></el-input>
-									</el-form-item>
-
-								</template>
-							</el-table-column>
- 
-						</el-table>
-					</div>
-				</div>
-
-        <div class="row-item">
-					<div class="row-title">商品图片 <span class="desc">大小≤2MB，支持JPG、PNG、JPEG,最多支持5张图片</span></div>
-					<div class="row-content">
-						<!-- <el-row>
-								<div class="bannerImg">
-									<el-upload
-										ref="upload"
-										:limit="5"
-                    :multiple="true"
-                    :file-list="fileList"
-										list-type="picture-card"
-										class="avatar-uploader"
-										:data="uploadDatas"
-									 	action="http://up-z2.qiniu.com"
-										:on-preview="handlePictureCardPreview"
-										:on-remove="handleRemove"
-										:on-success="handleAvatarSuccess"
-										:before-upload="beforeAvatarUpload">
-                    <i class="el-icon-plus"></i>
-									</el-upload>
-								</div>
-						</el-row> -->
-            <div class="img-items">
-              <div style="display:flex; align-items: center">
-                <div v-for="(item,index) in UploadImgArr" :key="index" class="card-imgs el-upload-list__item"> 
-                  <img :src="item.path" class="image">
-                  <div>
-                    <div class="bottom clearfix">
+                <div style="display:flex; align-items: center">
+                  <div v-for="(item,index) in UploadImgArr" :key="index" class="card-imgs el-upload-list__item"> 
+                    <img :src="item" class="image">
+                    <div class="bottom-img clearfix">
                       <el-button type="text" v-if="index===0" class="left">商品主图</el-button>
                       <el-button @click.stop="setBannerPic(item,index)" type="text" v-else class="left">设为主图</el-button>
                       <el-button @click.stop="delBannerPic(item,index)" type="text" style="color:red" class="right">删除图片</el-button>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="el-upload el-upload--picture-card"  @click.stop="innerVisible=true"> <i class="el-icon-plus"></i> </div>
-            </div>
-					</div>
-				</div>
 
-				<div class="row-item">
-					<div class="row-title">
-            图文详情描述  
-            <el-popover placement="right" width="600" trigger="click">  
-              <div class="desc">
-                一、基本要求
-                <p>1、商品详情总体要求：图片或文字，图片不超过20张，文字不超过5000字；建议：所有图片都是本商品相关的图片。</p>
-                二、图片大小
-                <p> 1、建议使用宽度480 ~ 620像素、高度小于等于960像素的图片，比例1:2；</p>
-                <p> 2、格式为：JPG\JEPG\GIF\PNG； 举例：可以上传一张宽度为480，高度为960像素，格式为JPG的图片。</p>
-                三、文字要求
-                <p> 1、每次插入文字不能超过500个字，标点、特殊字符按照一个字计算；</p>
-                <p> 2、请手动输入文字，不要复制粘贴网页上的文字，防止出现乱码；</p>
-                <p> 3、以下特殊字符   “<”、“>”、“"”、“'”、“\”  会被替换为空。</p>
-                建议：不要添加太多的文字，这样看起来更清晰。
+                <div class="el-upload el-upload--picture-card" style="margin-top: 10px;"  @click.stop="innerVisible=true"> <i class="el-icon-plus"></i> </div>
               </div>
-              <el-button slot="reference" style="font-size: 14px;margin-left: 10px;" type="text" size="mini" > 上传说明 </el-button>
-            </el-popover>
+            </div>
           </div>
-					<div class="row-content">
-						<!-- <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 8}" placeholder="请输入内容" v-model.trim="form.details" /> -->
-            <div class="editor_wrap">
-              <!-- {{content}} -->
-              <NqQuillEditor class="NqQuillEditor" v-model="content"></NqQuillEditor>
+
+          <div class="row-item">
+            <div class="row-title">
+              图文详情描述  
+              <el-popover placement="right" width="600" trigger="click">  
+                <div class="desc">
+                  一、基本要求
+                  <p>1、商品详情总体要求：图片或文字，图片不超过20张，文字不超过5000字；建议：所有图片都是本商品相关的图片。</p>
+                  二、图片大小
+                  <p> 1、建议使用宽度480 ~ 620像素、高度小于等于960像素的图片，比例1:2；</p>
+                  <p> 2、格式为：JPG\JEPG\GIF\PNG； 举例：可以上传一张宽度为480，高度为960像素，格式为JPG的图片。</p>
+                  三、文字要求
+                  <p> 1、每次插入文字不能超过500个字，标点、特殊字符按照一个字计算；</p>
+                  <p> 2、请手动输入文字，不要复制粘贴网页上的文字，防止出现乱码；</p>
+                  <p> 3、以下特殊字符   “<”、“>”、“"”、“'”、“\”  会被替换为空。</p>
+                  建议：不要添加太多的文字，这样看起来更清晰。
+                </div>
+                <el-button slot="reference" style="font-size: 14px;margin-left: 10px;" type="text" size="mini" > 上传说明 </el-button>
+              </el-popover>
             </div>
-					</div>
-				</div>
+            <div class="row-content">
+              <!-- <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 8}" placeholder="请输入内容" v-model.trim="form.details" /> -->
+              <div class="editor_wrap">
+                <NqQuillEditor class="NqQuillEditor" v-model="form.details"></NqQuillEditor>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-show="isSku">
+          <div class="row-item">
+              <div class="row-title"> 商品属性 </div>
+              <div class="row-content">
+                <div class="flex-box">
+                  <div>
+                     <el-form-item label="基本单位:" prop="baseUnit" :rules="rules.select">
+                      <el-select v-model="form.baseUnit" placeholder="请选择" size="small" style="width:120px" filterable @change="selectBaseUnitChange">
+                        <el-option v-for="item in options.UnitOpton" :key="item.id" :label="item.title" :value="item.id"> </el-option> 
+                      </el-select>
+                    </el-form-item>
+                  </div>
+                  <div>
+                    <el-form-item label="采购参考价格:" style="width:180px">
+                      <!-- <el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.subTitle"></el-input> -->
+                    </el-form-item>
+                  </div>
+                  <div>
+                    <el-form-item label="基本单位价格:" prop="basePrice" :rules="rules.input">
+                      <el-input size="small" style="width:180px" class="w180" type="number"  placeholder="请输入" v-model.trim="form.basePrice"></el-input>
+                    </el-form-item>
+                  </div>
+                  <div>
+                     <el-form-item label="" style="width:180px">
+                      <el-checkbox :disabled="sortFlagType" v-model="form.sortFlag">分拣时按基本单位</el-checkbox> 
+                      <el-tooltip content="非标品商品默认分拣时按基本单位" placement="top" effect="light">
+                          <i class="el-icon-warning"></i>
+                        </el-tooltip>
+                    </el-form-item>
+                  </div>
+                  <div>
+                     <el-form-item label=""  style="width:180px">
+                      <label class="el-checkbox is-disabled is-checked">
+                        <span class="el-checkbox__input is-disabled is-checked">
+                          <span class="el-checkbox__inner"></span>
+                        </span>
+                        <span class="el-checkbox__label">销售汇总时按基本单位</span>
+                      </label>
+                    </el-form-item>
+                  </div>
+                </div>
+
+                <el-table :data="form.skuList" class="skuListTbale" size="small" :max-height="500" style="width: 100%;" highlight-current-row>
+
+                  <el-table-column label="操作" width="50" align="center">
+                    <template slot-scope="scope">
+                      <i class="el-icon-plus" style="cursor: pointer;" @click.stop="clickToAddSkuLis"></i>
+                      <i class="el-icon-minus" v-if="form.skuList && form.skuList.length>1 && scope.$index" style="cursor: pointer;" @click.stop="clickToDelSkuLis(scope.$index,scope.$row)"></i>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="序号" width="50" align="center">
+                    <template slot-scope="scope">
+                      <span>{{scope.$index + 1}}</span>
+                    </template>
+                  </el-table-column>
+
+                  <el-table-column prop="orderNo" label="规格" align="center">
+                    <template slot-scope="scope">
+
+                      <el-form-item label="" label-width="0px" :prop="'skuList.'+scope.$index+'.unitId'" :rules="rules.select">
+                        <el-select style="width:110px;padding-top: 2px;" v-model="scope.row.unitId" placeholder="请选择" size="small" filterable @change="selectChangeUnit($event,scope.row)">
+                          <el-option v-for="item in options.UnitOpton" :key="item.id" :label="item.title" :value="item.id"> </el-option> 
+                        </el-select>
+                      </el-form-item>
+
+                      <el-form-item label="" label-width="0px" :prop="'skuList.'+scope.$index+'.rate'" :rules="rules.input">
+                      =	<el-input style="width:110px" type="number" placeholder="正整数" size="small" v-model.trim="scope.row.rate"></el-input> {{scope.row.baseUnitName}}
+                      </el-form-item>
+
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="productName" label="规格备注" align="center">
+                    <template slot-scope="scope">
+                      <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 4}" placeholder="小于10字" v-model.trim="scope.row.summary" />
+                    </template>
+                  </el-table-column>
+    
+                  <el-table-column prop="price" label="市场价格(全国)" align="center">
+                    <template slot-scope="scope">
+
+                      <el-form-item label="" label-width="0px" :prop="'skuList.'+scope.$index+'.price'" :rules="rules.input">
+                        <el-input size="small" class="w110" type="number" placeholder="请输入" v-model.trim="scope.row.price"></el-input>
+                      </el-form-item>
+
+                    </template>
+                  </el-table-column>
+    
+                </el-table>
+              </div>
+          </div>
+
+          <!-- <div class="row-item">
+            <div class="row-title">商品规格</div>
+            <div class="row-content">
+
+              <el-table :data="form.skuList" class="skuListTbale" size="small" :max-height="500" style="width: 100%;" highlight-current-row>
+
+                <el-table-column label="操作" width="50" align="center">
+                  <template slot-scope="scope">
+                    <i class="el-icon-plus" style="cursor: pointer;" @click.stop="clickToAddSkuLis"></i>
+                    <i class="el-icon-minus" v-if="form.skuList && form.skuList.length>1 && scope.$index" style="cursor: pointer;" @click.stop="clickToDelSkuLis(scope.$index,scope.$row)"></i>
+                  </template>
+                </el-table-column>
+                <el-table-column label="序号" width="50" align="center">
+                  <template slot-scope="scope">
+                    <span>{{scope.$index + 1}}</span>
+                  </template>
+                </el-table-column>
+
+                <el-table-column prop="orderNo" label="规格" align="center">
+                  <template slot-scope="scope">
+
+                    <el-form-item label="" label-width="0px" :prop="'skuList.'+scope.$index+'.unitId'" :rules="rules.select">
+                      <el-select style="width:110px;padding-top: 2px;" v-model="scope.row.unitId" placeholder="请选择" size="small" filterable @change="selectChangeUnit($event,scope.row)">
+                        <el-option v-for="item in options.UnitOpton" :key="item.id" :label="item.title" :value="item.id"> </el-option> 
+                      </el-select>
+                    </el-form-item>
+
+                    <el-form-item label="" label-width="0px" :prop="'skuList.'+scope.$index+'.rate'" :rules="rules.input">
+                    =	<el-input style="width:110px" type="number" placeholder="正整数" size="small" v-model.trim="scope.row.rate"></el-input> {{scope.row.baseUnitName}}
+                    </el-form-item>
+
+                  </template>
+                </el-table-column>
+                <el-table-column prop="productName" label="规格备注" align="center">
+                  <template slot-scope="scope">
+                    <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 4}" placeholder="小于10字" v-model.trim="scope.row.summary" />
+                  </template>
+                </el-table-column>
+  
+                <el-table-column prop="price" label="市场价格(全国)" align="center">
+                  <template slot-scope="scope">
+
+                    <el-form-item label="" label-width="0px" :prop="'skuList.'+scope.$index+'.price'" :rules="rules.input">
+                      <el-input size="small" class="w110" type="number" placeholder="请输入" v-model.trim="scope.row.price"></el-input>
+                    </el-form-item>
+
+                  </template>
+                </el-table-column>
+  
+              </el-table>
+            </div>
+          </div> -->
+        </div>
+
 			</el-form>
-
-
 
       <el-dialog width="40%" title="图片上传" :visible.sync="innerVisible" append-to-body>
           <UploadImg @callBack="callBackUploadImg" v-if="innerVisible" @close="innerVisible=false"></UploadImg>
@@ -294,7 +324,7 @@
 <script>
 import addModel from '@/public/addModel.js'
 import rules from '@/public/rules.js'
-import { UploadImg, NqQuillEditor } from '@/components/base.js'
+import { UploadImg, NqQuillEditor, Tabs } from '@/components/base.js'
 import { fecthGoodsClass, fecthUnit, fecthSupplierList, fecthSalerList, fecthByCategoryId } from '@/api/goodsList.js'
 import { mapActions, mapGetters } from 'vuex'
 export default {
@@ -306,11 +336,13 @@ export default {
   },
   components: {
     NqQuillEditor,
-    UploadImg
+    UploadImg,
+    Tabs
   },
   data() {
     return {
-      content: null,
+      ifInfo: true,
+      isSku: false,
       UploadImgArr: [],
       innerVisible: false,
       checked: false,
@@ -392,17 +424,13 @@ export default {
     }
   },
   created() {
+    this.tabTitles = [
+      { title: '商品相关信息', value: 0 },
+      { title: 'SKU相关信息', value: 1 }
+    ]
     if (this.viewData) {
       this.category = [this.viewData.parentId, this.viewData.info.categoryId]
-      // 处理编辑图片展示问题
-      if (this.viewData.info.bannerIds) {
-        const list = []
-        const arr = this.viewData.info.bannerIds.split(',')
-        for (const item of arr) {
-          list.push({ url: `${item}` })
-        }
-        this.fileList = list
-      }
+
       this.form = {
         'id': this.viewData.info.pk,
         'basePrice': this.viewData.info.basePrice, // 基本单位价格
@@ -435,6 +463,11 @@ export default {
         'title': this.viewData.info.title, // 名称
         'type': this.viewData.info.type,
         'sortFlag': this.viewData.info.sortFlag // 分拣时按基本单 0是 1 不是 ,
+      }
+      // 处理编辑图片展示问题
+      if (this.viewData.info.bannerIds) {
+        const arr = this.viewData.info.bannerIds.split(',')
+        this.UploadImgArr = arr
       }
 
       if (this.viewData.supplier && this.viewData.supplier.categoryId) {
@@ -485,6 +518,15 @@ export default {
     ...mapActions([
       'VX_SET_QNTOKEN'
     ]),
+    tabsCallBack(item) {
+      if (item.value === 0) {
+        this.ifInfo = true
+        this.isSku = false
+      } else {
+        this.ifInfo = false
+        this.isSku = true
+      }
+    },
     // 加载商品大类
     fetchGoodClassList() {
       fecthGoodsClass().then(({ data }) => {
@@ -544,29 +586,6 @@ export default {
       }).catch(e => {
         console.log(e)
       })
-    },
-    handleAvatarSuccess(res, fileList) {
-      if (res.code === '0') {
-        this.$message.success(res.msg)
-      }
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg'
-      // const isJPG = file.type === 'image/png'
-      const isLt2M = file.size / 1024 / 1024 < 2
-      if (!isJPG) {
-        this.$message.error('图片只能是 JPG 格式!')
-      }
-      if (!isLt2M) {
-        this.$message.error('图片大小不能超过 2MB!')
-      }
-      return isJPG && isLt2M
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList)
-    },
-    handlePictureCardPreview(file) {
-      console.log(file, '查看')
     },
     clickToAddSkuLis() {
       this.form.skuList.push({
@@ -633,30 +652,16 @@ export default {
     validateForm() {
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          if (this.$refs['upload']) {
-            const uploadFiles = this.$refs['upload'].uploadFiles
-            const imgs = []
-            if (Array.isArray(uploadFiles) && uploadFiles.length > 0) {
-              for (const item of uploadFiles) {
-                if (item.response && item.response.code === '0') {
-                  imgs.push(`${this.baseImgUrl}${item.response.data.key}`)
-                }
-                if (!item.response && item.url) imgs.push(item.url)
-              }
-            } else {
-              this.$message({ type: 'warning', message: '至少上传一张图片' })
-              return
-            }
-            if (imgs.length > 0) {
-              this.form.goodsImage = imgs[0]
-            }
-            const lists = this.form.skuList
-            for (const item of lists) {
-              item.skuTitle = `${item.rate}${item.baseUnitName}/ ${item.unitName}`
-            }
-            this.form.bannerIds = imgs.toString()
-            this.form.sortFlag = this.form.sortFlag ? 0 : 1 // // 0是 1 不是
+          if (this.UploadImgArr.length > 0) {
+            this.form.bannerIds = this.UploadImgArr.map(item => {
+              return item
+            }).toString()
+            this.form.goodsImage = this.UploadImgArr[0]
+          } else {
+            this.$message({ type: 'warning', message: '至少上传一张图片' })
+            return
           }
+          this.form.sortFlag = this.form.sortFlag ? 0 : 1 // // 0是 1 不是
           const result = this.$copy(this.form)
           delete result.supplyType
           this.$emit('callBack', result)
@@ -684,12 +689,10 @@ export default {
     },
     callBackUploadImg(data) {
       if (!data) return
-      console.log(data, 'xxx')
       for (let i = 0; i < data.length; i++) {
         const item = data[i]
         if (this.UploadImgArr.length < 5) {
-          item.path = `${this.baseImgUrl}${item.url}`
-          this.UploadImgArr.push(item)
+          this.UploadImgArr.push(`${this.baseImgUrl}${item.url}`)
         } else {
           this.$message({ type: 'error', message: '图片不能大于5张' })
           break
@@ -727,32 +730,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .row-item {
-    padding: 24px 0;
-    .row-title {
-      border-left: 2px solid #1cbc9c;
-      padding-left: 8px;
-      .desc{
-        font-size: 12px;
-        padding-left: 16px;
-        color: rgb(128, 132, 143);
-      }
-    }
-    .row-content {
-      padding: 10px;
-      .label{
-        color: #696767;
-        font-size: 14px;
-        font-weight: 600;
-      }
-    }
-    .el-col{
-      padding: 5px 0;
-    }
-    .tips{
-      padding: 10px 0;
-		}
-	}
+
 	.basicInfo{
 		.el-form-item{
 			width: 330px;
@@ -760,26 +738,28 @@ export default {
 			margin-bottom: 6px;
 		}
 	}
-	.el-form-item{
-		margin-bottom: 0;
-	}
-	.textarea{
-		margin-top: 10px;
-		margin-left: 10px;
-  }
+ 
   .img-items{
     display: flex;
-    align-items: center;
+    // align-items: center;
   }
   .card-imgs{
     margin-right: 10px;
     width: 148px;
-    height: 148px;
-    border: 1px solid #c0ccda;
+    overflow: hidden;
     img{
       width: 148px;
       height: 148px;
+      border: 1px solid #c0ccda;
       overflow: hidden;
+    }
+  }
+  .bottom-img{
+    padding: 0 5px;
+  }
+  .skuListTbale{
+    .el-form-item {
+      margin-bottom: 0px;
     }
   }
   .NqQuillEditor{
