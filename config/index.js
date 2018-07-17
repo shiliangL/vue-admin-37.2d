@@ -27,8 +27,12 @@ module.exports = {
       //   target: 'http://192.168.2.77:5858/', // 本地主机
       //   changeOrigin: true,
       // },
+      // '/': {
+      //   target: 'http://192.168.2.75:9001', // 本地王艳
+      //   changeOrigin: true,
+      // }
       '/': {
-        target: 'http://192.168.2.75:9001/', // 本地王艳
+        target: 'http://39.108.235.6', // 服务器
         changeOrigin: true,
       }
     },
@@ -39,7 +43,7 @@ module.exports = {
     // host: '192.168.2.26', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
-    disableHostCheck: true,
+    // disableHostCheck: true,
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-

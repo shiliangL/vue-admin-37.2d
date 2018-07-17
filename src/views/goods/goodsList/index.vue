@@ -62,7 +62,8 @@
           <el-table-column prop="goodsImage" label="商品图片" align="center">
              <template slot-scope="scope">
                <div class="picBox">
-                <img v-lazy="`${scope.row.goodsImage}`">
+                <!-- <img v-lazy="`${scope.row.goodsImage}`"> -->
+                <img :src="`${scope.row.goodsImage}`">
                </div>
             </template>
           </el-table-column>

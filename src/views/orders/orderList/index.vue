@@ -85,6 +85,7 @@ export default {
         { title: '待发货', value: 0 },
         { title: '待收货', value: 1 },
         { title: '退/换货', value: 2 },
+        { title: '已完成', value: 3 },
         { title: '已取消', value: 4 },
         { title: '已关闭', value: 5 }
       ],

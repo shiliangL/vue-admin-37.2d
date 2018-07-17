@@ -14,7 +14,7 @@
             <span>{{scope.$index + 1}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="title" label="包装单位名称" align="center"></el-table-column>
+        <el-table-column prop="title" label="计量单位名称" align="center"></el-table-column>
         <el-table-column prop="summary" label="简要介绍" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope" align="center">

@@ -179,7 +179,7 @@
 							<el-table-column prop="skuPrice" label="价格" align="center"></el-table-column>
 							<el-table-column prop="orderQuantity" label="下单数量" align="center"></el-table-column>
 							<el-table-column prop="orderQuantityPrice" label="下单金额" align="center"></el-table-column>
-							<el-table-column prop="finalQuantity" label="分拣量(斤)" align="center"></el-table-column>
+							<el-table-column prop="finalQuantity" label="实际数量" align="center"></el-table-column>
 							<el-table-column prop="sumPrice" label="实际金额" align="center"></el-table-column>
 
 							<el-table-column prop="exchanage" label="退/换货状态" align="center">

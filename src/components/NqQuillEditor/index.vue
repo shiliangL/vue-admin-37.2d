@@ -30,7 +30,11 @@ import { fetchToken } from '@/api/layout.js'
 export default {
   name: 'NqQuillEditor',
   props: {
-    value: String
+    value: String,
+    isDisables: {
+      type: Boolean,
+      default: false
+    }
   },
   components: {
     quillEditor
@@ -78,8 +82,15 @@ export default {
     }).catch(e => {
       console.log(e)
     })
+
+    if (this.isDisables) {
+      this.Disables()
+    }
   },
   methods: {
+    Disables() {
+      if (this.$refs.upload) this.$refs.upload.quill.enable(false)
+    },
     onEditorChange(item) {
       this.$emit('input', item.html)
     },
@@ -102,7 +113,6 @@ export default {
       if (e.code === '0') {
         const url = e.data.key
         if (url) {
-          debugger
           this.addRange = this.$refs.upload.quill.getSelection()
           this.$refs.upload.quill.insertEmbed(
             this.addRange !== null ? this.addRange.index : 0,
@@ -152,5 +162,9 @@ export default {
 
 .ql-snow .ql-editor img {
   max-width: 480px;
+}
+.ql-editor{
+  height: 520px;
+  overflow-y: auto;
 }
 </style>

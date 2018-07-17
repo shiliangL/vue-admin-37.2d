@@ -119,7 +119,7 @@
           </div>
 
           <div class="row-item">
-            <div class="row-title">商品图片  <span class="desc">大小≤2MB，支持JPG、PNG、JPEG,最多支持5张图片</span></div>
+            <div class="row-title">商品图片  <span class="desc">大小≤2MB，支持JPG、PNG、JPEG,最多支持5张图片;建议尺寸800*800px，比例1:1</span></div>
             <div class="row-content">
               <div class="img-items">
 
@@ -133,16 +133,15 @@
                     </div>
                   </div>
                 </div>
-
-                <div class="el-upload el-upload--picture-card" style="margin-top: 10px;"  @click.stop="innerVisible=true"> <i class="el-icon-plus"></i> </div>
+                <div class="el-upload el-upload--picture-card" style="margin-top: 10px;" v-if="UploadImgArr.length<=4"  @click.stop="innerVisible=true"> <i class="el-icon-plus"></i> </div>
               </div>
             </div>
           </div>
 
           <div class="row-item">
             <div class="row-title">
-              图文详情描述  
-              <el-popover placement="right" width="600" trigger="click">  
+              图文详情描述 <el-button type="text" size="small" @click.stop="upDetails"> 点击上传 </el-button> <span class="desc">大小≤2MB，支持JPG、PNG、JPEG,最多支持15张图片</span>
+              <!-- <el-popover placement="right" width="600" trigger="click">  
                 <div class="desc">
                   一、基本要求
                   <p>1、商品详情总体要求：图片或文字，图片不超过20张，文字不超过5000字；建议：所有图片都是本商品相关的图片。</p>
@@ -156,12 +155,34 @@
                   建议：不要添加太多的文字，这样看起来更清晰。
                 </div>
                 <el-button slot="reference" style="font-size: 14px;margin-left: 10px;" type="text" size="mini" > 上传说明 </el-button>
-              </el-popover>
+              </el-popover> -->
             </div>
             <div class="row-content">
               <!-- <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 8}" placeholder="请输入内容" v-model.trim="form.details" /> -->
-              <div class="editor_wrap">
+              <!-- <div class="editor_wrap">
                 <NqQuillEditor class="NqQuillEditor" v-model="form.details"></NqQuillEditor>
+              </div> -->
+              <div class="details-content">
+                <!-- 隐藏上传组件 -->
+                <el-upload
+                  style="display:none"
+                  ref="el_upDetails"
+                  action="http://up-z2.qiniu.com"
+                  :data="uploadDatas"
+                  list-type="picture"
+                  :on-success="handleUpSuccess"
+                  :before-upload="beforeUpload"
+                  :accept="accept">
+                  <el-button size="small" id="upDetails" type="primary">点击上传</el-button>
+                </el-upload>
+
+                <div v-for="(item,index) in detailsFileList" :key="index" class="details-item">
+                  <label class="handler">
+                   <i class="el-icon-close" @click.stop="delDetailsFile(item,index)"> </i>
+                  </label>
+                  <img :src="item" alt="">
+                </div>
+
               </div>
             </div>
           </div>
@@ -343,6 +364,8 @@ export default {
     return {
       ifInfo: true,
       isSku: false,
+      imgTypes: ['jpeg', 'png', 'jpg'],
+      detailsFileList: [],
       UploadImgArr: [],
       innerVisible: false,
       checked: false,
@@ -497,6 +520,13 @@ export default {
       'qNtoken',
       'baseImgUrl'
     ]),
+    accept() {
+      const arr = []
+      this.imgTypes.forEach(item => {
+        arr.push('image/' + item)
+      })
+      return arr.join(',')
+    },
     uploadDatas() {
       if (this.qNtoken) {
         return {
@@ -661,7 +691,14 @@ export default {
             this.$message({ type: 'warning', message: '至少上传一张图片' })
             return
           }
+
+          const lists = this.form.skuList
+          for (const item of lists) {
+            item.skuTitle = `${item.rate}${item.baseUnitName}/ ${item.unitName}`
+          }
+
           this.form.sortFlag = this.form.sortFlag ? 0 : 1 // // 0是 1 不是
+          this.form.details = this.detailsFileList.toString()
           const result = this.$copy(this.form)
           delete result.supplyType
           this.$emit('callBack', result)
@@ -706,6 +743,31 @@ export default {
       if (this.UploadImgArr.length >= 2) {
         this.UploadImgArr.splice(0, 1, ...this.UploadImgArr.splice(index, 1, this.UploadImgArr[0]))
       }
+    },
+    upDetails() {
+      const upDetails = document.getElementById('upDetails')
+      upDetails.click()
+    },
+    handleUpSuccess(res, file) {
+      if (res && res.code === '0') {
+        if (res.data && res.data.key) {
+          this.detailsFileList.push(`${this.baseImgUrl}${res.data.key}`)
+          this.$message({ type: 'success', message: '上传成功' })
+          this.$refs['el_upDetails'].clearFiles() // 插入成功后清除input的内容
+        }
+      } else {
+        this.$message({ type: 'error', message: '图片上传失败' })
+      }
+    },
+    beforeUpload(file) {
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isLt2M) {
+        this.$message({ type: 'warning', message: '上传图片大小不能超过 2MB!' })
+      }
+      return isLt2M
+    },
+    delDetailsFile(item, index) {
+      this.detailsFileList.splice(index, 1)
     }
   },
   watch: {
@@ -766,6 +828,47 @@ export default {
     width: 750px;
     .ql-container {
       height: 480px;
+    }
+  }
+  .details-content{
+    padding: 10px;
+    width: 750px;
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x:hidden;
+    // border-radius: 6px;
+    // border: 1px dashed #c0ccda;
+  }
+  .details-item{
+    position: relative;
+    overflow: hidden;
+    img{
+      width: 100%;
+    }
+  }
+  .handler{
+    cursor: pointer;
+    font-size: 20px;
+    position: absolute;
+    right: -17px;
+    top: -7px;
+    width: 50px;
+    height: 30px;
+    background: #13ce66;
+    text-align: center;
+    transform: rotate(45deg);
+    transition: all 0.28s;
+    i{
+      font-size: 14px;
+      font-weight: bold;
+      position: absolute;
+      right: 16px;
+      top: 12px;
+      transform: rotate(30deg);
+       &:hover{
+         color: #fff;
+        transform: rotate(-30deg);
+      }
     }
   }
 </style>

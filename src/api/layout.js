@@ -33,7 +33,7 @@ export function fetchMenuList(params) {
 // 获取权七牛 token
 export function fetchToken(params) {
   return request({
-    url: 'cmm/oss/upToken',
+    url: 'oss/upToken',
     method: 'get',
     params
   })
