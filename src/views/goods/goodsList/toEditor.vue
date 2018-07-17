@@ -493,6 +493,11 @@ export default {
         this.UploadImgArr = arr
       }
 
+      if (this.viewData.info.details) {
+        const arr = this.viewData.info.details.split(',')
+        this.detailsFileList = arr
+      }
+
       if (this.viewData.supplier && this.viewData.supplier.categoryId) {
         this.form.supplyType = this.viewData.supplier.categoryId
         this.form.supplyId = this.viewData.supplier.supplierId
