@@ -278,59 +278,7 @@
                 </el-table>
               </div>
           </div>
-
-          <!-- <div class="row-item">
-            <div class="row-title">商品规格</div>
-            <div class="row-content">
-
-              <el-table :data="form.skuList" class="skuListTbale" size="small" :max-height="500" style="width: 100%;" highlight-current-row>
-
-                <el-table-column label="操作" width="50" align="center">
-                  <template slot-scope="scope">
-                    <i class="el-icon-plus" style="cursor: pointer;" @click.stop="clickToAddSkuLis"></i>
-                    <i class="el-icon-minus" v-if="form.skuList && form.skuList.length>1 && scope.$index" style="cursor: pointer;" @click.stop="clickToDelSkuLis(scope.$index,scope.$row)"></i>
-                  </template>
-                </el-table-column>
-                <el-table-column label="序号" width="50" align="center">
-                  <template slot-scope="scope">
-                    <span>{{scope.$index + 1}}</span>
-                  </template>
-                </el-table-column>
-
-                <el-table-column prop="orderNo" label="规格" align="center">
-                  <template slot-scope="scope">
-
-                    <el-form-item label="" label-width="0px" :prop="'skuList.'+scope.$index+'.unitId'" :rules="rules.select">
-                      <el-select style="width:110px;padding-top: 2px;" v-model="scope.row.unitId" placeholder="请选择" size="small" filterable @change="selectChangeUnit($event,scope.row)">
-                        <el-option v-for="item in options.UnitOpton" :key="item.id" :label="item.title" :value="item.id"> </el-option> 
-                      </el-select>
-                    </el-form-item>
-
-                    <el-form-item label="" label-width="0px" :prop="'skuList.'+scope.$index+'.rate'" :rules="rules.input">
-                    =	<el-input style="width:110px" type="number" placeholder="正整数" size="small" v-model.trim="scope.row.rate"></el-input> {{scope.row.baseUnitName}}
-                    </el-form-item>
-
-                  </template>
-                </el-table-column>
-                <el-table-column prop="productName" label="规格备注" align="center">
-                  <template slot-scope="scope">
-                    <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 4}" placeholder="小于10字" v-model.trim="scope.row.summary" />
-                  </template>
-                </el-table-column>
   
-                <el-table-column prop="price" label="市场价格(全国)" align="center">
-                  <template slot-scope="scope">
-
-                    <el-form-item label="" label-width="0px" :prop="'skuList.'+scope.$index+'.price'" :rules="rules.input">
-                      <el-input size="small" class="w110" type="number" placeholder="请输入" v-model.trim="scope.row.price"></el-input>
-                    </el-form-item>
-
-                  </template>
-                </el-table-column>
-  
-              </el-table>
-            </div>
-          </div> -->
         </div>
 
 			</el-form>

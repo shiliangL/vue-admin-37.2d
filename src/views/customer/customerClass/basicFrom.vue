@@ -81,11 +81,15 @@
 									</el-form-item>
 								</el-col>
  
-								<!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="客户头像:" prop="portraitId">
-										<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.patUser.portraitId"></el-input>
+                    <div class="portraitId el-upload el-upload--picture-card" v-if="form.patUser.portraitId">
+                      <img :src="form.patUser.portraitId" alt="">
+                    </div>
+                    <span v-else v-cloak> 暂无 </span>
+										<!-- <el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.patUser.portraitId"></el-input> -->
 									</el-form-item>
-								</el-col> -->
+								</el-col>
  
               </el-row>
 						</div>
@@ -281,5 +285,19 @@ export default {
 }
 .msg {
     margin-top: 10px;
+}
+.portraitId{
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  width: 90px;
+  height: 90px;
+  // border-radius: 50%;
+  overflow: hidden;
+  img{
+    display: inline-block;
+    width: 100%;
+    // height: 100%;
+  }
 }
 </style>

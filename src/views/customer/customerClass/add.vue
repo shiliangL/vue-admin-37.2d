@@ -37,6 +37,22 @@
 
            <template v-if="curIndex===1">
              <!-- 地址相关 -->
+              <div class="row-item">
+                <div class="row-title">收货信息</div>
+                <div class="row-content">
+                  <el-table :data="tableData" slot="table" size="small" style="width: 100%;" highlight-current-row>
+            
+                    <el-table-column prop="createdOn" label="是否默认" align="center">
+                      <template slot-scope="scope" align="center">
+                        <span v-cloak  v-if="scope.row.status===1"> 默认 </span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="contacts" label="收货人" align="center"></el-table-column>
+                    <el-table-column prop="mobile" label="手机号" align="center"></el-table-column>
+                    <el-table-column prop="address" label="收货地址" align="center"></el-table-column>
+                  </el-table>
+                </div>
+              </div>
            </template>
         </div>
       </div>
@@ -51,7 +67,7 @@
 
 import addModel from '@/public/addModel.js'
 import { Tabs } from '@/components/base.js'
-import { create, update } from '@/api/customer/customerClass.js'
+import { create, update, fecthDetail } from '@/api/customer/customerClass.js'
 import basicFrom from './basicFrom'
 export default {
   mixins: [addModel],
@@ -71,6 +87,7 @@ export default {
       form: {
         subPropList: []
       },
+      tableData: [],
       loadID: null,
       currentTitle: null
     }
@@ -88,6 +105,7 @@ export default {
     if (this.data.type === 'view') {
       const id = this.data.obj.id
       if (id) this.loadID = id
+      this.fecthDetail()
       this.isAddView = false
     }
     if (this.data.type === 'add') {
@@ -125,13 +143,21 @@ export default {
       if (this.data.type === 'view') {
         const id = this.data.obj.id
         if (!id) return
-        this.fecthDetailById(id)
+        this.fecthDetail()
       }
     },
     validateForm() {
       if (this.$refs['basicFrom']) {
         this.$refs['basicFrom'].validateForm()
       }
+    },
+    fecthDetail() {
+      if (!this.data.obj.id) return
+      fecthDetail({ id: this.data.obj.id }).then(({ data }) => {
+        this.tableData = data.address
+      }).catch(e => {
+        this.$message({ type: 'error', message: '详情加载失败' })
+      })
     },
     basicFromCallBack(data) {
       if (!data) return
@@ -151,7 +177,6 @@ export default {
     },
     tabsCallBack(item) {
       this.curIndex = item.value
-      console.log(item)
     },
     validateNoPassForm() {
       if (this.$refs['basicFrom']) this.$refs['basicFrom'].validateForm()
