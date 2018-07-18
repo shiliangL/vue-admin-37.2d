@@ -34,7 +34,11 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { LangSelect } from '@/components/base.js'
+import { loginByUsername } from '@/api/login.js'
+import { setToken } from '@/utils/auth'
+
 import rules from '@/public/rules.js'
 export default {
   components: {
@@ -62,6 +66,9 @@ export default {
     // 初始化例子插件
   },
   methods: {
+    ...mapActions([
+      'VX_SET_TOKEN'
+    ]),
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -73,15 +80,24 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store
-            .dispatch('LoginByUsername', this.loginForm)
-            .then(() => {
-              this.loading = false
-              this.$router.push({ path: '/' })
-            })
-            .catch(() => {
-              this.loading = false
-            })
+          loginByUsername({ ...this.loginForm }).then(res => {
+            this.loading = false
+            this.$router.push({ path: '/' })
+            this.VX_SET_TOKEN(res.code)
+            setToken(res.code)
+          }).catch(e => {
+            this.loading = false
+            console.log(e)
+          })
+          // this.$store
+          //   .dispatch('LoginByUsername', this.loginForm)
+          //   .then(() => {
+          //     this.loading = false
+          //     this.$router.push({ path: '/' })
+          //   })
+          //   .catch(() => {
+          //     this.loading = false
+          //   })
         } else {
           return
         }

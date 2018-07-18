@@ -11,39 +11,24 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      // '/rtusapi/': { //这里是我配置的名字
-      //   // target: 'http://10.0.5.189:8050',
-      //   target: 'http://www.rtuol.com',
-      //   changeOrigin: true, //开启代理
-      //   pathRewrite: {
-      //     '^/rtusapi': '/rtusapi'
-      //   }
-      // }
       // '/': {
-      //   target: 'http://cmm.ngrok.xiaomiqiu.cn',
-      //   changeOrigin: true,
-      // }
-      // '/': {
-      //   target: 'http://192.168.2.77:5858/', // 本地主机
+      //   target: 'http://39.108.235.6', // 服务器
       //   changeOrigin: true,
       // },
+      '/': {
+        target: 'http://192.168.2.77:5858/', // 本地主机
+        changeOrigin: true,
+      },
       // '/': {
       //   target: 'http://192.168.2.75:9001', // 本地王艳
       //   changeOrigin: true,
       // }
-      '/': {
-        target: 'http://39.108.235.6', // 服务器
-        changeOrigin: true,
-      }
     },
 
     // Various Dev Server settings
-    host: '0.0.0.0', // can be overwritten by process.env.HOST
-    // host: 'localhost', // can be overwritten by process.env.HOST
-    // host: '192.168.2.26', // can be overwritten by process.env.HOST
+    host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
-    // disableHostCheck: true,
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-

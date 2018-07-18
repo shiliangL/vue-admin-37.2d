@@ -162,6 +162,10 @@ const user = {
           reject(error)
         })
       })
+    },
+    // 设置Token
+    VX_SET_TOKEN({ commit }, token) {
+      commit('SET_TOKEN', token)
     }
   }
 }
