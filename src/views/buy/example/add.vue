@@ -163,8 +163,9 @@ export default {
 <style scoped lang="scss">
 .add{
 	position: absolute;
+  // transform: translateZ(0);
 	left: 0;
-	top: 0;
+	top: 80px;
 	width: 100%;
 	background: #ccc;
 	transform: translateZ(0);
@@ -178,7 +179,7 @@ export default {
 		height: 40px;
 		line-height: 40px;
 		width: 100%;
-		position: fixed;
+  	position: fixed;
 		left: 0;
 		top: 0;
 		background: #e8f8f5 !important;

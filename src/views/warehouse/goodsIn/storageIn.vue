@@ -2,7 +2,7 @@
 <template>
     <div class="goodsIn">
 
-			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"  @add="showAdd" @clickBtn="clickBtnToAddSet"></search-bar>
+			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"  @add="showAdd"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight" :key="curIndex">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -13,16 +13,16 @@
             </template>
           </el-table-column>
  
-					<el-table-column prop="description" label="入库单号" align="center"></el-table-column>
-					<el-table-column prop="stockName" label="仓库" align="center"></el-table-column>
-					<el-table-column prop="createdTime" label="入库类型" align="center"></el-table-column>
+					<el-table-column prop="orderNo" label="入库单号" align="center"></el-table-column>
+					<el-table-column prop="stockInfoName" label="仓库" align="center"></el-table-column>
+					<el-table-column prop="storageType" label="入库类型" align="center"></el-table-column>
 					<el-table-column prop="createdName" label="创建人" align="center"></el-table-column>
-					<el-table-column prop="updatedName" label="创建时间" align="center"></el-table-column>
+					<el-table-column prop="createdTime" label="创建时间" align="center"></el-table-column>
  
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
-              <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">编辑</el-button>
-							<el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index,scope.row)">删除</el-button>
+              <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">查看</el-button>
+							<!-- <el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index,scope.row)">删除</el-button> -->
             </template>
           </el-table-column>
 
@@ -51,7 +51,7 @@
 import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs, CascaderBox, SearchBar } from '@/components/base.js'
-import { fecthList, fecthTableList, stockCategory, fetchStock, deleteCK, deleteCW } from '@/api/warehouse/setting.js'
+import { fecthList, fecthStockList } from '@/api/warehouse/goodsIn.js'
 
 export default {
   name: 'goodsIn',
@@ -71,20 +71,22 @@ export default {
       tabTitles: [],
       searchBarDate: [
         [
-          { type: 'option', value: null, key: 'categoryId', class: 'w150', placeholder: '仓库类别', options: [] },
-          { type: 'input', value: null, key: 'title', class: 'w180', placeholder: '输入仓库名称检索' },
+          { type: 'date', value: null, key: 'createdTime', width: '200px', placeholder: '创建日期' },
+          { type: 'option', value: null, key: 'stockId', class: 'w150', placeholder: '仓库', options: [] },
+          { type: 'option', value: null, key: 'storageType', class: 'w150', placeholder: '入库类别', options: [
+            { label: '采购入库', value: 1 },
+            { label: '销售退货', value: 2 },
+            { label: '销售换货', value: 3 },
+            { label: '其他', value: 4 }
+          ] },
+          { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '输入单号检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
         [
-          { type: 'add', name: '新增' },
-          { type: 'button', name: '仓库类别设置' }
+          { type: 'add', name: '新增' }
         ]
-      ],
-      options: {
-        stockCategory: [],
-        stock: []
-      }
+      ]
     }
   },
   created() {
@@ -94,71 +96,46 @@ export default {
     ]
   },
   mounted() {
-    // this.fecthList()
-    // this.fecthStockCategory()
-    // this.fetchStock()
+    this.fecthList()
+    this.fecthStockList()
   },
   methods: {
-    tabsCallBack(item) {
-      this.curIndex = item.value
-      if (this.curIndex === 1) {
-        this.fecthTableList()
-      } else {
-        this.fecthList()
-      }
-    },
-    fecthStockCategory() {
-      // 加载仓库类别下拉
-      stockCategory().then(({ data }) => {
-        for (const item of data) {
-          item.label = item.title
-          item.value = item.pk
-        }
-        this.searchBarDataOne[0][0].options = data
-      }).catch(e => {
-        this.$message({ type: 'error', message: e.msg })
-      })
-    },
-    fetchStock() {
-      // 加载仓库下拉
-      fetchStock().then(({ data }) => {
-        for (const item of data) {
-          item.label = item.title
-          item.value = item.id
-        }
-        this.searchBarDataTwo[0][0].options = data
-      }).catch(e => {
-        this.$message({ type: 'error', message: e.msg })
-      })
-    },
     // 数据请求
     fecthList() {
-      fecthList().then(({ data }) => {
-        this.tableOne = data
-      }).catch(e => {
-        this.$message({ type: 'error', message: e.msg })
-      })
-    },
-    fecthTableList() {
       const { index, size } = this.pagination
       const data = {
         index,
         size
       }
-      fecthTableList(data).then(({ data }) => {
+      fecthList(data).then(({ data }) => {
         this.table.data = data.rows
         this.pagination.total = data.total
       }).catch(e => {
-        this.$message({ type: 'error', message: e })
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
+    fecthStockList() {
+      fecthStockList().then(({ data }) => {
+        for (const item of data) {
+          item.label = item.title
+          item.value = item.id
+        }
+        this.searchBarDate[0][1].options = data
+      }).catch(e => {
+        console.log(e)
       })
     },
     searchAction(item) {
+      if (!item) return
+      const { index, size } = this.pagination
       const data = {
-        categoryId: item.categoryId,
-        title: item.title
+        index,
+        size,
+        ...item
       }
       fecthList(data).then(({ data }) => {
-        this.tableOne = data
+        this.table.data = data.rows
+        this.pagination.total = data.total
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
@@ -166,62 +143,25 @@ export default {
     // 分页操作区域
     handleSizeChange(value) {
       this.pagination.size = value
-      this.fecthTableList()
+      this.fecthList()
     },
     handleCurrentChange(value) {
       this.pagination.index = value
-      this.fecthTableList()
+      this.fecthList()
     },
     clickMoreCommand(command) {
       this.$message({ type: 'success', message: command, duration: 0, showClose: true })
     },
     // 弹层操作
     clickToEditor(index, row) {
-      const title = this.curIndex === 0 ? '编辑仓库' : '编辑仓位'
-      const tab = this.curIndex === 0 ? 'sectionOne' : 'sectionTwo'
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, isEditor: true, title: title, tab: tab }})
+      // 点击查看
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '入库单信息' }})
     },
     showAdd() {
-      const title = this.curIndex === 0 ? '新增仓库' : '新增仓位'
-      const tab = this.curIndex === 0 ? 'sectionOne' : 'sectionTwo'
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, isEditor: false, title: title, tab: tab }})
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, title: '新增入库单信息' }})
     },
     refrehList() {
-      if (this.curIndex === 0) {
-        this.fecthList()
-        this.fecthStockCategory()
-      } else {
-        this.fecthTableList()
-        this.fetchStock()
-      }
-    },
-    clickBtnToAddSet(item) {
-      const title = this.curIndex === 0 ? '仓库类别设置' : ''
-      const tab = 'sectionOne-setType'
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, isEditor: false, title: title, tab: tab }})
-    },
-    clickToDelete(index, item) {
-      this.$confirm('是否需要删除数据?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        if (this.curIndex === 0) {
-          deleteCK({ id: item.id }).then(res => {
-            this.$message({ type: 'success', message: `${res.msg}!` })
-            this.fecthList()
-          }).catch(() => {
-            this.$message({ type: 'error', message: '删除失败' })
-          })
-        } else {
-          deleteCW({ id: item.id }).then(res => {
-            this.$message({ type: 'success', message: `${res.msg}!` })
-            this.fecthTableList()
-          }).catch(() => {
-            this.$message({ type: 'error', message: '删除失败' })
-          })
-        }
-      }).catch(() => {})
+      this.fecthList()
     }
   }
 }

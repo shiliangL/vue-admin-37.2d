@@ -129,3 +129,21 @@ export function detailType(params) {
     params
   })
 }
+
+// ------------------------------------
+// 根据类别加载 仓库
+export function fecthStockByType(params) {
+  return request({
+    url: 'stockInfo/listByCategoryId',
+    method: 'get',
+    params
+  })
+}
+// 获取所有仓位
+export function fecthAllCW(params) {
+  return request({
+    url: 'stockInfo/getStockMap',
+    method: 'get',
+    params
+  })
+}

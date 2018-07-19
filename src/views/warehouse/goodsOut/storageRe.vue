@@ -14,17 +14,14 @@
 
 					<el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
 					<el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
-					<el-table-column prop="batchesBarCode" label="商品批次条码" align="center"></el-table-column>
-					<el-table-column prop="inOrderNo" label="关联入库单号" align="center"></el-table-column>
 					<el-table-column prop="stockInfoName" label="仓库" align="center"></el-table-column>
-					<el-table-column prop="stockStorageInfoNumbers" label="仓位" align="center"></el-table-column>
-
-					<el-table-column prop="storageType" label="入库类型" align="center"></el-table-column>
-					<el-table-column prop="quantity" label="入库数量" align="center"></el-table-column>
-					<el-table-column prop="warehouseTime" label="入库时间" align="center"></el-table-column>
-
-					<el-table-column prop="makePlace" label="产地" align="center"></el-table-column>
-					<el-table-column prop="makeDate" label="生产日期" align="center"></el-table-column>
+					<el-table-column prop="storageType" label="出库类型" align="center"></el-table-column>
+					<el-table-column prop="quantity" label="下单数量" align="center"></el-table-column>
+					<el-table-column prop="quantity" label="出库数量" align="center"></el-table-column>
+					<el-table-column prop="warehouseTime" label="出库时间" align="center"></el-table-column>
+					<el-table-column prop="warehouseTime" label="关联出库单号" align="center"></el-table-column>
+					<el-table-column prop="makePlace" label="分拣台" align="center"></el-table-column>
+					<el-table-column prop="makeDate" label="分拣员" align="center"></el-table-column>
 
         </el-table>
         

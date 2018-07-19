@@ -1,7 +1,8 @@
-<!-- 入库记录 -->
+<!-- 出库单 -->
 <template>
-    <div class="storageRe">
-			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"></search-bar>
+    <div class="goodsOut">
+
+			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"  @add="showAdd"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight" :key="curIndex">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -11,20 +12,19 @@
               <span>{{scope.$index + 1}}</span>
             </template>
           </el-table-column>
-
-					<el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
-					<el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
-					<el-table-column prop="batchesBarCode" label="商品批次条码" align="center"></el-table-column>
-					<el-table-column prop="inOrderNo" label="关联入库单号" align="center"></el-table-column>
+ 
+					<el-table-column prop="orderNo" label="出库单号" align="center"></el-table-column>
 					<el-table-column prop="stockInfoName" label="仓库" align="center"></el-table-column>
-					<el-table-column prop="stockStorageInfoNumbers" label="仓位" align="center"></el-table-column>
-
-					<el-table-column prop="storageType" label="入库类型" align="center"></el-table-column>
-					<el-table-column prop="quantity" label="入库数量" align="center"></el-table-column>
-					<el-table-column prop="warehouseTime" label="入库时间" align="center"></el-table-column>
-
-					<el-table-column prop="makePlace" label="产地" align="center"></el-table-column>
-					<el-table-column prop="makeDate" label="生产日期" align="center"></el-table-column>
+					<el-table-column prop="storageType" label="出库类型" align="center"></el-table-column>
+					<el-table-column prop="createdName" label="创建人" align="center"></el-table-column>
+					<el-table-column prop="createdTime" label="创建时间" align="center"></el-table-column>
+ 
+          <el-table-column label="操作" align="center" width="180">
+            <template slot-scope="scope" align="center">
+              <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">查看</el-button>
+							<!-- <el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index,scope.row)">删除</el-button> -->
+            </template>
+          </el-table-column>
 
         </el-table>
         
@@ -40,23 +40,38 @@
         </el-pagination>
 
       </table-contain>
+
+      <!-- 弹层 -->
+      <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add>
+      
     </div>
 </template>
 
 <script>
+import Add from './add'
 import model from '@/public/listModel.js'
-import { fecthListInfo, fecthStockList } from '@/api/warehouse/goodsIn.js'
+import { Tabs, CascaderBox, SearchBar } from '@/components/base.js'
+import { fecthList, fecthStockList } from '@/api/warehouse/goodsOut.js'
 
 export default {
-  name: 'storageRe',
+  name: 'goodsOut',
   mixins: [model],
+  components: {
+    Add,
+    Tabs,
+    SearchBar,
+    CascaderBox
+  },
   data() {
     return {
       curIndex: 0,
+      CascaderBoxDTO: null,
+      tableOne: [],
+      tableTwo: [],
       tabTitles: [],
       searchBarDate: [
         [
-          { type: 'date', value: null, key: 'warehouseTime', width: '200px', placeholder: '创建日期' },
+          { type: 'date', value: null, key: 'createdTime', width: '200px', placeholder: '创建日期' },
           { type: 'option', value: null, key: 'stockId', class: 'w150', placeholder: '仓库', options: [] },
           { type: 'option', value: null, key: 'storageType', class: 'w150', placeholder: '入库类别', options: [
             { label: '采购入库', value: 1 },
@@ -64,12 +79,12 @@ export default {
             { label: '销售换货', value: 3 },
             { label: '其他', value: 4 }
           ] },
-          { type: 'input', value: null, key: 'inputContent', class: 'w180', placeholder: '输入单号/商品名称检索' },
+          { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '输入单号检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
         [
-
+          { type: 'add', name: '新增' }
         ]
       ]
     }
@@ -92,26 +107,11 @@ export default {
         index,
         size
       }
-      fecthListInfo(data).then(({ data }) => {
+      fecthList(data).then(({ data }) => {
         this.table.data = data.rows
         this.pagination.total = data.total
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
-      })
-    },
-    searchAction(item) {
-      if (!item) return
-      const { index, size } = this.pagination
-      const data = {
-        index,
-        size,
-        ...item
-      }
-      fecthListInfo(data).then(({ data }) => {
-        this.table.data = data.rows
-        this.pagination.total = data.total
-      }).catch(e => {
-        this.$message({ type: 'error', message: e })
       })
     },
     fecthStockList() {
@@ -125,6 +125,21 @@ export default {
         console.log(e)
       })
     },
+    searchAction(item) {
+      if (!item) return
+      const { index, size } = this.pagination
+      const data = {
+        index,
+        size,
+        ...item
+      }
+      fecthList(data).then(({ data }) => {
+        this.table.data = data.rows
+        this.pagination.total = data.total
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
     // 分页操作区域
     handleSizeChange(value) {
       this.pagination.size = value
@@ -132,6 +147,20 @@ export default {
     },
     handleCurrentChange(value) {
       this.pagination.index = value
+      this.fecthList()
+    },
+    clickMoreCommand(command) {
+      this.$message({ type: 'success', message: command, duration: 0, showClose: true })
+    },
+    // 弹层操作
+    clickToEditor(index, row) {
+      // 点击查看
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '入库单信息' }})
+    },
+    showAdd() {
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, title: '新增入库单信息' }})
+    },
+    refrehList() {
       this.fecthList()
     }
   }

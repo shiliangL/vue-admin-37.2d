@@ -67,7 +67,9 @@ export default {
     customerClass: '客户档案',
     customerType: '客户类别',
 
-    setting: '仓库设置'
+    setting: '仓库设置',
+    goodsIn: '商品入库',
+    goodsOut: '商品出库'
 
   },
   navbar: {
