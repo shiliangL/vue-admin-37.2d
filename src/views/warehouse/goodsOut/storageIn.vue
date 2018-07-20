@@ -1,6 +1,6 @@
-<!-- 出库单 -->
+<!-- 商品出库 -->
 <template>
-    <div class="goodsOut">
+    <div class="goodsIn">
 
 			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"  @add="showAdd"></search-bar>
       <!-- 表格 -->
@@ -13,9 +13,14 @@
             </template>
           </el-table-column>
  
-					<el-table-column prop="orderNo" label="出库单号" align="center"></el-table-column>
+					<el-table-column prop="orderNo" label="入库单号" align="center"></el-table-column>
 					<el-table-column prop="stockInfoName" label="仓库" align="center"></el-table-column>
-					<el-table-column prop="storageType" label="出库类型" align="center"></el-table-column>
+					<el-table-column prop="storehouseType" label="出库类型" align="center">
+             <template slot-scope="scope" align="center">
+               <span v-cloak v-if="scope.row.storehouseType === 1">销售订单</span>
+               <span v-cloak v-if="scope.row.storehouseType === 2">销售换货</span>
+            </template>
+          </el-table-column>
 					<el-table-column prop="createdName" label="创建人" align="center"></el-table-column>
 					<el-table-column prop="createdTime" label="创建时间" align="center"></el-table-column>
  
@@ -54,7 +59,7 @@ import { Tabs, CascaderBox, SearchBar } from '@/components/base.js'
 import { fecthList, fecthStockList } from '@/api/warehouse/goodsOut.js'
 
 export default {
-  name: 'goodsOut',
+  name: 'goodsIn',
   mixins: [model],
   components: {
     Add,
@@ -73,11 +78,9 @@ export default {
         [
           { type: 'date', value: null, key: 'createdTime', width: '200px', placeholder: '创建日期' },
           { type: 'option', value: null, key: 'stockId', class: 'w150', placeholder: '仓库', options: [] },
-          { type: 'option', value: null, key: 'storageType', class: 'w150', placeholder: '入库类别', options: [
-            { label: '采购入库', value: 1 },
-            { label: '销售退货', value: 2 },
-            { label: '销售换货', value: 3 },
-            { label: '其他', value: 4 }
+          { type: 'option', value: null, key: 'storehouseType', class: 'w150', placeholder: '入库类别', options: [
+            { label: '销售订单', value: 1 },
+            { label: '销售换货', value: 2 }
           ] },
           { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '输入单号检索' },
           { type: 'search', name: '查询' },

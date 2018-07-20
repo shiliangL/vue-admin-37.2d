@@ -52,3 +52,12 @@ export function fecthStockList(params) {
     params
   })
 }
+
+// 加载明细表体
+export function fecthBodyDetail(params) {
+  return request({
+    url: 'stockInDetails/list',
+    method: 'get',
+    params
+  })
+}

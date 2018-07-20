@@ -14,12 +14,13 @@
 
 					<el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
 					<el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
-					<el-table-column prop="batchesBarCode" label="商品批次条码" align="center"></el-table-column>
-					<el-table-column prop="inOrderNo" label="关联入库单号" align="center"></el-table-column>
 					<el-table-column prop="stockInfoName" label="仓库" align="center"></el-table-column>
 					<el-table-column prop="stockStorageInfoNumbers" label="仓位" align="center"></el-table-column>
-
-					<el-table-column prop="storageType" label="入库类型" align="center"></el-table-column>
+					<el-table-column prop="storageType" label="入库类型" align="center">
+             <template slot-scope="scope">
+              <span>{{scope.$index + 1}}</span>
+            </template>
+          </el-table-column>
 					<el-table-column prop="quantity" label="入库数量" align="center"></el-table-column>
 					<el-table-column prop="warehouseTime" label="入库时间" align="center"></el-table-column>
 
@@ -45,7 +46,7 @@
 
 <script>
 import model from '@/public/listModel.js'
-import { fecthListInfo, fecthStockList } from '@/api/warehouse/goodsIn.js'
+import { fecthListInfo, fecthStockList } from '@/api/warehouse/goodsOut.js'
 
 export default {
   name: 'storageRe',

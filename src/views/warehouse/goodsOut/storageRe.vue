@@ -1,4 +1,4 @@
-<!-- 入库记录 -->
+<!-- 出库记录 -->
 <template>
     <div class="storageRe">
 			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"></search-bar>
@@ -15,13 +15,18 @@
 					<el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
 					<el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
 					<el-table-column prop="stockInfoName" label="仓库" align="center"></el-table-column>
-					<el-table-column prop="storageType" label="出库类型" align="center"></el-table-column>
-					<el-table-column prop="quantity" label="下单数量" align="center"></el-table-column>
-					<el-table-column prop="quantity" label="出库数量" align="center"></el-table-column>
-					<el-table-column prop="warehouseTime" label="出库时间" align="center"></el-table-column>
-					<el-table-column prop="warehouseTime" label="关联出库单号" align="center"></el-table-column>
-					<el-table-column prop="makePlace" label="分拣台" align="center"></el-table-column>
-					<el-table-column prop="makeDate" label="分拣员" align="center"></el-table-column>
+					<el-table-column prop="storehouseType" label="出库类型" align="center">
+            <template slot-scope="scope">
+              <span v-cloak v-if="scope.row.storehouseType==1">销售订单</span>
+              <span v-cloak v-if="scope.row.storehouseType==2">销售退货</span>
+            </template>
+          </el-table-column>
+					<el-table-column prop="outQuantity" label="下单数量" align="center"></el-table-column>
+					<el-table-column prop="realQuantity" label="出库数量" align="center"></el-table-column>
+					<el-table-column prop="outageTime" label="出库时间" align="center"></el-table-column>
+					<el-table-column prop="outOrderNo" label="关联出库单号" align="center"></el-table-column>
+					<el-table-column prop="sortingTableName" label="分拣台" align="center"></el-table-column>
+					<el-table-column prop="sorterName" label="分拣员" align="center"></el-table-column>
 
         </el-table>
         
@@ -56,10 +61,8 @@ export default {
           { type: 'date', value: null, key: 'warehouseTime', width: '200px', placeholder: '创建日期' },
           { type: 'option', value: null, key: 'stockId', class: 'w150', placeholder: '仓库', options: [] },
           { type: 'option', value: null, key: 'storageType', class: 'w150', placeholder: '入库类别', options: [
-            { label: '采购入库', value: 1 },
-            { label: '销售退货', value: 2 },
-            { label: '销售换货', value: 3 },
-            { label: '其他', value: 4 }
+            { label: '销售订单', value: 1 },
+            { label: '销售换货', value: 2 }
           ] },
           { type: 'input', value: null, key: 'inputContent', class: 'w180', placeholder: '输入单号/商品名称检索' },
           { type: 'search', name: '查询' },

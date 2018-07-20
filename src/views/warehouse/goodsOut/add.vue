@@ -83,6 +83,79 @@
 
             <template v-if="this.data.type === 'view'">
 
+              <div class="viewPage"> 
+                <!--基本信息-->
+                <div class="row-item">
+                  <div class="row-title">基本信息</div>
+                  <div class="row-content">
+                    <el-row>
+                      <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                        <span class="title-label">入库单号:</span>
+                        <span v-cloak>{{ viewData.orderNo }} </span>
+                      </el-col>
+                      <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                        <span class="title-label">仓库:</span>
+                        <span v-cloak>{{ viewData.stockName }} </span>
+                      </el-col>
+                      <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                        <span class="title-label">入库类型:</span>
+                        <span v-cloak>{{ viewData.storageType }} </span>
+                        <span v-cloak v-if="viewData.storageType==1">销售订单</span>
+                        <span v-cloak v-if="viewData.storageType==2">销售退货</span>
+                      </el-col>
+                      <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                        <span class="title-label">创建人:</span>
+                        <span v-cloak>{{ viewData.createdName }} </span>
+                      </el-col>
+                      <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                        <span class="title-label">创建时间:</span>
+                        <span v-cloak>{{ viewData.createdTime }} </span>
+                      </el-col>
+                    </el-row>
+                  </div>
+                </div>
+                  
+                <div class="row-item">
+                  <div class="row-title">商品信息</div>
+                  <div class="row-content">
+                    
+                    <div class="search">
+                        <el-input size="small" style="width:190px" class="w180"  placeholder="请输入商品名称检索" v-model.trim="viewSearch"></el-input>
+                        <el-button  type="primary" size="small" @click.stop="clickToSearch" > 搜索 </el-button>
+                        <el-button  size="small" @click.stop="resetSearch" > 重置 </el-button>
+                    </div>
+
+                    <el-table :data="viewData.tableView" size="small" max-height="420" style="width: 100%;margin-top: 10px;" highlight-current-row>
+
+                      <el-table-column label="序号" width="50" align="center">
+                        <template slot-scope="scope">
+                          <span>{{scope.$index + 1}}</span>
+                        </template>
+                      </el-table-column>
+
+                      <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
+                      <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
+                      <el-table-column prop="batchesBarCode" label="商品批次条码" align="center"></el-table-column>
+                      <el-table-column prop="inOrderNo" label="关联入库单号" align="center"></el-table-column>
+                      <el-table-column prop="stockInfoName" label="仓库" align="center"></el-table-column>
+                      <el-table-column prop="stockStorageInfoNumbers" label="仓位" align="center"></el-table-column>
+
+                      <el-table-column prop="storageType" label="入库类型" align="center"></el-table-column>
+                      <el-table-column prop="quantity" label="入库数量" align="center"></el-table-column>
+                      <el-table-column prop="warehouseTime" label="入库时间" align="center"></el-table-column>
+
+                      <el-table-column prop="makePlace" label="产地" align="center"></el-table-column>
+                      <el-table-column prop="makeDate" label="生产日期" width="90" align="center"></el-table-column>
+
+                    </el-table>
+                    <div class="footer-block">
+                      <span class="page" v-cloak> 共 {{viewData.tableView.length}} 条</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
             </template>
         </div>
       </div>
@@ -95,8 +168,12 @@
 
 <script>
 import addModel from '@/public/addModel.js'
-import { findMore, createRk } from '@/api/warehouse/goodsIn.js'
-import { stockCategory, fecthStockByType, fecthAllCW } from '@/api/warehouse/setting.js'
+import { findMore, createRk, detailRk, fecthBodyDetail } from '@/api/warehouse/goodsIn.js'
+import {
+  stockCategory,
+  fecthStockByType,
+  fecthAllCW
+} from '@/api/warehouse/setting.js'
 
 export default {
   mixins: [addModel],
@@ -114,20 +191,24 @@ export default {
         stockId: null,
         stockInDetailList: []
       },
+      viewData: {
+        orderNo: null,
+        stockName: null,
+        storageType: null,
+        createdName: null,
+        createdTime: null,
+        tableView: []
+      },
+      viewSearch: null,
       rules: {},
-      loadID: null,
-      isShowView: false,
       isShowEditor: false,
+      isShowView: false,
       currentTitle: null,
-      viewData: null,
-      typeIseditor: false,
       options: {
         stock: [],
         storageType: [
-          { label: '采购入库', value: 1 },
-          { label: '销售退货', value: 2 },
-          { label: '销售换货', value: 3 },
-          { label: '其他', value: 4 }
+          { label: '销售订单', value: 1 },
+          { label: '销售换货', value: 2 }
         ]
       },
       cwOption: null
@@ -139,33 +220,56 @@ export default {
   },
   mounted() {
     this.currentTitle = this.data.title || ''
-    this.stockCategory()
-    this.fecthAllCW()
     if (this.data.type === 'view') {
-      const id = this.data.obj.pk
-      if (id) this.loadID = id
+      this.fecthDetailById()
+      this.fecthBodyDetail()
     } else if (this.data.type === 'add') {
-      console.log('x')
+      this.stockCategory()
+      this.fecthAllCW()
     }
   },
   methods: {
+    fecthDetailById() {
+      // detailRk
+      if (!this.data.obj.id) return
+      detailRk({ id: this.data.obj.id })
+        .then(({ data }) => {
+          this.viewData = Object.assign(this.viewData, data)
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
+    fecthBodyDetail() {
+      if (!this.data.obj.id) return
+      fecthBodyDetail({ id: this.data.obj.id })
+        .then(({ data }) => {
+          console.log(data, 'xxxx')
+          this.viewData.tableView = data
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
     // 加载仓库类别
     stockCategory() {
-      stockCategory().then(({ data }) => {
-        if (Array.isArray(data) && data.length > 0) {
-          const arr = []
-          for (const item of data) {
-            arr.push({
-              value: item.pk,
-              label: item.title,
-              children: []
-            })
+      stockCategory()
+        .then(({ data }) => {
+          if (Array.isArray(data) && data.length > 0) {
+            const arr = []
+            for (const item of data) {
+              arr.push({
+                value: item.pk,
+                label: item.title,
+                children: []
+              })
+            }
+            this.options.stock = arr
           }
-          this.options.stock = arr
-        }
-      }).catch(e => {
-        // this.loadingText = e.msg
-      })
+        })
+        .catch(e => {
+          // this.loadingText = e.msg
+        })
     },
     handleItemChange(value) {
       const arr = this.options.stock
@@ -183,20 +287,22 @@ export default {
       }
       this.timer = setTimeout(() => {
         if (item && item.value) {
-          fecthStockByType({ categoryId: item.value }).then(({ data }) => {
-            if (Array.isArray(data) && data.length > 0) {
-              const arr = []
-              for (const item of data) {
-                arr.push({
-                  value: item.pk,
-                  label: item.title
-                })
+          fecthStockByType({ categoryId: item.value })
+            .then(({ data }) => {
+              if (Array.isArray(data) && data.length > 0) {
+                const arr = []
+                for (const item of data) {
+                  arr.push({
+                    value: item.pk,
+                    label: item.title
+                  })
+                }
+                item.children = arr
               }
-              item.children = arr
-            }
-          }).catch(e => {
-            console.log(e)
-          })
+            })
+            .catch(e => {
+              console.log(e)
+            })
         }
       }, 400)
     },
@@ -208,27 +314,33 @@ export default {
       }
       if (this.storageType === 1) {
         // 选中采购入库
-        findMore({ stockId: this.stockDto[1] }).then(({ data }) => {
-          if (!this.cwOption) return
-          for (const item of data) {
-            if (this.cwOption[item.stockId]) {
-              item.storageIdsOption = JSON.parse(JSON.stringify(this.cwOption[item.stockId]))
-            } else {
-              item.storageIdsOption = []
+        findMore({ stockId: this.stockDto[1] })
+          .then(({ data }) => {
+            if (!this.cwOption) return
+            for (const item of data) {
+              if (this.cwOption[item.stockId]) {
+                item.storageIdsOption = JSON.parse(
+                  JSON.stringify(this.cwOption[item.stockId])
+                )
+              } else {
+                item.storageIdsOption = []
+              }
             }
-          }
-          this.form.stockInDetailList = data
-        }).catch(e => {
-          console.log(e)
-        })
+            this.form.stockInDetailList = data
+          })
+          .catch(e => {
+            console.log(e)
+          })
       }
     },
     fecthAllCW() {
-      fecthAllCW().then(({ data }) => {
-        this.cwOption = data
-      }).catch(e => {
-        console.log(e)
-      })
+      fecthAllCW()
+        .then(({ data }) => {
+          this.cwOption = data
+        })
+        .catch(e => {
+          console.log(e)
+        })
     },
     clickToEdit() {
       this.typeIseditor = true // 点击判断编辑修改提交
@@ -239,7 +351,10 @@ export default {
       this.$emit('input', false)
     },
     success() {
-      this.$message({ type: 'success', message: this.dialog.title + '成功' })
+      this.$message({
+        type: 'success',
+        message: this.dialog.title + '成功'
+      })
     },
     error(data) {
       this.$message({ type: 'error', message: data.msg })
@@ -256,17 +371,19 @@ export default {
         this.$message({ type: 'warning', message: '提交数据不能为空' })
         return
       }
-      this.$refs['stockInDetailList'].validate((valid) => {
+      this.$refs['stockInDetailList'].validate(valid => {
         if (valid) {
           this.$confirm('是否确保保存', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
-          }).then(() => {
-            if (this.storageType === 1) {
-              this.buyIn()
-            }
-          }).catch(() => {})
+          })
+            .then(() => {
+              if (this.storageType === 1) {
+                this.buyIn()
+              }
+            })
+            .catch(() => {})
         } else {
           this.$message({ type: 'warning', message: '请核实表单' })
           return
@@ -296,13 +413,15 @@ export default {
         stockId: this.stockDto[1],
         stockInDetailList: arr
       }
-      createRk(data).then(res => {
-        this.dialog.visiable = false
-        this.$message({ type: 'success', message: res.msg })
-        this.$emit('add')
-      }).catch(e => {
-        this.error(e)
-      })
+      createRk(data)
+        .then(res => {
+          this.dialog.visiable = false
+          this.$message({ type: 'success', message: res.msg })
+          this.$emit('add')
+        })
+        .catch(e => {
+          this.error(e)
+        })
     },
     stockChange(value) {
       this.form.stockInDetailList = []
@@ -315,6 +434,24 @@ export default {
     addCheckClose() {
       this.dialog.visiable = false
       this.$emit('add')
+    },
+    clickToSearch() {
+      if (!this.data.obj.id) return
+      const data = {
+        inputContent: this.viewSearch,
+        id: this.data.obj.id
+      }
+      fecthBodyDetail(data)
+        .then(({ data }) => {
+          this.viewData.tableView = data
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
+    resetSearch() {
+      this.viewSearch = null
+      this.clickToSearch()
     }
   }
 }
@@ -322,27 +459,27 @@ export default {
 
 <style scoped lang="scss">
 .el-dialog__wrapper {
-  min-height: 100%;
-  min-height: 600px;
+    min-height: 100%;
+    min-height: 600px;
 }
 .content-box {
-  width: 100%;
-  position: relative;
-  .header-bar {
-    .left{
-      color: #1cbc9c;
-    }
-    padding: 0 10px;
-    height: 40px;
-    line-height: 40px;
     width: 100%;
-    position: fixed;
-    top: 0px;
-    left: 0;
-    z-index: 900;
-    background: #e8f8f5 !important;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.23);
-  }
+    position: relative;
+    .header-bar {
+        .left {
+            color: #1cbc9c;
+        }
+        padding: 0 10px;
+        height: 40px;
+        line-height: 40px;
+        width: 100%;
+        position: fixed;
+        top: 0px;
+        left: 0;
+        z-index: 900;
+        background: #e8f8f5 !important;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.23);
+    }
 }
 // .Loading{
 //     position: fixed;
@@ -352,13 +489,13 @@ export default {
 //     right: 0;
 //     z-index: 10;
 //   }
-.stockInDetailList{
-  .item-box{
-    max-height: 80px;
-    overflow-y: auto;
-  }
-  .el-form-item{
-    margin-bottom: 0;
-  }
+.stockInDetailList {
+    .item-box {
+        max-height: 80px;
+        overflow-y: auto;
+    }
+    .el-form-item {
+        margin-bottom: 0;
+    }
 }
 </style>

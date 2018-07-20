@@ -1,14 +1,14 @@
 import request from '@/utils/request'
 
-// 入库单-------------
-// 加载列表
+// 加载列表 -- 出库
 export function fecthList(params) {
   return request({
-    url: 'stockInInfo/page',
+    url: 'stockOutRecords/page',
     method: 'get',
     params
   })
 }
+
 // 明细
 export function detailRk(params) {
   return request({
@@ -26,10 +26,10 @@ export function createRk(data) {
     data
   })
 }
-// 入库单-------------
+// 出库明细-------------
 export function fecthListInfo(params) {
   return request({
-    url: 'stockInDetails/page',
+    url: 'stockOutRecords/page',
     method: 'get',
     params
   })

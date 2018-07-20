@@ -105,6 +105,20 @@ export const asyncRouterMap = [
       { path: 'goodsOut', component: _import('warehouse/goodsOut/index'), name: 'goodsOut', meta: { title: 'goodsOut' }}
     ]
   },
+  {
+    path: '/distribution',
+    component: Layout,
+    name: 'distribution',
+    meta: {
+      title: 'distribution',
+      icon: 'component'
+    },
+    children: [
+      { path: 'salesDelivery', component: _import('distribution/salesDelivery/index'), name: 'salesDelivery', meta: { title: 'salesDelivery' }},
+      { path: 'areaDelivery', component: _import('distribution/areaDelivery/index'), name: 'areaDelivery', meta: { title: 'areaDelivery' }},
+      { path: 'deliveryer', component: _import('distribution/deliveryer/index'), name: 'deliveryer', meta: { title: 'deliveryer' }}
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 
