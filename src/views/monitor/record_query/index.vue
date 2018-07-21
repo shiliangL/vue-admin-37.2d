@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { fetchShopAssistantInfo } from '@/api/shopInfo'
+// import { fetchShopAssistantInfo } from '@/api/shopInfo'
 import listModel from '@/public/listModel.js'
 
 export default {
@@ -79,7 +79,7 @@ export default {
     this.filename = '设备历史记录导出'
   },
   mounted() {
-    this.fetchData()
+    // this.fetchData()
   },
   methods: {
     onRefresh() {

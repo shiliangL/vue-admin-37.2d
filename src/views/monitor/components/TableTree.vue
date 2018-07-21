@@ -6,6 +6,7 @@
           </el-select>
       </div>
       <div class="tree">
+        {{tableData}}
         <el-table :data="tableData" size="mini" :max-height="430" style="width: 100%"
         v-loading.body="listLoading" element-loading-text="拼命加载中" highlight-current-row @row-click="clickTableRow">
           <el-table-column align="left" label="设备名称">
@@ -91,8 +92,8 @@ export default {
               if (!item) return
               if (Array.isArray(item)) {
                 tableData.push({
-                  name: item[0],
-                  psn: item[1],
+                  name: item[1],
+                  psn: item[0],
                   online: item[2],
                   key: key
                 })

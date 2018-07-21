@@ -75,7 +75,7 @@
 </template>
  
 <script>
-import { fetchShopAssistantInfo } from '@/api/shopInfo'
+// import { fetchShopAssistantInfo } from '@/api/shopInfo'
 import { SearchTree } from '@/components/indexEx.js'
 export default {
   name: 'remote_setting',

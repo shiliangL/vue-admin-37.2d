@@ -9,10 +9,11 @@ export function fecthSearch(url, params, method = 'get') {
   })
 }
 
-// export function fetchGroups(query) {
-//   return request({
-//     url: 'rtusapi/devices/getgroups',
-//     method: 'get',
-//     params: query
-//   })
-// }
+// 获取当前登录信息 用于刷新的时候保证数据完整性
+export function fetchLoginInfo(params) {
+  return request({
+    url: 'rtusapi/users/getaccountinfo',
+    method: 'get',
+    params
+  })
+}

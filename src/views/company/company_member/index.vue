@@ -1,16 +1,7 @@
 <template>
   <div class="page company_list" style="width: 100%">
       <!-- 顶部搜索区域 -->
-      <div class="search-bar">
-        <div class="left">
-          <el-input size="small" placeholder="名称检索" v-model.trim="codeOrname" style="width:140px"></el-input>
-          <el-button type="primary" size="small" @click="clickSearch"> 搜索 </el-button>
-          <el-button size="small" @click="reset"> 重置 </el-button>
-        </div>
-        <div class="right">
-          <!-- <el-button size="small" type="primary" icon="document" @click="handleDownload" :loading="downloadLoading"> 导出 </el-button> -->
-        </div>
-      </div>
+      <search-bar :data="searchBarData"></search-bar>
 
       <!-- 表格 -->
       <TableContain :height.sync="table.maxHeight">
@@ -75,7 +66,7 @@
  
 <script>
 import listModel from '@/public/listModel.js'
-import { fetchShopAssistantInfo } from '@/api/shopInfo'
+// import { fetchShopAssistantInfo } from '@/api/shopInfo'
 export default {
   mixins: [listModel],
   name: 'company_member',
@@ -84,13 +75,25 @@ export default {
   },
   data() {
     return {
+      searchBarData: [
+        [
+          { type: 'option', value: null, key: 'categoryId', class: 'w150', placeholder: '仓库类别', options: [] },
+          { type: 'input', value: null, key: 'title', class: 'w180', placeholder: '输入仓库名称检索' },
+          { type: 'search', name: '查询' },
+          { type: 'reset', name: '重置' }
+        ],
+        [
+          { type: 'add', name: '新增' },
+          { type: 'button', name: '仓库类别设置' }
+        ]
+      ],
       downloadLoading: false,
       codeOrname: null
     }
   },
   mounted() {
     setTimeout(() => {
-      this.fetchData()
+      // this.fetchData()
     }, 20)
   },
   methods: {

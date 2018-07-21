@@ -12,8 +12,9 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/rtusapi/': { //这里是我配置的名字
-        // target: 'http://10.0.5.189:8050',
-        target: 'http://www.rtuol.com',
+        // target: 'http://47.90.95.121',// 有数据测试
+        target: 'http://www.rtuol.com',// 新域名
+        // target: '47.105.59.116 ',//新服务器新服务器
         changeOrigin: true, //开启代理
         pathRewrite: {
           '^/rtusapi': '/rtusapi'

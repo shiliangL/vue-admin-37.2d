@@ -1,8 +1,7 @@
 <template>
   <div class="page company_list" style="width: 100%">
-    
       <!-- 顶部搜索区域 -->
- 
+ 	    <search-bar :data="searchBarData" @add="showAdd"></search-bar>
       <!-- 表格 -->
       <TableContain :height.sync="table.maxHeight">
         <el-table :data="table.data" :size="table.size" :max-height="table.maxHeight" slot="table" style="width: 100%">
@@ -61,25 +60,48 @@
 
       </TableContain>
  
+        <!-- 弹层 -->
+        <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add>
   </div>
 </template>
  
 <script>
 import listModel from '@/public/listModel.js'
-import { fetchShopAssistantInfo } from '@/api/shopInfo'
+import { fetchSonList } from '@/api/company/index.js'
+import { mapGetters } from 'vuex'
+import Add from './add'
+
 export default {
   mixins: [listModel],
   name: 'company_list',
   components: {
-
+    Add
   },
   data() {
-    return {}
+    return {
+      searchBarData: [
+        [
+          { type: 'option', value: null, key: 'categoryId', class: 'w150', placeholder: '仓库类别', options: [] },
+          { type: 'input', value: null, key: 'title', class: 'w180', placeholder: '输入仓库名称检索' },
+          { type: 'search', name: '查询' },
+          { type: 'reset', name: '重置' }
+        ],
+        [
+          { type: 'add', name: '新增' }
+        ]
+      ]
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'loginAdmin'
+    ])
   },
   mounted() {
     setTimeout(() => {
-      this.fetchData()
-    }, 20)
+      console.log(this.loginAdmin)
+      this.fetchSonList()
+    }, 200)
   },
   methods: {
     // 弹层操作
@@ -100,18 +122,23 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
     },
-    fetchData() {
-      const params = {
-        ...this.searchParams,
-        page: this.pagination.page - 1,
-        size: this.pagination.size
+    fetchSonList() {
+      const key = this.loginAdmin.EnterpriseId
+      if (!key) {
+        this.message({ type: 'error', message: '获取关键信息失败,请刷新页面' })
+        return
       }
-      fetchShopAssistantInfo(params).then(({ data }) => {
-        this.table.data = data.content
-        this.pagination.total = data.totalElements
+      fetchSonList({ enterpriseId: key }).then(({ SonEnterprise }) => {
+        this.table.data = SonEnterprise
       }).catch((error) => {
         console.log(error)
       })
+    },
+    refrehList() {
+      this.fetchSonList()
+    },
+    showAdd() {
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: null }})
     }
   }
 }

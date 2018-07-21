@@ -16,6 +16,8 @@
 
 <script>
 import { Navbar, Sidebar, AppMain } from '@/views/layout/components'
+import { fetchLoginInfo } from '@/api/index.js'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'layout',
@@ -29,9 +31,22 @@ export default {
       return this.$store.state.app.sidebar
     }
   },
+  mounted() {
+    this.fetchLoginInfo()
+  },
   methods: {
+    ...mapActions([
+      'SET_LOGINADMIN'
+    ]),
     toggleSideBar() {
       this.$store.dispatch('ToggleSideBar')
+    },
+    fetchLoginInfo() {
+      fetchLoginInfo().then(res => {
+        this.SET_LOGINADMIN(res)
+      }).catch(e => {
+        console.log(e)
+      })
     }
   }
 }

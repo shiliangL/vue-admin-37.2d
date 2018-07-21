@@ -6,7 +6,8 @@ const user = {
     token: getToken(),
     name: '',
     avatar: '',
-    roles: []
+    roles: [],
+    loginAdmin: null
   },
 
   mutations: {
@@ -21,6 +22,9 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    SET_LOGINADMIN: (state, loginAdmin) => {
+      state.loginAdmin = loginAdmin
     }
   },
 
@@ -35,7 +39,6 @@ const user = {
           if (response.result === 'ok') {
             setToken(data.result)
             Message.success('登录成功,欢迎光临！')
-            // commit('SET_TOKEN', data.result)
           } else {
             Message.error('登录失败,请重新登录')
           }
@@ -83,6 +86,9 @@ const user = {
         removeToken()
         resolve()
       })
+    },
+    SET_LOGINADMIN({ commit }, loginAdmin) {
+      commit('SET_LOGINADMIN', loginAdmin)
     }
   }
 }
