@@ -8,6 +8,14 @@ export function fetchSonList(params) {
     params
   })
 }
+// 获取子企业列表
+export function fetchSubSonList(params) {
+  return request({
+    url: 'rtusapi/enterprise/getsubenterprise?',
+    method: 'GET',
+    params
+  })
+}
 
 export function createData(query) {
   return request({
@@ -24,3 +32,19 @@ export function deletetype(query) {
   })
 }
 
+// company_member
+export function fetchMemberList(params) {
+  return request({
+    url: 'rtusapi/enterprise/getuserslist',
+    method: 'GET',
+    params
+  })
+}
+
+export function createMember(query) {
+  return request({
+    url: 'rtusapi/enterprise/adduser',
+    method: 'POST',
+    data: query
+  })
+}

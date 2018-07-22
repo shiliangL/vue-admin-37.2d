@@ -98,14 +98,14 @@ export default {
       console.log('刷新页面')
     },
     fetchData() {
-      fetchShopAssistantInfo({ page: 0, size: 10 })
-        .then(({ data }) => {
-          this.table.data = data.content
-          this.pagination.total = data.totalElements
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      // fetchShopAssistantInfo({ page: 0, size: 10 })
+      //   .then(({ data }) => {
+      //     this.table.data = data.content
+      //     this.pagination.total = data.totalElements
+      //   })
+      //   .catch(error => {
+      //     console.log(error)
+      //   })
     },
     clickSelect(item) {
       console.log(item, '选择对象')

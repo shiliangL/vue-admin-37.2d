@@ -94,14 +94,14 @@ export default {
       this.fetchData()
     },
     fetchData() {
-      this.listLoading = true
-      fetchShopAssistantInfo({ page: 0, size: 10 }).then(({ data }) => {
-        this.listLoading = false
-        this.table.data = data.content
-        this.pagination.total = data.totalElements
-      }).catch((error) => {
-        console.log(error)
-      })
+      // this.listLoading = true
+      // fetchShopAssistantInfo({ page: 0, size: 10 }).then(({ data }) => {
+      //   this.listLoading = false
+      //   this.table.data = data.content
+      //   this.pagination.total = data.totalElements
+      // }).catch((error) => {
+      //   console.log(error)
+      // })
     },
     reset() {
 

@@ -6,9 +6,9 @@
           </el-select>
       </div>
       <div class="tree">
-        {{tableData}}
         <el-table :data="tableData" size="mini" :max-height="430" style="width: 100%"
-        v-loading.body="listLoading" element-loading-text="拼命加载中" highlight-current-row @row-click="clickTableRow">
+          v-loading.body="listLoading" element-loading-text="拼命加载中" 
+          highlight-current-row @row-click="clickTableRow">
           <el-table-column align="left" label="设备名称">
              <template slot-scope="scope">
               <span> {{scope.row.name}} ({{scope.row.psn}})</span>
