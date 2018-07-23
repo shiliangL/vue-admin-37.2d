@@ -48,3 +48,11 @@ export function createMember(query) {
     data: query
   })
 }
+
+export function deleteMember(query) {
+  return request({
+    url: 'rtusapi/enterprise/deleteuser',
+    method: 'POST',
+    data: query
+  })
+}

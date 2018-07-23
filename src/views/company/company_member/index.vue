@@ -18,7 +18,7 @@
       <el-table-column label="操作" align="center" width="180">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="clickEdit(scope.$index, scope.row)">变更角色</el-button>
-          <el-button type="danger" plain size="mini" @click="clickBind(scope.$index, scope.row)">删除</el-button>
+          <el-button type="danger" plain size="mini" @click="clickToDelete(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -41,7 +41,7 @@
 
 <script>
 import model from '@/public/listModel.js'
-import { fetchMemberList } from '@/api/company/index.js'
+import { fetchMemberList, deleteMember } from '@/api/company/index.js'
 import Add from './add'
 export default {
   mixins: [model],
@@ -76,6 +76,24 @@ export default {
           this.table.data = UserList
         }
       })
+    },
+    clickToDelete(index, item) {
+      this.$confirm('是否需要删除数据?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const data = {
+          UserAccount: item.account,
+          UserId: item.id
+        }
+        deleteMember(data).then(res => {
+          this.$message({ type: 'success', message: `${res.msg}!` })
+          this.fetchList()
+        }).catch(() => {
+          this.$message({ type: 'error', message: '删除失败' })
+        })
+      }).catch(() => {})
     },
     searchAction(params) {
       this.fetchList(params)

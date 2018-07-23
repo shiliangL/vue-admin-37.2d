@@ -151,6 +151,21 @@ export default {
         console.log(error)
       })
     },
+    clickToDelete(index, item) {
+      // this.$confirm('是否需要删除数据?', '提示', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   type: 'warning'
+      // }).then(() => {
+      //   if (!item.pk) return
+      //   deletePackaging({ id: item.pk }).then(res => {
+      //     this.$message({ type: 'success', message: `${res.msg}成功!` })
+      //     this.fecthList()
+      //   }).catch(() => {
+      //     this.$message({ type: 'error', message: '删除失败' })
+      //   })
+      // }).catch(() => {})
+    },
     refrehList() {
       this.fetchSubSonList()
     },
