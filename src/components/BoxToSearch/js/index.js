@@ -150,6 +150,7 @@ export default {
       }
       const { request, codeOrname, delay, url } = this
       const params = {
+        goodsStatus: 0,
         page: this.page - 1,
         size: this.size
       }

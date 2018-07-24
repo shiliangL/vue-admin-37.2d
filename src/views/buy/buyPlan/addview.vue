@@ -12,6 +12,7 @@
 						</div>
 
 						<!-- table区域 -->
+
 						<el-table :data="form.dataList" class="skuListTbale" size="small" :max-height="500" style="width: 100%;" highlight-current-row>
  
 							<el-table-column label="序号" width="50" align="center">
@@ -24,13 +25,11 @@
 							<el-table-column prop="baseUnitName" label="基本单位" align="center"></el-table-column>
 							<el-table-column prop="availableQuantity" label="可用库存量" align="center"></el-table-column>
 							<el-table-column prop="planQuantity" label="计划采购量" align="center">
-								<template slot-scope="scope">
-
-									<el-form-item label="" label-width="0px" :prop="'dataList.'+scope.$index+'.planQuantity'" :rules="[{trigger: 'change', validator: rules.validNumberR2}]">
-										<el-input size="small" class="w110" placeholder="请输入" v-model.trim="scope.row.planQuantity"></el-input>
-									</el-form-item>
-
-								</template>
+                <template slot-scope="scope">
+                  <div class="w110 el-input el-input--small" @click.stop="clickToChange(scope.$index, scope.row)" style="width:110px">
+                    <div class="el-input__inner" v-cloak> {{scope.row.planQuantity}} </div>
+                  </div>
+                </template>
 							</el-table-column>
 
 							<el-table-column label="采购员/供应商" align="center">
@@ -202,6 +201,7 @@ export default {
     },
     changeDialogCallBack(item) {
       this.form.dataList[this.curIndex].supplierInfoList = item.table
+      this.form.dataList[this.curIndex].planQuantity = item.planQuantity
     },
     // 触发校验 处理参数
     validateForm() {

@@ -40,6 +40,16 @@ export function applyCreate(data) {
     data
   })
 }
+
+// 同意采购审核 --
+export function applyPassCreate(data) {
+  return request({
+    url: 'purchaseOrderRequestProcess/create',
+    method: 'POST',
+    data
+  })
+}
+
 // 采购清单
 export function purchaseList(params) {
   return request({

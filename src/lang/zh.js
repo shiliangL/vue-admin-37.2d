@@ -69,7 +69,10 @@ export default {
 
     setting: '仓库设置',
     goodsIn: '商品入库',
-    goodsOut: '商品出库'
+
+    salesDelivery: '销售配送',
+    areaDelivery: '区域配送',
+    deliveryer: '配送员'
 
   },
   navbar: {

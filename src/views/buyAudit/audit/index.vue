@@ -4,7 +4,7 @@
 
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
 
-      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction"  @add="showAdd"  @reset="resetSearchBar" @command="clickMoreCommand"></search-bar>
+      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction"  @reset="resetSearchBar" @command="clickMoreCommand"></search-bar>
 
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
@@ -90,7 +90,7 @@ export default {
           { type: 'reset', name: '重置' }
         ],
         [
-          { type: 'add', name: '新增' }
+          // { type: 'add', name: '新增' }
           // { type: 'more', labels: ['导入', '上传图片'] }
         ]
       ]

@@ -62,11 +62,11 @@
 
 							<!-- 添加区域 -->
 						<div class="AddTableList">
-          			<el-input style="width:180px" v-model.trim="searchParam" size="small" @keyup.enter.native="sendSearchParam" placeholder="输入商品名称检索"></el-input>
-							 <el-button  type="primary" size="small"> 搜索 </el-button>
+          			<el-input style="width:180px" v-model.trim="searchParam" size="small" placeholder="输入商品名称检索"></el-input>
+							  <!-- <el-button  type="primary" size="small"> 搜索 </el-button>  @keyup.enter.native="sendSearchParam"  -->
 						</div>
 
-						<el-table :data="form.table" class="table" size="small" :max-height="500" style="width: 100%;" highlight-current-row>
+						<el-table :data="tableSearch" class="table" size="small" :max-height="500" style="width: 100%;" highlight-current-row>
  
 							<el-table-column label="序号" width="50" align="center">
 								<template slot-scope="scope">
@@ -78,25 +78,33 @@
 							<el-table-column prop="basicUnitName" label="基本单位" align="center"></el-table-column>
 							<el-table-column prop="availableQuantity" label="可用库存量" align="center"></el-table-column>
 							<el-table-column prop="planQuantity" label="计划采购量" align="center"></el-table-column>
-							<el-table-column prop="applyQuantity" label="申请采购量" align="center">
+							<el-table-column prop="applyQuantity" v-if="this.showType" label="申请采购量" align="center">
 									<template slot-scope="scope">
-										<el-form-item label="" label-width="0px" :prop="'table.'+scope.$index+'.applyQuantity'" :rules="[{trigger: 'change', validator: rules.validNumberR2}]">
-											<el-input size="small" class="w110" placeholder="请输入" v-model.trim="scope.row.applyQuantity"></el-input>
-										</el-form-item>
-
-                    <el-tooltip content="非标品商品默认分拣时按基本单位" placement="top" effect="light">
-                      <i class="el-icon-warning msg"></i>
-                    </el-tooltip>
+                    <div class="w110 el-input el-input--small" @click.stop="clickToChange(scope.$index, scope.row)" style="width:110px">
+                      <div class="el-input__inner" v-cloak> {{scope.row.applyQuantity}} </div>
+                    </div>
 									</template>
 							</el-table-column>
-							<el-table-column prop="goodsImage" label="采购员/供应商" align="center">
-									<template slot-scope="scope">
-										
-									<span v-cloak> {{scope.row.supplierInfoList[0].personnelName}} </span>
-									<el-button type="text" size="mini" @click.stop="clickToChange(scope.$index, scope.row)">更改</el-button>
+							<el-table-column v-else prop="applyQuantity" label="申请采购量" align="center"></el-table-column>
 
+							<el-table-column v-if="this.showType" label="采购员/供应商" align="center">
+									<template slot-scope="scope">
+                    <span v-cloak> {{scope.row.personnelNames}} </span>
+                    <el-button type="text" size="mini" @click.stop="clickToChange(scope.$index, scope.row)">更改</el-button>
 									</template>
-								</el-table-column>
+							</el-table-column>
+              <el-table-column v-else label="采购员/供应商" align="center">
+                	<template slot-scope="scope">
+                   <el-popover placement="top" width="200" trigger="click">
+                      <div>
+                        <div v-for="(item,index) in scope.row.supplierInfoList" :key="index">
+                          <span>{{item.personnelName}}</span> : <span>{{item.quantity}}</span>;
+                        </div>
+                      </div>
+                      <el-button type="text" size="mini" slot="reference"> {{scope.row.personnelNames}}  </el-button>
+                    </el-popover>
+									</template>
+              </el-table-column>
 
 						</el-table>
 
@@ -109,7 +117,7 @@
 				</div>
 
   			<el-dialog width="700px" title="更改采购员/供应商" :visible.sync="innerVisible" append-to-body center :modal="false">
-          <toViewDialog v-model="dialogData" @callBack="toViewDialogCallBack" v-if="innerVisible" @close="innerVisible = false"></toViewDialog>
+          <toViewDialog v-model="dialogData" @edit="refrehList" @callBack="toViewDialogCallBack" v-if="innerVisible"  @close="innerVisible = false"></toViewDialog>
         </el-dialog>
 
 
@@ -129,6 +137,7 @@ export default {
   },
   data() {
     return {
+      showType: null, // 待审核的时候需要显示编辑页面
       searchParam: null,
       innerVisible: false,
       curIndex: false,
@@ -160,14 +169,38 @@ export default {
       this.fecthDetail()
     }
   },
+  computed: {
+    tableSearch: function() {
+      const search = this.searchParam
+      if (search) {
+        return this.form.table.filter(dataNews => {
+          return Object.keys(dataNews).some(key => {
+            return String(dataNews[key]).toLowerCase().indexOf(search) > -1
+          })
+        })
+      }
+      return this.form.table
+    }
+  },
   methods: {
     fecthDetail() {
+      if (!this.$attrs.loadID) return
       headerDetail({ id: this.$attrs.loadID }).then(({ data }) => {
         console.log(data, 'headerDetail')
-        this.form.header = data
+        this.form.header = Object.assign(this.form.header, data)
+        this.showType = data.auditStatus === 1 // 待审核的时候需要显示编辑页面
       }).catch(e => {
         // this.loadingText = e.msg
       })
+      bodyDetail({ requestId: this.$attrs.loadID }).then(({ data }) => {
+        console.log(data, 'bodyDetail')
+        this.form.table = data
+      }).catch(e => {
+        // this.loadingText = e.msg
+      })
+    },
+    refrehList() {
+      if (!this.$attrs.loadID) return
       bodyDetail({ requestId: this.$attrs.loadID }).then(({ data }) => {
         console.log(data, 'bodyDetail')
         this.form.table = data
@@ -185,6 +218,7 @@ export default {
     },
     toViewDialogCallBack(item) {
       this.form.table[this.curIndex].supplierInfoList = item.table
+      this.form.table[this.curIndex].applyQuantity = item.applyQuantity
     },
     // 触发校验 处理参数
     validateForm() {

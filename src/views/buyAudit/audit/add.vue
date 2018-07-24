@@ -16,30 +16,26 @@
         </div>
         <div class="content-bar">
 
-            <template v-if="this.data.type === 'view'">
-              <toView ref="toView" :loadID="loadID"  @callBack="callBackToPass"></toView>
-            </template>
+          <template v-if="this.data.type === 'view'">
+            <!-- @callBack="callBackToPass" -->
+            <toView ref="toView" :loadID="loadID"  :isPass.sync="isPass" v-model="toViewObj"></toView>
+          </template>
 
         </div>
       </div>
 
 	    <el-dialog width="400px" title="拒绝采购申请" :visible.sync="innerVisible" append-to-body center @close="formClose">
-
         <el-form :model="ruleForm" ref="ruleForm" label-width="100px">
-
           <el-form-item label="拒绝原因:" prop="remark">
             <el-input size="small" maxlength="20" placeholder="输入长度小于20字" type="textarea" v-model="ruleForm.remark"></el-input>
           </el-form-item>
-
         </el-form>
         <div class="footer-block">
           <el-button size="small" @click="formClose">取消</el-button>
           <el-button size="small" type="primary" @click="submitForm('ruleForm')">确定</el-button>
         </div>
       </el-dialog>
-
       <!-- <Loading v-if="loading" @loadingRefresh="onRefresh" :loadingText="loadingText" class="Loading"></Loading> -->
-
     </el-dialog>
   </div>
 </template>
@@ -57,8 +53,9 @@ export default {
     return {
       dialogVisible: false,
       form: {
-        subPropList: []
       },
+      toViewObj: null,
+      isPass: false, // 验证是否通过
       rules: {},
       loadID: null,
       isShowView: false,
@@ -107,16 +104,32 @@ export default {
     },
     onRefresh() {
       if (this.data.type === 'view') {
-        const id = this.data.obj.id
+        const id = this.data.obj.pk
         if (!id) return
         this.fecthDerDetailById(id)
       }
     },
     validateNoPass() {
       this.innerVisible = true
-      if (this.$refs['addview']) {
-        this.$refs['addview'].validateForm()
+      if (this.$refs['toView']) this.$refs['toView'].validateForm()
+    },
+    submitForm() {
+      if (!this.toViewObj || !this.isPass) return
+      const data = {
+        remark: this.ruleForm.remark,
+        status: 4,
+        requestId: this.data.obj.pk,
+        requestDetailsList: this.toViewObj
       }
+      applyCreate(data).then(res => {
+        if (res.code === '0') {
+          this.$message({ type: 'success', message: res.msg })
+          this.dialog.visiable = false
+          this.$emit('add')
+        }
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
     },
     callBackToSubmit(data) {
       if (!data) return
@@ -155,9 +168,28 @@ export default {
       })
     },
     validatePass() {
-      if (this.$refs['toView']) {
-        this.$refs['toView'].validateForm()
-      }
+      if (this.$refs['toView']) this.$refs['toView'].validateForm()
+      if (!this.isPass) return
+      this.$confirm('是否确定通过审核?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        if (!this.toViewObj) return
+        const data = {
+          remark: this.ruleForm.remark,
+          status: 3,
+          requestId: this.data.obj.pk,
+          requestDetailsList: this.toViewObj
+        }
+        applyCreate(data).then(res => {
+          this.$message({ type: 'success', message: `${res.msg}!` })
+          this.dialog.visiable = false
+          this.$emit('add')
+        }).catch(() => {
+          this.$message({ type: 'error', message: '操作失败' })
+        })
+      }).catch(() => {})
     },
     callBackToPass(data) {
       if (!data) return

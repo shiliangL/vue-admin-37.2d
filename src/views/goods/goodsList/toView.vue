@@ -84,18 +84,51 @@
                   </el-col>
 
                   <el-col :xs="24" :sm="10" :md="8" :lg="6">
-
                     <el-form-item label="供应商:" :rules="rules.select"  v-if="form.purchaseType===1" prop="supplyId">
                       <span v-cloak>{{form.supplier.supplierName}}</span>
                     </el-form-item>
                   </el-col>
-                  <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                    <el-form-item label="简要介绍:">
-                      <el-input size="small" type="textarea" style="width:180px" class="w180"  placeholder="小于50字" v-model.trim="form.summary"></el-input>
+
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="品牌:">
+                      <span v-cloak>{{form.brandName}}</span>
                     </el-form-item>
-                  </el-col> -->
+                  </el-col>
+
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="所属仓库:" :rules="rules.select">
+                      <span v-cloak>{{form.stockName}}</span>
+                    </el-form-item>
+                  </el-col>
+
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="保质期:">
+                      <span v-cloak>{{form.expiry}}</span>
+                    </el-form-item>
+                  </el-col>
+
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="储藏方式:">
+                      <span v-cloak>{{form.storage}}</span>
+                    </el-form-item>
+                  </el-col>
+                   
                 </el-row>
               </div>
+          </div>
+
+          <div class="row-item">
+            <div class="row-title">上下架设置</div>
+            <div class="row-content">
+                <el-row>
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="">
+                        <el-radio disabled v-model="form.goodsStatus" label="0">上架出售</el-radio>
+                        <el-radio disabled v-model="form.goodsStatus" label="1">下架</el-radio>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+            </div>
           </div>
 
           <div class="row-item">
@@ -345,6 +378,10 @@ export default {
 
     if (this.viewData) {
       this.form = {
+        brandName: this.viewData.info.brandName,
+        stockName: this.viewData.info.stockName,
+        expiry: this.viewData.info.expiry,
+        storage: this.viewData.info.storage,
         type: this.viewData.info.type, // 基本单位id
         baseUnit: this.viewData.info.baseUnit, // 基本单位id
         baseUnitName: this.viewData.info.baseUnitName, // 基本单位id
@@ -358,7 +395,7 @@ export default {
         details: this.viewData.info.details, // 详细介绍 这里的详情，是否类似淘宝 图片详情 二进制数据
         goodsImage: this.viewData.info.goodsImage,
         goodsImageId: this.viewData.info.goodsImageId, // 图片Url
-        goodsStatus: 0, // 商品状态, 0 代表上架，1代表下架
+        goodsStatus: this.viewData.info.goodsStatus + '', // 商品状态, 0 代表上架，1代表下架
         itemNumber: this.viewData.info.itemNumber, // 货号
         // productDetail: [], // 货品详细信息表,
         purchasePrice: this.viewData.info.purchasePrice, // 进价

@@ -1,6 +1,5 @@
 <template>
     <div class="changeDialog">
-
 			<el-form :model="form" :rules="rules" ref="form" >
 				 <!-- 表格 -->
         <el-table :data="form.table" size="small" :max-height="300" style="width: 100%;" highlight-current-row>
@@ -50,8 +49,6 @@
           </el-table-column>
  
         </el-table>
- 
-
 			</el-form>
 
 			<div class="footer-block">

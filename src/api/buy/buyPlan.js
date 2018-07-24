@@ -31,7 +31,6 @@ export function save(data) {
     data
   })
 }
-
 // 详情H
 export function headerDetail(params) {
   return request({
@@ -69,6 +68,14 @@ export function purchaseList(params) {
 export function saveList(data) {
   return request({
     url: 'purchaseOrderRequest/save?sourceType=1',
+    method: 'post',
+    data
+  })
+}
+// 采购审核
+export function undateTableRow(data) {
+  return request({
+    url: 'purchaseOrderRequestDetails/updateRequestDetailsApplyQuantity',
     method: 'post',
     data
   })

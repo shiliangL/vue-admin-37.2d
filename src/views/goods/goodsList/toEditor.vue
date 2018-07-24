@@ -29,7 +29,7 @@
                   <el-col :xs="24" :sm="10" :md="8" :lg="6">
                     <el-form-item label="商品类型:" prop="type" :rules="rules.select">
                       <el-select size="small" style="width:180px" v-model="form.type" placeholder="请选择">
-                        <el-option size="small" style="width:180px" v-for="item in options.categoryTypeOption" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+                        <el-option size="small" v-for="item in options.categoryTypeOption" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                       </el-select> 
                     </el-form-item>
                   </el-col>
@@ -78,8 +78,8 @@
                   <el-col :xs="24" :sm="10" :md="8" :lg="6">
 
                     <el-form-item label="采购类型:" :rules="rules.select">
-                      <el-select v-model="form.purchaseType" placeholder="请选择" @change="changePurchaseType" filterable>
-                        <el-option size="small" style="width:180px" v-for="item in options.purchaseType" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+                      <el-select v-model="form.purchaseType" placeholder="请选择" @change="changePurchaseType" filterable  style="width:180px">
+                        <el-option size="small" v-for="item in options.purchaseType" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                       </el-select>
                     </el-form-item>
                   </el-col>
@@ -87,14 +87,14 @@
 
                     <el-form-item label="供应商类别:" v-if="form.purchaseType===1"  :rules="rules.select" prop="supplyType" filterable>
                       <el-select size="small" style="width:180px" v-model="form.supplyType" placeholder="请选择" @change="supplyTypeChange">
-                        <el-option size="small" style="width:180px" v-for="item in options.supplierType" :key="item.pk" :label="item.title" :value="item.pk"> </el-option>
+                        <el-option size="small" v-for="item in options.supplierType" :key="item.pk" :label="item.title" :value="item.pk"> </el-option>
                       </el-select> 
                     
                     </el-form-item>
 
                     <el-form-item label="采购员:" :rules="rules.select" v-else  prop="buyerId">
                       <el-select size="small" style="width:180px" v-model="form.buyerId" placeholder="请选择" filterable>
-                        <el-option size="small" style="width:180px" v-for="item in options.salerList" :key="item.pk" :label="item.staffName" :value="item.pk"> </el-option>
+                        <el-option size="small" v-for="item in options.salerList" :key="item.pk" :label="item.staffName" :value="item.pk"> </el-option>
                       </el-select>
 
                     </el-form-item>
@@ -104,18 +104,56 @@
                   <el-col :xs="24" :sm="10" :md="8" :lg="6">
 
                     <el-form-item label="供应商:" :rules="rules.select"  v-if="form.purchaseType===1" prop="supplyId">
-                      <el-select size="small" v-model="form.supplyId" placeholder="请选择">
-                        <el-option size="small" style="width:180px" v-for="item in options.supplierList" :key="item.value" :label="item.title" :value="item.pk"> </el-option>
+                      <el-select size="small" v-model="form.supplyId" placeholder="请选择" style="width:180px" >
+                        <el-option size="small" v-for="item in options.supplierList" :key="item.value" :label="item.title" :value="item.pk"> </el-option>
                       </el-select>
                     </el-form-item>
                   </el-col>
-                  <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                    <el-form-item label="简要介绍:">
-                      <el-input size="small" type="textarea" style="width:180px" class="w180"  placeholder="小于50字" v-model.trim="form.summary"></el-input>
+
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="品牌:">
+                      <el-select size="small" style="width:180px" v-model="form.brandId" placeholder="请选择" filterable clearable>
+                        <el-option size="small" v-for="item in options.brandOption" :key="item.id" :label="item.title" :value="item.id"> </el-option>
+                      </el-select>
                     </el-form-item>
-                  </el-col> -->
+                  </el-col>
+
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="所属仓库:" prop="stockId"  :rules="rules.select">
+                      <el-select size="small" style="width:180px" v-model="form.stockId" placeholder="请选择" filterable>
+                        <el-option size="small" v-for="item in options.warehouse" :key="item.id" :label="item.title" :value="item.id"> </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="保质期:">
+                       <el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.expiry"></el-input>
+                    </el-form-item>
+                  </el-col>
+
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="储藏方式:">
+                       <el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.storage"></el-input>
+                    </el-form-item>
+                  </el-col>
+
                 </el-row>
               </div>
+          </div>
+
+          <div class="row-item">
+            <div class="row-title">上下架设置</div>
+            <div class="row-content">
+                <el-row>
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="">
+                        <el-radio v-model="form.goodsStatus" label="0">上架出售</el-radio>
+                        <el-radio v-model="form.goodsStatus" label="1">下架</el-radio>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+            </div>
           </div>
 
           <div class="row-item">
@@ -295,6 +333,10 @@ import addModel from '@/public/addModel.js'
 import rules from '@/public/rules.js'
 import { UploadImg, NqQuillEditor, Tabs } from '@/components/base.js'
 import { fecthGoodsClass, fecthUnit, fecthSupplierList, fecthSalerList, fecthByCategoryId } from '@/api/goodsList.js'
+import { packagingList } from '@/api/brand.js'
+
+import { fecthList } from '@/api/warehouse/setting.js'
+
 import { mapActions, mapGetters } from 'vuex'
 export default {
   mixins: [rules, addModel],
@@ -321,6 +363,10 @@ export default {
       supplyData: [],
       fileList: [],
       form: {
+        'brandId': null,
+        'stockId': null,
+        'expiry': null,
+        'storage': null,
         'baseUnit': null, // 基本单位id
         'basePrice': null, // 基本单位价格
         'baseUnitName': null, // 基本单位id
@@ -331,7 +377,7 @@ export default {
         'categoryName': null, // 类型名称
         'details': null, // 详细介绍 这里的详情，是否类似淘宝 图片详情 二进制数据
         'goodsImage': null, // 主图xxx
-        'goodsStatus': 0, // 商品状态, 0 代表上架，1代表下架
+        'goodsStatus': '0', // 商品状态, 0 代表上架，1代表下架
         'itemNumber': null, // 货号
         'purchasePrice': null, // 进价
         'purchaseType': 1, // 采购类型 1：供货，2：自采，3：未指定
@@ -389,7 +435,9 @@ export default {
         UnitOpton: [],
         supplierList: [],
         supplierType: [],
-        salerList: []
+        salerList: [],
+        warehouse: [],
+        brandOption: []
       }
       // 文本
     }
@@ -403,6 +451,10 @@ export default {
       this.category = [this.viewData.parentId, this.viewData.info.categoryId]
 
       this.form = {
+        'brandId': this.viewData.info.brandId,
+        'stockId': this.viewData.info.stockId,
+        'expiry': this.viewData.info.expiry,
+        'storage': this.viewData.info.storage,
         'id': this.viewData.info.pk,
         'basePrice': this.viewData.info.basePrice, // 基本单位价格
         'baseUnit': this.viewData.info.baseUnit, // 基本单位id
@@ -414,7 +466,7 @@ export default {
         'categoryName': this.viewData.info.categoryName, // 类型名称
         'details': this.viewData.info.details, // 详细介绍 这里的详情，是否类似淘宝 图片详情 二进制数据
         'goodsImage': this.viewData.info.goodsImage, // 主图
-        'goodsStatus': this.viewData.info.goodsStatus, // 商品状态, 0 代表上架，1代表下架
+        'goodsStatus': this.viewData.info.goodsStatus + '', // 商品状态, 0 代表上架，1代表下架
         'itemNumber': this.viewData.info.itemNumber, // 货号
         'purchasePrice': this.viewData.info.purchasePrice, // 进价
         'purchaseType': this.viewData.info.purchaseType, // 采购类型 1：供货，2：自采，3：未指定
@@ -463,6 +515,8 @@ export default {
     this.fecthUnitList()
     this.fecthSupplierList()
     this.fecthSalerList()
+    this.fecthList()
+    this.fecthBrandList()
     if (!this.qNtoken) {
       this.VX_SET_QNTOKEN()
     }
@@ -568,6 +622,22 @@ export default {
         this.options.salerList = data
       }).catch(e => {
         console.log(e)
+      })
+    },
+    // 加载仓库
+    fecthList() {
+      fecthList().then(({ data }) => {
+        this.options.warehouse = data
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
+    // 加载品牌
+    fecthBrandList() {
+      packagingList().then(({ data }) => {
+        this.options.brandOption = data.rows
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
       })
     },
     clickToAddSkuLis() {
@@ -750,13 +820,12 @@ export default {
 		.el-form-item{
 			width: 330px;
 			height: 40px;
-			margin-bottom: 6px;
+			margin-bottom: 10px;
 		}
 	}
  
   .img-items{
     display: flex;
-    // align-items: center;
   }
   .card-imgs{
     margin-right: 10px;

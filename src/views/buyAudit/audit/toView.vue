@@ -76,23 +76,45 @@
 
 							<el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
 							<el-table-column prop="basicUnitName" label="基本单位" align="center"></el-table-column>
-							<el-table-column prop="availableQuantity" label="可用库存量" align="center"></el-table-column>
 							<el-table-column prop="planQuantity" label="计划采购量" align="center"></el-table-column>
-							<el-table-column prop="applyQuantity" label="申请采购量" align="center">
-									<template slot-scope="scope">
-										<el-form-item label="" label-width="0px" :prop="'table.'+scope.$index+'.applyQuantity'" :rules="[{trigger: 'change', validator: rules.validNumberR2}]">
-											<el-input size="small" class="w110" placeholder="请输入" v-model.trim="scope.row.applyQuantity"></el-input>
-										</el-form-item>
+							<el-table-column prop="applyQuantity" label="申请采购量" align="center"></el-table-column>
+							<el-table-column prop="availableQuantityStr" v-if="this.showType" label="可用库存" align="center"></el-table-column>
+							<el-table-column prop="waitQuantity" label="待采购量" align="center">
+                  <template slot-scope="scope">
+                    <div class="w110 el-input el-input--small" @click.stop="clickToChange(scope.$index, scope.row)" style="width:110px" v-if="this.showType">
+                      <div class="el-input__inner" v-cloak> {{scope.row.waitQuantity}} </div>
+                    </div>
+                    <div v-else v-cloak> {{scope.row.waitQuantity}} </div>
 									</template>
 							</el-table-column>
-							<el-table-column prop="goodsImage" label="采购员/供应商" align="center">
-									<template slot-scope="scope">
-										
-									<span v-cloak> {{scope.row.supplierInfoList[0].personnelName}} </span>
-									<el-button type="text" size="mini" @click.stop="clickToChange(scope.$index, scope.row)">更改</el-button>
 
+							<el-table-column  v-if="this.showType" label="采购员/供应商" align="center">
+									<template slot-scope="scope">
+                    <el-popover placement="top" width="200" trigger="click">
+                      <div>
+                        <div v-for="(item,index) in scope.row.supplierInfoList" :key="index">
+                          <span>{{item.personnelName}}</span> : <span>{{item.quantity}}</span>;
+                        </div>
+                      </div>
+                      <span type="text" size="small" slot="reference"> {{scope.row.personnelNames}}  </span>
+                    </el-popover>
+
+									  <el-button type="text" size="mini" @click.stop="clickToChange(scope.$index, scope.row)">更改</el-button>
 									</template>
 								</el-table-column>
+
+                <el-table-column  v-else label="采购员/供应商" align="center">
+                	<template slot-scope="scope">
+                    <el-popover placement="top" width="200" trigger="click">
+                      <div>
+                        <div v-for="(item,index) in scope.row.supplierInfoList" :key="index">
+                          <span>{{item.personnelName}}</span> : <span>{{item.quantity}}</span>;
+                        </div>
+                      </div>
+                      <el-button type="text" size="mini" slot="reference"> {{scope.row.personnelNames}}  </el-button>
+                    </el-popover>
+                    </template>
+                </el-table-column>
 
 						</el-table>
 
@@ -105,7 +127,7 @@
 				</div>
 
   			<el-dialog width="700px" title="更改采购员/供应商" :visible.sync="innerVisible" append-to-body center :modal="false">
-          <toViewDialog v-model="dialogData" @callBack="toViewDialogCallBack" v-if="innerVisible" @close="innerVisible = false"></toViewDialog>
+          <toViewDialog v-model="dialogData" @edit="refrehList" @callBack="toViewDialogCallBack" v-if="innerVisible" @close="innerVisible = false"></toViewDialog>
         </el-dialog>
 
 
@@ -123,26 +145,32 @@ export default {
   components: {
     toViewDialog
   },
+  props: {
+    value: {
+      type: Array
+    }
+  },
   data() {
     return {
+      showType: false, // 待审核的时候需要显示编辑页面
       searchParam: null,
       innerVisible: false,
       curIndex: false,
       dialogData: null,
       form: {
         header: {
-          'pk': '09ed6518ade1422bab2fe2e883056747',
+          'pk': null,
           'createdBy': null,
-          'createdOn': '2018-07-02 11:58:33',
+          'createdOn': null,
           'updatedBy': null,
           'updatedOn': null,
           'deletedFlag': null,
-          'orderNo': 'cgsq180702000002',
+          'orderNo': null,
           'purchaserId': null,
           'sourceType': 2,
-          'applicationDate': '2018-07-02 11:58:33',
+          'applicationDate': null,
           'auditStatus': 1,
-          'createdName': '管理员',
+          'createdName': null,
           'purchaserName': null,
           'auditDate': null,
           'auditStaffName': null
@@ -160,13 +188,69 @@ export default {
     fecthDetail() {
       headerDetail({ id: this.$attrs.loadID }).then(({ data }) => {
         console.log(data, 'headerDetail')
-        this.form.header = data
-      }).catch(e => {
-        // this.loadingText = e.msg
-      })
-      bodyDetail({ requestId: this.$attrs.loadID }).then(({ data }) => {
-        console.log(data, 'bodyDetail')
-        this.form.table = data
+        this.form.header = Object.assign(this.form.header, data)
+        this.showType = data.auditStatus === 2 // 待审核的时候需要显示编辑页面
+        bodyDetail({ requestId: this.$attrs.loadID }).then(({ data }) => {
+          console.log(data, 'bodyDetail')
+          if (Array.isArray(data)) {
+            if (data.length > 0) {
+              // for (const item of data) {
+              //   if (!item.availableQuantity) {
+              //     item.availableQuantity = 0
+              //   }
+              //   if (item.availableQuantity !== 0) {
+              //     // 申请采购量 - 可用库存量 判断正负
+              //     const tem = (item.applyQuantity) - (item.availableQuantity)
+              //     for (const key of item.supplierInfoList) {
+              //       key.quantity = 0
+              //     }
+              //     if (tem > 0) {
+              //       item.waitQuantity = tem
+              //       item.supplierInfoList[0].quantity = tem
+              //     } else if (tem < 0) {
+              //       item.waitQuantity = 0
+              //     }
+              //   } else {
+              //     item.waitQuantity = item.applyQuantity
+              //   }
+              // }
+              if (this.showType) {
+                for (const item of data) {
+                  if (!item.availableQuantity) {
+                    item.availableQuantity = 0
+                  }
+                  if (item.availableQuantity * 1 !== 0) {
+                    // 申请采购量 - 可用库存量 判断正负
+                    const tem = (item.applyQuantity * 1) - (item.availableQuantity * 1)
+                    for (const key of item.supplierInfoList) {
+                      key.quantity = 0
+                    }
+                    if (tem > 0) {
+                      item.lockQuantity = item.availableQuantity
+                      item.availableQuantity = 0
+                      item.waitQuantity = tem
+                      item.supplierInfoList[0].quantity = tem
+                    } else if (tem < 0) {
+                      item.lockQuantity = item.applyQuantity
+                      item.waitQuantity = 0
+                      item.availableQuantity = -tem
+                    } else if (tem === 0) {
+                      item.lockQuantity = item.applyQuantity
+                      item.waitQuantity = 0
+                      item.availableQuantity = 0
+                    }
+                  } else {
+                    item.lockQuantity = 0
+                    item.waitQuantity = item.applyQuantity
+                  }
+                }
+              }
+              this.form.table = data
+            }
+          }
+        }).catch(e => {
+          // this.loadingText = e.msg
+        })
       }).catch(e => {
         // this.loadingText = e.msg
       })
@@ -181,16 +265,29 @@ export default {
     },
     toViewDialogCallBack(item) {
       this.form.table[this.curIndex].supplierInfoList = item.table
+      this.form.table[this.curIndex].waitQuantity = item.waitQuantity
     },
     // 触发校验 处理参数
     validateForm() {
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          this.$emit('callBack', this.form.table)
+          this.$emit('update:isPass', true)
+          this.$emit('input', this.form.table)
+          // this.$emit('callBack', this.form.table)
         } else {
           this.$message({ type: 'warning', message: '请核实表单' })
+          this.$emit('update:isPass', false)
           return
         }
+      })
+    },
+    refrehList() {
+      if (!this.$attrs.loadID) return
+      bodyDetail({ requestId: this.$attrs.loadID }).then(({ data }) => {
+        console.log(data, 'bodyDetail')
+        this.form.table = data
+      }).catch(e => {
+        // this.loadingText = e.msg
       })
     }
   }

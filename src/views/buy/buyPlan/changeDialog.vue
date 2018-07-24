@@ -2,6 +2,11 @@
     <div class="changeDialog">
 
 			<el-form :model="form" :rules="rules" ref="form" >
+
+        <el-form-item label="计划采购量:" label-width="100px">
+          <span>{{totalNumber}}</span>
+        </el-form-item>
+
 				 <!-- 表格 -->
         <el-table :data="form.table" size="small" :max-height="300" style="width: 100%;" highlight-current-row>
 
@@ -106,12 +111,22 @@ export default {
     if (this.value) {
       const data = JSON.parse(JSON.stringify(this.value))
       this.form.table = data.supplierInfoList
-      console.log(data.supplierInfoList)
     }
   },
   mounted() {
     this.fecthTree()
     this.fecthSalerList()
+  },
+  computed: {
+    totalNumber() {
+      let t = 0
+      for (const item of this.form.table) {
+        if (!isNaN(item.quantity)) {
+          t += (item.quantity * 1)
+        }
+      }
+      return t
+    }
   },
   methods: {
     close() {
@@ -160,16 +175,12 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let sum = 0
-          for (const item of 	this.form.table) {
-            sum += parseInt(item.quantity)
+          const data = {
+            table: this.form.table,
+            planQuantity: this.totalNumber
           }
-          if (sum === this.value.planQuantity * 1) {
-            this.$emit('callBack', this.form)
-            this.$emit('close')
-          } else {
-            this.$message({ type: 'error', message: '采购量之和等于计划采购量' })
-          }
+          this.$emit('callBack', data)
+          this.$emit('close')
         } else {
           this.$message({ type: 'warning', message: '请核实表单' })
           return

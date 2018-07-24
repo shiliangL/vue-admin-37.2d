@@ -2,6 +2,11 @@
     <div class="changeDialog">
 
 			<el-form :model="form" :rules="rules" ref="form" >
+
+         <el-form-item label="待采购量" label-width="100px">
+          <span>{{totalNumber}}</span>
+        </el-form-item>
+
 				 <!-- 表格 -->
         <el-table :data="form.table" size="small" :max-height="300" style="width: 100%;" highlight-current-row>
 
@@ -119,13 +124,23 @@ export default {
           item.supplyDto = item.supplyDto ? item.supplyDto : []
         }
       }
-      console.log(data.supplierInfoList)
       this.form.table = data.supplierInfoList
     }
   },
   mounted() {
     this.fecthTree()
     this.fecthSalerList()
+  },
+  computed: {
+    totalNumber() {
+      let t = 0
+      for (const item of this.form.table) {
+        if (!isNaN(item.quantity)) {
+          t += (item.quantity * 1)
+        }
+      }
+      return t
+    }
   },
   methods: {
     close() {
@@ -151,6 +166,8 @@ export default {
     },
     clickToAdd() {
       this.form.table.push({
+        orderRequestId: this.value.requestId,
+        orderRequestDetailsId: this.value.detailId,
         buyerId: null,
         buyerName: null,
         supplierId: null,
@@ -174,16 +191,21 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let sum = 0
-          for (const item of 	this.form.table) {
-            sum += parseInt(item.quantity)
+          const list = JSON.parse(JSON.stringify(this.form.table))
+          for (const item of list) {
+            delete item.buyerId
+            delete item.buyerName
+            delete item.supplierName
+            delete item.supplierId
+            delete item.supplyDto
           }
-          if (sum === this.value.applyQuantity * 1) {
-            this.$emit('callBack', this.form)
-            this.$emit('close')
-          } else {
-            this.$message({ type: 'error', message: '采购量之和等于计划采购量' })
+          const data = {
+            detailsId: this.value.detailId,
+            waitQuantity: this.totalNumber,
+            table: list
           }
+          this.$emit('callBack', data)
+          this.$emit('close')
         } else {
           this.$message({ type: 'warning', message: '请核实表单' })
           return
@@ -205,9 +227,9 @@ export default {
       if (!arr) return
       item.supplierCategoryId = val[0]
       item.personnelName = arr.label
+      item.personnelId = arr.value
       item.supplierName = arr.label
       item.supplierId = arr.value
-      console.log(item)
     }
   }
 }
