@@ -46,7 +46,7 @@
 
 <script>
 import model from '@/public/listModel.js'
-import { fecthListInfo, fecthStockList } from '@/api/warehouse/goodsOut.js'
+import { fecthListInfo, fecthStockList } from '@/api/warehouse/goodsIn.js'
 
 export default {
   name: 'storageRe',

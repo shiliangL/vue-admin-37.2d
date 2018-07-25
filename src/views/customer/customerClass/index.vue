@@ -23,11 +23,11 @@
           </el-select>
         </div>
 
-        <div class="left">
+        <!-- <div class="left">
           <el-select size="small" style="width: 140px;" v-model="searchBarData.driverId" clearable filterable placeholder="配送员">
             <el-option v-for="sub in options.driverOption" :key="sub.driverId" :label="sub.name" :value="sub.driverId" ></el-option>
           </el-select>
-        </div>
+        </div> -->
 
         <div class="left">
           <el-select size="small" style="width: 90px;" v-model="searchBarData.orderResource" clearable filterable placeholder="创建渠道">
@@ -75,7 +75,7 @@
           <el-table-column prop="categoryName" label="客户类别" align="center"></el-table-column>
           <el-table-column prop="managerName" label="客户经理" align="center"></el-table-column>
           <el-table-column prop="regionTitle" label="配送区域" align="center"></el-table-column>
-          <el-table-column prop="driverName" label="配送员" align="center"></el-table-column>
+          <!-- <el-table-column prop="driverName" label="配送员" align="center"></el-table-column> -->
           <el-table-column prop="orderResource" label="创建渠道" align="center">
             <template slot-scope="scope" align="center">
               <span v-cloak v-if="scope.row.orderResource ===0"> App </span>

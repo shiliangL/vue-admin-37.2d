@@ -1,8 +1,8 @@
 <!-- 商品出库 -->
 <template>
-    <div class="goodsIn">
+    <div class="goodsOut">
 
-			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"  @add="showAdd"></search-bar>
+			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthOutList"  @add="showAdd"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight" :key="curIndex">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -56,10 +56,10 @@
 import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs, CascaderBox, SearchBar } from '@/components/base.js'
-import { fecthList, fecthStockList } from '@/api/warehouse/goodsOut.js'
+import { fecthOutList, fecthStockList } from '@/api/warehouse/goodsOut.js'
 
 export default {
-  name: 'goodsIn',
+  name: 'goodsOut',
   mixins: [model],
   components: {
     Add,
@@ -99,18 +99,18 @@ export default {
     ]
   },
   mounted() {
-    this.fecthList()
+    this.fecthOutList()
     this.fecthStockList()
   },
   methods: {
     // 数据请求
-    fecthList() {
+    fecthOutList() {
       const { index, size } = this.pagination
       const data = {
         index,
         size
       }
-      fecthList(data).then(({ data }) => {
+      fecthOutList(data).then(({ data }) => {
         this.table.data = data.rows
         this.pagination.total = data.total
       }).catch(e => {
@@ -136,7 +136,7 @@ export default {
         size,
         ...item
       }
-      fecthList(data).then(({ data }) => {
+      fecthOutList(data).then(({ data }) => {
         this.table.data = data.rows
         this.pagination.total = data.total
       }).catch(e => {
@@ -146,11 +146,11 @@ export default {
     // 分页操作区域
     handleSizeChange(value) {
       this.pagination.size = value
-      this.fecthList()
+      this.fecthOutList()
     },
     handleCurrentChange(value) {
       this.pagination.index = value
-      this.fecthList()
+      this.fecthOutList()
     },
     clickMoreCommand(command) {
       this.$message({ type: 'success', message: command, duration: 0, showClose: true })
@@ -164,7 +164,7 @@ export default {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, title: '新增入库单信息' }})
     },
     refrehList() {
-      this.fecthList()
+      this.fecthOutList()
     }
   }
 }

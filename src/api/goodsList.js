@@ -106,3 +106,20 @@ export function productUpdate(data) {
     data
   })
 }
+
+// 加载库存明细
+export function fecthProductInventory(params) {
+  return request({
+    url: 'productInfo/pageProductInventory',
+    method: 'get',
+    params
+  })
+}
+// 设置库存上下限
+export function updateSafeStock(data) {
+  return request({
+    url: 'productInfo/updateSafeStock',
+    method: 'POST',
+    data
+  })
+}

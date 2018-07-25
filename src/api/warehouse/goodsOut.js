@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
-// 加载列表 -- 出库
-export function fecthList(params) {
+// 加载列表 -- 出库----------------
+export function fecthOutList(params) {
   return request({
     url: 'stockOutRecords/page',
     method: 'get',
@@ -9,42 +9,56 @@ export function fecthList(params) {
   })
 }
 
+export function fecthOutRe(params) {
+  return request({
+    url: 'stockOutDetails/page',
+    method: 'get',
+    params
+  })
+}
 // 明细
-export function detailRk(params) {
+export function fecthOutDetail(params) {
   return request({
-    url: 'stockInInfo/getDetail',
+    url: 'stockOutRecords/getDetail',
+    method: 'get',
+    params
+  })
+}
+// 加载列表 -- 出库----------------
+export function fecthOutTableDetail(params) {
+  return request({
+    url: 'stockOutDetails/list',
     method: 'get',
     params
   })
 }
 
-// 新增仓位
-export function createRk(data) {
+export function fecthOutReList(params) {
   return request({
-    url: 'stockInInfo/create',
-    method: 'post',
-    data
-  })
-}
-// 出库明细-------------
-export function fecthListInfo(params) {
-  return request({
-    url: 'stockOutRecords/page',
+    url: 'stockOutDetails/page',
     method: 'get',
     params
   })
 }
 
-// 采购收货传递仓库 id stockId
-export function findMore(params) {
-  return request({
-    url: 'purchaseAcceptInfo/list',
-    method: 'get',
-    params
-  })
-}
+// export function fecthListInfo(params) {
+//   return request({
+//     url: 'stockOutDetails/page',
+//     method: 'get',
+//     params
+//   })
+// }
 
-// 加载仓库
+// // 采购收货传递仓库 id stockId
+// export function findMore(params) {
+//   return request({
+//     url: 'purchaseAcceptInfo/list',
+//     method: 'get',
+//     params
+//   })
+// }
+
+// 加载仓库 公共
 export function fecthStockList(params) {
   return request({
     url: 'stockInfo/list',

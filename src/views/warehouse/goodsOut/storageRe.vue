@@ -47,7 +47,7 @@
 
 <script>
 import model from '@/public/listModel.js'
-import { fecthListInfo, fecthStockList } from '@/api/warehouse/goodsIn.js'
+import { fecthOutReList, fecthStockList } from '@/api/warehouse/goodsOut.js'
 
 export default {
   name: 'storageRe',
@@ -58,9 +58,9 @@ export default {
       tabTitles: [],
       searchBarDate: [
         [
-          { type: 'date', value: null, key: 'warehouseTime', width: '200px', placeholder: '创建日期' },
+          { type: 'date', value: null, key: 'outageTime', width: '200px', placeholder: '出库日期' },
           { type: 'option', value: null, key: 'stockId', class: 'w150', placeholder: '仓库', options: [] },
-          { type: 'option', value: null, key: 'storageType', class: 'w150', placeholder: '入库类别', options: [
+          { type: 'option', value: null, key: 'storehouseType', class: 'w150', placeholder: '入库类别', options: [
             { label: '销售订单', value: 1 },
             { label: '销售换货', value: 2 }
           ] },
@@ -92,7 +92,7 @@ export default {
         index,
         size
       }
-      fecthListInfo(data).then(({ data }) => {
+      fecthOutReList(data).then(({ data }) => {
         this.table.data = data.rows
         this.pagination.total = data.total
       }).catch(e => {
@@ -107,7 +107,7 @@ export default {
         size,
         ...item
       }
-      fecthListInfo(data).then(({ data }) => {
+      fecthOutReList(data).then(({ data }) => {
         this.table.data = data.rows
         this.pagination.total = data.total
       }).catch(e => {

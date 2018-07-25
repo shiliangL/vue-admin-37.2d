@@ -1,4 +1,4 @@
-function toTreeData(data, attributes) {
+export function toTreeData(data, attributes) {
   const resData = data
   const tree = []
 

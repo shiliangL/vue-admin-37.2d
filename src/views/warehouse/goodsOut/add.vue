@@ -21,64 +21,70 @@
             <template v-if="this.data.type === 'add'">
 
               <div class="search">
-                  <el-cascader style="320px" v-model="stockDto" size="small"  placeholder="请选择仓库"  filterable :options="options.stock" @active-item-change="handleItemChange" :props="propType" @change="stockChange"></el-cascader>
-                  <el-select v-model="storageType" placeholder="请选择类型" size="small" style="width:120px" filterable  @change="stockChange">
-                    <el-option v-for="item in options.storageType" :key="item.value" :label="item.label" :value="item.value"> </el-option> 
-                  </el-select>
-                  <el-button  type="primary" size="small" @click.stop="fecthList" > 搜索 </el-button>
+                <search-bar :data="searchBarDate" @search="searchAction" @reset="searchAction"  @add="showAdd"></search-bar>
+                <div>
+                  <el-row :gutter="40">
+                    <el-col :span="12">
+
+                      <el-card class="box-card">
+                        <div slot="header" class="clearfix">
+                            <GoodsCascader class="left"/>
+                            <el-input size="small" style="width:110px" class="left w180"  placeholder="商品名称检索" v-model.trim="viewSearch"></el-input>
+                            <el-button  type="primary" size="small" class="left" @click.stop="clickToSearch" > 搜索 </el-button>
+                        </div>
+                        <div class="table">
+                          <el-table :data="tableData_L" size="small" max-height="300" style="width: 100%;" highlight-current-row>
+
+                            <el-table-column label="序号" width="50" align="center">
+                              <template slot-scope="scope">
+                                <span>{{scope.$index + 1}}</span>
+                              </template>
+                            </el-table-column>
+                  
+                            <el-table-column prop="orderNo" label="商品名称" align="center"></el-table-column>
+                            <el-table-column prop="stockInfoName" label="基本单位" align="center"></el-table-column>
+                            <el-table-column prop="createdTime" label="下单数量" align="center"></el-table-column>
+
+                          </el-table>
+                        </div>
+                      </el-card>
+
+                    </el-col>
+                    <el-col :span="12">
+
+                      <el-card class="box-card">
+                        <div slot="header" class="clearfix">
+                          <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+                        </div>
+                        <div class="table">
+                          <el-table :data="tableData_L" size="small" max-height="300" style="width: 100%;" highlight-current-row>
+
+                            <el-table-column label="序号" width="50" align="center">
+                              <template slot-scope="scope">
+                                <span>{{scope.$index + 1}}</span>
+                              </template>
+                            </el-table-column>
+                  
+                            <el-table-column prop="orderNo" label="商品名称" align="center"></el-table-column>
+                            <el-table-column prop="stockInfoName" label="基本单位" align="center"></el-table-column>
+                            <el-table-column prop="createdTime" label="下单数量" align="center"></el-table-column>
+
+                          </el-table>
+                        </div>
+                      </el-card>
+
+                    </el-col>
+                  </el-row>
+                </div>
+                <!-- <el-cascader style="320px" v-model="stockDto" size="small"  placeholder="请选择仓库"  filterable :options="options.stock" @active-item-change="handleItemChange" :props="propType" @change="stockChange"></el-cascader>
+                <el-select v-model="storageType" placeholder="请选择类型" size="small" style="width:120px" filterable  @change="stockChange">
+                  <el-option v-for="item in options.storageType" :key="item.value" :label="item.label" :value="item.value"> </el-option> 
+                </el-select>
+                <el-button  type="primary" size="small" @click.stop="fecthList" > 搜索 </el-button> -->
               </div>
               <div class="table">
-
-                <!-- {{form.stockInDetailList}} -->
-                <el-form :model="form" :rules="rules" ref="stockInDetailList" label-width="120px" :inline="true">
-
-                  <el-table :data="form.stockInDetailList" size="small" class="stockInDetailList" max-height="420" style="width: 100%;" highlight-current-row>
-                    <el-table-column label="序号" width="50" align="center">
-                      <template slot-scope="scope">
-                        <span>{{scope.$index + 1}}</span>
-                      </template>
-                    </el-table-column>
-                    <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
-                    <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
-
-                    <el-table-column prop="batchesBarCode" label="商品批次条码" align="center"></el-table-column>
-
-                    <el-table-column v-if="storageType===1"  prop="orderNo" label="关联采购订单编号" align="center"></el-table-column>
-                    <el-table-column v-if="storageType===2"  prop="orderNo" label="关联销售退货单号" align="center"></el-table-column>
-                    <el-table-column v-if="storageType===3"  prop="orderNo" label="关联销售换货单号" align="center"></el-table-column>
-
-                    <el-table-column prop="createdTime" label="仓位" align="center" width="220">
-                      <template slot-scope="scope">
-                        <div class="item-box">
-                          <span v-for="item in scope.row.storageIdsOption" :key="item.pk">
-                          <el-checkbox v-model="item.isCheck" :label="item.number"></el-checkbox>
-                          </span>
-                        </div>
-                      </template>
-                    </el-table-column>
-                    <el-table-column prop="quantity" label="数量" align="center"></el-table-column>
-                    <el-table-column prop="makePlace" label="产地" align="center" width="100">
-                      <template slot-scope="scope">
-                        <el-form-item label="" label-width="0">
-                          <el-input size="small" style="width:90px" class="w180"  placeholder="请输入" v-model.trim="scope.row.makePlace"></el-input>
-                        </el-form-item>
-                      </template>
-                    </el-table-column>
-                    <el-table-column prop="makeDate" label="生产日期" align="center" width="180">
-                      <template slot-scope="scope">
-                        <el-form-item label="" label-width="0">
-                          <el-date-picker :style="{width:'136px'}" size="small" v-model="scope.row.makeDate" value-format="yyyy-MM-dd" type="date"></el-date-picker>
-                        </el-form-item>
-                      </template>
-                    </el-table-column>
-                  </el-table>
-
-                </el-form>
-                <div class="footer-block">
-                  <span class="page" v-cloak> 共 {{form.stockInDetailList.length}} 条</span>
-                </div>
+ 
               </div>
-
             </template>
 
             <template v-if="this.data.type === 'view'">
@@ -120,7 +126,7 @@
                   <div class="row-content">
                     
                     <div class="search">
-                        <el-input size="small" style="width:190px" class="w180"  placeholder="请输入商品名称检索" v-model.trim="viewSearch"></el-input>
+                        <el-input size="small" style="width:190px" class="w180"  placeholder="请输入商品名称/出库单号检索" v-model.trim="viewSearch"></el-input>
                         <el-button  type="primary" size="small" @click.stop="clickToSearch" > 搜索 </el-button>
                         <el-button  size="small" @click.stop="resetSearch" > 重置 </el-button>
                     </div>
@@ -168,15 +174,16 @@
 
 <script>
 import addModel from '@/public/addModel.js'
-import { findMore, createRk, detailRk, fecthBodyDetail } from '@/api/warehouse/goodsIn.js'
-import {
-  stockCategory,
-  fecthStockByType,
-  fecthAllCW
-} from '@/api/warehouse/setting.js'
+import { SearchBar, GoodsCascader } from '@/components/base.js'
+import { fecthOutDetail, fecthOutTableDetail } from '@/api/warehouse/goodsOut.js'
+import { stockCategory, fecthStockByType, fecthAllCW } from '@/api/warehouse/setting.js'
 
 export default {
   mixins: [addModel],
+  components: {
+    SearchBar,
+    GoodsCascader
+  },
   data() {
     return {
       dialogVisible: false,
@@ -204,6 +211,40 @@ export default {
       isShowEditor: false,
       isShowView: false,
       currentTitle: null,
+      searchBarDate: [
+        [
+          {
+            type: 'option',
+            value: null,
+            key: 'stockId',
+            class: 'w150',
+            placeholder: '仓库',
+            options: []
+          },
+          {
+            type: 'option',
+            value: null,
+            key: 'storehouseType',
+            class: 'w150',
+            placeholder: '入库类别',
+            options: [
+              { label: '销售订单', value: 1 },
+              { label: '销售换货', value: 2 }
+            ]
+          },
+          {
+            type: 'input',
+            value: null,
+            key: 'orderNo',
+            class: 'w180',
+            placeholder: '输入单号检索'
+          },
+          { type: 'search', name: '查询' },
+          { type: 'reset', name: '重置' }
+        ],
+        [{ type: 'add', name: '生成入库单' }]
+      ],
+      tableData_L: [],
       options: {
         stock: [],
         storageType: [
@@ -222,7 +263,6 @@ export default {
     this.currentTitle = this.data.title || ''
     if (this.data.type === 'view') {
       this.fecthDetailById()
-      this.fecthBodyDetail()
     } else if (this.data.type === 'add') {
       this.stockCategory()
       this.fecthAllCW()
@@ -232,19 +272,29 @@ export default {
     fecthDetailById() {
       // detailRk
       if (!this.data.obj.id) return
-      detailRk({ id: this.data.obj.id })
+      fecthOutDetail({ id: this.data.obj.id })
         .then(({ data }) => {
           this.viewData = Object.assign(this.viewData, data)
         })
         .catch(e => {
           console.log(e)
         })
-    },
-    fecthBodyDetail() {
-      if (!this.data.obj.id) return
-      fecthBodyDetail({ id: this.data.obj.id })
+      fecthOutTableDetail({ outId: this.data.obj.id })
         .then(({ data }) => {
-          console.log(data, 'xxxx')
+          this.viewData.tableView = data
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
+    fecthOutTableDetail() {
+      if (!this.data.obj.id) return
+      const data = {
+        outId: this.data.obj.id,
+        inputContent: this.viewSearch
+      }
+      fecthOutTableDetail(data)
+        .then(({ data }) => {
           this.viewData.tableView = data
         })
         .catch(e => {
@@ -306,33 +356,6 @@ export default {
         }
       }, 400)
     },
-    fecthList() {
-      if (!this.stockDto[1]) return
-      if (!this.storageType) {
-        this.$message({ type: 'warning', message: '请选择入库类型' })
-        return
-      }
-      if (this.storageType === 1) {
-        // 选中采购入库
-        findMore({ stockId: this.stockDto[1] })
-          .then(({ data }) => {
-            if (!this.cwOption) return
-            for (const item of data) {
-              if (this.cwOption[item.stockId]) {
-                item.storageIdsOption = JSON.parse(
-                  JSON.stringify(this.cwOption[item.stockId])
-                )
-              } else {
-                item.storageIdsOption = []
-              }
-            }
-            this.form.stockInDetailList = data
-          })
-          .catch(e => {
-            console.log(e)
-          })
-      }
-    },
     fecthAllCW() {
       fecthAllCW()
         .then(({ data }) => {
@@ -363,7 +386,6 @@ export default {
       if (this.data.type === 'view') {
         const id = this.data.obj.id
         if (!id) return
-        this.fecthDerDetailById(id)
       }
     },
     validateForm() {
@@ -378,50 +400,13 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
           })
-            .then(() => {
-              if (this.storageType === 1) {
-                this.buyIn()
-              }
-            })
+            .then(() => {})
             .catch(() => {})
         } else {
           this.$message({ type: 'warning', message: '请核实表单' })
           return
         }
       })
-    },
-    buyIn() {
-      // 采购入库
-      const arr = JSON.parse(JSON.stringify(this.form.stockInDetailList))
-      for (const item of arr) {
-        const isCheckArr = []
-        if (item.makeDate) {
-          item.makeDate = item.makeDate + ' 00:00:00'
-        }
-        for (const k of item.storageIdsOption) {
-          if (k.hasOwnProperty('isCheck')) {
-            if (k.isCheck) {
-              isCheckArr.push(k.pk)
-            }
-          }
-        }
-        item.storageIds = isCheckArr.toString()
-        delete item.storageIdsOption
-      }
-      const data = {
-        storageType: 1,
-        stockId: this.stockDto[1],
-        stockInDetailList: arr
-      }
-      createRk(data)
-        .then(res => {
-          this.dialog.visiable = false
-          this.$message({ type: 'success', message: res.msg })
-          this.$emit('add')
-        })
-        .catch(e => {
-          this.error(e)
-        })
     },
     stockChange(value) {
       this.form.stockInDetailList = []
@@ -435,24 +420,16 @@ export default {
       this.dialog.visiable = false
       this.$emit('add')
     },
-    clickToSearch() {
-      if (!this.data.obj.id) return
-      const data = {
-        inputContent: this.viewSearch,
-        id: this.data.obj.id
-      }
-      fecthBodyDetail(data)
-        .then(({ data }) => {
-          this.viewData.tableView = data
-        })
-        .catch(e => {
-          console.log(e)
-        })
-    },
     resetSearch() {
       this.viewSearch = null
       this.clickToSearch()
-    }
+    },
+    clickToSearch() {
+      this.fecthOutTableDetail()
+    },
+    // 生成出库单号
+    searchAction() {},
+    showAdd() {}
   }
 }
 </script>
@@ -497,5 +474,10 @@ export default {
     .el-form-item {
         margin-bottom: 0;
     }
+}
+.clearfix{
+  .left{
+    margin-left: 4px;
+  }
 }
 </style>

@@ -36,7 +36,7 @@ export function update(data) {
 // 加载下拉选项
 export function fetchOptions(params) {
   return request({
-    url: 'scmshipregioninfo/listAll',
+    url: 'scmshipRegionInfo/listAll',
     method: 'get',
     params
   })

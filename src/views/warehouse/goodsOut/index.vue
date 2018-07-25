@@ -2,15 +2,15 @@
 <template>
     <div class="goodsOutRe">
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
-			<storageIn v-if="curIndex===0"></storageIn>
+			<storageOut v-if="curIndex===0"></storageOut>
 			<storageRe v-if="curIndex===1"></storageRe>
     </div>
 </template>
 
 <script>
 import model from '@/public/listModel.js'
-import { Tabs, CascaderBox, SearchBar } from '@/components/base.js'
-import storageIn from './storageIn'
+import { Tabs, SearchBar } from '@/components/base.js'
+import storageOut from './storageOut'
 import storageRe from './storageRe'
 
 export default {
@@ -19,8 +19,7 @@ export default {
   components: {
     Tabs,
     SearchBar,
-    CascaderBox,
-    storageIn,
+    storageOut,
     storageRe
   },
   data() {

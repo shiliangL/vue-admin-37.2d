@@ -105,7 +105,9 @@ export const asyncRouterMap = [
     children: [
       { path: 'setting', component: _import('warehouse/setting/index'), name: 'setting', meta: { title: 'setting' }},
       { path: 'goodsIn', component: _import('warehouse/goodsIn/index'), name: 'goodsIn', meta: { title: 'goodsIn' }},
-      { path: 'goodsOut', component: _import('warehouse/goodsOut/index'), name: 'goodsOut', meta: { title: 'goodsOut' }}
+      { path: 'goodsOut', component: _import('warehouse/goodsOut/index'), name: 'goodsOut', meta: { title: 'goodsOut' }},
+      { path: 'inventory', component: _import('warehouse/inventory/index'), name: 'inventory', meta: { title: 'inventory' }},
+      { path: 'workbench', component: _import('warehouse/workbench/index'), name: 'workbench', meta: { title: 'workbench' }}
     ]
   },
   {
