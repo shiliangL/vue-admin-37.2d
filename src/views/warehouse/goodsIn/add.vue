@@ -141,12 +141,19 @@
                       <el-table-column prop="stockInfoName" label="仓库" align="center"></el-table-column>
                       <el-table-column prop="stockStorageInfoNumbers" label="仓位" align="center"></el-table-column>
 
-                      <el-table-column prop="storageType" label="入库类型" align="center"></el-table-column>
+                      <el-table-column prop="storageType" label="入库类型" align="center">
+                         <template slot-scope="scope">
+                          <span v-if="scope.row.storageType === 1"> 采购入库 </span>
+                          <span v-if="scope.row.storageType === 2"> 销售退货 </span>
+                          <span v-if="scope.row.storageType === 3"> 销售换货 </span>
+                          <span v-if="scope.row.storageType === 4"> 其他 </span>
+                        </template>
+                      </el-table-column>
                       <el-table-column prop="quantity" label="入库数量" align="center"></el-table-column>
                       <el-table-column prop="warehouseTime" label="入库时间" align="center"></el-table-column>
 
                       <el-table-column prop="makePlace" label="产地" align="center"></el-table-column>
-                      <el-table-column prop="makeDate" label="生产日期" width="90" align="center"></el-table-column>
+                      <el-table-column prop="makeDateStr" label="生产日期" width="90" align="center"></el-table-column>
 
                     </el-table>
                     <div class="footer-block">
@@ -169,7 +176,7 @@
 
 <script>
 import addModel from '@/public/addModel.js'
-import { findMore, createRk, detailRk, fecthBodyDetail } from '@/api/warehouse/goodsIn.js'
+import { findMore, createRk, detailRk, fecthBodyDetail, returnChangeList } from '@/api/warehouse/goodsIn.js'
 import {
   stockCategory,
   fecthStockByType,
@@ -233,46 +240,47 @@ export default {
   },
   methods: {
     fecthDetailById() {
-      // detailRk
       if (!this.data.obj.id) return
-      detailRk({ id: this.data.obj.id })
-        .then(({ data }) => {
-          this.viewData = Object.assign(this.viewData, data)
-        })
-        .catch(e => {
-          console.log(e)
-        })
+      detailRk({ id: this.data.obj.id }).then(({ data }) => {
+        this.viewData = Object.assign(this.viewData, data)
+      }).catch(e => {
+        console.log(e)
+      })
     },
     fecthBodyDetail() {
       if (!this.data.obj.id) return
-      fecthBodyDetail({ id: this.data.obj.id })
-        .then(({ data }) => {
-          console.log(data, 'xxxx')
-          this.viewData.tableView = data
-        })
-        .catch(e => {
-          console.log(e)
-        })
+      fecthBodyDetail({ id: this.data.obj.id }).then(({ data }) => {
+        if (Array.isArray(data)) {
+          for (const item of data) {
+            if (item.makeDate) {
+              item.makeDateStr = item.makeDate.split(' ')[0]
+            } else {
+              item.makeDateStr = null
+            }
+          }
+        }
+        this.viewData.tableView = data
+      }).catch(e => {
+        console.log(e)
+      })
     },
     // 加载仓库类别
     stockCategory() {
-      stockCategory()
-        .then(({ data }) => {
-          if (Array.isArray(data) && data.length > 0) {
-            const arr = []
-            for (const item of data) {
-              arr.push({
-                value: item.pk,
-                label: item.title,
-                children: []
-              })
-            }
-            this.options.stock = arr
+      stockCategory().then(({ data }) => {
+        if (Array.isArray(data) && data.length > 0) {
+          const arr = []
+          for (const item of data) {
+            arr.push({
+              value: item.pk,
+              label: item.title,
+              children: []
+            })
           }
-        })
-        .catch(e => {
-          // this.loadingText = e.msg
-        })
+          this.options.stock = arr
+        }
+      }).catch(e => {
+        // this.loadingText = e.msg
+      })
     },
     handleItemChange(value) {
       const arr = this.options.stock
@@ -310,40 +318,58 @@ export default {
       }, 400)
     },
     fecthList() {
-      if (!this.stockDto[1]) return
+      if (!this.stockDto[1]) {
+        this.$message({ type: 'warning', message: '请选仓库' })
+        return
+      }
       if (!this.storageType) {
         this.$message({ type: 'warning', message: '请选择入库类型' })
         return
       }
       if (this.storageType === 1) {
         // 选中采购入库
-        findMore({ stockId: this.stockDto[1] })
-          .then(({ data }) => {
-            if (!this.cwOption) return
-            for (const item of data) {
-              if (this.cwOption[item.stockId]) {
-                item.storageIdsOption = JSON.parse(
-                  JSON.stringify(this.cwOption[item.stockId])
-                )
-              } else {
-                item.storageIdsOption = []
-              }
+        findMore({ stockId: this.stockDto[1] }).then(({ data }) => {
+          if (!this.cwOption) return
+          for (const item of data) {
+            if (this.cwOption[item.stockId]) {
+              item.storageIdsOption = JSON.parse(
+                JSON.stringify(this.cwOption[item.stockId])
+              )
+            } else {
+              item.storageIdsOption = []
             }
-            this.form.stockInDetailList = data
-          })
-          .catch(e => {
-            console.log(e)
-          })
+          }
+          this.form.stockInDetailList = data
+        }).catch(e => {
+          this.$message({ type: 'error', message: e.msg })
+        })
+      } else if (this.storageType === 2 || this.storageType === 3) {
+        const data = {
+          method: this.storageType === 2 ? 1 : 2
+        }
+        returnChangeList(data).then(({ data }) => {
+          if (!this.cwOption) return
+          for (const item of data) {
+            if (this.cwOption[item.stockId]) {
+              item.storageIdsOption = JSON.parse(
+                JSON.stringify(this.cwOption[item.stockId])
+              )
+            } else {
+              item.storageIdsOption = []
+            }
+          }
+          this.form.stockInDetailList = data
+        }).catch(e => {
+          this.$message({ type: 'error', message: e.msg })
+        })
       }
     },
     fecthAllCW() {
-      fecthAllCW()
-        .then(({ data }) => {
-          this.cwOption = data
-        })
-        .catch(e => {
-          console.log(e)
-        })
+      fecthAllCW().then(({ data }) => {
+        this.cwOption = data
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
     },
     clickToEdit() {
       this.typeIseditor = true // 点击判断编辑修改提交
@@ -354,10 +380,7 @@ export default {
       this.$emit('input', false)
     },
     success() {
-      this.$message({
-        type: 'success',
-        message: this.dialog.title + '成功'
-      })
+      this.$message({ type: 'success', message: this.dialog.title + '成功' })
     },
     error(data) {
       this.$message({ type: 'error', message: data.msg })
@@ -380,13 +403,9 @@ export default {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
-          })
-            .then(() => {
-              if (this.storageType === 1) {
-                this.buyIn()
-              }
-            })
-            .catch(() => {})
+          }).then(() => {
+            this.buyIn()
+          }).catch(() => {})
         } else {
           this.$message({ type: 'warning', message: '请核实表单' })
           return
@@ -394,7 +413,6 @@ export default {
       })
     },
     buyIn() {
-      // 采购入库
       const arr = JSON.parse(JSON.stringify(this.form.stockInDetailList))
       for (const item of arr) {
         const isCheckArr = []
@@ -412,7 +430,7 @@ export default {
         delete item.storageIdsOption
       }
       const data = {
-        storageType: 1,
+        storageType: this.storageType,
         stockId: this.stockDto[1],
         stockInDetailList: arr
       }
@@ -444,13 +462,11 @@ export default {
         inputContent: this.viewSearch,
         id: this.data.obj.id
       }
-      fecthBodyDetail(data)
-        .then(({ data }) => {
-          this.viewData.tableView = data
-        })
-        .catch(e => {
-          console.log(e)
-        })
+      fecthBodyDetail(data).then(({ data }) => {
+        this.viewData.tableView = data
+      }).catch(e => {
+        console.log(e)
+      })
     },
     resetSearch() {
       this.viewSearch = null

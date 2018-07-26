@@ -43,6 +43,14 @@ export function findMore(params) {
     params
   })
 }
+// 销售/退货入库
+export function returnChangeList(params) {
+  return request({
+    url: 'scmsaleRreturnsGoods/findByMethod',
+    method: 'get',
+    params
+  })
+}
 
 // 加载仓库
 export function fecthStockList(params) {

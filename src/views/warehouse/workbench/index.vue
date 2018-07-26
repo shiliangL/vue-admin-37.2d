@@ -46,11 +46,11 @@
       <!-- 弹层 -->
 
       <!-- 弹层区域 -->
-      <el-dialog :title="dialogTitle" class="dialogTitle" width="400px" :visible.sync="dialogVisible" append-to-body center @close="resetForm">
+      <el-dialog :title="dialogTitle" class="dialogTitle" width="450px" :visible.sync="dialogVisible" append-to-body center @close="resetForm">
         <div v-if="dialogVisible">
           <el-form :model="form" ref="form" :rules="rules">
             <el-form-item label="工作台类型:" label-width="100px">
-              <span v-if="curIndex===1"> QC校验台 </span>
+              <span v-if="curIndex===1"> 验收台 </span>
               <span v-if="curIndex===2"> 入库台 </span>
               <span v-if="curIndex===3"> 出库台 </span>
               <span v-if="curIndex===4"> 分拣台 </span>
@@ -139,7 +139,7 @@ export default {
   },
   created() {
     this.tabTitles = [
-      { title: 'QC校验台', value: 1 },
+      { title: '验收台', value: 1 },
       { title: '入库台', value: 2 },
       { title: '出库台', value: 3 },
       { title: '分拣台', value: 4 },

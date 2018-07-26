@@ -18,14 +18,17 @@
 					<el-table-column prop="stockStorageInfoNumbers" label="仓位" align="center"></el-table-column>
 					<el-table-column prop="storageType" label="入库类型" align="center">
              <template slot-scope="scope">
-              <span>{{scope.$index + 1}}</span>
+              <span v-if="scope.row.storageType === 1"> 采购入库 </span>
+              <span v-if="scope.row.storageType === 2"> 销售退货 </span>
+              <span v-if="scope.row.storageType === 3"> 销售换货 </span>
+              <span v-if="scope.row.storageType === 4"> 其他 </span>
             </template>
           </el-table-column>
 					<el-table-column prop="quantity" label="入库数量" align="center"></el-table-column>
 					<el-table-column prop="warehouseTime" label="入库时间" align="center"></el-table-column>
 
 					<el-table-column prop="makePlace" label="产地" align="center"></el-table-column>
-					<el-table-column prop="makeDate" label="生产日期" align="center"></el-table-column>
+					<el-table-column prop="makeDateStr" label="生产日期" align="center"></el-table-column>
 
         </el-table>
         
@@ -94,6 +97,15 @@ export default {
         size
       }
       fecthListInfo(data).then(({ data }) => {
+        if (Array.isArray(data.rows)) {
+          for (const item of data.rows) {
+            if (item.makeDate) {
+              item.makeDateStr = item.makeDate.split(' ')[0]
+            } else {
+              item.makeDateStr = null
+            }
+          }
+        }
         this.table.data = data.rows
         this.pagination.total = data.total
       }).catch(e => {
@@ -109,6 +121,15 @@ export default {
         ...item
       }
       fecthListInfo(data).then(({ data }) => {
+        if (Array.isArray(data.rows)) {
+          for (const item of data.rows) {
+            if (item.makeDate) {
+              item.makeDateStr = item.makeDate.split(' ')[0]
+            } else {
+              item.makeDateStr = null
+            }
+          }
+        }
         this.table.data = data.rows
         this.pagination.total = data.total
       }).catch(e => {

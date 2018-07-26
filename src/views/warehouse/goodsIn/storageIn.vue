@@ -15,7 +15,14 @@
  
 					<el-table-column prop="orderNo" label="入库单号" align="center"></el-table-column>
 					<el-table-column prop="stockInfoName" label="仓库" align="center"></el-table-column>
-					<el-table-column prop="storageType" label="入库类型" align="center"></el-table-column>
+					<el-table-column prop="storageType" label="入库类型" align="center">
+             <template slot-scope="scope">
+              <span v-if="scope.row.storageType === 1"> 采购入库 </span>
+              <span v-if="scope.row.storageType === 2"> 销售退货 </span>
+              <span v-if="scope.row.storageType === 3"> 销售换货 </span>
+              <span v-if="scope.row.storageType === 4"> 其他 </span>
+            </template>
+          </el-table-column>
 					<el-table-column prop="createdName" label="创建人" align="center"></el-table-column>
 					<el-table-column prop="createdTime" label="创建时间" align="center"></el-table-column>
  
