@@ -1,9 +1,9 @@
 <!-- 配送员 -->
 <template>
     <div class="deliveryer">
-			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"  @add="showAdd"></search-bar>
+			<search-bar :data="searchBarDate" @search="searchAction" @reset="fetchList"  @add="showAdd"></search-bar>
       <!-- 表格 -->
-      <table-contain  :height.sync="table.maxHeight" :key="curIndex">
+      <table-contain  :height.sync="table.maxHeight">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
 
           <el-table-column label="序号" width="50" align="center">
@@ -12,14 +12,24 @@
             </template>
           </el-table-column>
  
- 					<el-table-column prop="orderNo" label="用户账号" align="center"></el-table-column>
-					<el-table-column prop="stockInfoName" label="用户名称" align="center"></el-table-column>
-					<el-table-column prop="stockInfoName" label="岗位角色" align="center"></el-table-column>
-					<el-table-column prop="storageType" label="创建时间" align="center"></el-table-column>
-					<el-table-column prop="storageType" label="在岗日期" align="center"></el-table-column>
-					<el-table-column prop="storageType" label="离岗日期" align="center"></el-table-column>
-					<el-table-column prop="createdName" label="是否有车" align="center"></el-table-column>
-					<el-table-column prop="createdTime" label="账号状态" align="center"></el-table-column>
+ 					<el-table-column prop="mobile" label="用户账号" align="center"></el-table-column>
+					<el-table-column prop="name" label="用户名称" align="center"></el-table-column>
+					<el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
+					<el-table-column prop="entryTime" label="在岗时间" align="center"></el-table-column>
+					<el-table-column prop="departureTime" label="离岗时间" align="center"></el-table-column>
+					<el-table-column prop="carFlag" label="是否有车" align="center">
+             <template slot-scope="scope" align="center">
+               <span v-if="scope.row.carFlag===0"> 有 </span>
+               <span v-if="scope.row.carFlag===1"> 无 </span>
+            </template>
+          </el-table-column>
+					<el-table-column prop="status" label="账号状态" align="center">
+            <template slot-scope="scope" align="center">
+               <span v-if="scope.row.status===0"> 禁用 </span>
+               <span v-if="scope.row.status===1"> 启用 </span>
+            </template>
+          </el-table-column>
+
           <el-table-column label="操作" align="center" width="200">
             <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">详情</el-button>
@@ -47,7 +57,7 @@
 
       <!-- 弹层区域 -->
       <el-dialog :title="dialogTitle" class="dialogTitle" width="1110px" :visible.sync="dialogVisible" append-to-body center @close="resetForm">
-        <Add v-if="dialogVisible" @close="resetForm"> </Add>
+        <Add v-if="dialogVisible" @close="resetForm" :propsSonData="propsParentData" @add="fetchList"> </Add>
       </el-dialog>
       
     </div>
@@ -56,41 +66,37 @@
 <script>
 import model from '@/public/listModel.js'
 import Add from './add'
-import { Tabs, CascaderBox, SearchBar } from '@/components/base.js'
-import { fecthList, fecthStockList, create, deleteRow, detailRow, updateRow } from '@/api/warehouse/workbench.js'
+import { SearchBar } from '@/components/base.js'
+import { fetchList, resetPassword } from '@/api/distribution/deliveryer.js'
 
 export default {
   name: 'deliveryer',
   mixins: [model],
   components: {
     Add,
-    Tabs,
-    SearchBar,
-    CascaderBox
+    SearchBar
   },
   data() {
     return {
-      curIndex: 1,
-      CascaderBoxDTO: null,
-      tableOne: [],
-      tableTwo: [],
-      tabTitles: [],
       searchBarDate: [
         [
           {
             type: 'option',
             value: null,
-            key: 'stockId',
+            key: 'status',
             class: 'w150',
             placeholder: '状态',
-            options: []
+            options: [
+              { label: '无效', value: 0 },
+              { label: '有效', value: 1 }
+            ]
           },
           {
             type: 'input',
             value: null,
-            key: 'inputContent',
+            key: 'name',
             class: 'w180',
-            placeholder: '输入工作台名称检索'
+            placeholder: '输入名称检索'
           },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
@@ -104,50 +110,23 @@ export default {
       stockOption: []
     }
   },
-  created() {
-    this.tabTitles = [
-      { title: '验收台', value: 1 },
-      { title: '入库台', value: 2 },
-      { title: '出库台', value: 3 },
-      { title: '分拣台', value: 4 },
-      { title: '打包台', value: 5 }
-    ]
-  },
   mounted() {
-    this.fecthList()
-    this.fecthStockList()
+    this.fetchList()
   },
   methods: {
     // 数据请求
-    fecthList() {
+    fetchList() {
       const { index, size } = this.pagination
       const data = {
         index,
-        size,
-        type: this.curIndex
+        size
       }
-      fecthList(data)
-        .then(({ data }) => {
-          this.table.data = data.rows
-          this.pagination.total = data.total
-        })
-        .catch(e => {
-          this.$message({ type: 'error', message: e.msg })
-        })
-    },
-    fecthStockList() {
-      fecthStockList()
-        .then(({ data }) => {
-          for (const item of data) {
-            item.label = item.title
-            item.value = item.id
-          }
-          this.searchBarDate[0][0].options = data
-          this.stockOption = data
-        })
-        .catch(e => {
-          console.log(e)
-        })
+      fetchList(data).then(({ data }) => {
+        this.table.data = data.rows
+        this.pagination.total = data.total
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
     },
     searchAction(item) {
       if (!item) return
@@ -155,108 +134,66 @@ export default {
       const data = {
         index,
         size,
-        type: this.curIndex,
         ...item
       }
-      fecthList(data)
-        .then(({ data }) => {
-          this.table.data = data.rows
-          this.pagination.total = data.total
-        })
-        .catch(e => {
-          this.$message({ type: 'error', message: e.msg })
-        })
-    },
-    // 分页操作区域
-    handleSizeChange(value) {
-      this.pagination.size = value
-      this.fecthList()
-    },
-    handleCurrentChange(value) {
-      this.pagination.index = value
-      this.fecthList()
-    },
-    // 弹层操作
-    clickToEditor(index, row) {
-      this.isUpdate = true
-      detailRow({ id: row.id }).then(({ data }) => {
-        this.dialogVisible = true
-        this.form = Object.assign(this.form, data)
+      fetchList(data).then(({ data }) => {
+        this.table.data = data.rows
+        this.pagination.total = data.total
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
     },
+    // 分页操作区域
+    handleSizeChange(value) {
+      this.pagination.size = value
+      this.fetchList()
+    },
+    handleCurrentChange(value) {
+      this.pagination.index = value
+      this.fetchList()
+    },
+    // 弹层操作
+    clickToEditor(index, row) {
+      this.dialogTitle = '编辑配送区域'
+      this.propsParentData.type = 'add'
+      this.dialogVisible = true
+      this.propsParentData.isUpdate = true
+      this.propsParentData.data = row
+    },
     showAdd() {
-      this.isUpdate = false
+      this.dialogTitle = '新增配送员'
+      this.propsParentData.isUpdate = false
       this.dialogVisible = true
     },
     refrehList() {
-      this.fecthList()
+      this.fetchList()
     },
     tabsCallBack(item) {
       this.curIndex = item.value
-      this.fecthList()
+      this.fetchList()
     },
     resetForm() {
       this.dialogVisible = false
     },
     clickToDelete(index, item) {
-      this.$confirm('是否需要删除数据?', '提示', {
+      this.$confirm('是否确定重置密码为123456?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         if (!item.id) return
-        deleteRow({ id: item.id }).then(res => {
+        const data = {
+          operatorId: item.operatorId,
+          password: 123456
+        }
+        resetPassword(data).then(res => {
           this.$message({ type: 'success', message: `${res.msg}!` })
-          this.fecthList()
-        }).catch(() => {
-          this.$message({ type: 'error', message: '删除失败'
+          this.fetchList()
+        }).catch((e) => {
+          this.$message({ type: 'error', message: e.msg
           })
         })
       }).catch(() => {})
-    },
-    clickSaveOrUpdate(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          if (this.isUpdate) {
-            this.form.type = this.curIndex
-            this.saveLoading = true
-            const data = {
-              'id': this.form.pk,
-              'remark': this.form.remark,
-              'stockId': this.form.stockId,
-              'tableNo': this.form.tableNo,
-              'title': this.form.title,
-              'type': this.form.type
-            }
-            updateRow(data).then(res => {
-              this.dialogVisible = false
-              this.$message({ type: 'success', message: `${res.msg}!` })
-              this.fecthList()
-              this.saveLoading = false
-            }).catch(e => {
-              this.saveLoading = false
-              this.$message({ type: 'error', message: e.msg })
-            })
-          } else {
-            this.form.type = this.curIndex
-            this.saveLoading = true
-            create(this.form).then(res => {
-              this.dialogVisible = false
-              this.$message({ type: 'success', message: `${res.msg}!` })
-              this.fecthList()
-              this.saveLoading = false
-            }).catch(e => {
-              this.saveLoading = false
-              this.$message({ type: 'error', message: e.msg })
-            })
-          }
-        } else {
-          this.$message({ type: 'warning', message: '请核实表单' })
-          return
-        }
-      })
     }
   }
 }

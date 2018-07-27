@@ -4,6 +4,9 @@ export default {
     data: { // 用于给外部的数据传递
       type: Object,
       default: null
+    },
+    propsSonData: {
+      type: Object
     }
   },
   data() {
@@ -16,7 +19,7 @@ export default {
         loading: false, // 确定按钮状态
         text: '确定' // 按钮默认文字
       },
-      // loading
+      saveLoading: false,
       loading: true,
       loadingText: null
     }

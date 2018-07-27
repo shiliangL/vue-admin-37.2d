@@ -21,6 +21,13 @@ export default {
         visiable: false, // 是否显示新增组件
         data: null // 新增组件绑定的数据
       },
+      propsParentData: {
+        isUpdate: false,
+        type: null,
+        data: null
+      },
+      dialogVisible: false,
+      dialogTitle: null,
       // loading
       loading: true,
       loadingText: null
