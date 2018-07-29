@@ -1,7 +1,7 @@
-<!-- 入库单 -->
+<!-- 销售配送 -->
 <template>
     <div class="goodsIn">
-			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"  @add="showAdd"></search-bar>
+			<search-bar :data="searchBarDate" @search="searchAction" @reset="fetchList"  @add="showAdd"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight" :key="curIndex">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -61,7 +61,7 @@
 import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs, CascaderBox, SearchBar } from '@/components/base.js'
-import { fecthList, fecthStockList } from '@/api/warehouse/goodsIn.js'
+import { fetchList, fecthStockList } from '@/api/distribution/salesDelivery.js'
 
 export default {
   name: 'goodsIn',
@@ -130,18 +130,18 @@ export default {
     ]
   },
   mounted() {
-    this.fecthList()
+    this.fetchList()
     this.fecthStockList()
   },
   methods: {
     // 数据请求
-    fecthList() {
+    fetchList() {
       const { index, size } = this.pagination
       const data = {
         index,
         size
       }
-      fecthList(data)
+      fetchList(data)
         .then(({ data }) => {
           this.table.data = data.rows
           this.pagination.total = data.total
@@ -171,7 +171,7 @@ export default {
         size,
         ...item
       }
-      fecthList(data)
+      fetchList(data)
         .then(({ data }) => {
           this.table.data = data.rows
           this.pagination.total = data.total
@@ -183,11 +183,11 @@ export default {
     // 分页操作区域
     handleSizeChange(value) {
       this.pagination.size = value
-      this.fecthList()
+      this.fetchList()
     },
     handleCurrentChange(value) {
       this.pagination.index = value
-      this.fecthList()
+      this.fetchList()
     },
     clickMoreCommand(command) {
       this.$message({
@@ -212,7 +212,7 @@ export default {
       })
     },
     refrehList() {
-      this.fecthList()
+      this.fetchList()
     }
   }
 }

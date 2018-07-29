@@ -1,6 +1,6 @@
 <template>
     <div>
-打包员
+        分拣员
     </div>
 </template>
 

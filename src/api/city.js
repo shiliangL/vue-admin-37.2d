@@ -8,3 +8,12 @@ export function fetchCityList(params) {
     params
   })
 }
+
+// 加载组件
+export function fetchBase(url, params, method = 'get') {
+  return request({
+    url,
+    method,
+    params
+  })
+}

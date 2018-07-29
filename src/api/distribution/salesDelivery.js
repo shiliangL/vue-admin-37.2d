@@ -2,11 +2,12 @@ import request from '@/utils/request'
 // 加载列表
 export function fetchList(params) {
   return request({
-    url: 'scmshipRegionInfo/list',
+    url: 'scmshipOrderInfo/list',
     method: 'get',
     params
   })
 }
+
 export function createRow(data) {
   return request({
     url: 'scmshipRegionInfo/add',
@@ -50,6 +51,15 @@ export function fetchDriverList(params) {
 export function fetchViewList(params) {
   return request({
     url: 'customer/regionPage',
+    method: 'get',
+    params
+  })
+}
+
+// 加载仓库
+export function fecthStockList(params) {
+  return request({
+    url: 'stockInfo/list',
     method: 'get',
     params
   })

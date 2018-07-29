@@ -68,11 +68,20 @@ export default {
     customerType: '客户类别',
 
     setting: '仓库设置',
+    inventory: '库存明细',
     goodsIn: '商品入库',
+    goodsOut: '商品出库',
+    workbench: '工作台管理',
+    equipment: '工作台外接设备',
 
     salesDelivery: '销售配送',
     areaDelivery: '区域配送',
-    deliveryer: '配送员'
+    deliveryer: '配送员',
+
+    goodPick: '商品分拣',
+    orderPick: '订单打包',
+    sorter: '分拣员',
+    baler: '打包员'
 
   },
   navbar: {

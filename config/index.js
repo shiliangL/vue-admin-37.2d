@@ -15,8 +15,12 @@ module.exports = {
       //   target: 'http://39.108.235.6', // 服务器
       //   changeOrigin: true,
       // },
+      // '/': {
+      //   target: 'http://192.168.199.181:5858/', // 本地主机
+      //   changeOrigin: true,
+      // },
       '/': {
-        target: 'http://192.168.2.77:5858/', // 本地主机
+        target: 'http://cmm.ngrok.xiaomiqiu.cn/', // 本地主机
         changeOrigin: true,
       },
       // '/': {

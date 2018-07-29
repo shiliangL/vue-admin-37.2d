@@ -2,20 +2,28 @@
 	<div class="index">
 		<search-bar :data="searchBarDataTwo" @add="showAdd"></search-bar>
 		<!-- 弹层 -->
+    <div class="mc">
+      测试 + {{dataDTO}}
+      <SearchBox v-model="dataDTO"></SearchBox>
+    </div>
 		<add v-if="add.visiable" :visiable.sync="add.visiable" :data="add.data"></add>
 	</div>
 </template>
 
 <script>
 import model from '@/public/listModel.js'
+import { SearchBox } from '@/components/base.js'
+
 import Add from './add'
 export default {
   mixins: [model],
   components: {
-    Add
+    Add,
+    SearchBox
   },
   data() {
     return {
+      dataDTO: null,
       searchBarDataTwo: [
         [
           {

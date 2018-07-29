@@ -32,7 +32,7 @@
 
           <el-table-column label="操作" align="center" width="200">
             <template slot-scope="scope" align="center">
-              <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">详情</el-button>
+              <el-button type="text" size="mini" @click.stop="clickToDetail(scope.$index,scope.row)">详情</el-button>
               <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">编辑</el-button>
 							<el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index,scope.row)">重置密码</el-button>
             </template>
@@ -154,14 +154,22 @@ export default {
     },
     // 弹层操作
     clickToEditor(index, row) {
-      this.dialogTitle = '编辑配送区域'
-      this.propsParentData.type = 'add'
+      this.dialogTitle = '编辑配送员'
+      this.propsParentData.type = 'isUpdate'
       this.dialogVisible = true
       this.propsParentData.isUpdate = true
       this.propsParentData.data = row
     },
+    clickToDetail(index, row) {
+      this.dialogTitle = '配送员详情'
+      this.propsParentData.type = 'view'
+      this.propsParentData.isUpdate = true
+      this.propsParentData.data = row
+      this.dialogVisible = true
+    },
     showAdd() {
       this.dialogTitle = '新增配送员'
+      this.propsParentData.type = 'add'
       this.propsParentData.isUpdate = false
       this.dialogVisible = true
     },
