@@ -63,9 +63,12 @@ export default {
     buyOrders: '采购订单',
     audit: '采购审核',
     clearing: '采购结算',
+    supplier: '供应商',
+    buyer: '采购员',
 
     customerClass: '客户档案',
     customerType: '客户类别',
+    CustomerManager: '客户经理',
 
     setting: '仓库设置',
     inventory: '库存明细',
@@ -73,6 +76,8 @@ export default {
     goodsOut: '商品出库',
     workbench: '工作台管理',
     equipment: '工作台外接设备',
+    supplyDirector: '供应链主管',
+    ckOperator: '仓管员',
 
     salesDelivery: '销售配送',
     areaDelivery: '区域配送',

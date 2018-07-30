@@ -1,113 +1,138 @@
- 
-<!-- 采购员 -->
- 
+<!--采购员 -->
 <template>
-	<div class="buyer">
+    <div class="buyer">
+			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"  @add="showAdd"></search-bar>
+      <!-- 表格 -->
+      <table-contain  :height.sync="table.maxHeight">
+        <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
+
+          <el-table-column label="序号" width="50" align="center">
+            <template slot-scope="scope">
+              <span>{{scope.$index + 1}}</span>
+            </template>
+          </el-table-column>
+ 
+ 					<el-table-column prop="loginName" label="用户账号" align="center"></el-table-column>
+					<el-table-column prop="staffName" label="用户名称" align="center"></el-table-column>
+					<el-table-column prop="mobile" label="手机号码" align="center"></el-table-column>
+					<el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
+					<el-table-column prop="entryTime" label="在岗开始时间" align="center"></el-table-column>
+					<el-table-column prop="departureTime" label="离岗时间" align="center"></el-table-column>
+					<el-table-column prop="status" label="账号状态" align="center">
+             <template slot-scope="scope">
+               <el-tag v-if="scope.row.status===1" size="small">启用</el-tag>
+               <el-tag v-if="scope.row.status===0" size="small" type="danger"> 禁用 </el-tag>
+            </template>
+          </el-table-column>
+		 
+          <el-table-column label="操作" align="center" width="140">
+            <template slot-scope="scope" align="center">
+              <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">编辑</el-button>
+							<el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index,scope.row)">重置密码</el-button>
+            </template>
+          </el-table-column>
+
+        </el-table>
         
-    <search-bar ref="searchBar" :data="searchBarData" @add="showAdd" @search="searchAction" @reset="reset"></search-bar>
+        <el-pagination
+          slot="footer"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="pagination.page"
+          :page-sizes="pagination.pageSizes"
+          :page-size="pagination.size"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="pagination.total">
+        </el-pagination>
 
-    <!-- 表格 -->
-    <table-contain  :height.sync="table.maxHeight">
-      <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
-        <el-table-column label="序号" width="50" align="center">
-          <template slot-scope="scope">
-            <span>{{scope.$index + 1}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="title" label="计量单位名称" align="center"></el-table-column>
-        <el-table-column prop="summary" label="简要介绍" align="center"></el-table-column>
-        <el-table-column label="操作" align="center" width="180">
-          <template slot-scope="scope" align="center">
-            <el-button type="text" size="mini" @click.stop="clickToEdit(scope.$index,scope.row)">编辑</el-button>
-            <el-button type="text" size="mini" @click.stop="clickToDelete(scope.$index, scope.row)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      </table-contain>
+
+      <!-- 弹层区域 -->
+      <el-dialog :title="dialogTitle" class="dialogTitle" width="520px" :visible.sync="dialogVisible" append-to-body center @close="resetForm">
+          <Add v-if="dialogVisible" @close="resetForm" @add="fecthList" :propsSonData="propsParentData"></Add>
+      </el-dialog>
       
-      <el-pagination
-        slot="footer"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="pagination.page"
-        :page-sizes="pagination.pageSizes"
-        :page-size="pagination.size"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total">
-      </el-pagination>
-
-    </table-contain>
-
-		<!-- 弹层区域 -->
-		<el-dialog :title="dialogTitle"  width="400px" :visible.sync="dialogVisible" append-to-body center @close="resetForm">
-			<el-form :model="form" ref="form" :rules="rules">
-				<el-form-item label="名称" label-width="100px" prop="title" :rules="rules.input">
-					<el-input size="small" style="width:180px"  v-model.trim="form.title" placeholder="不能超过5位数" maxlength="5"></el-input>
-				</el-form-item>
-				<el-form-item label="备注" label-width="100px">
-					<el-input size="small" style="width:180px" type="textarea" autosize  v-model.trim="form.summary" placeholder="不能超100位数" maxlength="100"></el-input>
-				</el-form-item>
-			</el-form>
-			<div slot="footer" class="dialog-footer">
-				<el-button size="small" @click.stop="dialogVisible = false">取 消</el-button>
-        <el-button :loading="button.loading" size="small" type="primary" @click.stop="clickSaveOrUpdate('form')">{{button.text}}</el-button>
-			</div>
-		</el-dialog>
-
-	</div>
+    </div>
 </template>
 
 <script>
 import model from '@/public/listModel.js'
-import addModel from '@/public/addModel.js'
-
-import rules from '@/public/rules.js'
-import { packagingList, createPackaging, deletePackaging, packagingInfo, packagingUpdate } from '@/api/goodsProfile.js'
+import Add from './add'
+import { SearchBar } from '@/components/base.js'
+import { fetchList, resetKey } from '@/api/members.js'
 
 export default {
-  name: 'goodsClass',
-  components: {},
-  mixins: [model, rules, addModel],
+  name: 'buyer',
+  mixins: [model],
+  components: {
+    Add,
+    SearchBar
+  },
   data() {
     return {
-      dialogVisible: false,
-      dialogTitle: null,
-      searchBarData: [[
-        { type: 'input', value: null, key: 'title', class: 'w180', placeholder: '输入名称检索' },
-        { type: 'search', name: '查询' },
-        { type: 'reset', name: '重置' }
+      searchBarDate: [
+        [
+          { type: 'option', value: null, key: 'status', class: 'w150', placeholder: '账号状态', options: [
+            { label: '启用', value: 1 },
+            { label: '禁用', value: 0 }
+          ] },
+          { type: 'input', value: null, key: 'inputContent', class: 'w180', placeholder: '输入用户名称检索' },
+          { type: 'search', name: '查询' },
+          { type: 'reset', name: '重置' }
+        ],
+        [
+          { type: 'add', name: '新增' }
+        ]
       ],
-      [{ type: 'add', name: '新增' }]],
-      searchTitle: null,
-      isEdit: false,
-      form: {
-        summary: null,
-        title: null,
-        id: null
-      }
+      dialogVisible: false,
+      dialogTitle: null
     }
   },
   mounted() {
     this.fecthList()
   },
-  created() {},
   methods: {
-    showAdd() {
-      this.dialogTitle = '新增'
-      this.dialogVisible = true
-    },
-    resetForm() {
-      this.form.summary = null
-      this.form.title = null
-      this.isEdit = false
-      this.$refs['form'].resetFields()
-      this.$setKeyValue(this.button, { loading: false, text: '确定' })
-    },
-    searchAction(data) {
-      this.searchTitle = data.title
-      this.fecthList()
-    },
     reset() {
+      this.searchBarDate = {
+        title: null,
+        driveId: null
+      }
+      this.cityDTO = null
       this.fecthList()
+    },
+    // 数据请求
+    fecthList() {
+      const { index, size } = this.pagination
+      const data = {
+        index,
+        size,
+        staffType: 2
+      }
+      fetchList(data).then(({ data }) => {
+        if (Array.isArray(data.rows)) {
+          this.table.data = data.rows
+        }
+        this.pagination.total = data.total
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
+    searchAction(item) {
+      const { index, size } = this.pagination
+      const data = {
+        index,
+        size,
+        staffType: 2,
+        ...item
+      }
+      fetchList(data).then(({ data }) => {
+        if (Array.isArray(data.rows)) {
+          this.table.data = data.rows
+        }
+        this.pagination.total = data.total
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
     },
     // 分页操作区域
     handleSizeChange(value) {
@@ -118,89 +143,50 @@ export default {
       this.pagination.index = value
       this.fecthList()
     },
-    fecthList() {
-      const { index, size } = this.pagination
-      const data = {
-        index,
-        size,
-        title: this.searchTitle
-      }
-      packagingList(data).then(({ data }) => {
-        this.table.data = data.rows
-        this.pagination.total = data.total
-      }).catch(e => {
-        this.$message({ type: 'error', message: '列表加载失败' })
-      })
-    },
-    clickToEdit(index, item) {
-      this.dialogTitle = '编辑'
-      this.isEdit = true
+    // 弹层操作
+    clickToEditor(index, row) {
+      this.dialogTitle = '编辑采购员'
+      this.propsParentData.type = 'isUpdate'
       this.dialogVisible = true
-      if (!item.pk) return
-      packagingInfo({ id: item.pk }).then(({ data }) => {
-        this.form.summary = data.summary
-        this.form.title = data.title
-        this.form.id = data.pk
-      }).catch(() => {
-        this.$message({ type: 'error', message: '加载失败' })
-      })
+      this.propsParentData.isUpdate = true
+      this.propsParentData.data = row
+    },
+    showAdd() {
+      this.dialogTitle = '新增采购员'
+      this.propsParentData.type = 'add'
+      this.propsParentData.isUpdate = false
+      this.dialogVisible = true
+    },
+    refrehList() {
+      this.fecthList()
+    },
+    tabsCallBack(item) {
+      this.curIndex = item.value
+      this.fecthList()
+    },
+    resetForm() {
+      this.dialogVisible = false
     },
     clickToDelete(index, item) {
-      this.$confirm('是否需要删除数据?', '提示', {
+      this.$confirm('是否确定重置密码为123456?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        if (!item.pk) return
-        deletePackaging({ id: item.pk }).then(res => {
-          this.$message({ type: 'success', message: `${res.msg}成功!` })
-          this.fecthList()
-        }).catch(() => {
-          this.$message({ type: 'error', message: '删除失败' })
+        if (!item.operatorId) return
+        resetKey(item.operatorId).then(res => {
+          if (res.code === '0') {
+            this.$notify({ title: '温馨提示', message: `${res.data.loginName},重置随机密码为: ${res.data.password}`, duration: 10000 })
+          }
+        }).catch((e) => {
+          this.$message({ type: 'error', message: e.msg })
         })
       }).catch(() => {})
-    },
-    clickSaveOrUpdate(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          this.$setKeyValue(this.button, { loading: true, text: '提交中..' })
-          if (this.isEdit) {
-            packagingUpdate(this.form).then(res => {
-              this.isEdit = false
-              this.dialogVisible = false
-              this.$message({ type: 'success', message: `${res.msg}!` })
-              this.fecthList()
-            }).catch((e) => {
-              this.$setKeyValue(this.button, { loading: false, text: '确定' })
-              this.$message({ type: 'error', message: e.msg })
-            })
-          } else {
-            createPackaging({
-              summary: this.form.summary,
-              title: this.form.title
-            }).then(res => {
-              this.dialogVisible = false
-              this.$message({ type: 'success', message: `${res.msg}!` })
-              this.fecthList()
-            }).catch((e) => {
-              this.$setKeyValue(this.button, { loading: false, text: '确定' })
-              this.$message({ type: 'error', message: e.msg })
-            })
-          }
-        } else {
-          this.$message({ type: 'warning', message: '请核实表单' })
-          return
-        }
-      })
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-.buyer {
-	.el-form-item {
-		margin: 0;
-	}
-}
+<style scoped lang="scss">
+ 
 </style>

@@ -3,7 +3,7 @@
 			<el-form :model="form" ref="form" class="form" :rules="rules"  style="padding-left: 60px;">
 
 					<el-form-item label="岗位角色:" label-width="100px">
-						<span>打包员</span>
+						<span>仓管员</span>
 					</el-form-item>   
 					<el-form-item label="用户密码:" label-width="100px">
 						<span>123456(初始密码,可重置)</span>
@@ -57,7 +57,7 @@ export default {
         'departureTime': null,
         'loginName': null,
         'mobile': null,
-        'staffType': 5,
+        'staffType': 3,
         'status': '1',
         'staffName': null
       },

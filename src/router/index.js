@@ -91,7 +91,8 @@ export const asyncRouterMap = [
     },
     children: [
       { path: 'customerClass', component: _import('customer/customerClass/index'), name: 'customerClass', meta: { title: 'customerClass' }},
-      { path: 'customerType', component: _import('customer/customerType/index'), name: 'customerType', meta: { title: 'customerType' }}
+      { path: 'customerType', component: _import('customer/customerType/index'), name: 'customerType', meta: { title: 'customerType' }},
+      { path: 'CustomerManager', component: _import('customer/CustomerManager/index'), name: 'CustomerManager', meta: { title: 'CustomerManager' }}
     ]
   },
   {
@@ -108,7 +109,9 @@ export const asyncRouterMap = [
       { path: 'goodsOut', component: _import('warehouse/goodsOut/index'), name: 'goodsOut', meta: { title: 'goodsOut' }},
       { path: 'inventory', component: _import('warehouse/inventory/index'), name: 'inventory', meta: { title: 'inventory' }},
       { path: 'workbench', component: _import('warehouse/workbench/index'), name: 'workbench', meta: { title: 'workbench' }},
-      { path: 'equipment', component: _import('warehouse/equipment/index'), name: 'equipment', meta: { title: 'equipment' }}
+      { path: 'equipment', component: _import('warehouse/equipment/index'), name: 'equipment', meta: { title: 'equipment' }},
+      { path: 'ckOperator', component: _import('warehouse/ckOperator/index'), name: 'ckOperator', meta: { title: 'ckOperator' }},
+      { path: 'supplyDirector', component: _import('warehouse/supplyDirector/index'), name: 'supplyDirector', meta: { title: 'supplyDirector' }}
     ]
   },
   {

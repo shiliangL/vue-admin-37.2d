@@ -3,14 +3,14 @@
 			<el-form :model="form" ref="form" class="form" :rules="rules"  style="padding-left: 60px;">
 
 					<el-form-item label="岗位角色:" label-width="100px">
-						<span>打包员</span>
+						<span>客户经理</span>
 					</el-form-item>   
 					<el-form-item label="用户密码:" label-width="100px">
-						<span>123456(初始密码,可重置)</span>
+						<span>123456(初始密码,登录后可修改)</span>
 					</el-form-item>   
 					<el-form-item label="用户账号:" label-width="100px" prop="loginName" :rules="rules.input">
 						<span v-if="propsSonData.isUpdate" v-cloak>{{form.loginName}}</span>
-						<el-input v-else size="small" style="width:180px"  v-model.trim="form.loginName" placeholder="" maxlength="11"></el-input>
+						<el-input v-else size="small" style="width:180px"  v-model.trim="form.loginName" placeholder="手机号" maxlength="11"></el-input>
 					</el-form-item>
 					<el-form-item label="用户名称:" label-width="100px" prop="staffName" :rules="rules.input">
 						<span v-if="isViewPage" v-cloak>{{form.staffName}}</span>
@@ -57,7 +57,7 @@ export default {
         'departureTime': null,
         'loginName': null,
         'mobile': null,
-        'staffType': 5,
+        'staffType': 7,
         'status': '1',
         'staffName': null
       },

@@ -1,6 +1,6 @@
-<!--打包员 -->
+<!--客户经理 -->
 <template>
-    <div class="baler">
+    <div class="CustomerManager">
 			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"  @add="showAdd"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
@@ -62,7 +62,7 @@ import { SearchBar } from '@/components/base.js'
 import { fetchList, resetKey } from '@/api/members.js'
 
 export default {
-  name: 'baler',
+  name: 'CustomerManager',
   mixins: [model],
   components: {
     Add,
@@ -106,7 +106,7 @@ export default {
       const data = {
         index,
         size,
-        staffType: 5
+        staffType: 7
       }
       fetchList(data).then(({ data }) => {
         if (Array.isArray(data.rows)) {
@@ -122,7 +122,7 @@ export default {
       const data = {
         index,
         size,
-        staffType: 5,
+        staffType: 7,
         ...item
       }
       fetchList(data).then(({ data }) => {
@@ -145,14 +145,14 @@ export default {
     },
     // 弹层操作
     clickToEditor(index, row) {
-      this.dialogTitle = '编辑打包员'
+      this.dialogTitle = '编辑客户经理'
       this.propsParentData.type = 'isUpdate'
       this.dialogVisible = true
       this.propsParentData.isUpdate = true
       this.propsParentData.data = row
     },
     showAdd() {
-      this.dialogTitle = '新增打包员'
+      this.dialogTitle = '新增客户经理'
       this.propsParentData.type = 'add'
       this.propsParentData.isUpdate = false
       this.dialogVisible = true
