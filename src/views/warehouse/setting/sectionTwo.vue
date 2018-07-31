@@ -61,12 +61,12 @@ export default {
   data() {
     return {
       form: {
-        description: 'TEST',
-        high: 50,
-        lasting: 50,
+        description: null,
+        high: null,
+        lasting: null,
         number: null,
-        stockId: '75c388de32bd4afcab7c655ed548a295',
-        width: 50
+        stockId: null,
+        width: null
       },
       options: {
         categoryTypeOption: []

@@ -18,7 +18,9 @@
 
 					<el-col :xs="24" :sm="10" :md="8" :lg="6">
 						<el-form-item label="仓管员:" prop="staffId" :rules="rules.select">
-							<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.staffId"></el-input>
+              <el-select size="small" v-model="form.staffId" filterable placeholder="选择仓库" style="width:180px">
+					      <el-option v-for="sub in options.ckMember" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
+				      </el-select>
 						</el-form-item>
 					</el-col>
 
@@ -49,7 +51,8 @@
 <script>
 import addModel from '@/public/addModel.js'
 import rules from '@/public/rules.js'
-import { detailCK, stockCategory } from '@/api/warehouse/setting.js'
+import { fecthCKDetail, stockCategory } from '@/api/warehouse/setting.js'
+import { fecthMemberSelect } from '@/api/members.js'
 
 export default {
   mixins: [rules, addModel],
@@ -70,7 +73,8 @@ export default {
         title: null
       },
       options: {
-        categoryTypeOption: []
+        categoryTypeOption: [],
+        ckMember: []
       }
     }
   },
@@ -79,8 +83,18 @@ export default {
       this.fecthDetail()
     }
     this.fecthStockCategory()
+    this.fecthMemberSelect()
   },
   methods: {
+    fecthMemberSelect() {
+      fecthMemberSelect({ staffType: 3 }).then(({ data }) => {
+        if (Array.isArray(data)) {
+          this.options.ckMember = data
+        }
+      }).catch(e => {
+        console.log(e)
+      })
+    },
     fecthStockCategory() {
       // 加载仓库类别下拉
       stockCategory().then(({ data }) => {
@@ -95,10 +109,10 @@ export default {
     },
     fecthDetail() {
       if (!this.$attrs.loadID) return
-      detailCK({ id: this.$attrs.loadID }).then(({ data }) => {
+      fecthCKDetail({ id: this.$attrs.loadID }).then(({ data }) => {
         this.form = Object.assign(this.form, data)
       }).catch(e => {
-        // this.loadingText = e.msg
+        this.$message({ type: 'error', message: e.msg })
       })
     },
     validateForm() {

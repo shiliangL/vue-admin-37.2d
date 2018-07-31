@@ -328,3 +328,9 @@ code {
     box-sizing: border-box;
     font-weight: normal;
 }
+
+.viewForm {
+    .el-form-item {
+      margin-bottom: 0px;
+    }
+}

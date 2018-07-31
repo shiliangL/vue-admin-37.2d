@@ -248,6 +248,10 @@ export default {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, isEditor: true, title: title, tab: tab }})
     },
     showAdd() {
+      if (this.curIndex === 0 && this.tableOne.length > 0) {
+        this.$message({ type: 'warning', message: '暂时只能维护一个仓库' })
+        return
+      }
       const title = this.curIndex === 0 ? '新增仓库' : '新增仓位'
       const tab = this.curIndex === 0 ? 'sectionOne' : 'sectionTwo'
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, isEditor: false, title: title, tab: tab }})
@@ -267,6 +271,10 @@ export default {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, isEditor: false, title: title, tab: tab }})
     },
     clickToDelete(index, item) {
+      if (this.curIndex === 0 && this.tableOne.length > 0) {
+        this.$message({ type: 'warning', message: '唯一仓库不允许删除' })
+        return
+      }
       this.$confirm('是否需要删除数据?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

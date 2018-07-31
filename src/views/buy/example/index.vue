@@ -4,7 +4,7 @@
 		<!-- 弹层 -->
     <div class="mc">
       测试 + {{dataDTO}}
-      <SearchBox v-model="dataDTO"></SearchBox>
+      <SearchBox style="width:180px" keyName="inputContent" v-model="dataDTO"></SearchBox>
     </div>
 		<add v-if="add.visiable" :visiable.sync="add.visiable" :data="add.data"></add>
 	</div>

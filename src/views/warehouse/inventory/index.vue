@@ -157,6 +157,7 @@ export default {
     this.fecthGoodsClass()
     this.fecthStockCategory()
     this.fecthStockList()
+    this.fecthTableList()
   },
   methods: {
     fecthGoodsClass() {
@@ -222,10 +223,10 @@ export default {
       console.log(val, 'xx')
     },
     fecthTableList() {
-      if (!this.categoryId) {
-        this.$message({ type: 'warning', message: '请先选择商品类别' })
-        return
-      }
+      // if (!this.categoryId) {
+      //   this.$message({ type: 'warning', message: '请先选择商品类别' })
+      //   return
+      // }
       const { index, size } = this.pagination
       const data = {
         index,

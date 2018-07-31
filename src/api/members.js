@@ -43,3 +43,11 @@ export function resetKey(id) {
     method: 'POST'
   })
 }
+// staffType 帐号类型(0: 普通管理员 1: 配送人员 2: 采购员 3: 仓管员 4: 分拣员 5: 打包员 6: 供应链主管 7: 客户经理)
+export function fecthMemberSelect(params) {
+  return request({
+    url: 'workbenchUser/querySelect',
+    method: 'get',
+    params
+  })
+}

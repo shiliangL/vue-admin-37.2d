@@ -98,28 +98,25 @@ export default {
       if (this.data.type === 'view') {
         const id = this.data.obj.id
         if (!id) return
-        this.fecthDerDetailById(id)
       }
-    },
-    fecthDetailById(id) {
-      // productDetail({ id })
-      //   .then(({ data }) => {
-      //     this.viewData = data
-      //     this.isShowView = true
-      //     setTimeout(() => {
-      //       this.loading = false
-      //     }, 200)
-      //   })
-      //   .catch(e => {
-      //     this.loadingText = e
-      //   })
     },
     validateForm() {
       if (this.data.tab === 'sectionOne') {
         if (this.$refs['sectionOne']) { this.$refs['sectionOne'].validateForm() }
         if (!this.isPass || !this.sectionOne) return
         if (this.data.isEditor) {
-          updateCK(this.sectionOne).then(res => {
+          const data = {
+            'address': this.sectionOne.address,
+            'categoryId': this.sectionOne.categoryId,
+            'contacts': this.sectionOne.contacts,
+            'currentUserId': this.sectionOne.currentUserId,
+            'description': this.sectionOne.description,
+            'id': this.sectionOne.pk,
+            'phone': this.sectionOne.phone,
+            'staffId': this.sectionOne.staffId,
+            'title': this.sectionOne.title
+          }
+          updateCK(data).then(res => {
             this.$message({ type: 'success', message: `${res.msg}!` })
             this.dialog.visiable = false
             this.$emit('add')
