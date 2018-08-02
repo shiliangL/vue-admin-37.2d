@@ -81,13 +81,13 @@ export function deleteCW(params) {
 //   })
 // }
 // 明细CW
-// export function detailCW(params) {
-//   return request({
-//     url: 'customerCategory/detail',
-//     method: 'get',
-//     params
-//   })
-// }
+export function detailCW(params) {
+  return request({
+    url: 'stockStorageInfo/getDetail',
+    method: 'get',
+    params
+  })
+}
 // 更新CK
 export function updateCK(data) {
   return request({
@@ -97,13 +97,13 @@ export function updateCK(data) {
   })
 }
 // 更新CW
-// export function updateCW(data) {
-//   return request({
-//     url: 'customerCategory/update',
-//     method: 'POST',
-//     data
-//   })
-// }
+export function updateCW(data) {
+  return request({
+    url: 'stockStorageInfo/update',
+    method: 'POST',
+    data
+  })
+}
 
 // 仓库类别设置
 // 新增-仓库类别

@@ -5,6 +5,9 @@
     <div class="mc">
       测试 + {{dataDTO}}
       <SearchBox style="width:180px" keyName="inputContent" v-model="dataDTO"></SearchBox>
+
+      图片
+      <PictureCard></PictureCard>
     </div>
 		<add v-if="add.visiable" :visiable.sync="add.visiable" :data="add.data"></add>
 	</div>
@@ -12,13 +15,14 @@
 
 <script>
 import model from '@/public/listModel.js'
-import { SearchBox } from '@/components/base.js'
+import { SearchBox, PictureCard } from '@/components/base.js'
 
 import Add from './add'
 export default {
   mixins: [model],
   components: {
     Add,
+    PictureCard,
     SearchBox
   },
   data() {

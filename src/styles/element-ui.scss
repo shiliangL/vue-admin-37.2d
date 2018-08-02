@@ -183,4 +183,14 @@
          }
      }
  }
- 
+
+ .PictureCard {
+     .el-upload-list--picture-card {
+         display: none !important;
+     }
+     .el-upload--picture-card {
+         border:none;
+         width: 60px !important;
+         height: 60px !important;
+     }
+ }

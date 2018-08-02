@@ -8,29 +8,21 @@ export function fetchList(params) {
   })
 }
 
-export function createRow(data) {
-  return request({
-    url: 'scmshipRegionInfo/add',
-    method: 'post',
-    data
-  })
-}
-export function deleteRow(params) {
-  return request({
-    url: 'scmshipRegionInfo/delete',
-    method: 'delete',
-    params
-  })
-}
-
 export function fetchDetail(params) {
   return request({
-    url: 'scmshipRegionInfo/detail',
+    url: 'scmshipOrderInfo/detail',
     method: 'get',
     params
   })
 }
 
+export function createRow(data) {
+  return request({
+    url: 'scmshipOrderInfo/add',
+    method: 'POST',
+    data
+  })
+}
 export function updateRow(data) {
   return request({
     url: 'scmshipRegionInfo/update',
@@ -60,6 +52,15 @@ export function fetchViewList(params) {
 export function fecthStockList(params) {
   return request({
     url: 'stockInfo/list',
+    method: 'get',
+    params
+  })
+}
+
+// 新增
+export function shipOrderAddList(params) {
+  return request({
+    url: 'scmshipOrderInfo/shipOrderAddList',
     method: 'get',
     params
   })

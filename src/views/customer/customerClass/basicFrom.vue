@@ -56,17 +56,14 @@
 									</el-form-item>
 								</el-col>
 
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+								<!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="配送员:" prop="driverId" :rules="rules.select">
-										<!-- driverId (string, optional): 配送员Id ,
-										driverName (string, optional): 配送员Id , -->
 										<el-select  v-if="isAddView"  size="small" style="width:180px" v-model="form.driverId" placeholder="请选择">
 											<el-option size="small" style="width:180px" v-for="item in options.driverOption" :key="item.driverId" :label="item.name" :value="item.driverId"> </el-option>
 										</el-select> 
 										<span v-else v-cloak> {{ form.driverName }} </span>
-
 									</el-form-item>
-								</el-col>
+								</el-col> -->
 
 
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">

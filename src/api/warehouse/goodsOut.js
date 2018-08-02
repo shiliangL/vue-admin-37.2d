@@ -40,28 +40,52 @@ export function fecthOutReList(params) {
     params
   })
 }
+export function fetchDetail(params) {
+  return request({
+    url: 'stockOutRecords/getDetail',
+    method: 'get',
+    params
+  })
+}
+export function createRow(data) {
+  return request({
+    url: 'stockOutRecords/create',
+    method: 'POST',
+    data
+  })
+}
 
-// export function fecthListInfo(params) {
-//   return request({
-//     url: 'stockOutDetails/page',
-//     method: 'get',
-//     params
-//   })
-// }
-
-// // 采购收货传递仓库 id stockId
-// export function findMore(params) {
-//   return request({
-//     url: 'purchaseAcceptInfo/list',
-//     method: 'get',
-//     params
-//   })
-// }
+//  addList  stockId deliveryTime
+export function addProductList(params) {
+  return request({
+    url: 'stockOutRecords/queryOutProductList',
+    method: 'get',
+    params
+  })
+}
 
 // 加载仓库 公共
 export function fecthStockList(params) {
   return request({
     url: 'stockInfo/list',
+    method: 'get',
+    params
+  })
+}
+// 工作台 stockId type
+// 工作台类型(1: QC验收台, 2: 入库台, 3: 出库台, 4: 分拣台, 5: 打包台)
+export function fecthWorkBench(params) {
+  return request({
+    url: 'workbench/querySelect',
+    method: 'get',
+    params
+  })
+}
+// staffType = 4
+// 帐号类型(0:普通管理员 1:配送人员 2:采购员 3:仓管员 4:分拣员 5:打包员 6:供应链主管 7:客户经理)
+export function fecthWorkbenchUser(params) {
+  return request({
+    url: 'workbenchUser/querySelect',
     method: 'get',
     params
   })

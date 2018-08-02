@@ -7,6 +7,13 @@ export function fetchList(params) {
     params
   })
 }
+export function fetchAllList(params) {
+  return request({
+    url: 'scmshipRegionInfo/listAll',
+    method: 'get',
+    params
+  })
+}
 export function createRow(data) {
   return request({
     url: 'scmshipRegionInfo/add',

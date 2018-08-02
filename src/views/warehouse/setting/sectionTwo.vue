@@ -1,9 +1,9 @@
 <template>
     <div>
-			<el-form :model="form" :rules="rules" ref="form" label-width="120px" :inline="true">
+			<el-form :model="form" :rules="rules" ref="form" label-width="130px" :inline="true">
  				<el-row>
 					<el-col :xs="24" :sm="10" :md="8" :lg="6">
-						<el-form-item label="仓位编号:" prop="number" :rules="rules.select">
+						<el-form-item label="仓位编号:" prop="number" :rules="rules.input">
 							<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.number"></el-input>
 						</el-form-item>
 					</el-col>
@@ -17,19 +17,19 @@
 					</el-col>
 
 					<el-col :xs="24" :sm="10" :md="8" :lg="6">
-						<el-form-item label="仓库属性-长:" prop="lasting" :rules="rules.select">
+						<el-form-item label="仓库属性-长(米):" prop="lasting" :rules="rules.input">
 							<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.lasting"></el-input>
 						</el-form-item>
 					</el-col>
 
 					<el-col :xs="24" :sm="10" :md="8" :lg="6">
-						<el-form-item label="仓库属性-宽:" prop="width" :rules="rules.select">
+						<el-form-item label="仓库属性-宽(米):" prop="width" :rules="rules.input">
 							<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.width"></el-input>
 						</el-form-item>
 					</el-col>
 
 					<el-col :xs="24" :sm="10" :md="8" :lg="6">
-						<el-form-item label="仓库属性-高:" prop="high" :rules="rules.select">
+						<el-form-item label="仓库属性-高(米):" prop="high" :rules="rules.input">
 							<el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.high"></el-input>
 						</el-form-item>
 					</el-col>
