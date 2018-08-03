@@ -202,7 +202,6 @@ export default {
         purchaseType: null,
         personnelId: null
       }
-      this.curIndex = 0
       this.fecthList()
     }
   }

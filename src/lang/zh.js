@@ -57,7 +57,9 @@ export default {
     goodsClass: '商品分类',
     goodsProfile: '辅助资料',
     goodsList: '商品列表',
+
     orderList: '销售订单',
+    returnChange: '销售退/换货',
 
     buyPlan: '采购计划',
     buyOrders: '采购订单',

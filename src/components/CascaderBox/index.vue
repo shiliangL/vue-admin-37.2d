@@ -8,7 +8,7 @@
 
       <template v-if="form.searchParams.purchaseType===2">
         <el-select style="180px" size="small" v-model="form.searchParams.buyerId" clearable filterable placeholder="请选择">
-          <el-option v-for="sub in form.searchBarOptons.salerList" :key="sub.pk" :label="sub.staffName" :value="sub.pk"></el-option>
+          <el-option v-for="sub in form.searchBarOptons.salerList" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
         </el-select>
       </template>
 
@@ -21,12 +21,8 @@
 
 <script>
 
-import {
-  fecthSupplierList,
-  fecthSalerList,
-  fecthByCategoryId
-} from '@/api/goodsList.js'
-
+import { fecthSupplierList, fecthByCategoryId } from '@/api/goodsList.js'
+import { fecthMemberSelect } from '@/api/members.js'
 export default {
   name: 'CascaderBox',
   props: {
@@ -106,7 +102,7 @@ export default {
     },
     // 加载采购员
     fecthSalerList() {
-      fecthSalerList()
+      fecthMemberSelect({ staffType: 2 })
         .then(({ data }) => {
           this.form.searchBarOptons.salerList = data
         })

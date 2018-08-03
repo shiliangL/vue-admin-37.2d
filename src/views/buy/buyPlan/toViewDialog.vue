@@ -42,7 +42,7 @@
 
               <el-form-item label=""  style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.buyerId'"  :rules="rules.select"  v-if="scope.row.purchaseType ===2">
                 <el-select style="180px" size="small" v-model="scope.row.buyerId" clearable filterable placeholder="请选择" @change="selectSaler($event,scope.row)">
-                  <el-option v-for="sub in searchBarOptons.salerList" :key="sub.pk" :label="sub.staffName" :value="sub.pk"></el-option>
+                  <el-option v-for="sub in searchBarOptons.salerList" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                 </el-select>
               </el-form-item>
 
@@ -68,7 +68,7 @@
 
 <script>
 import { fecthTree, undateTableRow } from '@/api/buy/buyPlan.js'
-import { fecthSalerList } from '@/api/goodsList.js'
+import { fecthMemberSelect } from '@/api/members.js'
 import rules from '@/public/rules.js'
 export default {
   name: 'changeDialog',
@@ -85,8 +85,8 @@ export default {
       },
       searchBarOptons: {
         type: [
-          { label: '供应商直供', value: 1 },
-          { label: '市场自采购', value: 2 }
+          { label: '市场自采购', value: 1 },
+          { label: '供应商直供', value: 2 }
         ],
         salerList: [],
         supplyType: [],
@@ -109,20 +109,21 @@ export default {
   created() {
     if (this.value) {
       const data = JSON.parse(JSON.stringify(this.value))
-      console.log(JSON.stringify(data))
       for (const item of data.supplierInfoList) {
         if (item.purchaseType === 1) {
-          item.buyerId = item.buyerId ? item.buyerId : null
-          item.buyerName = item.buyerName ? item.buyerName : null
+          //  采购员
+          item.buyerId = item.personnelId
+          item.buyerName = item.personnelName
+          item.supplierId = null
+          item.supplierName = null
+          item.supplyDto = []
+        } else if (item.purchaseType === 2) {
+          //  供应商
+          item.buyerId = null
+          item.buyerName = null
           item.supplierId = item.personnelId
           item.supplierName = item.personnelName
-          item.supplyDto = item.supplyDto ? item.supplyDto : [item.supplierCategoryId, item.personnelId]
-        } else if (item.purchaseType === 2) {
-          item.buyerId = item.buyerId ? item.buyerId : null
-          item.buyerName = item.buyerName ? item.buyerName : null
-          item.supplierId = item.supplierId ? item.supplierId : null
-          item.supplierName = item.supplierName ? item.supplierName : null
-          item.supplyDto = item.supplyDto ? item.supplyDto : []
+          item.supplyDto = [item.supplierCategoryId, item.personnelId]
         }
       }
       this.form.table = data.supplierInfoList
@@ -157,12 +158,12 @@ export default {
       })
     },
     fecthSalerList() {
-      fecthSalerList().then(({ data }) => {
+      fecthMemberSelect({ staffType: 2 }).then(({ data }) => {
         if (Array.isArray(data) && data.length) {
           this.searchBarOptons.salerList = data
         }
       }).catch(e => {
-        this.$message({ type: 'error', message: e })
+        this.$message({ type: 'error', message: e.msg })
       })
     },
     clickToAdd() {
@@ -219,10 +220,11 @@ export default {
     },
     selectSaler(val, item) {
       if (!val) return
-      const obj = this.$arrayAttrGetObj(this.searchBarOptons.salerList, 'pk', val)
+      item.personnelId = val
+      const obj = this.$arrayAttrGetObj(this.searchBarOptons.salerList, 'value', val)
       if (!obj) return
-      item.buyerName = obj.staffName
-      item.personnelName = obj.staffName
+      item.buyerName = obj.label
+      item.personnelName = obj.label
     },
     selectSupply(val, item) {
       if (!val) return

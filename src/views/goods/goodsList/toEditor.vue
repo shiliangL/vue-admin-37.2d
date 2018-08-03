@@ -85,7 +85,7 @@
                   </el-col>
                   <el-col :xs="24" :sm="10" :md="8" :lg="6">
 
-                    <el-form-item label="供应商类别:" v-if="form.purchaseType===1"  :rules="rules.select" prop="supplyType" filterable>
+                    <el-form-item label="供应商类别:" v-if="form.purchaseType===2"  :rules="rules.select" prop="supplyType" filterable>
                       <el-select size="small" style="width:180px" v-model="form.supplyType" placeholder="请选择" @change="supplyTypeChange">
                         <el-option size="small" v-for="item in options.supplierType" :key="item.pk" :label="item.title" :value="item.pk"> </el-option>
                       </el-select> 
@@ -94,7 +94,7 @@
 
                     <el-form-item label="采购员:" :rules="rules.select" v-else  prop="buyerId">
                       <el-select size="small" style="width:180px" v-model="form.buyerId" placeholder="请选择" filterable>
-                        <el-option size="small" v-for="item in options.salerList" :key="item.pk" :label="item.staffName" :value="item.pk"> </el-option>
+                        <el-option size="small" v-for="item in options.salerList" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                       </el-select>
 
                     </el-form-item>
@@ -103,7 +103,7 @@
 
                   <el-col :xs="24" :sm="10" :md="8" :lg="6">
 
-                    <el-form-item label="供应商:" :rules="rules.select"  v-if="form.purchaseType===1" prop="supplyId">
+                    <el-form-item label="供应商:" :rules="rules.select"  v-if="form.purchaseType===2" prop="supplyId">
                       <el-select size="small" v-model="form.supplyId" placeholder="请选择" style="width:180px" >
                         <el-option size="small" v-for="item in options.supplierList" :key="item.value" :label="item.title" :value="item.pk"> </el-option>
                       </el-select>
@@ -332,9 +332,9 @@
 import addModel from '@/public/addModel.js'
 import rules from '@/public/rules.js'
 import { UploadImg, NqQuillEditor, Tabs } from '@/components/base.js'
-import { fecthGoodsClass, fecthUnit, fecthSupplierList, fecthSalerList, fecthByCategoryId } from '@/api/goodsList.js'
+import { fecthGoodsClass, fecthUnit, fecthSupplierList, fecthByCategoryId } from '@/api/goodsList.js'
+import { fecthMemberSelect } from '@/api/members.js'
 import { packagingList } from '@/api/brand.js'
-
 import { fecthList } from '@/api/warehouse/setting.js'
 
 import { mapActions, mapGetters } from 'vuex'
@@ -425,8 +425,8 @@ export default {
       options: {
         goodClass: [],
         purchaseType: [
-          { label: '供应商直供', value: 1 },
-          { label: '市场自采购', value: 2 }
+          { label: '供应商直供', value: 2 },
+          { label: '市场自采购', value: 1 }
         ],
         categoryTypeOption: [
           { label: '标品', value: 0 },
@@ -618,7 +618,7 @@ export default {
     },
     // 加载采购员
     fecthSalerList() {
-      fecthSalerList().then(({ data }) => {
+      fecthMemberSelect({ staffType: 2 }).then(({ data }) => {
         this.options.salerList = data
       }).catch(e => {
         console.log(e)

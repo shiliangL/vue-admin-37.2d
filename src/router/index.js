@@ -33,7 +33,8 @@ export const asyncRouterMap = [
       icon: 'component'
     },
     children: [
-      { path: 'orderList', component: _import('orders/orderList/index'), name: 'orderList', meta: { title: 'orderList' }}
+      { path: 'orderList', component: _import('orders/orderList/index'), name: 'orderList', meta: { title: 'orderList' }},
+      { path: 'returnChange', component: _import('orders/returnChange/index'), name: 'returnChange', meta: { title: 'returnChange' }}
     ]
   },
   {

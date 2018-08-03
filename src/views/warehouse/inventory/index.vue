@@ -33,6 +33,9 @@
 								<el-option v-for="sub in options.stock" :key="sub.id" :label="sub.title" :value="sub.id"></el-option>
 							</el-select>
 						</div>
+            <div class="left">
+				      <el-input size="small" style="width:180px"  v-model.trim="searchBarDate.title" placeholder="输入商品名称"></el-input>
+            </div>
 						<div class="left">
           		<el-button type="primary" size="small" @click="fecthTableList"> 搜索 </el-button>
           		<el-button size="small"  @click="reset"> 重置 </el-button>
@@ -128,6 +131,7 @@ export default {
       },
       searchBarDate: {
         stockCategory: null,
+        title: null,
         stockId: null
       },
       rules: {
@@ -186,9 +190,17 @@ export default {
               }
             }
           }
-          this.treeData = p
+          this.treeData = [{
+            value: 0,
+            label: '全部分类',
+            children: p
+          }]
         } else {
-          this.treeData = []
+          this.treeData = [{
+            value: 0,
+            label: '全部分类',
+            children: []
+          }]
         }
       })
         .catch(e => {
@@ -215,7 +227,7 @@ export default {
     },
     clickLoadDetails(val) {
       if (val) {
-        this.categoryId = val.value
+        this.categoryId = val.value ? val.value : null
         this.fecthTableList()
       }
     },
@@ -223,15 +235,12 @@ export default {
       console.log(val, 'xx')
     },
     fecthTableList() {
-      // if (!this.categoryId) {
-      //   this.$message({ type: 'warning', message: '请先选择商品类别' })
-      //   return
-      // }
       const { index, size } = this.pagination
       const data = {
         index,
         size,
         stockId: this.searchBarDate.stockId,
+        title: this.searchBarDate.title,
         categoryId: this.categoryId
       }
       fecthProductInventory(data).then(({ data }) => {
@@ -253,6 +262,7 @@ export default {
     reset() {
       this.searchBarDate.stockCategory = null
       this.searchBarDate.stockId = null
+      this.searchBarDate.title = null
       this.fecthTableList()
     },
     resetForm() {

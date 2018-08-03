@@ -131,8 +131,8 @@ export default {
             const keyList = {
               purchaseType: list.purchaseType,
               quantity: list.quantity,
-              personnelName: list.purchaseType === 1 ? list.supplierName : list.buyerName,
-              personnelId: list.purchaseType === 1 ? list.supplyDto[1] : list.buyerId
+              personnelName: list.purchaseType === 1 ? list.buyerName : list.supplierName,
+              personnelId: list.purchaseType === 1 ? list.buyerId : list.supplyDto[1]
             }
             key.supplierInfoList.push(keyList)
           }

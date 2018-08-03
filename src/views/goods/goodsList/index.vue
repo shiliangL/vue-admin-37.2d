@@ -116,7 +116,7 @@
 import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs, CascaderBox } from '@/components/base.js'
-import { fecthList, fecthGoodsClass, deletepProduct, productsDown, productsUp, fecthSupplierList, fecthSalerList, fecthByCategoryId } from '@/api/goodsList.js'
+import { fecthList, fecthGoodsClass, deletepProduct, productsDown, productsUp } from '@/api/goodsList.js'
 import { mapGetters } from 'vuex'
 export default {
   name: 'goodsList',
@@ -197,8 +197,6 @@ export default {
   mounted() {
     this.fecthList()
     this.fecthGoodsClass()
-    this.fecthSalerList()
-    this.fecthSupplierList()
   },
   computed: {
     ...mapGetters([
@@ -256,7 +254,7 @@ export default {
             } else {
               item.titlePrace = `¥${item.maxPrice}`
             }
-            if (item.purchaseType === 1) {
+            if (item.purchaseType === 2) {
               item.titleName = item.supplierName
             } else {
               item.titleName = item.buyerName
@@ -429,34 +427,6 @@ export default {
         default:
           break
       }
-    },
-    // 加载供应商类别
-    fecthSupplierList() {
-      fecthSupplierList().then(({ data }) => {
-        if (Array.isArray(data) && data.length > 0) {
-          this.searchBarOptons.supplyTypeOption = data
-        }
-      }).catch(e => {
-        console.log(e)
-      })
-    },
-    selectSupplyTypeChange(val) {
-      if (!val) return
-      fecthByCategoryId({ categoryId: val }).then(({ data }) => {
-        if (Array.isArray(data) && data.length > 0) {
-          this.searchBarOptons.supplierList = data
-        }
-      }).catch(e => {
-        console.log(e)
-      })
-    },
-    // 加载采购员
-    fecthSalerList() {
-      fecthSalerList().then(({ data }) => {
-        this.searchBarOptons.salerList = data
-      }).catch(e => {
-        console.log(e)
-      })
     }
   },
   watch: {

@@ -27,7 +27,6 @@
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">查看</el-button>
-							<!-- <el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index,scope.row)">删除</el-button> -->
             </template>
           </el-table-column>
 

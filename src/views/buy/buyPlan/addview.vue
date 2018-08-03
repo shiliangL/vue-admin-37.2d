@@ -65,11 +65,7 @@
 import addModel from '@/public/addModel.js'
 import rules from '@/public/rules.js'
 import changeDialog from './changeDialog'
-
 import { BoxToSearch, CascaderBox } from '@/components/base.js'
-
-// import { fecthGoodsClass, fecthUnit, fecthSupplierList, fecthSalerList, fecthByCategoryId } from '@/api/goodsList.js'
-
 export default {
   mixins: [rules, addModel],
   props: {
@@ -170,15 +166,15 @@ export default {
                 buyerName: item.buyerName,
                 supplierId: item.supplierId,
                 supplierName: item.supplierName,
-                personnelId: item.purchaseType === 1 ? item.supplierId : item.buyerId, // 人员id(供应商/采购员)
-                personnelName: item.purchaseType === 1 ? item.supplierName : item.buyerName, // 人员姓名(供应商/采购员)
+                personnelId: item.purchaseType === 1 ? item.buyerId : item.supplierId, // 人员id(供应商/采购员)
+                personnelName: item.purchaseType === 1 ? item.buyerName : item.supplierName, // 人员姓名(供应商/采购员)
                 purchaseType: item.purchaseType, // 采购类型(1:市场自采,2:供应商直供)
                 quantity: 1, // 数量
                 supplyDto: []
               }
             ]
           }
-          if (item.purchaseType === 1) {
+          if (item.purchaseType === 2) {
             data.supplierInfoList[0].supplyDto = [item.supplierCategoryId, item.supplierId]
           }
           this.form.dataList.push(data)

@@ -19,114 +19,29 @@
                 <div class="row-content">
                   <el-row>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="销售订单编号:">
+                      <el-form-item label="出库单号:">
                         <span v-cloak>{{form.orderNo}}</span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="下单时间:">
-                        <span v-cloak>{{form.orderDate}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="客户名称:">
-                        <span v-cloak>{{form.customerTitle}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="客户账号:">
-                        <span v-cloak>{{form.loginName}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="订单来源:">
-                        <span v-if="form.orderSource===0"> App </span>
-                        <span v-if="form.orderSource===1"> 微信公众号  </span>
-                        <span v-if="form.orderSource===2"> 微信小程序 </span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="支付类型:">
-                        <span v-if="form.paymentType===0"> 货到付款 </span>
-                        <span v-if="form.paymentType===1"> 线上支付 </span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="要求送达日期:">
-                          <span v-cloak>{{form.sendDate}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="要求送达时间:">
-                          <span v-cloak>{{form.beginTime}} - {{form.endTime}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="配送方式:">
-                          <span v-cloak> 厨满满专供 </span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="销售配送单号:">
-                          <span v-cloak>{{form.serialNumber}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="仓库:">
-                          <span v-cloak>{{form.stockInfoName}}</span>
-                      </el-form-item>
-                    </el-col> -->
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="配送员:">
-                        <span v-cloak>{{form.driverName}}</span>
+                        <span v-cloak>{{form.stockName}}</span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="实际送达时间:">
-                        <span v-cloak>{{form.factTime}}</span>
-                      </el-form-item>
-                    </el-col>
-                    
-                  </el-row>
-                </div>
-              </div>
-
-              <div class="row-item">
-                <div class="row-title">收货信息</div>
-                <div class="row-content">
-                  <el-row>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="收货人:">
-                        <span v-cloak>{{form.contactsName}}</span>
+                      <el-form-item label="出库类型:">
+                        <span v-if="form.storehouseType===1"> 销售订单 </span>
+                        <span v-if="form.storehouseType===2"> 销售换货  </span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="手机号:">
-                        <span v-cloak>{{form.phone}}</span>
+                      <el-form-item label="创建人:">
+                        <span v-cloak>{{form.createdName}}</span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="签收方式:" label-width="130px">
-                        <span v-if="form.receiverFlag===0"> 当面签收 </span>
-                        <span v-if="form.receiverFlag===1"> 拍照签收 </span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="form.receiverFlag===1">
-                      <el-form-item label="照片:">
-                        <div class="car" v-if="form.photos">
-                          <img :src="form.photos" alt="">
-                        </div>
-                        <!-- <span v-cloak>{{form.photos}}</span> -->
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="客户确认收货时间:" label-width="130px">
-                        <span v-cloak>{{form.receiverDate}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col>
-                      <el-form-item label="收货地址:">
-                         <span v-cloak>{{form.address}}</span>
+                      <el-form-item label="出库单创建时间:">
+                        <span v-cloak>{{form.createdTime}}</span>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -136,6 +51,11 @@
               <div class="row-item">
                 <div class="row-title">商品信息</div>
                 <div class="row-content">
+                   <div class="search">
+                      <!-- <span> 发货日期:{{today}}</span> -->
+              				<el-input size="small"  v-model.trim="inputContent" style="width:180px" type="text" placeholder="输入商品名称检索" maxlength="40"></el-input>
+                      <el-button  type="primary" size="small" @click.stop="fetchDetail"> 搜索 </el-button>
+                  </div>
                   <!-- 表格 -->
                   <table-contain :height.sync="table.maxHeight">
                     <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -144,24 +64,13 @@
                           <span>{{scope.$index + 1}}</span>
                         </template>
                       </el-table-column>
-                      <el-table-column prop="title" label="商品图片" align="center">
-                        <template slot-scope="scope">
-                          <div class="picBox"><img :src="`${scope.row.goodsImage}`"></div>
-                        </template>
-                      </el-table-column>
                       <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
-                      <el-table-column prop="skuName" label="规格" align="center"></el-table-column>
-                      <el-table-column prop="price" label="价格" align="center"></el-table-column>
-                      <el-table-column prop="orderQuantity" label="下单数量" align="center"></el-table-column>
-                      <el-table-column prop="orderQuantityPrice" label="下单金额" align="center"></el-table-column>
-                      <el-table-column prop="finalQuantity" label="分拣量(斤)" align="center"></el-table-column>
-                      <el-table-column prop="sumPrice" label="实际金额" align="center"></el-table-column>
-                      <el-table-column  label="退/换货状态" align="center">
-                       <template slot-scope="scope">
-                          <span v-if="scope.row.exchanage===0"> 退货 </span>
-                          <span v-if="scope.row.exchanage===1"> 换货 </span>
-                        </template>
-                      </el-table-column>
+                      <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
+                      <el-table-column prop="outQuantity" label="下单数量" align="center"></el-table-column>
+                      <el-table-column prop="realQuantity" label="出库数量" align="center"></el-table-column>
+                      <el-table-column prop="outageTime" label="出库时间" align="center"></el-table-column>
+                      <el-table-column prop="sorterName" label="分拣台" align="center"></el-table-column>
+                      <el-table-column prop="sortingTableName" label="分拣员" align="center"></el-table-column>
                     </el-table>
                     <el-pagination
                       slot="footer"
@@ -270,7 +179,7 @@
 import model from '@/public/listModel.js'
 import addModel from '@/public/addModel.js'
 import { SelectTabs } from '@/components/base.js'
-import { fecthStockList, fecthWorkBench, fecthWorkbenchUser, addProductList, createRow, fetchDetail } from '@/api/warehouse/goodsOut.js'
+import { fecthStockList, fecthWorkBench, fecthWorkbenchUser, addProductList, createRow, fetchDetail, fetchTableDetail } from '@/api/warehouse/goodsOut.js'
 export default {
   mixins: [addModel, model],
   components: {
@@ -279,36 +188,17 @@ export default {
   data() {
     return {
       form: {
-        'id': null,
-        'orderId': null,
         'orderNo': null,
-        'orderDate': null,
-        'customerId': null,
-        'customerTitle': null,
-        'loginName': null,
-        'orderSource': null,
-        'paymentType': null,
-        'beginTime': null,
-        'endTime': null,
-        'sendDate': null,
-        'serialNumber': null,
-        'driverId': null,
-        'driverName': null,
-        'factTime': null,
-        'contactsName': null,
-        'phone': null,
-        'status': null,
-        'mobile': null,
-        'address': null,
-        'receiver': null,
-        'receiverFlag': null,
-        'photos': null,
-        'type': null
+        'stockName': null,
+        'storehouseType': null,
+        'createdName': null,
+        'createdTime': null
       },
+      inputContent: null,
       AddForm: {
         orderNo: null,
         regionId: null,
-        type: 0,
+        type: 1,
         stockId: null
       },
       today: null,
@@ -324,8 +214,8 @@ export default {
       titleData_R: [],
       options: {
         storageType: [
-          { label: '销售订单', value: 0 },
-          { label: '销售换货', value: 1 }
+          { label: '销售订单', value: 1 },
+          { label: '销售换货', value: 2 }
         ],
         stockOption: [],
         regionOption: []
@@ -339,16 +229,16 @@ export default {
   },
   mounted() {
     this.currentTitle = this.data.title || ''
+    const date = new Date()
+    const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)
+    const day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate()
+    const ymd = date.getFullYear() + '-' + month + '-' + day
+    this.today = ymd
     if (this.data.type === 'view') {
       this.fetchDetail()
     } else {
       this.fecthStockList()
       this.fecthRegionList()
-      const date = new Date()
-      const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)
-      const day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate()
-      const ymd = date.getFullYear() + '-' + month + '-' + day
-      this.today = ymd
     }
   },
   computed: {
@@ -407,18 +297,24 @@ export default {
     },
     fetchDetail() {
       if (!this.data.obj.id) return
+      fetchDetail({ id: this.data.obj.id }).then(({ data }) => {
+        if (!data) return
+        this.form = Object.assign(this.form, data)
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+
       const { index, size } = this.pagination
       const data = {
         index,
         size,
-        type: this.data.obj.type,
+        inputContent: this.inputContent,
         id: this.data.obj.id
       }
-      fetchDetail(data).then(({ data }) => {
+      fetchTableDetail(data).then(({ data }) => {
         if (!data) return
-        this.form = Object.assign(this.form, data)
-        this.table.data = data.saleDtails.rows
-        this.pagination.total = data.saleDtails.total
+        this.table.data = data.rows
+        this.pagination.total = data.total
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })

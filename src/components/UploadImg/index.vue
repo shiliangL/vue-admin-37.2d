@@ -26,6 +26,7 @@
 </template>
 
 <script >
+import { fetchToken } from '@/api/layout.js'
 import { mapGetters } from 'vuex'
 export default {
   name: 'UploadImg',
@@ -43,6 +44,9 @@ export default {
   data() {
     return {
       requestHeader: null,
+      uploadDatas: {
+        token: null
+      },
       fileList: [],
       isUploading: false,
       imgTypes: ['jpeg', 'png', 'jpg', 'bmp']
@@ -50,7 +54,6 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'qNtoken',
       'baseImgUrl'
     ]),
     accept() {
@@ -59,16 +62,19 @@ export default {
         arr.push('image/' + item)
       })
       return arr.join(',')
-    },
-    uploadDatas() {
-      if (this.qNtoken) {
-        return {
-          token: this.qNtoken
-        }
-      }
     }
   },
+  mounted() {
+    this.fetchToken()
+  },
   methods: {
+    fetchToken() {
+      fetchToken().then(({ data }) => {
+        this.uploadDatas.token = data.token
+      }).catch(e => {
+        this.$message({ type: 'error', message: '图片上传参数获取失败,请重新打开页面' })
+      })
+    },
     overNumber() {
       this.$message({ type: 'warning', message: '图片选择小于5张' })
     },

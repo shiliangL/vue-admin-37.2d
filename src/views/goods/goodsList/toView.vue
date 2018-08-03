@@ -67,13 +67,13 @@
                   <el-col :xs="24" :sm="10" :md="8" :lg="6">
 
                     <el-form-item label="采购类型:" :rules="rules.select">
-                    	<span v-if="form.purchaseType===1"> 供应商直供 </span>
-                     	<span v-if="form.purchaseType===2"> 市场自采 </span>
+                    	<span v-if="form.purchaseType===2"> 供应商直供 </span>
+                     	<span v-if="form.purchaseType===1"> 市场自采 </span>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="24" :sm="10" :md="8" :lg="6">
 
-                    <el-form-item label="供应商类别:" v-if="form.purchaseType===1"  :rules="rules.select" prop="supplyType" filterable>
+                    <el-form-item label="供应商类别:" v-if="form.purchaseType===2"  :rules="rules.select" prop="supplyType" filterable>
                       <span v-cloak>{{form.supplier.categoryName}}</span>
                     </el-form-item>
 
@@ -84,7 +84,7 @@
                   </el-col>
 
                   <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                    <el-form-item label="供应商:" :rules="rules.select"  v-if="form.purchaseType===1" prop="supplyId">
+                    <el-form-item label="供应商:" :rules="rules.select"  v-if="form.purchaseType===2" prop="supplyId">
                       <span v-cloak>{{form.supplier.supplierName}}</span>
                     </el-form-item>
                   </el-col>
@@ -159,16 +159,12 @@
               <!-- <div class="editor_wrap">
                 <NqQuillEditor isDisables class="NqQuillEditor" v-model="form.details"></NqQuillEditor>
               </div> -->
-
               <div class="details-content">
                 <!-- 隐藏上传组件 -->
-
                 <div v-for="(item,index) in detailsFileList" :key="index" class="details-item">
                   <img :src="item" alt="">
                 </div>
-
               </div>
-
             </div>
           </div>
         </div>
@@ -214,44 +210,14 @@
                 </div>
 
                 <el-table :data="form.skuList" class="skuListTbale" size="small" :max-height="500" style="width: 100%;" highlight-current-row>
-    
                   <el-table-column label="序号" width="50" align="center">
                     <template slot-scope="scope">
                       <span>{{scope.$index + 1}}</span>
                     </template>
                   </el-table-column>
-
-                  <el-table-column prop="orderNo" label="规格" align="center">
-                    <template slot-scope="scope">
-
-                      <el-form-item label="" label-width="0px" :prop="'skuList.'+scope.$index+'.unitId'" :rules="rules.select">
-                        <el-select style="width:110px;padding-top: 2px;" v-model="scope.row.unitId" placeholder="请选择" size="small" filterable readonly @change="selectChangeUnit($event,scope.row)">
-                          <el-option v-for="item in options.UnitOpton" :key="item.id" :label="item.title" :value="item.id"> </el-option> 
-                        </el-select>
-                      </el-form-item>
-
-                      <el-form-item label="" label-width="0px" :prop="'skuList.'+scope.$index+'.rate'" :rules="rules.input">
-                      =	<el-input style="width:110px" type="number" readonly placeholder="正整数" size="small" v-model.trim="scope.row.rate"></el-input> {{scope.row.baseUnitName}}
-                      </el-form-item>
-
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="productName" label="规格备注" align="center">
-                    <template slot-scope="scope">
-                      <el-input type="textarea" readonly :autosize="{ minRows: 1, maxRows: 4}" placeholder="小于10字" v-model.trim="scope.row.summary" />
-                    </template>
-                  </el-table-column>
-    
-                  <el-table-column prop="price" label="市场价格(全国)" align="center">
-                    <template slot-scope="scope">
-
-                      <el-form-item label="" label-width="0px" :prop="'skuList.'+scope.$index+'.price'" :rules="rules.input">
-                        <el-input size="small" readonly class="w110" type="number" placeholder="请输入" v-model.trim="scope.row.price"></el-input>
-                      </el-form-item>
-
-                    </template>
-                  </el-table-column>
-    
+                  <el-table-column prop="skuTitle" label="规格" align="center"></el-table-column>
+                  <el-table-column prop="summary" label="规格备注" align="center"></el-table-column>
+                  <el-table-column prop="price" label="市场价格(全国)" align="center"></el-table-column>
                 </el-table>
               </div>
           </div>
@@ -459,14 +425,13 @@ export default {
     }
   },
   mounted() {
-    this.fetchGoodClassList()
-    this.fecthUnitList()
-    this.fecthSupplierList()
-    this.fecthSalerList()
+    // this.fetchGoodClassList()
+    // this.fecthUnitList()
+    // this.fecthSupplierList()
+    // this.fecthSalerList()
     if (!this.qNtoken) {
       this.VX_SET_QNTOKEN()
     }
-    console.log(this.$refs['VueEditor'])
   },
   computed: {
     ...mapGetters([

@@ -47,6 +47,13 @@ export function fetchDetail(params) {
     params
   })
 }
+export function fetchTableDetail(params) {
+  return request({
+    url: 'stockOutDetails/page',
+    method: 'get',
+    params
+  })
+}
 export function createRow(data) {
   return request({
     url: 'stockOutRecords/create',

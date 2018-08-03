@@ -5,7 +5,8 @@
       -->
       <div class="search-bar">
         <div class="left">
-          <el-date-picker :style="{width:'140px'}" 
+          <el-date-picker :style="{width:'140px'}"
+            readonly
             size="small"
             v-model="searchBarData.sendTime" 
             value-format="yyyy-MM-dd" 
@@ -66,6 +67,10 @@
 					</template>
         </el-table-column>
 			</el-table>
+
+      <div class="footer-block">
+				<span class="page" v-cloak> 共 {{tableData.length}} 条</span>
+			</div>
 
     </div>
 </template>
@@ -166,11 +171,11 @@ export default {
       for (const item of this.selectArray) {
         if (item.purchaseStatus === 0) {
           if (item.supplyId) {
-            item.purchaseType = 1
+            item.purchaseType = 2
             item.personnelId = item.supplyId
             item.personnelName = item.supplyName
           } else {
-            item.purchaseType = 2
+            item.purchaseType = 1
             item.personnelId = item.purchaseId
             item.personnelName = item.purchaseName
           }

@@ -5,7 +5,7 @@
 
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
 
-      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction"  @add="showAdd"  @reset="resetSearchBar" @command="clickMoreCommand"></search-bar>
+      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction"  @add="showAdd"  @reset="resetSearchBar"></search-bar>
 
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
@@ -26,14 +26,13 @@
           </el-table-column>
           <el-table-column prop="createdOn" label="采购计划创建时间" align="center"></el-table-column>
           <el-table-column prop="applicationDate" label="采购申请时间" align="center"></el-table-column>
+          <el-table-column prop="createdName" label="创建人" align="center"></el-table-column>
+          <el-table-column prop="purchaserName" label="申请人" align="center"></el-table-column>
           <el-table-column prop="auditStatus" label="采购申请状态" align="center">
              <template slot-scope="scope" align="center">
               <span v-cloak> {{scope.row.auditStatus | filterStatus }} </span>
             </template>
           </el-table-column>
-          <el-table-column prop="createdName" label="创建人" align="center"></el-table-column>
-          <el-table-column prop="purchaserName" label="申请人" align="center"></el-table-column>
- 
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">查看</el-button>
@@ -127,28 +126,28 @@ export default {
     ]
   },
   mounted() {
-    this.table.data = [{}]
     this.fecthList()
   },
   methods: {
     tabsCallBack(item) {
       this.curIndex = item.value
-      this.$nextTick().then(() => {
-        this.$refs['searchBar'].sendSearchParams()
-      })
-    },
-    searchAction(params) {
-      this.paramsData = {
-        auditStatus: params.auditStatus,
-        sourceType: params.sourceType,
-        generationTime: params.generationTime,
-        applicationDate: params.applicationDate,
-        orderNo: params.orderNo
-      }
       this.fecthList()
     },
-    clickMoreCommand(command) {
-      this.$message({ type: 'success', message: command, duration: 0, showClose: true })
+    searchAction(params) {
+      const { index, size } = this.pagination
+      const data = {
+        index,
+        size,
+        ...params,
+        auditStatus: this.curIndex
+      }
+      fecthList(data).then(({ data }) => {
+        this.table.data = data.rows
+        this.pagination.total = data.total
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+      this.fecthTipsBar()
     },
     fecthTipsBar() {
       fecthTipsBar().then(({ data }) => {
@@ -178,8 +177,7 @@ export default {
       const data = {
         index,
         size,
-        auditStatus: this.curIndex,
-        ...this.paramsData
+        auditStatus: this.curIndex
       }
       fecthList(data).then(({ data }) => {
         this.table.data = data.rows
