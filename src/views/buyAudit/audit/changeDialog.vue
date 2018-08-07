@@ -120,7 +120,7 @@ export default {
           this.searchBarOptons.supplierList = data
         }
       }).catch(e => {
-        this.$message({ type: 'error', message: e })
+        this.$message({ type: 'error', message: e.msg })
       })
     },
     fecthSalerList() {
@@ -129,7 +129,7 @@ export default {
           this.searchBarOptons.salerList = data
         }
       }).catch(e => {
-        this.$message({ type: 'error', message: e })
+        this.$message({ type: 'error', message: e.msg })
       })
     },
     clickToAdd() {

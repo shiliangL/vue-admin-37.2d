@@ -145,7 +145,9 @@ export default {
           for (const item of data.rows) {
             const arr = []
             for (const key of item.scmDriver) {
-              arr.push(key.name)
+              if (key.name) {
+                arr.push(key.name)
+              }
             }
             item.scmDriverStr = arr.toString()
           }

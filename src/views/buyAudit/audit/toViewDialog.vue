@@ -109,7 +109,6 @@ export default {
   created() {
     if (this.value) {
       const data = JSON.parse(JSON.stringify(this.value))
-      console.log(JSON.stringify(data))
       for (const item of data.supplierInfoList) {
         if (item.purchaseType === 1) {
           //  采购员
@@ -195,13 +194,6 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           const list = JSON.parse(JSON.stringify(this.form.table))
-          // for (const item of list) {
-          //   delete item.buyerId
-          //   delete item.buyerName
-          //   delete item.supplierName
-          //   delete item.supplierId
-          //   delete item.supplyDto
-          // }
           const data = {
             detailsId: this.value.detailId,
             waitQuantity: this.totalNumber,
@@ -219,8 +211,8 @@ export default {
       if (!val) return
       const obj = this.$arrayAttrGetObj(this.searchBarOptons.salerList, 'value', val)
       if (!obj) return
-      item.buyerName = obj.value
-      item.personnelName = obj.value
+      item.buyerName = obj.label
+      item.personnelName = obj.label
     },
     selectSupply(val, item) {
       if (!val) return

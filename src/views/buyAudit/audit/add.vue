@@ -15,12 +15,9 @@
             </div>
         </div>
         <div class="content-bar">
-
           <template v-if="this.data.type === 'view'">
-            <!-- @callBack="callBackToPass" -->
             <toView ref="toView" :loadID="loadID"  :isPass.sync="isPass" v-model="toViewObj"></toView>
           </template>
-
         </div>
       </div>
 
@@ -115,11 +112,19 @@ export default {
     },
     submitForm() {
       if (!this.toViewObj || !this.isPass) return
+      const result = JSON.parse(JSON.stringify(this.toViewObj))
+      for (const item of result) {
+        if (item.hasOwnProperty('buyerId')) { delete item.buyerId }
+        if (item.hasOwnProperty('buyerName')) { delete item.buyerName }
+        if (item.hasOwnProperty('supplierId')) { delete item.supplierId }
+        if (item.hasOwnProperty('supplierName')) { delete item.supplierName }
+        if (item.hasOwnProperty('supplyDto')) { delete item.supplyDto }
+      }
       const data = {
         remark: this.ruleForm.remark,
         status: 4,
         requestId: this.data.obj.pk,
-        requestDetailsList: this.toViewObj
+        requestDetailsList: result
       }
       applyCreate(data).then(res => {
         if (res.code === '0') {
@@ -176,11 +181,31 @@ export default {
         type: 'warning'
       }).then(() => {
         if (!this.toViewObj) return
+        const arr = JSON.parse(JSON.stringify(this.toViewObj))
+        for (const item of arr) {
+          const arrItem = item.supplierInfoList
+          for (const key of arrItem) {
+            if (key.buyerId || key.supplierId) {
+              if (key.purchaseType === 1) {
+                key.personnelId = key.supplyDto[1]
+                key.personnelName = key.supplierName
+              } else if (key.purchaseType === 1) {
+                key.personnelId = key.buyerId
+                key.personnelName = key.buyerName
+              }
+              delete key.supplyDto
+              delete key.supplierName
+              delete key.supplierId
+              delete key.buyerId
+              delete key.buyerName
+            }
+          }
+        }
         const data = {
           remark: this.ruleForm.remark,
           status: 3,
           requestId: this.data.obj.pk,
-          requestDetailsList: this.toViewObj
+          requestDetailsList: arr
         }
         applyCreate(data).then(res => {
           this.$message({ type: 'success', message: `${res.msg}!` })
@@ -190,45 +215,6 @@ export default {
           this.$message({ type: 'error', message: '操作失败' })
         })
       }).catch(() => {})
-    },
-    callBackToPass(data) {
-      if (!data) return
-      if (this.data.obj.auditStatus !== 2) return
-      const params = {
-        remark: null,
-        requestId: this.data.obj.pk,
-        status: 3
-      }
-      const arr = JSON.parse(JSON.stringify(data))
-      for (const item of arr) {
-        const arrItem = item.supplierInfoList
-        for (const key of arrItem) {
-          if (key.buyerId || key.supplierId) {
-            if (key.purchaseType === 1) {
-              key.personnelId = key.supplyDto[1]
-              key.personnelName = key.supplierName
-            } else if (key.purchaseType === 1) {
-              key.personnelId = key.buyerId
-              key.personnelName = key.buyerName
-            }
-            delete key.supplyDto
-            delete key.supplierName
-            delete key.supplierId
-            delete key.buyerId
-            delete key.buyerName
-          }
-        }
-      }
-      params.requestDetailsList = arr
-      applyCreate(params).then(res => {
-        if (res.code === '0') {
-          this.$message({ type: 'success', message: res.msg })
-          this.dialog.visiable = false
-          this.$emit('add')
-        }
-      }).catch(e => {
-        this.$message({ type: 'error', message: e.msg })
-      })
     },
     formClose() {
       this.innerVisible = false

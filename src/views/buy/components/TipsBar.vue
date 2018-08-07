@@ -15,7 +15,7 @@
           </div>
           <div class="dowm">
             <div class="desc" v-cloak>销售订单需采购商品: <span class="num">{{item.goodsNumber || 0}}</span> </div>
-            <div class="desc" v-cloak>未生成采购计划商品:  <span class="num"> {{item.goodsNotPrchase || 0}} </span> </div>
+            <div class="desc" v-cloak>未生成采购计划商品:  <span class="num" style="color:red"> {{item.goodsNotPrchase || 0}} </span> </div>
           </div>
         </el-card>
 			</el-col>
@@ -57,6 +57,7 @@
           color:#7e8188;
           margin-bottom: 6px;
           .num{
+            padding-left: 6px;
             color:#49c9b0;
           }
         }

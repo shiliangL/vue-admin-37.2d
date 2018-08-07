@@ -112,8 +112,8 @@ export default {
       for (const item of data.supplierInfoList) {
         if (item.purchaseType === 1) {
           //  采购员
-          item.buyerId = item.personnelId
-          item.buyerName = item.personnelName
+          item.buyerId = item.buyerId ? item.buyerId : item.personnelId
+          item.buyerName = item.buyerName ? item.buyerName : item.personnelName
           item.supplierId = null
           item.supplierName = null
           item.supplyDto = []
@@ -121,9 +121,9 @@ export default {
           //  供应商
           item.buyerId = null
           item.buyerName = null
-          item.supplierId = item.personnelId
-          item.supplierName = item.personnelName
-          item.supplyDto = [item.supplierCategoryId, item.personnelId]
+          item.supplierId = item.supplierId ? item.supplierId : item.personnelId
+          item.supplierName = item.supplierName ? item.supplierName : item.personnelName
+          item.supplyDto = item.supplyDto ? item.supplyDto : [item.supplierCategoryId, item.personnelId]
         }
       }
       this.form.table = data.supplierInfoList

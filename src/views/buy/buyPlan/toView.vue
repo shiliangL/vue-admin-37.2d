@@ -89,19 +89,23 @@
 
 							<el-table-column v-if="this.showType" label="采购员/供应商" align="center">
 									<template slot-scope="scope">
-                    <span v-cloak> {{scope.row.personnelNames}} </span>
+                    <el-popover placement="top" width="200" trigger="hover">
+                      <div v-for="(item,index) in scope.row.supplierInfoList" :key="index">
+                        <span>{{item.personnelName}}</span> : <span>{{item.quantity}}</span>;
+                      </div>
+                      <span  slot="reference" v-cloak> {{scope.row.personnelNamesStr}} </span>
+                    </el-popover>
                     <el-button type="text" size="mini" @click.stop="clickToChange(scope.$index, scope.row)">更改</el-button>
 									</template>
 							</el-table-column>
+              
               <el-table-column v-else label="采购员/供应商" align="center">
                 	<template slot-scope="scope">
-                   <el-popover placement="top" width="200" trigger="click">
-                      <div>
-                        <div v-for="(item,index) in scope.row.supplierInfoList" :key="index">
-                          <span>{{item.personnelName}}</span> : <span>{{item.quantity}}</span>;
-                        </div>
+                   <el-popover placement="top" width="200" trigger="hover">
+                     <div v-for="(item,index) in scope.row.supplierInfoList" :key="index">
+                        <span>{{item.personnelName}}</span> : <span>{{item.quantity}}</span>;
                       </div>
-                      <el-button type="text" size="mini" slot="reference"> {{scope.row.personnelNames}}  </el-button>
+                      <el-button type="text" size="mini" slot="reference"> {{scope.row.personnelNamesStr}}  </el-button>
                     </el-popover>
 									</template>
               </el-table-column>
@@ -111,7 +115,6 @@
 						<div class="pages">
 							<span v-cloak> 共 {{this.form.table.length}} 条</span>
 						</div>
-
  
 					</div>
 				</div>
@@ -144,18 +147,18 @@ export default {
       dialogData: null,
       form: {
         header: {
-          'pk': '09ed6518ade1422bab2fe2e883056747',
+          'pk': null,
           'createdBy': null,
-          'createdOn': '2018-07-02 11:58:33',
+          'createdOn': null,
           'updatedBy': null,
           'updatedOn': null,
           'deletedFlag': null,
-          'orderNo': 'cgsq180702000002',
+          'orderNo': null,
           'purchaserId': null,
           'sourceType': 2,
-          'applicationDate': '2018-07-02 11:58:33',
+          'applicationDate': null,
           'auditStatus': 1,
-          'createdName': '管理员',
+          'createdName': null,
           'purchaserName': null,
           'auditDate': null,
           'auditStaffName': null
@@ -186,27 +189,35 @@ export default {
     fecthDetail() {
       if (!this.$attrs.loadID) return
       headerDetail({ id: this.$attrs.loadID }).then(({ data }) => {
-        console.log(data, 'headerDetail')
         this.form.header = Object.assign(this.form.header, data)
         this.showType = data.auditStatus === 1 // 待审核的时候需要显示编辑页面
       }).catch(e => {
-        // this.loadingText = e.msg
+        this.$message({ type: 'error', message: e.msg })
       })
+      this.fetchBody()
+    },
+    fetchBody() {
+      if (!this.$attrs.loadID) return
       bodyDetail({ requestId: this.$attrs.loadID }).then(({ data }) => {
-        console.log(data, 'bodyDetail')
+        if (Array.isArray(data)) {
+          for (const item of data) {
+            const str = item.personnelNames.split(',')
+            if (str.length > 1) {
+              item.personnelNamesStr = str[0] + '...'
+            } else if (str.length === 1) {
+              item.personnelNamesStr = str[0]
+            } else {
+              item.personnelNamesStr = ''
+            }
+          }
+        }
         this.form.table = data
       }).catch(e => {
-        // this.loadingText = e.msg
+        this.$message({ type: 'error', message: e.msg })
       })
     },
     refrehList() {
-      if (!this.$attrs.loadID) return
-      bodyDetail({ requestId: this.$attrs.loadID }).then(({ data }) => {
-        console.log(data, 'bodyDetail')
-        this.form.table = data
-      }).catch(e => {
-        // this.loadingText = e.msg
-      })
+      this.fetchBody()
     },
     sendSearchParam() {
 

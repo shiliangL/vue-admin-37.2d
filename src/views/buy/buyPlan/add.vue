@@ -169,10 +169,11 @@ export default {
       }
       const arr = JSON.parse(JSON.stringify(data))
       for (const item of arr) {
+        delete item.personnelNamesStr
         const arrItem = item.supplierInfoList
         for (const key of arrItem) {
           if (key.buyerId || key.supplierId) {
-            if (key.purchaseType === 1) {
+            if (key.purchaseType === 2) {
               key.personnelId = key.supplyDto[1]
               key.personnelName = key.supplierName
             } else if (key.purchaseType === 1) {

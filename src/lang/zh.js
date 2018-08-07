@@ -77,12 +77,12 @@ export default {
     goodsIn: '商品入库',
     goodsOut: '商品出库',
     workbench: '工作台管理',
-    equipment: '工作台外接设备',
+    equipment: '外接设备',
     supplyDirector: '供应链主管',
     ckOperator: '仓管员',
 
     salesDelivery: '销售配送',
-    areaDelivery: '区域配送',
+    areaDelivery: '配送区域',
     deliveryer: '配送员',
 
     goodPick: '商品分拣',

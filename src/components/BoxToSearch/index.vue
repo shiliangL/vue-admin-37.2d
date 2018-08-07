@@ -2,7 +2,7 @@
    支持编辑多选的组件
  -->
 <template>
-	<div class="search-input">
+	<div class="search-input BoxToSearch">
 		<el-popover ref="searchPopover" placement="bottom-start" width="400"
 			v-model="showPopover"
 			trigger="manual"
@@ -23,15 +23,12 @@
 			    <div v-show="showTable">
 					<el-table  :max-height="maxHeight" v-loading="loading" element-loading-text="数据加载中" ref="table" class="search-input-table" @row-click="toggleRow" :data="tableData" size="small">
 					    <el-table-column width="50" type="selection" align="center">
-							<template slot-scope="scope">
-					    		<el-checkbox 
-					    			style="pointer-events: none;" 
-					    			:value="isActiveRow(scope.row)">
-					    		</el-checkbox>
+							  <template slot-scope="scope">
+					    		<el-checkbox style="pointer-events: none;" :value="isActiveRow(scope.row)"> </el-checkbox>
 					    	</template>
 					    </el-table-column>
-					    <el-table-column prop="name" label="名称"></el-table-column>
-					    <el-table-column prop="code" label="编码"></el-table-column>
+					    <el-table-column  align="center" prop="name" label="名称"></el-table-column>
+					    <el-table-column  align="center" prop="categoryName" label="类别"></el-table-column>
 					</el-table>
 
           <el-pagination
@@ -66,7 +63,7 @@
 			    <span class="tag-txt" > {{tag[showKey]}} </span>
 				</span>
 
-				<input v-model.trim="codeOrname" class="el-input__inner" @focus="handleFocus" @keyup.enter="keyupEnter" :placeholder="placeholder2"/>
+				<input v-model.trim="codeOrname" class="el-input__inner input" @focus="handleFocus" @keyup.enter="keyupEnter" :placeholder="placeholder2"/>
 				
 			</div>
 		</el-popover>
@@ -151,10 +148,10 @@ table {
       border: 0 !important;
       margin: 0 !important;
     }
-    input:focus{
+    .input:focus{
       outline: none;
+      border-color:none;
     }
-
     .select-btn {
       margin-top: 5px;
       margin-bottom: 5px;

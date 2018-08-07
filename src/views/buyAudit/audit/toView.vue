@@ -90,13 +90,11 @@
 
 							<el-table-column  v-if="this.showType" label="采购员/供应商" align="center">
 									<template slot-scope="scope">
-                    <el-popover placement="top" width="200" trigger="click">
-                      <div>
-                        <div v-for="(item,index) in scope.row.supplierInfoList" :key="index">
-                          <span>{{item.personnelName}}</span> : <span>{{item.quantity}}</span>;
-                        </div>
+                    <el-popover placement="top" width="200" trigger="hover">
+                      <div v-for="(item,index) in scope.row.supplierInfoList" :key="index">
+                        <span>{{item.personnelName}}</span> : <span>{{item.quantity}}</span>;
                       </div>
-                      <span type="text" size="small" slot="reference"> {{scope.row.personnelNames}}  </span>
+                      <span type="text" size="small" slot="reference"> {{scope.row.supplierInfoList[0].personnelName}}  </span>
                     </el-popover>
 
 									  <el-button type="text" size="mini" @click.stop="clickToChange(scope.$index, scope.row)">更改</el-button>
@@ -105,13 +103,11 @@
 
                 <el-table-column  v-else label="采购员/供应商" align="center">
                 	<template slot-scope="scope">
-                    <el-popover placement="top" width="200" trigger="click">
-                      <div>
-                        <div v-for="(item,index) in scope.row.supplierInfoList" :key="index">
-                          <span>{{item.personnelName}}</span> : <span>{{item.quantity}}</span>;
-                        </div>
+                    <el-popover placement="top" width="200" trigger="hover">
+                      <div v-for="(item,index) in scope.row.supplierInfoList" :key="index">
+                        <span>{{item.personnelName}}</span> : <span>{{item.quantity}}</span>;
                       </div>
-                      <el-button type="text" size="mini" slot="reference"> {{scope.row.personnelNames}}  </el-button>
+                      <el-button type="text" size="mini" slot="reference"> {{scope.row.supplierInfoList[0].personnelName}}  </el-button>
                     </el-popover>
                     </template>
                 </el-table-column>
@@ -187,7 +183,6 @@ export default {
   methods: {
     fecthDetail() {
       headerDetail({ id: this.$attrs.loadID }).then(({ data }) => {
-        console.log(data, 'headerDetail')
         this.form.header = Object.assign(this.form.header, data)
         this.showType = data.auditStatus === 2 // 待审核的时候需要显示编辑页面
         bodyDetail({ requestId: this.$attrs.loadID }).then(({ data }) => {
@@ -266,7 +261,6 @@ export default {
     toViewDialogCallBack(item) {
       this.form.table[this.curIndex].supplierInfoList = item.table
       this.form.table[this.curIndex].waitQuantity = item.waitQuantity
-      console.log(item.table)
     },
     // 触发校验 处理参数
     validateForm() {

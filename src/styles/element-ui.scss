@@ -189,8 +189,15 @@
          display: none !important;
      }
      .el-upload--picture-card {
-         border:none;
+         border: none;
          width: 60px !important;
          height: 60px !important;
+     }
+ }
+
+ .BoxToSearch {
+     .el-input__inner:focus {
+        outline: none !important;
+        border-color: none !important;
      }
  }

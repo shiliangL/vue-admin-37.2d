@@ -8,7 +8,6 @@
 						<div class="AddTableList">
 							 <BoxToSearch ref="BoxToSearch" :request="request"  @change="selectChange" multiple :id.sync="goodIds" :name.sync="goodNames"> </BoxToSearch>  
 							 <el-button  type="primary" size="small" @click.stop="clickToAdd" > 添加 </el-button>
-               <!-- <CascaderBox></CascaderBox> -->
 						</div>
 
 						<!-- table区域 -->
@@ -65,7 +64,7 @@
 import addModel from '@/public/addModel.js'
 import rules from '@/public/rules.js'
 import changeDialog from './changeDialog'
-import { BoxToSearch, CascaderBox } from '@/components/base.js'
+import { BoxToSearch } from '@/components/base.js'
 export default {
   mixins: [rules, addModel],
   props: {
@@ -75,7 +74,6 @@ export default {
   },
   components: {
     BoxToSearch,
-    CascaderBox,
     changeDialog
   },
   data() {
@@ -122,11 +120,6 @@ export default {
         }
       }
     }
-  },
-  created() {
-
-  },
-  mounted() {
   },
   methods: {
     clickToChange(index, item) {
