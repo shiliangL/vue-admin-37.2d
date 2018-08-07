@@ -33,3 +33,18 @@ export function orderDetailUpdate(data) {
     data
   })
 }
+export function orderAdd(data) {
+  return request({
+    url: 'scmSalesOrder/add',
+    method: 'POST',
+    data
+  })
+}
+// 根据商品获取 商品的规格
+export function fetchSkuList(params) {
+  return request({
+    url: 'productInfo/getSkuList',
+    method: 'get',
+    params
+  })
+}

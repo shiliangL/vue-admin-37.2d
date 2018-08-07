@@ -10,7 +10,7 @@
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
 							<el-form-item label="用户账号:" label-width="100px" prop="mobile" :rules="rules.input">
 								<span v-if="isViewPage" v-cloak>{{form.mobile}}</span>
-								<el-input v-else size="small" style="width:140px"  v-model.trim="form.mobile" placeholder="手机号" maxlength="11"></el-input>
+								<el-input v-else size="small" style="width:160px"  v-model.trim="form.mobile" placeholder="手机号" maxlength="11"></el-input>
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
@@ -21,37 +21,37 @@
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
 							<el-form-item label="用户名称:" label-width="100px" prop="name" :rules="rules.input">
 								<span  v-if="isViewPage" v-cloak>{{form.name}}</span>
-								<el-input v-else size="small" style="width:140px"  v-model.trim="form.name" placeholder="不能超过5位数" maxlength="5"></el-input>
+								<el-input v-else size="small" style="width:160px"  v-model.trim="form.name" placeholder="不能超过5位数" maxlength="5"></el-input>
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
 							<el-form-item label="在职时间:" label-width="100px">
 								<span  v-if="isViewPage" v-cloak>{{form.entryTime}}</span>
-      					<el-date-picker v-else style="width:140px" size="small" v-model="form.entryTime" value-format="yyyy-MM-dd" type="date"></el-date-picker>
+      					<el-date-picker v-else style="width:160px" size="small" v-model="form.entryTime" value-format="yyyy-MM-dd" type="date"></el-date-picker>
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="propsSonData.type !== 'add'">
 							<el-form-item label="离职时间:" label-width="100px">
 								<span v-if="isViewPage" v-cloak>{{form.departureTime}}</span>
-      					<el-date-picker v-else style="width:140px" size="small" v-model="form.departureTime" value-format="yyyy-MM-dd" type="date"></el-date-picker>
+      					<el-date-picker v-else style="width:160px" size="small" v-model="form.departureTime" value-format="yyyy-MM-dd" type="date"></el-date-picker>
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
 							<el-form-item label="驾照号:" label-width="100px" prop="driverNo" :rules="rules.input">
 								<span  v-if="isViewPage" v-cloak>{{form.driverNo}}</span>
-								<el-input v-else size="small" style="width:140px"  v-model.trim="form.driverNo" placeholder="不能超过5位数" maxlength="5"></el-input>
+								<el-input v-else size="small" style="width:160px"  v-model.trim="form.driverNo" placeholder="不能超过18位数" maxlength="18"></el-input>
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
 							<el-form-item label="有效期:" label-width="100px" prop="effectiveTime" :rules="rules.input">
 								<span  v-if="isViewPage" v-cloak>{{form.effectiveTime}}</span>
-      					<el-date-picker v-else style="width:140px" size="small" v-model="form.effectiveTime" value-format="yyyy-MM-dd" type="date"></el-date-picker>
+      					<el-date-picker v-else style="width:160px" size="small" v-model="form.effectiveTime" value-format="yyyy-MM-dd" type="date"></el-date-picker>
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
 							<el-form-item label="首次发证:" label-width="100px" prop="takeTime" :rules="rules.input">
 								<span  v-if="isViewPage" v-cloak>{{form.takeTime}}</span>
-      					<el-date-picker v-else style="width:140px" size="small" v-model="form.takeTime" value-format="yyyy-MM-dd" type="date"></el-date-picker>
+      					<el-date-picker v-else style="width:160px" size="small" v-model="form.takeTime" value-format="yyyy-MM-dd" type="date"></el-date-picker>
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
@@ -63,31 +63,31 @@
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
 							<el-form-item label="车牌号:" label-width="100px" prop="carNo" :rules="rules.input">
 								<span  v-if="isViewPage" v-cloak>{{form.carNo}}</span>
-								<el-input v-else size="small" style="width:140px"  v-model.trim="form.carNo" placeholder="不能超过5位数" maxlength="5"></el-input>
+								<el-input v-else size="small" style="width:160px"  v-model.trim="form.carNo"></el-input>
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
 							<el-form-item label="车架号:" label-width="100px" prop="carId" :rules="rules.input">
 								<span  v-if="isViewPage" v-cloak>{{form.carId}}</span>
-								<el-input v-else size="small" style="width:140px"  v-model.trim="form.carId" placeholder="不能超过5位数" maxlength="5"></el-input>
+								<el-input v-else size="small" style="width:160px"  v-model.trim="form.carId"></el-input>
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
 							<el-form-item label="发动机号:" label-width="100px" prop="engineId" :rules="rules.input">
 								<span  v-if="isViewPage" v-cloak>{{form.engineId}}</span>
-								<el-input v-else size="small" style="width:140px"  v-model.trim="form.engineId" placeholder="不能超过5位数" maxlength="5"></el-input>
+								<el-input v-else size="small" style="width:160px"  v-model.trim="form.engineId"></el-input>
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
 							<el-form-item label="车辆品牌:" label-width="100px" prop="carBrand" :rules="rules.input">
 								<span  v-if="isViewPage" v-cloak>{{form.carBrand}}</span>
-								<el-input v-else size="small" style="width:140px"  v-model.trim="form.carBrand" placeholder="不能超过5位数" maxlength="5"></el-input>
+								<el-input v-else size="small" style="width:160px"  v-model.trim="form.carBrand"></el-input>
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
 							<el-form-item label="车辆型号:" label-width="100px" prop="carModel" :rules="rules.input">
 								<span  v-if="isViewPage" v-cloak>{{form.carModel}}</span>
-								<el-input v-else size="small" style="width:140px"  v-model.trim="form.carModel" placeholder="不能超过5位数" maxlength="5"></el-input>
+								<el-input v-else size="small" style="width:160px"  v-model.trim="form.carModel"></el-input>
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
@@ -99,12 +99,12 @@
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
 							<el-form-item label="身份证号:" label-width="100px" prop="idcardNo" :rules="rules.input">
 								<span  v-if="isViewPage" v-cloak>{{form.idcardNo}}</span>
-								<el-input v-else size="small" style="width:140px"  v-model.trim="form.idcardNo" placeholder="不能超过5位数" maxlength="5"></el-input>
+								<el-input v-else size="small" style="width:160px"  v-model.trim="form.idcardNo" placeholder="不能超过18位数" maxlength="18"></el-input>
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="false">
 							<el-form-item label="身份证图片:" label-width="100px" prop="idcardPicIds" :rules="rules.select">
-								<el-input size="small" style="width:140px;display: none;"  v-model.trim="form.idcardPicIds" placeholder="不能超过5位数" maxlength="5"></el-input>
+								<el-input size="small" style="width:160px;display: none;"  v-model.trim="form.idcardPicIds" placeholder="不能超过18位数" maxlength="5"></el-input>
 								<div class="flex-box">
 									<div class="car"> 
 										<i class="el-icon-plus"></i>

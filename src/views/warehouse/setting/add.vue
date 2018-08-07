@@ -137,7 +137,16 @@ export default {
         if (this.$refs['sectionTwo']) { this.$refs['sectionTwo'].validateForm() }
         if (!this.isPass || !this.sectionTwo) return
         if (this.data.isEditor) {
-          updateCW(this.sectionOne).then(res => {
+          const data = {
+            'description': this.sectionTwo.description,
+            'high': this.sectionTwo.high,
+            'id': this.sectionTwo.pk,
+            'lasting': this.sectionTwo.lasting,
+            'number': this.sectionTwo.number,
+            'stockId': this.sectionTwo.stockId,
+            'width': this.sectionTwo.width
+          }
+          updateCW(data).then(res => {
             this.$message({ type: 'success', message: `${res.msg}!` })
             this.dialog.visiable = false
             this.$emit('add')

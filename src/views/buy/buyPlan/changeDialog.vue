@@ -110,7 +110,6 @@ export default {
   created() {
     if (this.value) {
       const data = JSON.parse(JSON.stringify(this.value))
-      console.log(JSON.stringify(data))
       for (const item of data.supplierInfoList) {
         if (item.purchaseType === 1) {
           //  采购员
@@ -121,12 +120,11 @@ export default {
           item.supplyDto = []
         } else if (item.purchaseType === 2) {
           //  供应商
-          debugger
           item.buyerId = null
           item.buyerName = null
           item.supplierId = item.personnelId
           item.supplierName = item.personnelName
-          item.supplyDto = [item.supplierCategoryId, item.personnelId]
+          item.supplyDto = [data.supplierCategoryId, item.personnelId]
         }
       }
       this.form.table = data.supplierInfoList

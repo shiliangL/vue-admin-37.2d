@@ -91,10 +91,10 @@
           <el-form-item label="基本单位:" label-width="100px">
             <el-input readonly size="small" style="width:180px" v-model.trim="form.basicUnit" ></el-input>
           </el-form-item>
-          <el-form-item label="安全上限:" label-width="100px" prop="safeStock" :rules="[{ required: true, validator: rules.validNumber2, trigger: 'change' }]">
+          <el-form-item label="安全上限:" label-width="100px" prop="safeStock" :rules="[{ required: true, validator: rules.validNumber2, trigger: 'change',item:form }]">
             <el-input size="small" style="width:180px"  v-model.trim="form.safeStock" placeholder="不能超过5位数" maxlength="8"></el-input>
           </el-form-item>
-          <el-form-item label="安全下限:" label-width="100px" prop="safeStockFloor"  :rules="[{ required: true, validator: rules.validNumber2, trigger: 'change' }]">
+          <el-form-item label="安全下限:" label-width="100px" prop="safeStockFloor"  :rules="[{ required: true, validator: rules.validNumber2, trigger: 'change',item:form }]">
             <el-input size="small" style="width:180px"  v-model.trim="form.safeStockFloor" placeholder="不能超过5位数" maxlength="8"></el-input>
           </el-form-item>
         </el-form>
@@ -282,6 +282,10 @@ export default {
       this.form.safeStockFloor = item.safeStockFloor
     },
     clickSaveOrUpdate(formName) {
+      if (this.form.safeStockFloor > this.form.safeStock) {
+        this.$message({ type: 'warning', message: '下限不能大于上限' })
+        return
+      }
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.saveLoading = true

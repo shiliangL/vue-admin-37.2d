@@ -23,7 +23,7 @@
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="客户账户:" prop="categoryId">
-                      <span v-cloak>{{form.scmOrder.customerName}}</span>
+                      <span v-cloak>{{form.scmOrder.mobile}}</span>
 									</el-form-item>
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
@@ -31,6 +31,7 @@
 											<span v-cloak v-if="form.scmOrder.orderSource ===0">App</span>
 											<span v-cloak v-if="form.scmOrder.orderSource ===1">微信公众号</span>
 											<span v-cloak v-if="form.scmOrder.orderSource ===2">微信小程序</span>
+											<span v-cloak v-if="form.scmOrder.orderSource ===3">后台</span>
 									</el-form-item>
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
@@ -70,7 +71,7 @@
 
 							<el-col :xs="24" :sm="10" :md="8" :lg="8">
 								<el-form-item label="手机号:" >
-										<span v-cloak>{{form.scmOrder.phone}}</span>
+										<span v-cloak>{{form.scmOrder.mobile}}</span>
 								</el-form-item>
 							</el-col>
 

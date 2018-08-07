@@ -40,13 +40,13 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item label=""  style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.buyerId'"  :rules="rules.select"  v-if="scope.row.purchaseType ===2">
+              <el-form-item label=""  style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.buyerId'"  :rules="rules.select"  v-if="scope.row.purchaseType ===1">
                 <el-select style="180px" size="small" v-model="scope.row.buyerId" clearable filterable placeholder="请选择" @change="selectSaler($event,scope.row)">
                   <el-option v-for="sub in searchBarOptons.salerList" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                 </el-select>
               </el-form-item>
 
-              <el-form-item label=""  style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.supplyDto'"  :rules="rules.select"  v-if="scope.row.purchaseType ===1">
+              <el-form-item label=""  style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.supplyDto'"  :rules="rules.select"  v-if="scope.row.purchaseType ===2">
                 <el-cascader style="180px" v-model="scope.row.supplyDto" size="small" :options="searchBarOptons.supplierList"  @change="selectSupply($event,scope.row)">></el-cascader>
               </el-form-item>
 

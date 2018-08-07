@@ -4,7 +4,7 @@
 
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
  
-      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction" @reset="resetSearchBar" @command="clickMoreCommand"></search-bar>
+      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction" @reset="resetSearchBar" @command="clickMoreCommand"  @add="showAdd"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -23,6 +23,7 @@
             <span v-if="scope.row.orderSource ===0">App</span>
             <span v-if="scope.row.orderSource ===1">微信公众号</span>
             <span v-if="scope.row.orderSource ===2">微信小程序</span>
+            <span v-if="scope.row.orderSource ===3">后台</span>
             </template>
           </el-table-column>
           <el-table-column prop="paymentType" label="支付类型" align="center">
@@ -95,7 +96,8 @@ export default {
           { type: 'option', value: null, key: 'orderSource', class: 'w110', placeholder: '订单来源', options: [
             { label: 'App', value: 0 },
             { label: '微信公众号', value: 1 },
-            { label: '微信小程序', value: 2 }]
+            { label: '微信小程序', value: 2 },
+            { label: '后台', value: 3 }]
           },
           // 0 货到付款 1线上支付
           { type: 'option', value: null, key: 'paymentType', class: 'w110', placeholder: '支付类型', options: [
@@ -108,6 +110,7 @@ export default {
           { type: 'reset', name: '重置' }
         ],
         [
+          { type: 'add', name: '新增' }
           // { type: 'button', name: '导出Excel' }
           // { type: 'more', labels: ['导入', '上传图片'] }
         ]
@@ -194,8 +197,11 @@ export default {
     click2follow(index, row) {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'follow', obj: row }})
     },
+    showAdd() {
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, title: '新增销售订单' }})
+    },
     refrehList() {
-
+      this.fecthList()
     },
     tabsCallBack(item) {
       this.curIndex = item.value

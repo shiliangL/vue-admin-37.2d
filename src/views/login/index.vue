@@ -19,7 +19,8 @@
               </el-input>
             </el-form-item>
 
-            <el-button type="primary" style="width:100%;margin-bottom:30px;" class="button-login" :loading="loading" @click.native.prevent="handleLogin">{{$t('login.logIn')}}</el-button>
+            <el-button type="primary" style="width:100%;margin-bottom:30px;" 
+              class="button-login" :loading="loading" @click="handleLogin">{{$t('login.logIn')}}</el-button>
 
           </el-form>
 
@@ -81,23 +82,14 @@ export default {
         if (valid) {
           this.loading = true
           loginByUsername({ ...this.loginForm }).then(res => {
-            this.loading = false
             this.$router.push({ path: '/' })
+            this.loading = false
             this.VX_SET_TOKEN(res.code)
             setToken(res.code)
           }).catch(e => {
             this.loading = false
             console.log(e)
           })
-          // this.$store
-          //   .dispatch('LoginByUsername', this.loginForm)
-          //   .then(() => {
-          //     this.loading = false
-          //     this.$router.push({ path: '/' })
-          //   })
-          //   .catch(() => {
-          //     this.loading = false
-          //   })
         } else {
           return
         }

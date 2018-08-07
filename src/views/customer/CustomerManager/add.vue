@@ -8,25 +8,21 @@
 					<el-form-item label="用户密码:" label-width="100px">
 						<span>123456(初始密码,登录后可修改)</span>
 					</el-form-item>   
-					<el-form-item label="用户账号:" label-width="100px" prop="loginName" :rules="rules.input">
-						<span v-if="propsSonData.isUpdate" v-cloak>{{form.loginName}}</span>
-						<el-input v-else size="small" style="width:180px"  v-model.trim="form.loginName" placeholder="手机号" maxlength="11"></el-input>
-					</el-form-item>
-					<el-form-item label="用户名称:" label-width="100px" prop="staffName" :rules="rules.input">
-						<span v-if="isViewPage" v-cloak>{{form.staffName}}</span>
-						<el-input v-else size="small" style="width:180px"  v-model.trim="form.staffName" placeholder="" maxlength="11"></el-input>
-					</el-form-item>
-					<el-form-item label="手机号:" label-width="100px" prop="mobile" :rules="rules.input">
-						<span v-if="isViewPage" v-cloak>{{form.mobile}}</span>
+					<el-form-item label="用户账号:" label-width="100px" prop="mobile" :rules="rules.input">
+						<span v-if="propsSonData.isUpdate" v-cloak>{{form.mobile}}</span>
 						<el-input v-else size="small" style="width:180px"  v-model.trim="form.mobile" placeholder="手机号" maxlength="11"></el-input>
 					</el-form-item>
+					<el-form-item label="用户名称:" label-width="100px" prop="name" :rules="rules.input">
+						<span v-if="isViewPage" v-cloak>{{form.name}}</span>
+						<el-input v-else size="small" style="width:180px"  v-model.trim="form.name" placeholder="" maxlength="11"></el-input>
+					</el-form-item>
 					<el-form-item label="在职时间:" label-width="100px">
-						<span  v-if="isViewPage" v-cloak>{{form.entryTime}}</span>
-						<el-date-picker v-else style="width:180px" size="small" v-model="form.entryTime" value-format="yyyy-MM-dd" type="date"></el-date-picker>
+						<span  v-if="isViewPage" v-cloak>{{form.beginTime}}</span>
+						<el-date-picker v-else :picker-options="startTimeLimit(form.endTime)" style="width:180px" size="small" v-model="form.beginTime" value-format="yyyy-MM-dd" type="date"></el-date-picker>
 					</el-form-item>  
 					<el-form-item label="离职时间:" label-width="100px" v-if="this.propsSonData.type!=='add'">
-						<span v-if="isViewPage" v-cloak>{{form.departureTime}}</span>
-						<el-date-picker v-else style="width:180px" size="small" v-model="form.departureTime" value-format="yyyy-MM-dd" type="date"></el-date-picker>
+						<span v-if="isViewPage" v-cloak>{{form.endTime}}</span>
+						<el-date-picker v-else :picker-options="endTimeLimit(form.beginTime)" style="width:180px" size="small" v-model="form.endTime" value-format="yyyy-MM-dd" type="date"></el-date-picker>
 					</el-form-item>
 					<el-form-item label="账号状态:" label-width="100px" prop="status" :rules="rules.input" style="height: 37px;">
 						<el-radio v-model="form.status" :disabled="isViewPage" label="1">启用</el-radio>
@@ -41,9 +37,10 @@
 </template>
 
 <script>
+import { startTimeLimit, endTimeLimit } from '@/public/limitTime.js'
 import rules from '@/public/rules.js'
 import addModel from '@/public/addModel.js'
-import { createRow, fetchDetail, updateRow } from '@/api/members.js'
+import { createRow, fetchDetail, updateRow } from '@/api/customer/customerManager.js'
 
 export default {
   mixins: [rules, addModel],
@@ -53,13 +50,14 @@ export default {
       saveLoading: false,
       isUpdate: false,
       form: {
-        'entryTime': null,
-        'departureTime': null,
-        'loginName': null,
+        'beginTime': '',
+        'endTime': '',
+        'id': null,
         'mobile': null,
-        'staffType': 7,
-        'status': '1',
-        'staffName': null
+        'name': null,
+        'operatorId': null,
+        'staffId': null,
+        'status': '1'
       },
       stockOption: []
     }
@@ -67,10 +65,10 @@ export default {
   mounted() {
     if (this.propsSonData.isUpdate) {
       this.isViewPage = this.propsSonData.type === 'view'
-      fetchDetail({ operatorId: this.propsSonData.data.operatorId }).then(({ data }) => {
+      fetchDetail({ id: this.propsSonData.data.id }).then(({ data }) => {
         data.status = data.status + ''
-        if (data.entryTime) { data.entryTime = data.entryTime.split(' ')[0] }
-        if (data.departureTime) { data.departureTime = data.departureTime.split(' ')[0] }
+        if (data.beginTime == null) { data.beginTime = '' }
+        if (data.endTime == null) { data.endTime = '' }
         this.form = Object.assign(this.form, data)
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
@@ -78,6 +76,8 @@ export default {
     }
   },
   methods: {
+    startTimeLimit,
+    endTimeLimit,
     close() {
       this.$emit('close')
     },
@@ -87,13 +87,9 @@ export default {
           this.$refs[formName].validate(valid => {
             if (valid) {
               this.saveLoading = true
-              this.form.status = parseInt(this.form.status)
               if (this.propsSonData.isUpdate) {
                 const data = JSON.parse(JSON.stringify(this.form))
-                if (data.entryTime) { data.entryTime = data.entryTime + ' 00:00:00' }
-                if (data.departureTime) { data.departureTime = data.departureTime + ' 00:00:00' }
-                delete data.loginName
-                delete data.staffType
+                data.status = parseInt(this.form.status)
                 updateRow(data).then(res => {
                   this.saveLoading = false
                   this.$emit('add')
@@ -105,8 +101,7 @@ export default {
                 })
               } else {
                 const data = JSON.parse(JSON.stringify(this.form))
-                if (data.entryTime) { data.entryTime = data.entryTime + ' 00:00:00' }
-                delete data.departureTime
+                data.status = parseInt(this.form.status)
                 createRow(data).then(res => {
                   this.saveLoading = false
                   this.$emit('add')

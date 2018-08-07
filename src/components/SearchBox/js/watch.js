@@ -3,10 +3,10 @@ export default {
     value(val) {
       if (val == null) {
         this.name = null
+        this.selectList = []
         this.firstLoading = false
-        this.placeholder = this.data.placeholder
       } else {
-        this.selectList.push(val)
+        // this.selectList.push(val)
       }
     },
     upLevelId: {

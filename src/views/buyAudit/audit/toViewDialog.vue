@@ -40,13 +40,13 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item label=""  style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.buyerId'"  :rules="rules.select"  v-if="scope.row.purchaseType ===2">
+              <el-form-item label=""  style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.buyerId'"  :rules="rules.select"  v-if="scope.row.purchaseType ===1">
                 <el-select style="180px" size="small" v-model="scope.row.buyerId" clearable filterable placeholder="请选择" @change="selectSaler($event,scope.row)">
-                  <el-option v-for="sub in searchBarOptons.salerList" :key="sub.pk" :label="sub.staffName" :value="sub.pk"></el-option>
+                  <el-option v-for="sub in searchBarOptons.salerList" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                 </el-select>
               </el-form-item>
 
-              <el-form-item label=""  style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.supplyDto'"  :rules="rules.select"  v-if="scope.row.purchaseType ===1">
+              <el-form-item label=""  style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.supplyDto'"  :rules="rules.select"  v-if="scope.row.purchaseType ===2">
                 <el-cascader style="180px" v-model="scope.row.supplyDto" size="small" :options="searchBarOptons.supplierList"  @change="selectSupply($event,scope.row)">></el-cascader>
               </el-form-item>
 
@@ -68,7 +68,7 @@
 
 <script>
 import { fecthTree } from '@/api/buy/buyPlan.js'
-import { fecthSalerList } from '@/api/goodsList.js'
+import { fecthMemberSelect } from '@/api/members.js'
 import rules from '@/public/rules.js'
 export default {
   name: 'changeDialog',
@@ -109,19 +109,22 @@ export default {
   created() {
     if (this.value) {
       const data = JSON.parse(JSON.stringify(this.value))
+      console.log(JSON.stringify(data))
       for (const item of data.supplierInfoList) {
         if (item.purchaseType === 1) {
-          item.buyerId = item.buyerId ? item.buyerId : null
-          item.buyerName = item.buyerName ? item.buyerName : null
-          item.supplierId = item.personnelId
-          item.supplierName = item.personnelName
-          item.supplyDto = item.supplyDto ? item.supplyDto : [item.supplierCategoryId, item.personnelId]
+          //  采购员
+          item.buyerId = item.buyerId ? item.buyerId : item.personnelId
+          item.buyerName = item.buyerName ? item.buyerName : item.personnelName
+          item.supplierId = null
+          item.supplierName = null
+          item.supplyDto = []
         } else if (item.purchaseType === 2) {
-          item.buyerId = item.buyerId ? item.buyerId : null
-          item.buyerName = item.buyerName ? item.buyerName : null
-          item.supplierId = item.supplierId ? item.supplierId : null
-          item.supplierName = item.supplierName ? item.supplierName : null
-          item.supplyDto = item.supplyDto ? item.supplyDto : []
+          //  供应商
+          item.buyerId = null
+          item.buyerName = null
+          item.supplierId = item.supplierId ? item.supplierId : item.personnelId
+          item.supplierName = item.supplierName ? item.supplierName : item.personnelName
+          item.supplyDto = item.supplyDto ? item.supplyDto : [item.supplierCategoryId, item.personnelId]
         }
       }
       this.form.table = data.supplierInfoList
@@ -156,7 +159,7 @@ export default {
       })
     },
     fecthSalerList() {
-      fecthSalerList().then(({ data }) => {
+      fecthMemberSelect({ staffType: 2 }).then(({ data }) => {
         if (Array.isArray(data) && data.length) {
           this.searchBarOptons.salerList = data
         }
@@ -192,13 +195,13 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           const list = JSON.parse(JSON.stringify(this.form.table))
-          for (const item of list) {
-            delete item.buyerId
-            delete item.buyerName
-            delete item.supplierName
-            delete item.supplierId
-            delete item.supplyDto
-          }
+          // for (const item of list) {
+          //   delete item.buyerId
+          //   delete item.buyerName
+          //   delete item.supplierName
+          //   delete item.supplierId
+          //   delete item.supplyDto
+          // }
           const data = {
             detailsId: this.value.detailId,
             waitQuantity: this.totalNumber,
@@ -214,10 +217,10 @@ export default {
     },
     selectSaler(val, item) {
       if (!val) return
-      const obj = this.$arrayAttrGetObj(this.searchBarOptons.salerList, 'pk', val)
+      const obj = this.$arrayAttrGetObj(this.searchBarOptons.salerList, 'value', val)
       if (!obj) return
-      item.buyerName = obj.staffName
-      item.personnelName = obj.staffName
+      item.buyerName = obj.value
+      item.personnelName = obj.value
     },
     selectSupply(val, item) {
       if (!val) return

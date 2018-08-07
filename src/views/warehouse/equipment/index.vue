@@ -79,7 +79,7 @@
 							</el-select>
             </el-form-item>
             <el-form-item label="工作台名称:" prop="workbenchId" :rules="rules.input">
-	            <el-select size="small" v-model="form.workbenchId" filterable placeholder="选择仓库">
+	            <el-select size="small" v-model="form.workbenchId" filterable placeholder="选择仓库" :disabled="!form.sortType||!form.stockId">
 								<el-option v-for="sub in workbenchOpiton" :key="sub.id" :label="sub.title" :value="sub.id"></el-option>
 							</el-select>
             </el-form-item>
@@ -131,7 +131,7 @@ export default {
           {
             type: 'option',
             value: null,
-            key: 'stockId',
+            key: 'sortType',
             class: 'w150',
             placeholder: '工作台类型',
             options: [
@@ -179,9 +179,9 @@ export default {
   },
   created() {
     this.tabTitles = [
-      { title: '电子秤', value: 1 },
-      { title: '标签机', value: 2 },
-      { title: '扫码枪', value: 3 }
+      { title: '扫码枪', value: 1 },
+      { title: '电子秤', value: 2 },
+      { title: '标签机', value: 3 }
     ]
   },
   mounted() {
@@ -193,7 +193,7 @@ export default {
       this.isFetchLoading = true
       const data = {
         stockId: this.form.stockId,
-        type: this.form.workbenchType
+        type: this.form.sortType
       }
       fecthWorkbenchList(data).then(({ data }) => {
         this.isFetchLoading = false
@@ -356,9 +356,12 @@ export default {
   },
   watch: {
     'form.sortType': {
-      handler(val) {
-        this.workbenchOpiton = []
-        if (this.form.stockId && val) {
+      handler(n, o) {
+        if (n && o) {
+          this.workbenchOpiton = []
+          this.form.workbenchId = null
+        }
+        if (this.form.stockId && n) {
           setTimeout(() => {
             if (this.isFetchLoading) return
             this.fecthOption()
@@ -367,9 +370,12 @@ export default {
       }
     },
     'form.stockId': {
-      handler(val) {
-        this.workbenchOpiton = []
-        if (this.form.sortType && val) {
+      handler(n, o) {
+        if (n && o) {
+          this.workbenchOpiton = []
+          this.form.workbenchId = null
+        }
+        if (this.form.sortType && n) {
           setTimeout(() => {
             if (this.isFetchLoading) return
             this.fecthOption()

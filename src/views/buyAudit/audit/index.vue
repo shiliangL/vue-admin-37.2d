@@ -25,14 +25,13 @@
           </el-table-column>
           <el-table-column prop="applicationDate" label="采购申请时间" align="center"></el-table-column>
           <el-table-column prop="purchaserName" label="申请人" align="center"></el-table-column>
+          <el-table-column prop="auditDate" label="采购审核间" align="center"></el-table-column>
+          <el-table-column prop="auditStaffName" label="审核人" align="center"></el-table-column>
           <el-table-column prop="auditStatus" label="采购申请状态" align="center">
              <template slot-scope="scope" align="center">
               <span v-cloak> {{scope.row.auditStatus | filterStatus }} </span>
             </template>
           </el-table-column>
-          <el-table-column prop="auditDate" label="采购审核间" align="center"></el-table-column>
-          <el-table-column prop="auditStaffName" label="审核人" align="center"></el-table-column>
- 
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">查看</el-button>

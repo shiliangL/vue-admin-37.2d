@@ -12,6 +12,13 @@ export default {
         return '输入检索'
       }
     },
+    // 是否是加载商品
+    isGoods: {
+      type: Boolean,
+      default: () => {
+        return false
+      }
+    },
     keyName: {
       type: String,
       default: () => {
@@ -31,6 +38,14 @@ export default {
     nameLabel: {
       type: String,
       default: '名称'
+    },
+    tableName: {
+      type: String,
+      default: 'title'
+    },
+    tableCode: {
+      type: String,
+      default: 'loginName'
     }
   }
 }

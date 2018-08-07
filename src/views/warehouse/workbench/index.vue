@@ -16,7 +16,7 @@
 					<el-table-column prop="title" label="工作台名称" align="center"></el-table-column>
 					<el-table-column prop="tableNo" label="工作台编号" align="center"></el-table-column>
 					<el-table-column prop="electronicScale" label="外接设备名(电子秤)" align="center"></el-table-column>
-					<el-table-column prop="labelingMachine" label="外接设备名(出票机)" align="center"></el-table-column>
+					<el-table-column prop="labelingMachine" label="外接设备名(标签机)" align="center"></el-table-column>
 					<el-table-column prop="barcodeScanner" label="外接设备名(扫码枪)" align="center"></el-table-column>
 					<el-table-column prop="stockName" label="仓库" align="center"></el-table-column>
 					<el-table-column prop="updatedTime" label="修改时间" align="center"></el-table-column>

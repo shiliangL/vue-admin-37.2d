@@ -8,19 +8,19 @@
 					     <el-row>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="客户账号:" prop="mobile"  :rules="rules.input">
-										<el-input v-if="isAddView" size="small" style="width:180px" class="w180"  placeholder="仅限中国大陆手机号" v-model.trim="form.mobile"></el-input>
+										<el-input v-if="isAddView" size="small" style="width:180px" class="w180"  placeholder="仅限中国大陆手机号" v-model.trim="form.mobile" maxlength="11"></el-input>
 										<span v-else v-cloak> {{ form.mobile }} </span>
 									</el-form-item>
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="客户名称:" prop="title"  :rules="rules.input">
-										<el-input v-if="isAddView" size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
+										<el-input v-if="isAddView" size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title" maxlength="11"></el-input>
 										<span v-else v-cloak> {{ form.title }} </span>
 									</el-form-item>
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="联系人:" prop="dto.contacts"  :rules="rules.input">
-										<el-input v-if="isAddView" size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.dto.contacts"></el-input>
+										<el-input v-if="isAddView" size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.dto.contacts" maxlength="11"></el-input>
 										<span v-else v-cloak> {{ form.dto.contacts }} </span>
 									</el-form-item>
 								</el-col>

@@ -16,6 +16,12 @@ export default {
         return []
       }
     },
+    isBackIndex: {
+      type: Boolean,
+      default: () => {
+        return false
+      }
+    },
     value: {
       type: Number
     }
@@ -28,7 +34,11 @@ export default {
   methods: {
     clickTabTitle(item, index) {
       this.curIndex = index
-      this.$emit('callBack', item)
+      if (!this.isBackIndex) {
+        this.$emit('callBack', item)
+      } else {
+        this.$emit('callBack', index)
+      }
       this.$emit('input', item)
     }
   }

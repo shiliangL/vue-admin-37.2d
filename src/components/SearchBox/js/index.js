@@ -38,6 +38,9 @@ export default {
             index,
             size
           }
+          if (this.isGoods) {
+            data.goodsStatus = 0
+          }
           if (this.keyName) {
             data[this.keyName] = this.name
           }
@@ -45,12 +48,16 @@ export default {
             this.loading = false
             this.progress = false
             this.isLoading = false
-            this.dataList = data.rows
+            if (Array.isArray(data.rows)) {
+              this.dataList = data.rows
+            }
             this.pagination.total = data.total
           }).catch(e => {
             this.progress = false
             this.isLoading = false
             this.refresh = true
+            this.dataList = []
+            this.pagination.total = 0
             this.loadingText = '查询出错'
           })
         }, 300)
@@ -68,7 +75,8 @@ export default {
     handleClose(tag) {
       this.selectList.splice(this.selectList.indexOf(tag), 1)
       this.name = null
-      this.fetchList()
+      this.$emit('input', null)
+      // this.fetchList()
     },
     handleSizeChange(value) {
       this.pagination.index = value
@@ -79,6 +87,7 @@ export default {
       this.tableVisiable = false
       if (!item) return
       this.selectList = [item]
+      this.$emit('input', item)
     },
     close() {
       this.tableVisiable = false

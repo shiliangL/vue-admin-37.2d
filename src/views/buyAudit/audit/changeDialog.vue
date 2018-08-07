@@ -35,13 +35,13 @@
               </el-form-item>
 
 
-              <el-form-item label=""  style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.buyerId'"  :rules="rules.select"  v-if="scope.row.purchaseType ===2">
+              <el-form-item label=""  style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.buyerId'"  :rules="rules.select"  v-if="scope.row.purchaseType ===1">
                 <el-select style="180px" size="small" v-model="scope.row.buyerId" clearable filterable placeholder="请选择" @change="selectSaler($event,scope.row)">
                   <el-option v-for="sub in searchBarOptons.salerList" :key="sub.pk" :label="sub.staffName" :value="sub.pk"></el-option>
                 </el-select>
               </el-form-item>
 
-              <el-form-item label=""  style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.supplyDto'"  :rules="rules.select"  v-if="scope.row.purchaseType ===1">
+              <el-form-item label=""  style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.supplyDto'"  :rules="rules.select"  v-if="scope.row.purchaseType ===2">
                 <el-cascader style="180px" v-model="scope.row.supplyDto" size="small" :options="searchBarOptons.supplierList"  @change="selectSupply($event,scope.row)">></el-cascader>
               </el-form-item>
 
@@ -61,7 +61,7 @@
 
 <script>
 import { fecthTree } from '@/api/buy/buyPlan.js'
-import { fecthSalerList } from '@/api/goodsList.js'
+import { fecthMemberSelect } from '@/api/members.js'
 import rules from '@/public/rules.js'
 export default {
   name: 'changeDialog',
@@ -124,7 +124,7 @@ export default {
       })
     },
     fecthSalerList() {
-      fecthSalerList().then(({ data }) => {
+      fecthMemberSelect({ staffType: 2 }).then(({ data }) => {
         if (Array.isArray(data) && data.length) {
           this.searchBarOptons.salerList = data
         }
@@ -177,8 +177,8 @@ export default {
       if (!val) return
       const obj = this.$arrayAttrGetObj(this.searchBarOptons.salerList, 'pk', val)
       if (!obj) return
-      item.buyerName = obj.staffName
-      item.personnelName = obj.staffName
+      item.buyerName = obj.label
+      item.personnelName = obj.label
     },
     selectSupply(val, item) {
       if (!val) return
@@ -187,6 +187,7 @@ export default {
       const arr = this.$arrayAttrGetObj(obj.children, 'value', val[1])
       if (!arr) return
       item.personnelName = arr.label
+      item.personnelId = arr.value
       item.supplierName = arr.label
       item.supplierId = arr.value
     }

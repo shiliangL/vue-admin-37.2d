@@ -12,12 +12,11 @@
             </template>
           </el-table-column>
  
- 					<el-table-column prop="loginName" label="用户账号" align="center"></el-table-column>
-					<el-table-column prop="staffName" label="用户名称" align="center"></el-table-column>
-					<el-table-column prop="mobile" label="手机号码" align="center"></el-table-column>
-					<el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
-					<el-table-column prop="entryTime" label="在岗开始时间" align="center"></el-table-column>
-					<el-table-column prop="departureTime" label="离岗时间" align="center"></el-table-column>
+ 					<el-table-column prop="mobile" label="用户账号" align="center"></el-table-column>
+					<el-table-column prop="name" label="用户名称" align="center"></el-table-column>
+					<el-table-column prop="createOn" label="创建时间" align="center"></el-table-column>
+					<el-table-column prop="beginTime" label="在岗开始时间" align="center"></el-table-column>
+					<el-table-column prop="endTime" label="离岗时间" align="center"></el-table-column>
 					<el-table-column prop="status" label="账号状态" align="center">
              <template slot-scope="scope">
                <el-tag v-if="scope.row.status===1" size="small">启用</el-tag>
@@ -59,7 +58,7 @@
 import model from '@/public/listModel.js'
 import Add from './add'
 import { SearchBar } from '@/components/base.js'
-import { fetchList, resetKey } from '@/api/members.js'
+import { fetchList, resetKey } from '@/api/customer/customerManager.js'
 
 export default {
   name: 'CustomerManager',
@@ -76,7 +75,7 @@ export default {
             { label: '启用', value: 1 },
             { label: '禁用', value: 0 }
           ] },
-          { type: 'input', value: null, key: 'inputContent', class: 'w180', placeholder: '输入用户名称检索' },
+          { type: 'input', value: null, key: 'name', class: 'w180', placeholder: '输入用户名称检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
@@ -93,11 +92,6 @@ export default {
   },
   methods: {
     reset() {
-      this.searchBarDate = {
-        title: null,
-        driveId: null
-      }
-      this.cityDTO = null
       this.fecthList()
     },
     // 数据请求
@@ -105,8 +99,7 @@ export default {
       const { index, size } = this.pagination
       const data = {
         index,
-        size,
-        staffType: 7
+        size
       }
       fetchList(data).then(({ data }) => {
         if (Array.isArray(data.rows)) {
@@ -122,7 +115,6 @@ export default {
       const data = {
         index,
         size,
-        staffType: 7,
         ...item
       }
       fetchList(data).then(({ data }) => {

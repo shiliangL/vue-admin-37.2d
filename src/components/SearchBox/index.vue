@@ -15,32 +15,31 @@
       @input="compositioninput"
       :placeholder="placeholderAn" />
   </div>
-<div v-show="tableVisiable" class="table-layout">
-  <el-table :data="dataList" class="table-list" size="small" max-height="300" @row-click="clickTableRow" ref="multipleTable">
-      <el-table-column prop="title" :label="nameLabel" align="center"></el-table-column>
-      <el-table-column prop="code" :label="codeLabel" align="center"></el-table-column>
-  </el-table>
+  <div v-show="tableVisiable" class="table-layout">
+    <el-table :data="dataList" class="table-list" size="small" max-height="300" @row-click="clickTableRow" ref="multipleTable">
+        <el-table-column :prop="tableName" :label="nameLabel" align="center"></el-table-column>
+        <el-table-column :prop="tableCode" :label="codeLabel" align="center"></el-table-column>
+    </el-table>
 
-  <el-pagination
-    small
-    @current-change="handleSizeChange"
-    :current-page="pagination.page"
-    :page-sizes="pagination.pageSizes"
-    :page-size="pagination.size"
-    layout="total, prev, pager, next"
-    :total="pagination.total">
-  </el-pagination>
-
+    <el-pagination
+      small
+      @current-change="handleSizeChange"
+      :current-page="pagination.page"
+      :page-sizes="pagination.pageSizes"
+      :page-size="pagination.size"
+      layout="total, prev, pager, next"
+      :total="pagination.total">
+    </el-pagination>
  
-  <div class="loading-layout" v-show="loading">
-    <div :style="{color:'#1cbc9c','text-align':'center','margin-top':'50px'}">
-      <i v-show="progress" class="el-icon-loading"></i>
-      <span> {{loadingText}}</span>
-      <div v-show="refresh" class="refresh">
-        <i class="el-icon-refresh" @click="clickRefresh"></i>
+    <div class="loading-layout" v-show="loading">
+      <div :style="{color:'#1cbc9c','text-align':'center','margin-top':'50px'}">
+        <i v-show="progress" class="el-icon-loading"></i>
+        <span> {{loadingText}}</span>
+        <div v-show="refresh" class="refresh">
+          <i class="el-icon-refresh" @click="clickRefresh"></i>
+        </div>
       </div>
     </div>
-  </div>
 
   </div>
 </div>

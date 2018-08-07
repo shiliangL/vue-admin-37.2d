@@ -41,3 +41,12 @@ export function fetchOptions(params) {
     params
   })
 }
+
+// 根据客户 id 加载地址
+export function fetchCustomersAddress(params) {
+  return request({
+    url: 'customerShippingAddress/list',
+    method: 'get',
+    params
+  })
+}

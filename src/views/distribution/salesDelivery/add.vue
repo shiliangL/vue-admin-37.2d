@@ -181,7 +181,7 @@
           <template v-if="data.type==='add'">
             <el-form :model="AddForm" ref="AddForm" class="viewForm" label-width="120px" :inline="true">
                <div class="search">
-                  <el-select size="small" v-model="form.stockId" filterable placeholder="选择仓库">
+                  <el-select size="small" v-model="AddForm.stockId" filterable placeholder="选择仓库">
                     <el-option v-for="sub in options.stockOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                   </el-select>
                   <el-select v-model="AddForm.type" placeholder="请选择类型" size="small" style="width:120px" filterable>
@@ -226,7 +226,7 @@
                     <SelectTabs :data="TabsTitle" @callBack="tabsCallBack">></SelectTabs>
                     <div v-for="(item,index) in TabsTitle" :key="index" v-show="curIndex===index">
                       <div class="desc">
-                        <p v-cloak>关联配送区域:{{item.regionName}};</p>
+                        <p v-cloak>关联配送区域:{{item.regionStr}};</p>
                         <p v-cloak>车辆品牌:{{item.carBrand}}; 车牌号:{{item.carNo}};</p>
                         <p v-cloak>备注:{{item.summary}}</p>
                       </div>
@@ -346,7 +346,7 @@ export default {
       this.fecthRegionList()
       const date = new Date()
       const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)
-      const day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate()
+      const day = date.getDate() + 1 > 9 ? date.getDate() : '0' + date.getDate()
       const ymd = date.getFullYear() + '-' + month + '-' + day
       this.today = ymd
     }
@@ -364,7 +364,7 @@ export default {
           }
           this.options.stockOption = data
           if (data.length > 0) {
-            this.form.stockId = data[0].id
+            this.AddForm.stockId = data[0].id
           }
         }
       }).catch(e => {
@@ -440,8 +440,15 @@ export default {
           }
         }
         if (Array.isArray(data.driverList)) {
+          const regionStr = []
           for (const item of data.driverList) {
             item.table = []
+            if (Array.isArray(item.region)) {
+              for (const key of item.region) {
+                regionStr.push(` ${key.regionName}`)
+              }
+            }
+            item.regionStr = regionStr.toString()
           }
           this.TabsTitle = data.driverList
         }

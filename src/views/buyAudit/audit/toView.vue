@@ -266,6 +266,7 @@ export default {
     toViewDialogCallBack(item) {
       this.form.table[this.curIndex].supplierInfoList = item.table
       this.form.table[this.curIndex].waitQuantity = item.waitQuantity
+      console.log(item.table)
     },
     // 触发校验 处理参数
     validateForm() {
@@ -284,7 +285,6 @@ export default {
     refrehList() {
       if (!this.$attrs.loadID) return
       bodyDetail({ requestId: this.$attrs.loadID }).then(({ data }) => {
-        console.log(data, 'bodyDetail')
         this.form.table = data
       }).catch(e => {
         // this.loadingText = e.msg
