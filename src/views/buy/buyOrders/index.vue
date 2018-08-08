@@ -48,12 +48,12 @@
           </el-table-column>
  
           <el-table-column prop="orderNo" label="采购订单编号" align="center"></el-table-column>
-          <el-table-column prop="createdOn" label="采购订创建时间" align="center"></el-table-column>
+          <el-table-column prop="createdOn" label="采购订单创建时间" align="center"></el-table-column>
 
           <el-table-column prop="sourceType" label="采购类型" align="center">
             <template slot-scope="scope" align="center">
-              <span v-cloak v-if="scope.row.purchaseType ===1"> 供应商直供 </span>
-              <span v-cloak v-if="scope.row.purchaseType ===2"> 市场自采 </span>
+              <span v-cloak v-if="scope.row.purchaseType ===2"> 供应商直供 </span>
+              <span v-cloak v-if="scope.row.purchaseType ===1"> 市场自采 </span>
             </template>
           </el-table-column>
           <el-table-column prop="personnelName" label="采购员/供应商" align="center"></el-table-column>

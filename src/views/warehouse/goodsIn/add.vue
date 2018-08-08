@@ -217,8 +217,7 @@ export default {
         storageType: [
           { label: '采购入库', value: 1 },
           { label: '销售退货', value: 2 },
-          { label: '销售换货', value: 3 },
-          { label: '其他', value: 4 }
+          { label: '销售换货', value: 3 }
         ]
       },
       cwOption: null

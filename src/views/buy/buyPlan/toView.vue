@@ -27,30 +27,38 @@
                       <span v-cloak>{{form.header.createdName}}</span>
 									</el-form-item>
 								</el-col>
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+                <template>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="form.header.auditStatus!==1">
 									<el-form-item label="采购申请时间:">
-                      <span v-cloak>{{form.header.auditDate}}</span>
+                      <span v-cloak>{{form.header.applicationDate}}</span>
 									</el-form-item>
 								</el-col>
 
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="申请人:" prop="categoryId">
-                      <span v-cloak>{{form.header.auditStaffName}}</span>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="form.header.auditStatus!==1">
+									<el-form-item label="申请人:">
+                      <span v-cloak>{{form.header.purchaserName}}</span>
 									</el-form-item>
 								</el-col>
  
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="采购审核时间:" prop="categoryId">
-                      <span v-cloak>{{form.header.auditStaffName}}</span>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="form.header.auditStatus!==1">
+									<el-form-item label="采购审核时间:" v-if="form.header.auditStatus!==2">
+                      <span v-cloak>{{form.header.auditDate}}</span>
 									</el-form-item>
 								</el-col>
  
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="审核人:" prop="categoryId">
+								<el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="form.header.auditStatus!==1">
+									<el-form-item label="审核人:" v-if="form.header.auditStatus!==2">
                       <span v-cloak>{{form.header.auditStaffName}}</span>
 									</el-form-item>
 								</el-col>
- 
+
+                 <el-col :xs="24" :sm="10" :md="8" :lg="6"  v-if="form.header.auditStatus===4">
+                    <el-form-item label="拒绝原因:">
+                        <span v-cloak>{{form.header.remark}}</span>
+                    </el-form-item>
+                  </el-col>
+
+                </template>
               </el-row>
 						</div>
 				</div>
@@ -148,6 +156,7 @@ export default {
       form: {
         header: {
           'pk': null,
+          'remark': null,
           'createdBy': null,
           'createdOn': null,
           'updatedBy': null,
@@ -200,18 +209,23 @@ export default {
       if (!this.$attrs.loadID) return
       bodyDetail({ requestId: this.$attrs.loadID }).then(({ data }) => {
         if (Array.isArray(data)) {
+          const arr = []
           for (const item of data) {
-            const str = item.personnelNames.split(',')
-            if (str.length > 1) {
-              item.personnelNamesStr = str[0] + '...'
-            } else if (str.length === 1) {
-              item.personnelNamesStr = str[0]
+            for (const key of item.supplierInfoList) {
+              if (key.personnelName) {
+                arr.push(key.personnelName)
+              }
+            }
+            if (arr.length > 1) {
+              item.personnelNamesStr = arr[0] + '...'
+            } else if (arr.length === 1) {
+              item.personnelNamesStr = arr[0]
             } else {
               item.personnelNamesStr = ''
             }
           }
+          this.form.table = data
         }
-        this.form.table = data
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })

@@ -52,7 +52,7 @@
                     <el-table-column prop="contacts" label="收货人" align="center"></el-table-column>
                     <el-table-column prop="mobile" label="手机号" align="center"></el-table-column>
                     <el-table-column prop="address" label="收货地址" align="center"></el-table-column>
-                    <el-table-column align="center" label="操作"  v-show="isAddView">
+                    <el-table-column align="center" label="操作"  v-if="isAddView">>
                       <template slot-scope="scope" align="center">
                         <el-button type="text" size="mini" @click.stop="clickToSet(scope.$index,scope.row)">设置为默认</el-button>
                         <el-button type="text" size="mini" @click.stop="clickToEdit(scope.$index,scope.row)">编辑</el-button>

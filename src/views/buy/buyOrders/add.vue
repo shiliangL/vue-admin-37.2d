@@ -51,8 +51,8 @@
 
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="采购类型:">
-                        <span v-if="form.purchaseType===1"> 供应商直供 </span>
-                        <span v-if="form.purchaseType===2"> 市场自采 </span>
+                        <span v-if="form.purchaseType===2"> 供应商直供 </span>
+                        <span v-if="form.purchaseType===1"> 市场自采 </span>
                       </el-form-item>
                     </el-col>
 

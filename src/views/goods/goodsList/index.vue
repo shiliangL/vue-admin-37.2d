@@ -72,12 +72,12 @@
           <el-table-column prop="titlePrace" label="市场价格(全国)" align="center"></el-table-column>
           <el-table-column prop="purchaseType" label="采购类型" align="center">
              <template slot-scope="scope" align="center">
-               <span v-if="scope.row.purchaseType ===1">供应商直供</span>
-               <span v-if="scope.row.purchaseType ===2">市场自采</span>
+               <span v-if="scope.row.purchaseType ===2">供应商直供</span>
+               <span v-if="scope.row.purchaseType ===1">市场自采</span>
             </template>
           </el-table-column>
           <el-table-column prop="titleName" label="采购员/供应商" align="center"></el-table-column>
-
+          <el-table-column prop="upperGoodsTime" label="上架时间" align="center"></el-table-column>
           <el-table-column prop="goodsStatus" label="状态" align="center">
             <template slot-scope="scope" align="center">
                <el-tag size="small" v-if="scope.row.goodsStatus ===0">上架</el-tag>

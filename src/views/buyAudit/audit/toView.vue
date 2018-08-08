@@ -27,29 +27,36 @@
                       <span v-cloak>{{form.header.createdName}}</span>
 									</el-form-item>
 								</el-col>
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="采购申请时间:">
-                      <span v-cloak>{{form.header.auditDate}}</span>
-									</el-form-item>
-								</el-col>
+                
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="采购申请时间:">
+                        <span v-cloak>{{form.header.applicationDate}}</span>
+                    </el-form-item>
+                  </el-col>
 
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="申请人:" prop="categoryId">
-                      <span v-cloak>{{form.header.auditStaffName}}</span>
-									</el-form-item>
-								</el-col>
- 
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="采购审核时间:" prop="categoryId">
-                      <span v-cloak>{{form.header.auditStaffName}}</span>
-									</el-form-item>
-								</el-col>
- 
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="审核人:" prop="categoryId">
-                      <span v-cloak>{{form.header.auditStaffName}}</span>
-									</el-form-item>
-								</el-col>
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <el-form-item label="申请人:">
+                        <span v-cloak>{{form.header.purchaserName}}</span>
+                    </el-form-item>
+                  </el-col>
+  
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="form.header.auditStatus!==2"> 
+                    <el-form-item label="采购审核时间:">
+                        <span v-cloak>{{form.header.auditDate}}</span>
+                    </el-form-item>
+                  </el-col>
+  
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="form.header.auditStatus!==2"> 
+                    <el-form-item label="审核人:">
+                        <span v-cloak>{{form.header.auditStaffName}}</span>
+                    </el-form-item>
+                  </el-col>
+                  
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6"  v-if="form.header.auditStatus===4">
+                    <el-form-item label="拒绝原因:">
+                        <span v-cloak>{{form.header.remark}}</span>
+                    </el-form-item>
+                  </el-col>
  
               </el-row>
 						</div>
@@ -73,22 +80,20 @@
 									<span>{{scope.$index + 1}}</span>
 								</template>
 							</el-table-column>
-
 							<el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
 							<el-table-column prop="basicUnitName" label="基本单位" align="center"></el-table-column>
 							<el-table-column prop="planQuantity" label="计划采购量" align="center"></el-table-column>
 							<el-table-column prop="applyQuantity" label="申请采购量" align="center"></el-table-column>
-							<el-table-column prop="availableQuantityStr" v-if="this.showType" label="可用库存" align="center"></el-table-column>
-							<el-table-column prop="waitQuantity" label="待采购量" align="center">
+							<el-table-column prop="availableQuantityStr" v-if="showType" label="可用库存" align="center"></el-table-column>
+							<el-table-column prop="waitQuantity" label="待采购量" align="center" v-if="form.header.auditStatus!==4">
                   <template slot-scope="scope">
-                    <div class="w110 el-input el-input--small" @click.stop="clickToChange(scope.$index, scope.row)" style="width:110px" v-if="this.showType">
+                    <div class="w110 el-input el-input--small" @click.stop="clickToChange(scope.$index, scope.row)" style="width:110px" v-if="showType">
                       <div class="el-input__inner" v-cloak> {{scope.row.waitQuantity}} </div>
                     </div>
                     <div v-else v-cloak> {{scope.row.waitQuantity}} </div>
 									</template>
 							</el-table-column>
-
-							<el-table-column  v-if="this.showType" label="采购员/供应商" align="center">
+							<el-table-column  v-if="showType" label="采购员/供应商" align="center">
 									<template slot-scope="scope">
                     <el-popover placement="top" width="200" trigger="hover">
                       <div v-for="(item,index) in scope.row.supplierInfoList" :key="index">
@@ -115,7 +120,7 @@
 						</el-table>
 
 						<div class="pages">
-							<span v-cloak> 共 {{this.form.table.length}} 条</span>
+							<span v-cloak> 共 {{form.table.length}} 条</span>
 						</div>
 
  
@@ -156,6 +161,7 @@ export default {
       form: {
         header: {
           'pk': null,
+          'remark': null,
           'createdBy': null,
           'createdOn': null,
           'updatedBy': null,

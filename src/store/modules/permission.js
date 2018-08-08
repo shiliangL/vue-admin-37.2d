@@ -41,6 +41,7 @@ const permission = {
     }
   },
   actions: {
+    // 怎么判断根据类型去生成对应的路由
     GenerateRoutes({ commit }, data) {
       return new Promise(resolve => {
         const { roles } = data

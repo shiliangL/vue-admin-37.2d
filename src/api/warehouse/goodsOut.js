@@ -70,6 +70,13 @@ export function addProductList(params) {
     params
   })
 }
+export function addReturnList(params) {
+  return request({
+    url: 'stockOutRecords/queryOutProductReturnList',
+    method: 'get',
+    params
+  })
+}
 
 // 加载仓库 公共
 export function fecthStockList(params) {

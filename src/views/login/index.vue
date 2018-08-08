@@ -82,10 +82,12 @@ export default {
         if (valid) {
           this.loading = true
           loginByUsername({ ...this.loginForm }).then(res => {
-            this.$router.push({ path: '/' })
-            this.loading = false
-            this.VX_SET_TOKEN(res.code)
-            setToken(res.code)
+            if (res.code === '0' && res.data && res.data.operatorId) {
+              this.loading = false
+              this.VX_SET_TOKEN(res.data.operatorId)
+              setToken(res.data.operatorId)
+              this.$router.push({ path: '/' })
+            }
           }).catch(e => {
             this.loading = false
             console.log(e)

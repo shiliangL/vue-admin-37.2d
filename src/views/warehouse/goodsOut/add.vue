@@ -179,7 +179,7 @@
 import model from '@/public/listModel.js'
 import addModel from '@/public/addModel.js'
 import { SelectTabs } from '@/components/base.js'
-import { fecthStockList, fecthWorkBench, fecthWorkbenchUser, addProductList, createRow, fetchDetail, fetchTableDetail } from '@/api/warehouse/goodsOut.js'
+import { fecthStockList, fecthWorkBench, fecthWorkbenchUser, addProductList, createRow, fetchDetail, fetchTableDetail, addReturnList } from '@/api/warehouse/goodsOut.js'
 export default {
   mixins: [addModel, model],
   components: {
@@ -355,19 +355,35 @@ export default {
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
-      addProductList({ stockId: this.AddForm.stockId, deliveryTime: this.today }).then(({ data }) => {
-        if (!data) return
-        if (Array.isArray(data)) {
-          this.tableData_L = data
-          if (this.tableData_L.length === 0) {
-            this.isBlank = false
-          } else {
-            this.isBlank = true
+      if (this.AddForm.type === 1) {
+        addProductList({ stockId: this.AddForm.stockId, deliveryTime: this.today }).then(({ data }) => {
+          if (!data) return
+          if (Array.isArray(data)) {
+            this.tableData_L = data
+            if (this.tableData_L.length === 0) {
+              this.isBlank = false
+            } else {
+              this.isBlank = true
+            }
           }
-        }
-      }).catch(e => {
-        this.$message({ type: 'error', message: e.msg })
-      })
+        }).catch(e => {
+          this.$message({ type: 'error', message: e.msg })
+        })
+      } else if (this.AddForm.type === 2) {
+        addReturnList({ stockId: this.AddForm.stockId }).then(({ data }) => {
+          if (!data) return
+          if (Array.isArray(data)) {
+            this.tableData_L = data
+            if (this.tableData_L.length === 0) {
+              this.isBlank = false
+            } else {
+              this.isBlank = true
+            }
+          }
+        }).catch(e => {
+          this.$message({ type: 'error', message: e.msg })
+        })
+      }
     },
     handleTable_L_Change(val) {
       this.selectTable_L = val

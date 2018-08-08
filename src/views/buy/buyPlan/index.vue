@@ -25,8 +25,8 @@
             </template>
           </el-table-column>
           <el-table-column prop="createdOn" label="采购计划创建时间" align="center"></el-table-column>
-          <el-table-column prop="applicationDate" label="采购申请时间" align="center"></el-table-column>
           <el-table-column prop="createdName" label="创建人" align="center"></el-table-column>
+          <el-table-column prop="applicationDate" label="采购申请时间" align="center"></el-table-column>
           <el-table-column prop="purchaserName" label="申请人" align="center"></el-table-column>
           <el-table-column prop="auditStatus" label="采购申请状态" align="center">
              <template slot-scope="scope" align="center">

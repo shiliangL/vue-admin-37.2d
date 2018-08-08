@@ -22,7 +22,7 @@
 						<span v-if="scope.row.sortType === 2"> 入库台 </span>
 						<span v-if="scope.row.sortType === 3"> 出库台 </span>
 						<span v-if="scope.row.sortType === 4"> 分拣台 </span>
-						<span v-if="scope.row.sortType === 4"> 打包台 </span>
+						<span v-if="scope.row.sortType === 5"> 打包台 </span>
 					</template>
 				</el-table-column>
         <el-table-column prop="workbenchName" label="工作台名称" align="center"></el-table-column>
@@ -69,17 +69,17 @@
               <el-input size="small" style="width:180px"  v-model.trim="form.deviceNo" placeholder="不能超过5位数" maxlength="5"></el-input>
             </el-form-item>
             <el-form-item label="仓库:" prop="stockId" :rules="rules.input">
-	            <el-select size="small" v-model="form.stockId" filterable placeholder="选择仓库">
+	            <el-select size="small" v-model="form.stockId" filterable placeholder="选择">
 								<el-option v-for="sub in stockOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
 							</el-select>
             </el-form-item>
             <el-form-item label="工作台类型:" prop="sortType" :rules="rules.input">
-	            <el-select size="small" v-model="form.sortType" filterable placeholder="选择仓库">
+	            <el-select size="small" v-model="form.sortType" filterable placeholder="选择">
 								<el-option v-for="sub in workbenchType" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
 							</el-select>
             </el-form-item>
             <el-form-item label="工作台名称:" prop="workbenchId" :rules="rules.input">
-	            <el-select size="small" v-model="form.workbenchId" filterable placeholder="选择仓库" :disabled="!form.sortType||!form.stockId">
+	            <el-select size="small" v-model="form.workbenchId" filterable placeholder="选择" :disabled="!form.sortType||!form.stockId">
 								<el-option v-for="sub in workbenchOpiton" :key="sub.id" :label="sub.title" :value="sub.id"></el-option>
 							</el-select>
             </el-form-item>

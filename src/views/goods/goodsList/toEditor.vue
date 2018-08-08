@@ -78,7 +78,7 @@
                   <el-col :xs="24" :sm="10" :md="8" :lg="6">
 
                     <el-form-item label="采购类型:" :rules="rules.select">
-                      <el-select v-model="form.purchaseType" placeholder="请选择" @change="changePurchaseType" filterable  style="width:180px">
+                      <el-select v-model="form.purchaseType" placeholder="请选择" @change="changePurchaseType" filterable  style="width:180px" disabled>
                         <el-option size="small" v-for="item in options.purchaseType" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                       </el-select>
                     </el-form-item>
@@ -243,7 +243,7 @@
                       <!-- <el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.subTitle"></el-input> -->
                     </el-form-item>
                   </div>
-                  <div>
+                  <!-- <div>
                     <el-form-item label="基本单位价格:" prop="basePrice" :rules="rules.input">
                       <el-input size="small" style="width:180px" class="w180" type="number"  placeholder="请输入" v-model.trim="form.basePrice"></el-input>
                     </el-form-item>
@@ -265,7 +265,7 @@
                         <span class="el-checkbox__label">销售汇总时按基本单位</span>
                       </label>
                     </el-form-item>
-                  </div>
+                  </div> -->
                 </div>
 
                 <el-table :data="form.skuList" class="skuListTbale" size="small" :max-height="500" style="width: 100%;" highlight-current-row>

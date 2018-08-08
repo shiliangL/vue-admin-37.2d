@@ -43,7 +43,7 @@
 			<!-- 提示 -->
 			<div class="tipsNum">
         <span class="Num-iteml" v-cloak>商品共计: <span>{{tableData.length}}</span>  </span>
-        <span class="Num-itemr" v-cloak>未生成采购计划商品: <span>{{unfinishedTotal}}</span>  </span>
+        <span class="Num-itemr" v-cloak>未生成采购计划商品: <span style="color:red">{{unfinishedTotal}}</span>  </span>
 			</div>
 			<!-- 表格 -->
 			<el-table :data="tableData" size="small" ref="multipleTable" max-height="450" style="width: 100%;" 
@@ -205,7 +205,7 @@ export default {
         type: 'warning'
       }).then(() => {
         saveList(arr).then(res => {
-          this.$message({ type: 'success', message: `${res.msg}成功!` })
+          this.$message({ type: 'success', message: `${res.msg}!` })
           this.$emit('close')
         }).catch(() => {
           this.$message({ type: 'error', message: '删除失败' })

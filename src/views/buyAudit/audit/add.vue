@@ -40,7 +40,7 @@
 <script>
 import addModel from '@/public/addModel.js'
 import toView from './toView'
-import { save, applyCreate } from '@/api/buy/buyPlan.js'
+import { applyCreate } from '@/api/buy/buyPlan.js'
 export default {
   mixins: [addModel],
   components: {
@@ -136,42 +136,6 @@ export default {
         this.$message({ type: 'error', message: e.msg })
       })
     },
-    callBackToSubmit(data) {
-      if (!data) return
-      const result = []
-      for (const item of data) {
-        const key = {
-          planQuantity: item.planQuantity,
-          productId: item.productId,
-          supplierInfoList: []
-        }
-        if (Array.isArray(item.supplierInfoList)) {
-          for (const list of item.supplierInfoList) {
-            const keyList = {
-              purchaseType: list.purchaseType,
-              quantity: list.quantity,
-              personnelName: list.purchaseType === 1 ? list.supplierName : list.buyerName,
-              personnelId: list.purchaseType === 1 ? list.supplyDto[1] : list.buyerId
-            }
-            key.supplierInfoList.push(keyList)
-          }
-        }
-        result.push(key)
-      }
-      if (result.length === 0) {
-        this.$message({ type: 'warning', message: '请添加一条数据' })
-        return
-      }
-      save(result).then(res => {
-        if (res.code === '0') {
-          this.$message({ type: 'success', message: res.msg })
-          this.dialog.visiable = false
-          this.$emit('add')
-        }
-      }).catch(e => {
-        this.$message({ type: 'error', message: e.msg })
-      })
-    },
     validatePass() {
       if (this.$refs['toView']) this.$refs['toView'].validateForm()
       if (!this.isPass) return
@@ -186,7 +150,7 @@ export default {
           const arrItem = item.supplierInfoList
           for (const key of arrItem) {
             if (key.buyerId || key.supplierId) {
-              if (key.purchaseType === 1) {
+              if (key.purchaseType === 2) {
                 key.personnelId = key.supplyDto[1]
                 key.personnelName = key.supplierName
               } else if (key.purchaseType === 1) {

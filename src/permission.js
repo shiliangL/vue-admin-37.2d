@@ -40,7 +40,6 @@ router.beforeEach((to, from, next) => {
         //     next({ path: '/login' })
         //   })
         // })
-
         const roles = ['editor', 'develop', 'admin'] // note: roles must be a array! such as: ['editor','develop']
         store.dispatch('GenerateRoutes', { roles }).then(() => { // 根据roles权限生成可访问的路由表
           router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表

@@ -46,7 +46,7 @@ export function findMore(params) {
 // 销售/退货入库
 export function returnChangeList(params) {
   return request({
-    url: 'scmsaleRreturnsGoods/findByMethod',
+    url: 'scmsaleRreturnsgoods/findByMethod',
     method: 'get',
     params
   })
