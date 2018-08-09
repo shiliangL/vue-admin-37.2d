@@ -13,7 +13,7 @@ export const constantRouterMap = [
   {
     path: '',
     component: Layout,
-    redirect: 'dashboard',
+    // redirect: 'dashboard',
     hidden: true,
     children: [{
       path: 'dashboard',
@@ -25,123 +25,63 @@ export const constantRouterMap = [
 ]
 export const asyncRouterMap = [
   {
-    path: '/orders',
+    path: '/acceptance',
     component: Layout,
-    name: 'orders',
+    alwaysShow: true,
     meta: {
-      title: 'orders',
+      title: 'acceptance',
       icon: 'component'
     },
     children: [
-      { path: 'orderList', component: _import('orders/orderList/index'), name: 'orderList', meta: { title: 'orderList' }},
-      { path: 'returnChange', component: _import('orders/returnChange/index'), name: 'returnChange', meta: { title: 'returnChange' }}
+      { path: 'acceptanceIndex', component: _import('acceptance/acceptanceIndex/index'), meta: { title: 'acceptanceIndex' }}
     ]
   },
   {
-    path: '/goods',
+    path: '/putStorage',
     component: Layout,
-    name: 'goods',
+    alwaysShow: true,
     meta: {
-      title: 'goods',
+      title: 'putStorage',
       icon: 'component'
     },
     children: [
-      { path: 'goodsList', component: _import('goods/goodsList/index'), name: 'goodsList', meta: { title: 'goodsList' }},
-      { path: 'goodsProfile', component: _import('goods/goodsProfile/index'), name: 'goodsProfile', meta: { title: 'goodsProfile' }},
-      { path: 'goodsClass', component: _import('goods/goodsClass/index'), name: 'goodsClass', meta: { title: 'goodsClass' }},
-      { path: 'brand', component: _import('goods/brand/index'), name: 'brand', meta: { title: 'brand' }}
+      { path: 'putStorage', component: _import('putStorage/index'), meta: { title: 'putStorageIndex' }}
     ]
   },
   {
-    path: '/buy',
+    path: '/outStorage',
     component: Layout,
-    name: 'buy',
+    alwaysShow: true,
     meta: {
-      title: 'buy',
+      title: 'outStorage',
       icon: 'component'
     },
     children: [
-      { path: 'example', component: _import('buy/example/index'), name: 'example', meta: { title: 'example' }},
-      { path: 'buyPlan', component: _import('buy/buyPlan/index'), name: 'buyPlan', meta: { title: 'buyPlan' }},
-      { path: 'buyOrders', component: _import('buy/buyOrders/index'), name: 'buyOrders', meta: { title: 'buyOrders' }},
-      { path: 'buyReturn', component: _import('buy/buyReturn/index'), name: 'buyReturn', meta: { title: 'buyReturn' }},
-      { path: 'buyer', component: _import('buy/buyer/index'), name: 'buyer', meta: { title: 'buyer' }},
-      { path: 'supplier', component: _import('buy/supplier/index'), name: 'supplier', meta: { title: 'supplier' }}
+      { path: 'outStorage', component: _import('outStorage/index'), meta: { title: 'outStorageIndex' }}
     ]
   },
   {
-    path: '/buyAudit',
+    path: '/sorting',
     component: Layout,
-    name: 'buyAudit',
+    alwaysShow: true,
     meta: {
-      title: 'buyAudit',
+      title: 'sorting',
       icon: 'component'
     },
     children: [
-      { path: 'audit', component: _import('buyAudit/audit/index'), name: 'audit', meta: { title: 'audit' }},
-      { path: 'clearing', component: _import('buyAudit/clearing/index'), name: 'clearing', meta: { title: 'clearing' }}
+      { path: 'sorting', component: _import('sorting/index'), meta: { title: 'sortingIndex' }}
     ]
   },
   {
-    path: '/customer',
+    path: '/packaging',
     component: Layout,
-    name: 'customer',
+    alwaysShow: true,
     meta: {
-      title: 'customer',
+      title: 'packaging',
       icon: 'component'
     },
     children: [
-      { path: 'customerClass', component: _import('customer/customerClass/index'), name: 'customerClass', meta: { title: 'customerClass' }},
-      { path: 'customerType', component: _import('customer/customerType/index'), name: 'customerType', meta: { title: 'customerType' }},
-      { path: 'CustomerManager', component: _import('customer/CustomerManager/index'), name: 'CustomerManager', meta: { title: 'CustomerManager' }}
-    ]
-  },
-  {
-    path: '/warehouse',
-    component: Layout,
-    name: 'warehouse',
-    meta: {
-      title: 'warehouse',
-      icon: 'component'
-    },
-    children: [
-      { path: 'setting', component: _import('warehouse/setting/index'), name: 'setting', meta: { title: 'setting' }},
-      { path: 'goodsIn', component: _import('warehouse/goodsIn/index'), name: 'goodsIn', meta: { title: 'goodsIn' }},
-      { path: 'goodsOut', component: _import('warehouse/goodsOut/index'), name: 'goodsOut', meta: { title: 'goodsOut' }},
-      { path: 'inventory', component: _import('warehouse/inventory/index'), name: 'inventory', meta: { title: 'inventory' }},
-      { path: 'workbench', component: _import('warehouse/workbench/index'), name: 'workbench', meta: { title: 'workbench' }},
-      { path: 'equipment', component: _import('warehouse/equipment/index'), name: 'equipment', meta: { title: 'equipment' }},
-      { path: 'ckOperator', component: _import('warehouse/ckOperator/index'), name: 'ckOperator', meta: { title: 'ckOperator' }},
-      { path: 'supplyDirector', component: _import('warehouse/supplyDirector/index'), name: 'supplyDirector', meta: { title: 'supplyDirector' }}
-    ]
-  },
-  {
-    path: '/distribution',
-    component: Layout,
-    name: 'distribution',
-    meta: {
-      title: 'distribution',
-      icon: 'component'
-    },
-    children: [
-      { path: 'salesDelivery', component: _import('distribution/salesDelivery/index'), name: 'salesDelivery', meta: { title: 'salesDelivery' }},
-      { path: 'areaDelivery', component: _import('distribution/areaDelivery/index'), name: 'areaDelivery', meta: { title: 'areaDelivery' }},
-      { path: 'deliveryer', component: _import('distribution/deliveryer/index'), name: 'deliveryer', meta: { title: 'deliveryer' }}
-    ]
-  },
-  {
-    path: '/sortingPick',
-    component: Layout,
-    name: 'sortingPick',
-    meta: {
-      title: 'sortingPick',
-      icon: 'component'
-    },
-    children: [
-      { path: 'goodPick', component: _import('sortingPick/goodPick/index'), name: 'goodPick', meta: { title: 'goodPick' }},
-      { path: 'orderPick', component: _import('sortingPick/orderPick/index'), name: 'orderPick', meta: { title: 'orderPick' }},
-      { path: 'sorter', component: _import('sortingPick/sorter/index'), name: 'sorter', meta: { title: 'sorter' }},
-      { path: 'baler', component: _import('sortingPick/baler/index'), name: 'baler', meta: { title: 'baler' }}
+      { path: 'packaging', component: _import('packaging/index'), meta: { title: 'packagingIndex' }}
     ]
   },
   { path: '*', redirect: '/404', hidden: true }

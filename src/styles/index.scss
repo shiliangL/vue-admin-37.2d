@@ -251,6 +251,7 @@ code {
 .w110 {
     width: 110px;
 }
+
 .w210 {
     width: 210px;
 }
@@ -290,7 +291,7 @@ code {
 
 // view-page 
 .row-item {
-    padding-top: 20px;
+    padding-top: 10px;
     .row-title {
         border-left: 2px solid #1cbc9c;
         padding-left: 8px;
@@ -338,3 +339,8 @@ code {
     }
 }
 
+.view-header {
+    .el-form-item {
+        margin-bottom: 0px;
+    }
+}

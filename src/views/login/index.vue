@@ -61,10 +61,11 @@ export default {
     }
   },
   created() {
-    this.loginTitle = '厨满满商城后台管理系统'
+    this.loginTitle = '厨满满商城·工作台'
   },
   mounted() {
     // 初始化例子插件
+    console.log(this.$route.query)
   },
   methods: {
     ...mapActions([
@@ -82,10 +83,12 @@ export default {
         if (valid) {
           this.loading = true
           loginByUsername({ ...this.loginForm }).then(res => {
-            this.$router.push({ path: '/' })
-            this.loading = false
-            this.VX_SET_TOKEN(res.code)
-            setToken(res.code)
+            if (res.code === '0' && res.data && res.data.operatorId) {
+              this.loading = false
+              this.VX_SET_TOKEN(res.data.operatorId)
+              setToken(res.data.operatorId)
+              this.$router.push({ path: '/' })
+            }
           }).catch(e => {
             this.loading = false
             console.log(e)

@@ -2,7 +2,7 @@
   <scroll-bar id="sider-scroll-bar">
     <div class="logo-layout">
       <a href="#/" class="logo">
-        <span>厨满满</span>
+        <span>厨满满<template v-show="sidebar.opened">·工作台</template></span>
       </a>
     </div>
 
@@ -13,8 +13,8 @@
       text-color="#606266" 
       active-text-color="#1cbc9c" 
       :unique-opened="true">
-      <!-- <sidebar-item :routes="permission_routers"></sidebar-item> -->
-      <sidebar-item :routes="siderBarMenu"></sidebar-item>
+      <sidebar-item :routes="permission_routers"></sidebar-item>
+      <!-- <sidebar-item :routes="siderBarMenu"></sidebar-item> -->
     </el-menu>
   </scroll-bar>
 </template>

@@ -17,6 +17,7 @@ export default {
         size: 'mini', // 列表表格大小
         maxHeight: 0 // 列表表格最大高度
       },
+      tableLoading: false, // 表格加载 loading
       add: {
         visiable: false, // 是否显示新增组件
         data: null // 新增组件绑定的数据

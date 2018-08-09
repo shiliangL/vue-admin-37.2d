@@ -20,7 +20,7 @@
 			 <div class="search">
 					<el-input size="small" style="width:190px" class="w180"  placeholder="请输入商品名称检索" v-model.trim="viewSearch"></el-input>
 					<el-button  type="primary" size="small" @click.stop="clickToSearch" > 搜索 </el-button>
-					<el-button  size="small" @click.stop="resetSearch" > 重置 </el-button>
+					<el-button style="margin-left:0px" size="small" @click.stop="resetSearch" > 重置 </el-button>
 			</div>
 			</div>
     </div>

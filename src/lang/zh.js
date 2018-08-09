@@ -48,48 +48,16 @@ export default {
     clipboardDemo: 'Clipboard',
     i18n: '国际化',
 
-    users: '用户管理',
-    userList: '用户列表',
-    userInfo: '用户信息',
-
-    goods: '商品管理',
-    commodity: '商品档案',
-    goodsClass: '商品分类',
-    goodsProfile: '辅助资料',
-    goodsList: '商品列表',
-
-    orderList: '销售订单',
-    returnChange: '销售退/换货',
-
-    buyPlan: '采购计划',
-    buyOrders: '采购订单',
-    audit: '采购审核',
-    clearing: '采购结算',
-    supplier: '供应商',
-    buyer: '采购员',
-
-    customerClass: '客户档案',
-    customerType: '客户类别',
-    CustomerManager: '客户经理',
-
-    setting: '仓库设置',
-    inventory: '库存明细',
-    goodsIn: '商品入库',
-    goodsOut: '商品出库',
-    workbench: '工作台管理',
-    equipment: '外接设备',
-    supplyDirector: '供应链主管',
-    ckOperator: '仓管员',
-
-    salesDelivery: '销售配送',
-    areaDelivery: '配送区域',
-    deliveryer: '配送员',
-
-    goodPick: '商品分拣',
-    orderPick: '订单打包',
-    sorter: '分拣员',
-    baler: '打包员'
-
+    acceptance: '验收台',
+    acceptanceIndex: '验收台主页',
+    putStorage: '入库台',
+    putStorageIndex: '入库台主页',
+    outStorage: '出库台',
+    outStorageIndex: '出库台主页',
+    sorting: '分拣台',
+    sortingIndex: '分拣台主页',
+    packaging: '打包台',
+    packagingIndex: '打包台主页'
   },
   navbar: {
     logOut: '退出登录',

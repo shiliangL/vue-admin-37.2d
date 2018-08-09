@@ -3,14 +3,7 @@
 			<el-row>
 				<el-col :span="24">
           <div class="topBar">
-
 					  <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
-            <div class="nav">
-              <ScrollPane class="nav-scroll-bar">
-                <span class="nav-item" v-for="(item,index) in menuList" :key="index" v-cloak :class="curIndex==index?'active' : ''"  @click="clickTabTitle(item,index)">{{item.title}}</span>
-              </ScrollPane>
-            </div>
-
             <div class="userInfo">
               <el-dropdown class="avatar-container right-menu-item" trigger="hover">
               <div class="avatar-wrapper">

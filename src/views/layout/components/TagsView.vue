@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     visitedViews() {
-      return this.$store.state.tagsView.visitedViews
+      return this.$store.state.tagsView.visitedViews || []
     }
   },
   watch: {
@@ -53,23 +53,21 @@ export default {
   methods: {
     generateTitle, // generateTitle by vue-i18n
     generateRoute() {
-      if (this.$route.name) {
+      if (this.$route.meta.title) {
         return this.$route
       }
       return false
     },
     isActive(route) {
-      return route.path === this.$route.path || route.name === this.$route.name
+      return route.path === this.$route.path || route.name === this.$route.meta.title
     },
     addViewTags() {
       const route = this.generateRoute()
-      if (!route) {
-        return false
-      }
+      if (!route) { return false }
       this.$store.dispatch('addVisitedViews', route)
     },
     moveToCurrentTag() {
-      const tags = this.$refs.tag
+      const tags = this.$refs.tag || []
       this.$nextTick(() => {
         for (const tag of tags) {
           if (tag.to === this.$route.path) {
