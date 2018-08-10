@@ -1,7 +1,6 @@
 <!-- 商品列表 -->
 <template>
     <div class="goodsList">
-
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
 
       <div class="search-bar">
@@ -62,7 +61,6 @@
           <el-table-column prop="goodsImage" label="商品图片" align="center">
              <template slot-scope="scope">
                <div class="picBox">
-                <!-- <img v-lazy="`${scope.row.goodsImage}`"> -->
                 <img :src="`${scope.row.goodsImage}`">
                </div>
             </template>
@@ -77,7 +75,12 @@
             </template>
           </el-table-column>
           <el-table-column prop="titleName" label="采购员/供应商" align="center"></el-table-column>
-          <el-table-column prop="upperGoodsTime" label="上架时间" align="center"></el-table-column>
+          <el-table-column prop="upperGoodsTime" label="上架时间" align="center">
+             <template slot-scope="scope" align="center">
+               <span v-if="curIndex ===0">{{scope.row.upperGoodsTime}}</span>
+               <span v-else> - </span>
+            </template>
+          </el-table-column>
           <el-table-column prop="goodsStatus" label="状态" align="center">
             <template slot-scope="scope" align="center">
                <el-tag size="small" v-if="scope.row.goodsStatus ===0">上架</el-tag>

@@ -16,7 +16,7 @@ module.exports = {
       //   changeOrigin: true,
       // },
       '/': {
-        target: 'http://192.168.199.181:5858/', // 本地主机
+        target: 'http://10.1.1.181:5858/', // 本地主机
         changeOrigin: true,
       },
       // '/': {

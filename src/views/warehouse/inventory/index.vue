@@ -14,8 +14,10 @@
 						:highlight-current="true" 
 						:data="treeData"
 						:filter-node-method="filterNode" 
-						:props="defaultProps" 
-						@node-click="clickLoadDetails" node-key="id" 
+						:props="defaultProps"
+            :default-expanded-keys="[0]"
+						@node-click="clickLoadDetails"
+            node-key="value" 
 						@check-change="currentChange">
 					</el-tree>
 				</div>
@@ -340,10 +342,12 @@ export default {
 		background-color: white;
 	}
 	.mc-left{
-		min-height: 230px;
+    min-height: 230px;
 	}
 	.mc-tree{
-		min-height: 164px;
+    min-height: 164px;
+    height: 420px;
+    overflow: auto;
   }
   .dialogTitle{
     .el-form-item {

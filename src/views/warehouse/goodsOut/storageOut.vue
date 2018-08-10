@@ -13,7 +13,7 @@
             </template>
           </el-table-column>
  
-					<el-table-column prop="orderNo" label="入库单号" align="center"></el-table-column>
+					<el-table-column prop="orderNo" label="出库单号" align="center"></el-table-column>
 					<el-table-column prop="stockInfoName" label="仓库" align="center"></el-table-column>
 					<el-table-column prop="storehouseType" label="出库类型" align="center">
              <template slot-scope="scope" align="center">

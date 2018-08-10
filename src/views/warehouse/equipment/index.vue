@@ -58,9 +58,9 @@
         <div v-if="dialogVisible">
           <el-form :model="form" :rules="rules" ref="form" class="form"  label-width="110px" style="padding-left: 60px;">
             <el-form-item label="外接设备类型:">
-              <span v-if="curIndex===1"> 电子秤 </span>
-              <span v-if="curIndex===2"> 标签机 </span>
-              <span v-if="curIndex===3"> 扫码枪 </span>
+              <span v-if="curIndex===2"> 电子秤 </span>
+              <span v-if="curIndex===3"> 标签机 </span>
+              <span v-if="curIndex===1"> 扫码枪 </span>
             </el-form-item>
             <el-form-item label="外接设备名称:" prop="title" :rules="rules.input">
               <el-input size="small" style="width:180px"  v-model.trim="form.title" placeholder="不能超过5位数" maxlength="5"></el-input>

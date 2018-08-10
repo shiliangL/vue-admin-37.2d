@@ -6,7 +6,7 @@
           <el-input size="small" style="width:180px" v-model.trim="form.title" placeholder="长度小于10字" maxlength="10"></el-input>
         </el-form-item>
         <el-form-item label="区域说明:" label-width="100px">
-          <el-input type="textarea"  style="width:180px" :autosize="{ minRows: 2, maxRows: 4}" size="small" v-model.trim="form.summary" placeholder="小于50字" maxlength="11"></el-input>
+          <el-input type="textarea"  style="width:180px" :autosize="{ minRows: 2, maxRows: 4}" size="small" v-model.trim="form.summary" placeholder="小于50字" maxlength="50"></el-input>
         </el-form-item>
         <el-form-item label="所在城市:" label-width="100px" prop="cityId" :rules="rules.select">
           <SelectCity style="width:180px" v-model="cityDTO"></SelectCity>

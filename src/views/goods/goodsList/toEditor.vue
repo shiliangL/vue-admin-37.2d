@@ -243,12 +243,12 @@
                       <!-- <el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.subTitle"></el-input> -->
                     </el-form-item>
                   </div>
-                  <!-- <div>
+                  <div>
                     <el-form-item label="基本单位价格:" prop="basePrice" :rules="rules.input">
                       <el-input size="small" style="width:180px" class="w180" type="number"  placeholder="请输入" v-model.trim="form.basePrice"></el-input>
                     </el-form-item>
                   </div>
-                  <div>
+                  <!-- <div>
                      <el-form-item label="" style="width:180px">
                       <el-checkbox :disabled="sortFlagType" v-model="form.sortFlag">分拣时按基本单位</el-checkbox> 
                       <el-tooltip content="非标品商品默认分拣时按基本单位" placement="top" effect="light">
