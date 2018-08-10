@@ -21,7 +21,19 @@ export default {
       },
       saveLoading: false,
       loading: true,
-      loadingText: null
+      loadingText: null,
+      rules: {
+        validNumber2: (rule, value, callback) => {
+          if (!value) {
+            return callback(new Error('请输入'))
+          }
+          var reg = /^([0-9][\d]{0,5})(\.[\d]{1,2})?$/
+          if (!reg.test(value)) {
+            return callback(new Error('请输入有效数字'))
+          }
+          callback()
+        }
+      }
     }
   }
 }

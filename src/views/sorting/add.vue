@@ -12,38 +12,51 @@
             </div>
         </div>
         <div class="content-bar">
-         	   <el-form :model="form" ref="form" label-width="130px" :inline="true">
+         	   <el-form :model="form" ref="form" label-width="130px" :rules="rules" :inline="true">
             <!--基本信息-->
             <div class="row-item">
                 <div class="row-title">基本信息</div>
                 <div class="row-content view-header">
                   <el-row>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="出库单号:">
-                        <span v-cloak>{{form.orderRequestNo}}</span>
+                      <el-form-item label="出库单创建时间:">
+                        <span v-cloak>{{form.stockOutCreatedTime}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="关联出库单号:">
+                        <span v-cloak>{{form.stockOutOrderNo}}</span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="仓库:">
-                       <span v-cloak>{{form.applicationDate}}</span>
+                       <span v-cloak>{{form.stockInfoName}}</span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="出库类型:">
-                        <span v-if="form.storageType===1"> 采购入库 </span>
-                        <span v-if="form.storageType===2"> 销售退货 </span>
-                        <span v-if="form.storageType===3"> 销售换货 </span>
-                        <span v-if="form.storageType===4"> 其他 </span>
+                        <span v-if="form.storehouseType===1"> 销售订单 </span>
+                        <span v-if="form.storehouseType===2"> 销售换货 </span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="创建人:">
-                        <span v-cloak>{{form.createdName}}</span>
+                      <el-form-item label="商品名称:">
+                       <span v-cloak>{{form.productName}}</span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="出库单创建时间:">
-                        <span v-cloak>{{form.createdTime}}</span>
+                      <el-form-item label="基本单位:">
+                        <span v-cloak>{{form.basicUnitName}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="分拣台:">
+                        <span v-cloak>{{form.tableName}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="分拣员:">
+                        <span v-cloak>{{form.sorterName}}</span>
                       </el-form-item>
                     </el-col>
     
@@ -61,20 +74,38 @@
                   <el-button style="margin-left:0px" size="small" @click.stop="resetSearch" > 重置 </el-button>
                 </div>
                 <!-- 表格 -->
-                  <el-table :data="form.table" size="small" max-height="450" style="width: 100%;" highlight-current-row>
+                  <el-table :data="form.table" size="small" class="table" max-height="450" style="width: 100%;" highlight-current-row>
                     <el-table-column label="序号" width="50" align="center">
                       <template slot-scope="scope"> <span>{{scope.$index + 1}}</span> </template>
                     </el-table-column>
-                    <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
-                    <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
-                    <el-table-column prop="basicUnit" label="分拣台" align="center"></el-table-column>
-                    <el-table-column prop="basicUnit" label="分拣员" align="center"></el-table-column>
-                    <el-table-column prop="basicUnit" label="下单数量" align="center"></el-table-column>
-                    <el-table-column prop="batchesBarCode" label="出库数量" align="center"></el-table-column>
-                    <el-table-column prop="quantity" label="出库时间" align="center"></el-table-column>
+                    <el-table-column prop="orderNo" label="销售订单编号" align="center"></el-table-column>
+                    <el-table-column prop="customerName" label="客户名称" align="center"></el-table-column>
+                    <el-table-column prop="basicUnit" label="规格" align="center"></el-table-column>
+                    <el-table-column prop="orderQuantity" label="下单数量" align="center"></el-table-column>
+                    <el-table-column prop="sortingQuantity" label="分拣数量" align="center">
+                      <template slot-scope="scope">
+                        <span v-if="scope.row.outageTime" v-cloak>{{scope.row.sortingQuantity}}</span>
+                        <el-form-item v-else label="" label-width="0px" :prop="'table.'+scope.$index+'.sortingQuantity'"  :rules="[{ required: true, validator: rules.validNumber2, trigger: 'change' }]">
+                          <el-input size="small" v-model.trim="scope.row.sortingQuantity"></el-input>
+                        </el-form-item>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="barCode" label="商品分拣条码" align="center">
+                      <template slot-scope="scope">
+                        <span v-if="scope.row.barCode" v-cloak>{{scope.row.barCode}}</span>
+                        <span v-else v-cloak> / </span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="sortingTime" label="分拣时间" align="center">
+                      <template slot-scope="scope">
+                        <span v-if="scope.row.outageTime" v-cloak>{{scope.row.outageTime}}</span>
+                        <span v-else v-cloak> / </span>
+                      </template>
+                    </el-table-column>
                     <el-table-column prop="sum" label="操作" align="center">
                       <template slot-scope="scope">
-                         <el-button type="text" size="mini">保存</el-button>
+                         <el-button type="text" size="mini" v-if="!scope.row.barCode" @click.stop="clickToUpdate(scope.$index,scope.row)">打印标签</el-button>
+                         <el-button type="text" size="mini" disabled v-else >打印标签</el-button>
                       </template>
                     </el-table-column>
                   </el-table>
@@ -92,7 +123,7 @@
 
 <script>
 import addModel from '@/public/addModel.js'
-import { fecthHeaderDetail, fecthBodyDetail } from '@/api/putStorage/index.js'
+import { fecthHeaderDetail, fecthBodyDetail, outUpdateQuantity } from '@/api/sorting/index.js'
 export default {
   mixins: [addModel],
   components: {
@@ -102,14 +133,14 @@ export default {
       currentTitle: null,
       searchKey: null,
       form: {
-        orderRequestNo: null,
-        applicationDate: null,
-        purchaserName: null,
-        auditStaffName: null,
-        createTime: null,
-        orderNo: null,
-        purchaseType: null,
-        personnelName: null,
+        'stockOutCreatedTime': null,
+        'stockOutOrderNo': null,
+        'stockInfoName': null,
+        'storehouseType': null,
+        'tableName': null,
+        'sorterName': null,
+        'basicUnitName': null,
+        'productName': null,
         table: []
       }
     }
@@ -140,14 +171,44 @@ export default {
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
-      fecthBodyDetail({ orderId: this.data.obj.id }).then(({ data }) => {
+      fecthBodyDetail({ scheduleInfoId: this.data.obj.id }).then(({ data }) => {
         this.form.table = data
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
     },
-    clickToSearch() {},
-    resetSearch() {}
+    clickToSearch() {
+      if (!this.data.obj.id) return
+      fecthBodyDetail({ scheduleInfoId: this.data.obj.id, inputContent: this.searchKey }).then(({ data }) => {
+        this.form.table = data
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
+    resetSearch() {
+      this.searchKey = null
+      this.clickToSearch()
+    },
+    clickToUpdate(index, item) {
+      this.$refs['form'].validateField(`table.${index}.sortingQuantity`, (m) => {
+        if (!m) {
+          const data = {
+            'sortingDetailsId': item.id,
+            'tableId': item.productId,
+            'weight': item.sortingQuantity
+          }
+          outUpdateQuantity(data).then(res => {
+            this.$message({ type: 'success', message: '保存成功' })
+            this.resetSearch()
+          }).catch(e => {
+            this.$message({ type: 'error', message: e.msg })
+          })
+        } else {
+          this.$message({ type: 'error', message: '请输入有效数值' })
+          return
+        }
+      })
+    }
   }
 }
 </script>

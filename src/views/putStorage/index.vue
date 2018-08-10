@@ -1,6 +1,6 @@
 <!-- 验收台- 出库台 -->
 <template>
-    <div class="outStorage">
+    <div class="putStorage">
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
       <search-bar :data="searchBarData" @search="searchAction"  @reset="fecthList"></search-bar>
       <!-- 表格 -->
@@ -42,9 +42,9 @@
 import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs } from '@/components/base.js'
-import { fecthList } from '@/api/outStorage/index.js'
+import { fecthList } from '@/api/putStorage/index.js'
 export default {
-  name: 'outStorage',
+  name: 'putStorage',
   mixins: [model],
   components: {
     Tabs,

@@ -1,4 +1,4 @@
-<!-- 验收台-采购入库 -->
+<!-- 出库台 -->
 <template>
     <div class="outStorage">
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
@@ -42,7 +42,7 @@
 import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs } from '@/components/base.js'
-import { fecthList } from '@/api/putStorage/index.js'
+import { fecthList } from '@/api/outStorage/index.js'
 export default {
   name: 'outStorage',
   mixins: [model],
@@ -56,7 +56,7 @@ export default {
       searchBarData: [
         [
           { type: 'date', value: null, key: 'createdTime', width: '200px', placeholder: '创建时间' },
-          { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '输入出库单号检索' },
+          { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '出库信息详情' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
@@ -74,8 +74,7 @@ export default {
     ]
   },
   mounted() {
-    // this.fecthList()
-    this.table.data = [{}]
+    this.fecthList()
   },
   methods: {
     tabsCallBack(item) {
@@ -89,7 +88,7 @@ export default {
       const data = {
         index,
         size,
-        storageType: this.curIndex
+        storehouseType: this.curIndex
       }
       fecthList(data).then(({ data }) => {
         this.table.data = data.rows
@@ -107,7 +106,7 @@ export default {
         index,
         size,
         ...item,
-        storageType: this.curIndex
+        storehouseType: this.curIndex
       }
       fecthList(data).then(({ data }) => {
         this.table.data = data.rows

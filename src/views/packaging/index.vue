@@ -1,7 +1,6 @@
-<!-- 分拣台 -->
+<!-- 打包台 -->
 <template>
-    <div class="outStorage">
-      打包台
+    <div class="packaging">
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
       <search-bar :data="searchBarData" @search="searchAction"  @reset="fecthList"></search-bar>
       <!-- 表格 -->
@@ -10,9 +9,11 @@
           <el-table-column label="序号" width="50" align="center">
             <template slot-scope="scope"> <span>{{scope.$index + 1}}</span> </template>
           </el-table-column>
-          <el-table-column prop="orderNo" label="出库单号" align="center"></el-table-column>
-          <el-table-column prop="createdName" label="创建人" align="center"></el-table-column>
-          <el-table-column prop="createdTime" label="出库单创建时间" align="center"></el-table-column>
+          <el-table-column prop="orderNo" label="销售订单编号" align="center"></el-table-column>
+          <el-table-column prop="customerName" label="客户名称" align="center"></el-table-column>
+          <el-table-column prop="distributionArea" label="配送区域" align="center"></el-table-column>
+          <el-table-column prop="stockName" label="仓库" align="center"></el-table-column>
+          <el-table-column prop="completionTime" label="出库单创建时间" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">查看</el-button>
@@ -43,9 +44,9 @@
 import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs } from '@/components/base.js'
-import { fecthList } from '@/api/putStorage/index.js'
+import { fecthList } from '@/api/packaging/index.js'
 export default {
-  name: 'outStorage',
+  name: 'packaging',
   mixins: [model],
   components: {
     Tabs,
@@ -57,10 +58,10 @@ export default {
       searchBarData: [
         [
           { type: 'date', value: null, key: 'createdTime', width: '200px', placeholder: '创建时间' },
-          { type: 'option', value: null, key: 'storehouseType', class: 'w150', placeholder: '仓库', options: [] },
-          { type: 'option', value: null, key: 'storehouseType', class: 'w150', placeholder: '打包台', options: [] },
-          { type: 'option', value: null, key: 'storehouseType', class: 'w150', placeholder: '打包员', options: [] },
-          { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '输入销售订单编号/客户名称检索' },
+          { type: 'option', value: null, key: 'stockId', class: 'w150', placeholder: '仓库', options: [] },
+          { type: 'option', value: null, key: 'tableId', class: 'w150', placeholder: '打包台', options: [] },
+          { type: 'option', value: null, key: 'packerId', class: 'w150', placeholder: '打包员', options: [] },
+          { type: 'input', value: null, key: 'inputContent', class: 'w180', placeholder: '输入销售订单编号/客户名称检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
@@ -78,8 +79,7 @@ export default {
     ]
   },
   mounted() {
-    // this.fecthList()
-    this.table.data = [{}]
+    this.fecthList()
   },
   methods: {
     tabsCallBack(item) {
@@ -93,7 +93,7 @@ export default {
       const data = {
         index,
         size,
-        storageType: this.curIndex
+        storehouseType: this.curIndex
       }
       fecthList(data).then(({ data }) => {
         this.table.data = data.rows
@@ -111,7 +111,7 @@ export default {
         index,
         size,
         ...item,
-        storageType: this.curIndex
+        storehouseType: this.curIndex
       }
       fecthList(data).then(({ data }) => {
         this.table.data = data.rows
@@ -133,7 +133,7 @@ export default {
     },
     // 弹层操作
     click2view(index, row) {
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '入库信息详情' }})
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '订单打包详细信息' }})
     },
     refrehList() {
       this.fecthList()

@@ -7,6 +7,7 @@
         <div class="header-bar" slot="title">
            <div class="left"> {{currentTitle}} </div>
            <div class="right">
+              <el-button type="text" size="mini" v-if="!form.barCode" @click.stop="clickToUpdate">打印标签</el-button>
               <el-button type="text" size="mini" @click.stop="onRefresh">刷新</el-button>
               <el-button type="text" size="mini" @click.stop="dialog.visiable = false">返回</el-button>
             </div>
@@ -19,31 +20,59 @@
                 <div class="row-content view-header">
                   <el-row>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="出库单号:">
+                      <el-form-item label="出库单创建时间:">
                         <span v-cloak>{{form.orderRequestNo}}</span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="仓库:">
-                       <span v-cloak>{{form.applicationDate}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="出库类型:">
-                        <span v-if="form.storageType===1"> 采购入库 </span>
-                        <span v-if="form.storageType===2"> 销售退货 </span>
-                        <span v-if="form.storageType===3"> 销售换货 </span>
-                        <span v-if="form.storageType===4"> 其他 </span>
+                        <span v-if="form.storehouseType===1"> 销售订单 </span>
+                        <span v-if="form.storehouseType===2"> 销售换货 </span>
+                        <span v-if="form.storehouseType===3"> 其他 </span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="创建人:">
-                        <span v-cloak>{{form.createdName}}</span>
+                      <el-form-item label="仓库:">
+                       <span v-cloak>{{form.stockName}}</span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="出库单创建时间:">
-                        <span v-cloak>{{form.createdTime}}</span>
+                      <el-form-item label="销售订单编号:">
+                       <span v-cloak>{{form.orderNo}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="客户名称:">
+                       <span v-cloak>{{form.customerName}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="配送区域:">
+                       <span v-cloak>{{form.distributionArea}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="打包台:">
+                        <el-input size="small" style="width:180px"  v-model.trim="form.tableName"></el-input>
+                       <span v-cloak>{{form.tableName}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="打包员:">
+                        <el-input size="small" style="width:180px"  v-model.trim="form.packerName"></el-input>
+                       <span v-cloak>{{form.packerName}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="订单打包条码:">
+                        <el-input size="small" style="width:180px"  v-model.trim="form.barCode"></el-input>
+                        <span v-cloak>{{form.barCode}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="订单打包完成时间:">
+                        <span v-if="!form.completionTime" v-cloak>{{form.completionTime}}</span>
+                        <span v-else v-cloak> / </span>
                       </el-form-item>
                     </el-col>
     
@@ -66,17 +95,13 @@
                       <template slot-scope="scope"> <span>{{scope.$index + 1}}</span> </template>
                     </el-table-column>
                     <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
+                    <el-table-column prop="productName" label="规格" align="center"></el-table-column>
                     <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
-                    <el-table-column prop="basicUnit" label="分拣台" align="center"></el-table-column>
-                    <el-table-column prop="basicUnit" label="分拣员" align="center"></el-table-column>
                     <el-table-column prop="basicUnit" label="下单数量" align="center"></el-table-column>
-                    <el-table-column prop="batchesBarCode" label="出库数量" align="center"></el-table-column>
-                    <el-table-column prop="quantity" label="出库时间" align="center"></el-table-column>
-                    <el-table-column prop="sum" label="操作" align="center">
-                      <template slot-scope="scope">
-                         <el-button type="text" size="mini">保存</el-button>
-                      </template>
-                    </el-table-column>
+                    <el-table-column prop="basicUnit" label="分拣数量" align="center"></el-table-column>
+                    <el-table-column prop="basicUnit" label="商品分拣条码" align="center"></el-table-column>
+                    <el-table-column prop="basicUnit" label="分拣时间" align="center"></el-table-column>
+                    <el-table-column prop="basicUnit" label="打包记录扫码时间" align="center"></el-table-column>
                   </el-table>
                 <div class="footer-block">
                   <span class="page" v-cloak> 共 {{form.table.length}} 条</span>
@@ -92,7 +117,7 @@
 
 <script>
 import addModel from '@/public/addModel.js'
-import { fecthHeaderDetail, fecthBodyDetail } from '@/api/putStorage/index.js'
+import { fecthHeaderDetail, fecthBodyDetail, outUpdateQuantity } from '@/api/packaging/index.js'
 export default {
   mixins: [addModel],
   components: {
@@ -102,14 +127,17 @@ export default {
       currentTitle: null,
       searchKey: null,
       form: {
-        orderRequestNo: null,
-        applicationDate: null,
-        purchaserName: null,
-        auditStaffName: null,
-        createTime: null,
-        orderNo: null,
-        purchaseType: null,
-        personnelName: null,
+        'id': null,
+        'createdTime': null,
+        'storehouseType': null,
+        'orderNo': null,
+        'customerName': null,
+        'distributionArea': null,
+        'stockName': null,
+        'tableName': null,
+        'packerName': null,
+        'barCode': null,
+        'completionTime': null,
         table: []
       }
     }
@@ -146,8 +174,45 @@ export default {
         this.$message({ type: 'error', message: e.msg })
       })
     },
-    clickToSearch() {},
-    resetSearch() {}
+    clickToSearch() {
+      if (!this.data.obj.id) return
+      fecthBodyDetail({ orderId: this.data.obj.id, inputContent: this.searchKey }).then(({ data }) => {
+        this.form.table = data
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
+    resetSearch() {
+      this.searchKey = null
+      this.clickToSearch()
+    },
+    clickToUpdate() {
+      this.$confirm('确定打印标签吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+
+      }).catch(() => {})
+
+      // this.$refs['form'].validateField(`table.${index}.realQuantity`, (m) => {
+      //   if (!m) {
+      //     const data = {
+      //       'packageInfoId': 'string',
+      //       'tableId': 'string'
+      //     }
+      //     outUpdateQuantity(data).then(res => {
+      //       this.$message({ type: 'success', message: '保存成功' })
+      //       this.resetSearch()
+      //     }).catch(e => {
+      //       this.$message({ type: 'error', message: e.msg })
+      //     })
+      //   } else {
+      //     this.$message({ type: 'error', message: '请输入有效数值' })
+      //     return
+      //   }
+      // })
+    }
   }
 }
 </script>
