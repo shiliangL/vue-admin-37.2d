@@ -4,7 +4,7 @@
 
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
  
-      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction" @reset="resetSearchBar" @command="clickMoreCommand"  @add="showAdd"></search-bar>
+      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction" @reset="resetSearchBar" @command="clickMoreCommand"  @clickBtn="exportFile"  @add="showAdd"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -110,8 +110,8 @@ export default {
           { type: 'reset', name: '重置' }
         ],
         [
-          { type: 'add', name: '新增' }
-          // { type: 'button', name: '导出Excel' }
+          { type: 'add', name: '新增' },
+          { type: 'button', name: '导出Excel' }
           // { type: 'more', labels: ['导入', '上传图片'] }
         ]
       ],
@@ -212,6 +212,31 @@ export default {
     resetSearchBar() {
       this.curIndex = 0
       this.fecthList()
+    },
+    exportFile() {
+      let url = 'scmSalesOrder/exportFile?'
+      const data = {
+        status: this.curIndex,
+        ...this.paramsData
+      }
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          const element = data[key]
+          if (element) {
+            url += `${key}=${element}&`
+          }
+        }
+      }
+      const a = document.createElement('a')
+      document.body.appendChild(a)
+      a.href = url
+      a.target = '_blank'
+      a.click()
+      setTimeout(() => {
+        document.body.removeChild(a)
+      }, 100)
+      this.exportLoading = false
+      this.$message({ type: 'success', message: '数据导出成功' })
     }
 
   }

@@ -123,3 +123,11 @@ export function updateSafeStock(data) {
     data
   })
 }
+
+export function exportFile(params) {
+  return request({
+    url: 'productInfo/exportFile',
+    method: 'get',
+    params
+  })
+}

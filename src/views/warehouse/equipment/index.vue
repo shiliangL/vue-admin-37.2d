@@ -63,10 +63,10 @@
               <span v-if="curIndex===1"> 扫码枪 </span>
             </el-form-item>
             <el-form-item label="外接设备名称:" prop="title" :rules="rules.input">
-              <el-input size="small" style="width:180px"  v-model.trim="form.title" placeholder="不能超过5位数" maxlength="5"></el-input>
+              <el-input size="small" style="width:180px"  v-model.trim="form.title" placeholder="不能超过10位数" maxlength="10"></el-input>
             </el-form-item>
             <el-form-item label="外接设备号:" prop="deviceNo" :rules="rules.input">
-              <el-input size="small" style="width:180px"  v-model.trim="form.deviceNo" placeholder="不能超过5位数" maxlength="5"></el-input>
+              <el-input size="small" style="width:180px"  v-model.trim="form.deviceNo" placeholder="不能超过20位数" maxlength="20"></el-input>
             </el-form-item>
             <el-form-item label="仓库:" prop="stockId" :rules="rules.input">
 	            <el-select size="small" v-model="form.stockId" filterable placeholder="选择">

@@ -59,6 +59,11 @@ export default {
     goodsList: '商品列表',
     brand: '品牌管理',
 
+    activities: '特惠推荐',
+    banner: 'banner设置',
+    kFservice: '客服人员',
+    operating: '运营人员',
+
     orderList: '销售订单',
     returnChange: '销售退/换货',
 

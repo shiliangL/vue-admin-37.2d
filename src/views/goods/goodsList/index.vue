@@ -32,6 +32,7 @@
         <div class="right">
           <div class="left">
             <el-button size="small" @click.stop="showAdd" > 新增 </el-button>
+            <el-button size="small" @click.stop="exportFile" :loading="exportLoading" > 导出Excel </el-button>
           </div>
            <el-dropdown class="right" trigger="click" @command="clickCommand">
               <el-button size="small"> 批量操作 <i class="el-icon-arrow-down el-icon--right"></i></el-button>
@@ -60,9 +61,7 @@
 
           <el-table-column prop="goodsImage" label="商品图片" align="center">
              <template slot-scope="scope">
-               <div class="picBox">
-                <img :src="`${scope.row.goodsImage}`">
-               </div>
+               <div class="picBox"> <img :src="`${scope.row.goodsImage}`"> </div>
             </template>
           </el-table-column>
           <el-table-column prop="categoryName" label="商品分类" align="center"></el-table-column>
@@ -75,7 +74,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="titleName" label="采购员/供应商" align="center"></el-table-column>
-          <el-table-column prop="upperGoodsTime" label="上架时间" align="center">
+          <el-table-column prop="upperGoodsTime" label="上架时间" width="90" align="center">
              <template slot-scope="scope" align="center">
                <span v-if="curIndex ===0">{{scope.row.upperGoodsTime}}</span>
                <span v-else> - </span>
@@ -131,40 +130,13 @@ export default {
   },
   data() {
     return {
+      exportLoading: false,
       curIndex: 0,
       options: {
         moreOptins: ['批量上架', '批量下架', '批量删除'],
         goodsClass: []
       },
       CascaderBoxDTO: null,
-      searchBarData: [
-        [
-          { type: 'option', value: null, key: 'categoryId', class: 'w110', placeholder: '一级分类', options: [
-            // { label: '水产冻货', value: 0 },
-            // { label: '调料干货', value: 1 },
-            // { label: '米面粮油', value: 2 }
-          ]
-          },
-          //   商品状态, 0 上架，1 下架 goodsStatus
-          { type: 'option', value: null, key: 'goodsStatus', class: 'w110', placeholder: '全部状态', options: [
-            { label: '上架', value: 0 },
-            { label: '下架', value: 1 }]
-          },
-          //   1：供货，2：自采，3：未指定
-          { type: 'option', value: null, key: 'purchaseType', class: 'w110', placeholder: '采购类型', options: [
-            { label: '供应商直供', value: 1 },
-            { label: '市场自采购', value: 2 }
-          ]
-          },
-          { type: 'input', value: null, key: 'title', class: 'w180', placeholder: '输入订单编号／客户名称检索' },
-          { type: 'search', name: '查询' },
-          { type: 'reset', name: '重置' }
-        ],
-        [
-          { type: 'add', name: '新增' }
-          // { type: 'more', labels: ['导入', '上传图片'] }
-        ]
-      ],
       supplyType: '', // 过渡变量供应商类别
       searchParams: {
         title: null,
@@ -287,6 +259,45 @@ export default {
       }).catch(e => {
         this.$message({ type: 'error', message: '加载分类失败失败' })
       })
+    },
+    exportFile() {
+      this.exportLoading = true
+      let url = 'productInfo/exportFile?'
+      if (this.levelFecond) {
+        this.searchParams.categoryId = this.levelFecond
+      } else {
+        this.searchParams.categoryId = this.levelFirst
+      }
+      if (this.CascaderBoxDTO) {
+        this.searchParams.purchaseType = this.CascaderBoxDTO.purchaseType
+        if (this.CascaderBoxDTO.purchaseType === 0) {
+          this.searchParams.buyerId = this.CascaderBoxDTO.purchaseType
+        } else {
+          this.searchParams.supplyId = this.CascaderBoxDTO.supplyOrBuyerId
+        }
+      }
+      const data = {
+        goodsStatus: this.curIndex,
+        ...this.searchParams
+      }
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          const element = data[key]
+          if (element) {
+            url += `${key}=${element}&`
+          }
+        }
+      }
+      const a = document.createElement('a')
+      document.body.appendChild(a)
+      a.href = url
+      a.target = '_blank'
+      a.click()
+      setTimeout(() => {
+        document.body.removeChild(a)
+      }, 100)
+      this.exportLoading = false
+      this.$message({ type: 'success', message: '数据导出成功' })
     },
     // 分页操作区域
     handleSizeChange(value) {

@@ -4,7 +4,7 @@
 
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
  
-      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction" @reset="resetSearchBar"></search-bar>
+      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction"  @clickBtn="exportFile"  @reset="resetSearchBar"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -89,7 +89,7 @@ export default {
           { type: 'reset', name: '重置' }
         ],
         [
-          // { type: 'button', name: '导出Excel' }
+          { type: 'button', name: '导出Excel' }
           // { type: 'more', labels: ['导入', '上传图片'] }
         ]
       ],
@@ -164,6 +164,31 @@ export default {
     },
     resetSearchBar() {
       this.fecthList()
+    },
+    exportFile(params) {
+      let url = 'scmsaleRreturnsgoods/exportFile?'
+      const data = {
+        method: this.curIndex,
+        ...params
+      }
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          const element = data[key]
+          if (element) {
+            url += `${key}=${element}&`
+          }
+        }
+      }
+      const a = document.createElement('a')
+      document.body.appendChild(a)
+      a.href = url
+      a.target = '_blank'
+      a.click()
+      setTimeout(() => {
+        document.body.removeChild(a)
+      }, 100)
+      this.exportLoading = false
+      this.$message({ type: 'success', message: '数据导出成功' })
     }
 
   }

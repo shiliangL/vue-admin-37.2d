@@ -27,10 +27,6 @@
           <el-button size="small" @click="clickReset">{{item.name}}</el-button>
         </template>
 
-        <template v-else-if="item.type === 'buyer'">
-          <slot name="buyer"></slot>
-        </template>
-
       </div>
 
       <template v-esle-if="data.length > 1">
@@ -114,7 +110,28 @@ export default {
       this.$emit('add')
     },
     clickBtn(item) {
-      this.$emit('clickBtn', item)
+      const params = {}
+      if (this.data.length > 0 && this.data[0] && this.data[0].length > 0) {
+        const items = this.data[0]
+        const commonlyTypes = ['input', 'select', 'option', 'date', 'datetime']
+        for (let i = 0; i < items.length; i++) {
+          const item = items[i]
+          if (commonlyTypes.indexOf(item['type']) !== -1) {
+            params[item['key']] = item.value
+          } else if (item['type'] === 'multiple-date') {
+            if (item.value != null) {
+              params[item['key1']] = item.value[0]
+              params[item['key2']] = item.value[1]
+            } else {
+              params[item['key1']] = null
+              params[item['key2']] = null
+            }
+          } else if (item['type'] === 'search') {
+            break
+          }
+        }
+      }
+      this.$emit('clickBtn', params)
     },
     clickCommand(command) {
       this.$emit('command', command)

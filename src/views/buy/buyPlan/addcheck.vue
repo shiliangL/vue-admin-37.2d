@@ -6,7 +6,7 @@
       <div class="search-bar">
         <div class="left">
           <el-date-picker :style="{width:'140px'}"
-            readonly
+            :clearable="false"
             size="small"
             v-model="searchBarData.sendTime" 
             value-format="yyyy-MM-dd" 
@@ -152,8 +152,13 @@ export default {
       return row.purchaseStatus === 0
     },
     reset() {
-      this.CascaderBoxDTO = null
+      const date = new Date()
+      const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)
+      const day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate()
+      const ymd = date.getFullYear() + '-' + month + '-' + day
 
+      this.searchBarData.sendTime = ymd
+      this.CascaderBoxDTO = null
       this.searchBarData.purchaseStatus = null
       this.searchBarData.buyerOrSupplyId = null
       this.searchBarData.goodName = null

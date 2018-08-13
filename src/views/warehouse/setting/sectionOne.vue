@@ -65,7 +65,7 @@ export default {
     return {
       form: {
         address: null,
-        categoryId: '38c8320378a84c75a44de71f4d6b3928',
+        categoryId: null,
         contacts: null,
         description: null,
         phone: null,

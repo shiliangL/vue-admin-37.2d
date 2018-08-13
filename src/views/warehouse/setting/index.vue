@@ -17,12 +17,12 @@
 					</el-table-column>
 
 					<el-table-column prop="title" label="仓库名称" align="center"></el-table-column>
-					<el-table-column prop="address" label="仓库地址" align="center"></el-table-column>
+					<el-table-column prop="address" label="仓库地址" show-overflow-tooltip width="200" align="center"></el-table-column>
 					<el-table-column prop="contacts" label="联系人" align="center"></el-table-column>
 					<el-table-column prop="phone" label="联系电话" align="center"></el-table-column>
 					<el-table-column prop="categoryName" label="仓库类别" align="center"></el-table-column>
 					<el-table-column prop="staffName" label="仓管员" align="center"></el-table-column>
-					<el-table-column prop="createdTime" label="创建时间" align="center"></el-table-column>
+					<el-table-column prop="createdTime" label="创建时间" align="center" width="90"></el-table-column>
 					<el-table-column prop="createdName" label="创建人" align="center"></el-table-column>
 					<el-table-column prop="updatedTime" label="最近修改时间" align="center"></el-table-column>
 					<el-table-column prop="updatedName" label="修改人" align="center"></el-table-column>
