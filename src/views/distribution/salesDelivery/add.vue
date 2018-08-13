@@ -195,10 +195,10 @@
                   <el-card class="box-card">
                     <div class="search">
                       <span v-if="AddForm.type===0">发货日期: {{today}}</span>
-                      <el-select size="small" v-model="form.regionId" filterable clearable placeholder="选择地区"  style="width:120px">
+                      <!-- <el-select size="small" v-model="form.regionId" filterable clearable placeholder="选择地区"  style="width:120px">
                         <el-option v-for="sub in options.regionOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                       </el-select>
-                      <el-input size="small" style="width:160px" placeholder="订单编号检索" v-model.trim="AddForm.orderNo"></el-input>
+                      <el-input size="small" style="width:160px" placeholder="订单编号检索" v-model.trim="AddForm.orderNo"></el-input> -->
                     </div>
                     <div class="table">
                       <el-table :data="tableData_L" size="small" max-height="300"  style="width: 100%;" highlight-current-row

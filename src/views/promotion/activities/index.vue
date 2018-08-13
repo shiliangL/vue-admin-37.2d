@@ -16,10 +16,10 @@
                <div class="picBox" v-if="scope.row.url"> <img :src="scope.row.url"> </div>
             </template>
 					 </el-table-column>
-					<el-table-column prop="name" label="商品分类" align="center"></el-table-column>
-					<el-table-column prop="name" label="商品名称" align="center"></el-table-column>
-					<el-table-column prop="createOn" label="市场价格(全国)" align="center"></el-table-column>
-					<el-table-column prop="beginTime" label="商品上架时间" align="center"></el-table-column>
+					<el-table-column prop="skuName" label="商品分类" align="center"></el-table-column>
+					<el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
+					<el-table-column prop="skuPrice" label="市场价格(全国)" align="center"></el-table-column>
+					<el-table-column prop="upperGoodsTime" label="商品上架时间" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="140">
             <template slot-scope="scope" align="center">
 							<el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index,scope.row)">删除</el-button>
@@ -53,7 +53,7 @@
 import model from '@/public/listModel.js'
 import Add from './add'
 import { SearchBar } from '@/components/base.js'
-import { fecthList, deleteRow } from '@/api/frontShop/banner.js'
+import { fecthListSku, deleteRow } from '@/api/frontShop/banner.js'
 
 export default {
   name: 'activities',
@@ -66,9 +66,9 @@ export default {
     return {
       searchBarDate: [
         [
-          { type: 'input', value: null, key: 'name', class: 'w180', placeholder: '输入商品名称检索' },
-          { type: 'search', name: '查询' },
-          { type: 'reset', name: '重置' }
+          // { type: 'input', value: null, key: 'name', class: 'w180', placeholder: '输入商品名称检索' },
+          // { type: 'search', name: '查询' },
+          // { type: 'reset', name: '重置' }
         ],
         [
           { type: 'add', name: '新增' }
@@ -91,9 +91,10 @@ export default {
       const data = {
         index,
         size,
+        type: 2,
         method: 2
       }
-      fecthList(data).then(({ data }) => {
+      fecthListSku(data).then(({ data }) => {
         if (Array.isArray(data.rows)) {
           this.table.data = data.rows
         }
@@ -108,9 +109,10 @@ export default {
         index,
         size,
         method: 2,
+        type: 2,
         ...item
       }
-      fecthList(data).then(({ data }) => {
+      fecthListSku(data).then(({ data }) => {
         if (Array.isArray(data.rows)) {
           this.table.data = data.rows
         }

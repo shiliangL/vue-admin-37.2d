@@ -7,6 +7,13 @@ export function fecthList(params) {
     params
   })
 }
+export function fecthListSku(params) {
+  return request({
+    url: 'pateventreCommend/sku',
+    method: 'get',
+    params
+  })
+}
 
 export function fetchDetail(params) {
   return request({

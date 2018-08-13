@@ -6,7 +6,7 @@
 					<SearchBox style="width:180px" keyName="title" isGoods nameLabel="商品" codeLabel="类别" tableCode="categoryName" requestUrl="productInfo/listProductInfo" v-model="dataDTO"></SearchBox>
 				</el-form-item>
 				<el-form-item label="商品规格:" label-width="100px" prop="contentId" :rules="rules.select">
-          <el-select size="small" v-model="dataSKU" filterable placeholder="选择规格">
+          <el-select size="small" v-model="form.skuId" filterable placeholder="选择规格">
             <el-option v-for="sub in skuOption" :key="sub.id" :label="sub.skuTitle" :value="sub.id"></el-option>
           </el-select>
 				</el-form-item>
@@ -99,16 +99,19 @@ export default {
     dataDTO: {
       handler(n, o) {
         if (n && o && n.id !== o.id) {
+          this.form.skuId = null
           this.skuOption = []
         }
         if (n) {
           this.form.contentId = n.id
           this.form.productName = n.title
+          this.form.url = n.goodsImage
           setTimeout(() => {
             this.fetchSkuList(n.id)
           }, 400)
         } else {
           this.skuOption = []
+          this.form.url = null
           this.form.contentId = null
           this.form.productName = null
         }

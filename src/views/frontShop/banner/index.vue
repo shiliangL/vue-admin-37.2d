@@ -23,7 +23,7 @@
               <span v-if="scope.row.method===3">热门</span>
 						</template>
           </el-table-column>
-					<el-table-column prop="productName" label="链接对象" align="center"></el-table-column>
+					<!-- <el-table-column prop="productName" label="链接对象" align="center"></el-table-column> -->
 					<el-table-column prop="updateTime" label="上次修改时间" align="center"></el-table-column>
 					<el-table-column prop="status" label="状态" align="center">
 						<template slot-scope="scope">
@@ -78,13 +78,13 @@ export default {
     return {
       searchBarDate: [
         [
-          { type: 'option', value: null, key: 'status', class: 'w150', placeholder: '账号状态', options: [
-            { label: '启用', value: 1 },
-            { label: '禁用', value: 0 }
-          ] },
-          { type: 'input', value: null, key: 'name', class: 'w180', placeholder: '输入用户名称检索' },
-          { type: 'search', name: '查询' },
-          { type: 'reset', name: '重置' }
+          // { type: 'option', value: null, key: 'status', class: 'w150', placeholder: '账号状态', options: [
+          //   { label: '启用', value: 1 },
+          //   { label: '禁用', value: 0 }
+          // ] },
+          // { type: 'input', value: null, key: 'name', class: 'w180', placeholder: '输入用户名称检索' },
+          // { type: 'search', name: '查询' },
+          // { type: 'reset', name: '重置' }
         ],
         [
           { type: 'add', name: '新增' }

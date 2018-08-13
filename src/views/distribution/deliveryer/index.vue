@@ -184,7 +184,7 @@ export default {
       this.dialogVisible = false
     },
     clickToDelete(index, item) {
-      this.$confirm('是否确定重置密码为123456?', '提示', {
+      this.$confirm('是否确定重置密码?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

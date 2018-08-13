@@ -17,14 +17,14 @@
 							<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 						</el-upload>
 					</el-form-item>
-					<el-form-item label="链接方式:" label-width="100px">
+					<!-- <el-form-item label="链接方式:" label-width="100px">
 						<el-select size="small" v-model="form.type" filterable placeholder="选择仓库">
 							<el-option v-for="sub in stockOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
 						</el-select>
 					</el-form-item>
 					<el-form-item label="链接对象:" label-width="100px">
 					 
-					</el-form-item>
+					</el-form-item> -->
 					<el-form-item label="账号状态:" label-width="100px" style="height: 37px;">
 						<el-radio v-model="form.status" :disabled="isViewPage" label="1">启用</el-radio>
 						<el-radio v-model="form.status" :disabled="isViewPage" label="0">禁用</el-radio>
@@ -62,7 +62,7 @@ export default {
         'productName': null,
         'status': '1',
         'summary': null,
-        'type': 0, // 1：机构，2：商品，3：用户 ,
+        'type': 2, // 1：机构，2：商品，3：用户 ,
         'url': null
       },
       imgTypes: ['jpeg', 'png', 'jpg', 'bmp'],

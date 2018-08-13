@@ -69,11 +69,11 @@
 
 							<!-- 添加区域 -->
 						<div class="AddTableList">
-          			<el-input style="width:180px" v-model.trim="searchParam" size="small" @keyup.enter.native="sendSearchParam" placeholder="输入商品名称检索"></el-input>
-							 <el-button  type="primary" size="small"> 搜索 </el-button>
+          			<el-input style="width:180px" v-model.trim="searchParam" size="small" placeholder="输入商品名称检索"></el-input>
+							 <!-- <el-button  type="primary" size="small"> 搜索 </el-button> -->
 						</div>
 
-						<el-table :data="form.table" class="table" size="small" :max-height="500" style="width: 100%;" highlight-current-row>
+						<el-table :data="tableSearch" class="table" size="small" :max-height="500" style="width: 100%;" highlight-current-row>
  
 							<el-table-column label="序号" width="50" align="center">
 								<template slot-scope="scope">
@@ -184,6 +184,19 @@ export default {
   mounted() {
     if (this.$attrs.loadID) {
       this.fecthDetail()
+    }
+  },
+  computed: {
+    tableSearch: function() {
+      const search = this.searchParam
+      if (search) {
+        return this.form.table.filter(dataNews => {
+          return Object.keys(dataNews).some(key => {
+            return String(dataNews[key]).toLowerCase().indexOf(search) > -1
+          })
+        })
+      }
+      return this.form.table
     }
   },
   methods: {
