@@ -91,7 +91,6 @@ export default {
           }).catch(e => {
             this.$message({ type: 'error', message: e.msg })
             this.loading = false
-            console.log(e)
           })
         } else {
           return

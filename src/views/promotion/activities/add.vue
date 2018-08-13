@@ -1,9 +1,14 @@
 <template>
     <div>
 			<el-form :model="form" ref="form" class="form" :rules="rules"  style="padding-left: 60px;">
-				<el-form-item label="商品:" label-width="100px" prop="contentId" :rules="rules.select">
+				<el-form-item label="商品名称:" label-width="100px" prop="contentId" :rules="rules.select">
 					<el-input size="small" style="width:180px;display: none;"  v-model.trim="form.contentId"></el-input>
 					<SearchBox style="width:180px" keyName="title" isGoods nameLabel="商品" codeLabel="类别" tableCode="categoryName" requestUrl="productInfo/listProductInfo" v-model="dataDTO"></SearchBox>
+				</el-form-item>
+				<el-form-item label="商品规格:" label-width="100px" prop="contentId" :rules="rules.select">
+          <el-select size="small" v-model="dataSKU" filterable placeholder="选择规格">
+            <el-option v-for="sub in skuOption" :key="sub.id" :label="sub.skuTitle" :value="sub.id"></el-option>
+          </el-select>
 				</el-form-item>
 			</el-form>
 			<div class="footer-block" v-if="!isViewPage">
@@ -18,6 +23,8 @@ import rules from '@/public/rules.js'
 import addModel from '@/public/addModel.js'
 import { SearchBox } from '@/components/base.js'
 import { createRow } from '@/api/frontShop/banner.js'
+import { fetchSkuList } from '@/api/orders.js'
+
 export default {
   mixins: [rules, addModel],
   components: {
@@ -29,6 +36,7 @@ export default {
       saveLoading: false,
       isUpdate: false,
       dataDTO: false,
+      dataSKU: null,
       form: {
         'contentId': null, // 商品 id
         'productName': null,
@@ -40,7 +48,7 @@ export default {
         'type': 2, // 1：机构，2：商品，3：用户 ,
         'url': null
       },
-      stockOption: []
+      skuOption: []
     }
   },
   methods: {
@@ -75,15 +83,32 @@ export default {
           return
         }
       })
+    },
+    fetchSkuList(id) {
+      if (!id) return
+      fetchSkuList({ id: id }).then(({ data }) => {
+        if (Array.isArray(data)) {
+          this.skuOption = data
+        }
+      }).catch(e => {
+        this.$message({ type: 'error', message: '获取商品规格失败' })
+      })
     }
   },
   watch: {
     dataDTO: {
-      handler(val) {
-        if (val) {
-          this.form.contentId = val.id
-          this.form.productName = val.title
+      handler(n, o) {
+        if (n && o && n.id !== o.id) {
+          this.skuOption = []
+        }
+        if (n) {
+          this.form.contentId = n.id
+          this.form.productName = n.title
+          setTimeout(() => {
+            this.fetchSkuList(n.id)
+          }, 400)
         } else {
+          this.skuOption = []
           this.form.contentId = null
           this.form.productName = null
         }

@@ -31,8 +31,8 @@ export const constantRouterMap = [
       icon: 'component'
     },
     children: [
-      { path: 'orderList', component: _import('orders/orderList/index'), name: 'orderList', meta: { title: 'orderList' }},
-      { path: 'returnChange', component: _import('orders/returnChange/index'), name: 'returnChange', meta: { title: 'returnChange' }}
+      { path: 'orderList', component: _import('orders/orderList/index'), name: 'orderList', meta: { title: 'orderList', noCache: true }},
+      { path: 'returnChange', component: _import('orders/returnChange/index'), name: 'returnChange', meta: { title: 'returnChange', noCache: true }}
     ]
   },
   {
@@ -44,10 +44,10 @@ export const constantRouterMap = [
       icon: 'component'
     },
     children: [
-      { path: 'goodsList', component: _import('goods/goodsList/index'), name: 'goodsList', meta: { title: 'goodsList' }},
-      { path: 'goodsProfile', component: _import('goods/goodsProfile/index'), name: 'goodsProfile', meta: { title: 'goodsProfile' }},
-      { path: 'goodsClass', component: _import('goods/goodsClass/index'), name: 'goodsClass', meta: { title: 'goodsClass' }},
-      { path: 'brand', component: _import('goods/brand/index'), name: 'brand', meta: { title: 'brand' }}
+      { path: 'goodsList', component: _import('goods/goodsList/index'), name: 'goodsList', meta: { title: 'goodsList', noCache: true }},
+      { path: 'goodsProfile', component: _import('goods/goodsProfile/index'), name: 'goodsProfile', meta: { title: 'goodsProfile', noCache: true }},
+      { path: 'goodsClass', component: _import('goods/goodsClass/index'), name: 'goodsClass', meta: { title: 'goodsClass', noCache: true }},
+      { path: 'brand', component: _import('goods/brand/index'), name: 'brand', meta: { title: 'brand', noCache: true }}
     ]
   },
   {
@@ -59,7 +59,7 @@ export const constantRouterMap = [
       icon: 'component'
     },
     children: [
-      { path: 'banner', component: _import('frontShop/banner/index'), name: 'banner', meta: { title: 'banner' }}
+      { path: 'banner', component: _import('frontShop/banner/index'), name: 'banner', meta: { title: 'banner', noCache: true }}
     ]
   },
   {
@@ -71,7 +71,7 @@ export const constantRouterMap = [
       icon: 'component'
     },
     children: [
-      { path: 'activities', component: _import('promotion/activities/index'), name: 'activities', meta: { title: 'activities' }}
+      { path: 'activities', component: _import('promotion/activities/index'), name: 'activities', meta: { title: 'activities', noCache: true }}
     ]
   },
   {
@@ -83,8 +83,8 @@ export const constantRouterMap = [
       icon: 'component'
     },
     children: [
-      { path: 'kFservice', component: _import('personnel/kFservice/index'), name: 'kFservice', meta: { title: 'kFservice' }},
-      { path: 'operating', component: _import('personnel/operating/index'), name: 'operating', meta: { title: 'operating' }}
+      { path: 'kFservice', component: _import('personnel/kFservice/index'), name: 'kFservice', meta: { title: 'kFservice', noCache: true }},
+      { path: 'operating', component: _import('personnel/operating/index'), name: 'operating', meta: { title: 'operating', noCache: true }}
     ]
   },
   {
@@ -96,12 +96,12 @@ export const constantRouterMap = [
       icon: 'component'
     },
     children: [
-      { path: 'example', component: _import('buy/example/index'), name: 'example', meta: { title: 'example' }},
-      { path: 'buyPlan', component: _import('buy/buyPlan/index'), name: 'buyPlan', meta: { title: 'buyPlan' }},
-      { path: 'buyOrders', component: _import('buy/buyOrders/index'), name: 'buyOrders', meta: { title: 'buyOrders' }},
-      { path: 'buyReturn', component: _import('buy/buyReturn/index'), name: 'buyReturn', meta: { title: 'buyReturn' }},
-      { path: 'buyer', component: _import('buy/buyer/index'), name: 'buyer', meta: { title: 'buyer' }},
-      { path: 'supplier', component: _import('buy/supplier/index'), name: 'supplier', meta: { title: 'supplier' }}
+      { path: 'example', component: _import('buy/example/index'), name: 'example', meta: { title: 'example', noCache: true }},
+      { path: 'buyPlan', component: _import('buy/buyPlan/index'), name: 'buyPlan', meta: { title: 'buyPlan', noCache: true }},
+      { path: 'buyOrders', component: _import('buy/buyOrders/index'), name: 'buyOrders', meta: { title: 'buyOrders', noCache: true }},
+      { path: 'buyReturn', component: _import('buy/buyReturn/index'), name: 'buyReturn', meta: { title: 'buyReturn', noCache: true }},
+      { path: 'buyer', component: _import('buy/buyer/index'), name: 'buyer', meta: { title: 'buyer', noCache: true }},
+      { path: 'supplier', component: _import('buy/supplier/index'), name: 'supplier', meta: { title: 'supplier', noCache: true }}
     ]
   },
   {
@@ -113,8 +113,8 @@ export const constantRouterMap = [
       icon: 'component'
     },
     children: [
-      { path: 'audit', component: _import('buyAudit/audit/index'), name: 'audit', meta: { title: 'audit' }},
-      { path: 'clearing', component: _import('buyAudit/clearing/index'), name: 'clearing', meta: { title: 'clearing' }}
+      { path: 'audit', component: _import('buyAudit/audit/index'), name: 'audit', meta: { title: 'audit', noCache: true }},
+      { path: 'clearing', component: _import('buyAudit/clearing/index'), name: 'clearing', meta: { title: 'clearing', noCache: true }}
     ]
   },
   {
@@ -126,9 +126,9 @@ export const constantRouterMap = [
       icon: 'component'
     },
     children: [
-      { path: 'customerClass', component: _import('customer/customerClass/index'), name: 'customerClass', meta: { title: 'customerClass' }},
-      { path: 'customerType', component: _import('customer/customerType/index'), name: 'customerType', meta: { title: 'customerType' }},
-      { path: 'CustomerManager', component: _import('customer/CustomerManager/index'), name: 'CustomerManager', meta: { title: 'CustomerManager' }}
+      { path: 'customerClass', component: _import('customer/customerClass/index'), name: 'customerClass', meta: { noCache: true, title: 'customerClass' }},
+      { path: 'customerType', component: _import('customer/customerType/index'), name: 'customerType', meta: { noCache: true, title: 'customerType' }},
+      { path: 'CustomerManager', component: _import('customer/CustomerManager/index'), name: 'CustomerManager', meta: { noCache: true, title: 'CustomerManager' }}
     ]
   },
   {
@@ -140,14 +140,15 @@ export const constantRouterMap = [
       icon: 'component'
     },
     children: [
-      { path: 'setting', component: _import('warehouse/setting/index'), name: 'setting', meta: { title: 'setting' }},
-      { path: 'goodsIn', component: _import('warehouse/goodsIn/index'), name: 'goodsIn', meta: { title: 'goodsIn' }},
-      { path: 'goodsOut', component: _import('warehouse/goodsOut/index'), name: 'goodsOut', meta: { title: 'goodsOut' }},
-      { path: 'inventory', component: _import('warehouse/inventory/index'), name: 'inventory', meta: { title: 'inventory' }},
-      { path: 'workbench', component: _import('warehouse/workbench/index'), name: 'workbench', meta: { title: 'workbench' }},
-      { path: 'equipment', component: _import('warehouse/equipment/index'), name: 'equipment', meta: { title: 'equipment' }},
-      { path: 'ckOperator', component: _import('warehouse/ckOperator/index'), name: 'ckOperator', meta: { title: 'ckOperator' }},
-      { path: 'supplyDirector', component: _import('warehouse/supplyDirector/index'), name: 'supplyDirector', meta: { title: 'supplyDirector' }}
+      { path: 'setting', component: _import('warehouse/setting/index'), name: 'setting', meta: { noCache: true, title: 'setting' }},
+      { path: 'goodsIn', component: _import('warehouse/goodsIn/index'), name: 'goodsIn', meta: { noCache: true, title: 'goodsIn' }},
+      { path: 'goodsOut', component: _import('warehouse/goodsOut/index'), name: 'goodsOut', meta: { noCache: true, title: 'goodsOut' }},
+      { path: 'inventory', component: _import('warehouse/inventory/index'), name: 'inventory', meta: { noCache: true, title: 'inventory' }},
+      { path: 'workbench', component: _import('warehouse/workbench/index'), name: 'workbench', meta: { noCache: true, title: 'workbench' }},
+      { path: 'equipment', component: _import('warehouse/equipment/index'), name: 'equipment', meta: { noCache: true, title: 'equipment' }},
+      { path: 'ckOperator', component: _import('warehouse/ckOperator/index'), name: 'ckOperator', meta: { noCache: true, title: 'ckOperator' }},
+      { path: 'acceptance', component: _import('warehouse/acceptance/index'), name: 'acceptance', meta: { noCache: true, title: 'acceptance' }},
+      { path: 'supplyDirector', component: _import('warehouse/supplyDirector/index'), name: 'supplyDirector', meta: { noCache: true, title: 'supplyDirector' }}
     ]
   },
   {
@@ -159,9 +160,9 @@ export const constantRouterMap = [
       icon: 'component'
     },
     children: [
-      { path: 'salesDelivery', component: _import('distribution/salesDelivery/index'), name: 'salesDelivery', meta: { title: 'salesDelivery' }},
-      { path: 'areaDelivery', component: _import('distribution/areaDelivery/index'), name: 'areaDelivery', meta: { title: 'areaDelivery' }},
-      { path: 'deliveryer', component: _import('distribution/deliveryer/index'), name: 'deliveryer', meta: { title: 'deliveryer' }}
+      { path: 'salesDelivery', component: _import('distribution/salesDelivery/index'), name: 'salesDelivery', meta: { noCache: true, title: 'salesDelivery' }},
+      { path: 'areaDelivery', component: _import('distribution/areaDelivery/index'), name: 'areaDelivery', meta: { noCache: true, title: 'areaDelivery' }},
+      { path: 'deliveryer', component: _import('distribution/deliveryer/index'), name: 'deliveryer', meta: { noCache: true, title: 'deliveryer' }}
     ]
   },
   {
@@ -173,10 +174,10 @@ export const constantRouterMap = [
       icon: 'component'
     },
     children: [
-      { path: 'goodPick', component: _import('sortingPick/goodPick/index'), name: 'goodPick', meta: { title: 'goodPick' }},
-      { path: 'orderPick', component: _import('sortingPick/orderPick/index'), name: 'orderPick', meta: { title: 'orderPick' }},
-      { path: 'sorter', component: _import('sortingPick/sorter/index'), name: 'sorter', meta: { title: 'sorter' }},
-      { path: 'baler', component: _import('sortingPick/baler/index'), name: 'baler', meta: { title: 'baler' }}
+      { path: 'goodPick', component: _import('sortingPick/goodPick/index'), name: 'goodPick', meta: { noCache: true, title: 'goodPick' }},
+      { path: 'orderPick', component: _import('sortingPick/orderPick/index'), name: 'orderPick', meta: { noCache: true, title: 'orderPick' }},
+      { path: 'sorter', component: _import('sortingPick/sorter/index'), name: 'sorter', meta: { noCache: true, title: 'sorter' }},
+      { path: 'baler', component: _import('sortingPick/baler/index'), name: 'baler', meta: { noCache: true, title: 'baler' }}
     ]
   },
   { path: '*', redirect: '/404', hidden: true }

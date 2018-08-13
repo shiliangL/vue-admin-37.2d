@@ -36,17 +36,17 @@
                
               <el-form-item label="" style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.purchaseType'"  :rules="rules.select">
                 <el-select class="w110" size="small" v-model="scope.row.purchaseType" placeholder="采购类型">
-                  <el-option v-for="sub in searchBarOptons.type" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
+                  <el-option v-for="sub in searchBarOptons.type" :key="sub.value" :label="sub.label" :value="sub.value" :disabled="sub.disabled"></el-option>
                 </el-select>
               </el-form-item>
 
-              <el-form-item label=""  style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.buyerId'"  :rules="rules.select"  v-if="scope.row.purchaseType ===1">
+              <el-form-item label=""  style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.buyerId'" :rules="[{required: true,validator: rules.validPersonnel, item:scope.row}]"  v-if="scope.row.purchaseType ===1">
                 <el-select style="180px" size="small" v-model="scope.row.buyerId" clearable filterable placeholder="请选择" @change="selectSaler($event,scope.row)">
                   <el-option v-for="sub in searchBarOptons.salerList" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                 </el-select>
               </el-form-item>
 
-              <el-form-item label=""  style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.supplyDto'"  :rules="rules.select"  v-if="scope.row.purchaseType ===2">
+              <el-form-item label="" style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.supplyDto'"  :rules="rules.select"  v-if="scope.row.purchaseType ===2">
                 <el-cascader style="180px" v-model="scope.row.supplyDto" size="small" :options="searchBarOptons.supplierList"  @change="selectSupply($event,scope.row)">></el-cascader>
               </el-form-item>
 
@@ -86,7 +86,7 @@ export default {
       searchBarOptons: {
         type: [
           { label: '市场自采购', value: 1 },
-          { label: '供应商直供', value: 2 }
+          { label: '供应商直供', value: 2, disabled: true }
         ],
         salerList: [],
         supplyType: [],
@@ -100,6 +100,22 @@ export default {
           var reg = /^([0-9][\d]{0,5})(\.[\d]{1,2})?$/
           if (!reg.test(value)) {
             return callback(new Error('请输入有效数字'))
+          }
+          callback()
+        },
+        validPersonnel: (rule, value, callback) => {
+          if (!value) {
+            return callback(new Error('请输入'))
+          }
+          const buyerIds = this.form.table.map(item => {
+            return item.buyerId
+          })
+          let count = 0
+          for (const key of buyerIds) {
+            if (key === rule.item.buyerId) {
+              count++
+              if (count >= 2) return callback(new Error('已存在'))
+            }
           }
           callback()
         }

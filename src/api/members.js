@@ -9,6 +9,8 @@ import request from '@/utils/request'
 // 5: 打包员
 // 6: 供应链主管
 // 7: 客户经理
+// 8: 验货员
+// 9: 客服人员
 export function fetchList(params) {
   return request({
     url: 'workbenchUser/page',

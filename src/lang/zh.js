@@ -59,7 +59,7 @@ export default {
     goodsList: '商品列表',
     brand: '品牌管理',
 
-    activities: '特惠推荐',
+    activities: '特价推荐',
     banner: 'banner设置',
     kFservice: '客服人员',
     operating: '运营人员',
@@ -86,6 +86,7 @@ export default {
     equipment: '外接设备',
     supplyDirector: '供应链主管',
     ckOperator: '仓管员',
+    acceptance: '验收员',
 
     salesDelivery: '销售配送',
     areaDelivery: '配送区域',

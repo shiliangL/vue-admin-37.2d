@@ -1,28 +1,35 @@
 
-<!-- 特惠推荐 -->
+<!-- 验收员 -->
 <template>
-    <div class="activities">
+    <div class="acceptance">
 			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"  @add="showAdd"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
+
           <el-table-column label="序号" width="50" align="center">
             <template slot-scope="scope">
               <span>{{scope.$index + 1}}</span>
             </template>
           </el-table-column>
- 					<el-table-column prop="url" label="图片" align="center">
-						<template slot-scope="scope">
-               <div class="picBox" v-if="scope.row.url"> <img :src="scope.row.url"> </div>
+ 
+ 					<el-table-column prop="loginName" label="用户账号" align="center"></el-table-column>
+					<el-table-column prop="staffName" label="用户名称" align="center"></el-table-column>
+					<el-table-column prop="mobile" label="手机号码" align="center"></el-table-column>
+					<el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
+					<el-table-column prop="entryTime" label="在岗开始时间" align="center"></el-table-column>
+					<el-table-column prop="departureTime" label="离岗时间" align="center"></el-table-column>
+					<el-table-column prop="status" label="账号状态" align="center">
+             <template slot-scope="scope">
+               <el-tag v-if="scope.row.status===1" size="small">启用</el-tag>
+               <el-tag v-if="scope.row.status===0" size="small" type="danger"> 禁用 </el-tag>
             </template>
-					 </el-table-column>
-					<el-table-column prop="name" label="商品分类" align="center"></el-table-column>
-					<el-table-column prop="name" label="商品名称" align="center"></el-table-column>
-					<el-table-column prop="createOn" label="市场价格(全国)" align="center"></el-table-column>
-					<el-table-column prop="beginTime" label="商品上架时间" align="center"></el-table-column>
+          </el-table-column>
+		 
           <el-table-column label="操作" align="center" width="140">
             <template slot-scope="scope" align="center">
-							<el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index,scope.row)">删除</el-button>
+              <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">编辑</el-button>
+							<el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index,scope.row)">重置密码</el-button>
             </template>
           </el-table-column>
 
@@ -42,7 +49,7 @@
       </table-contain>
 
       <!-- 弹层区域 -->
-      <el-dialog :title="dialogTitle" class="dialogTitle" width="420px" :visible.sync="dialogVisible" append-to-body center @close="resetForm">
+      <el-dialog :title="dialogTitle" class="dialogTitle" width="520px" :visible.sync="dialogVisible" append-to-body center @close="resetForm">
           <Add v-if="dialogVisible" @close="resetForm" @add="fecthList" :propsSonData="propsParentData"></Add>
       </el-dialog>
       
@@ -53,10 +60,10 @@
 import model from '@/public/listModel.js'
 import Add from './add'
 import { SearchBar } from '@/components/base.js'
-import { fecthList, deleteRow } from '@/api/frontShop/banner.js'
+import { fetchList, resetKey } from '@/api/members.js'
 
 export default {
-  name: 'activities',
+  name: 'acceptance',
   mixins: [model],
   components: {
     Add,
@@ -66,7 +73,11 @@ export default {
     return {
       searchBarDate: [
         [
-          { type: 'input', value: null, key: 'name', class: 'w180', placeholder: '输入商品名称检索' },
+          { type: 'option', value: null, key: 'status', class: 'w150', placeholder: '账号状态', options: [
+            { label: '启用', value: 1 },
+            { label: '禁用', value: 0 }
+          ] },
+          { type: 'input', value: null, key: 'inputContent', class: 'w180', placeholder: '输入用户名称检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
@@ -75,7 +86,7 @@ export default {
         ]
       ],
       dialogVisible: false,
-      dialogTitle: '添加商品'
+      dialogTitle: null
     }
   },
   mounted() {
@@ -83,6 +94,11 @@ export default {
   },
   methods: {
     reset() {
+      this.searchBarDate = {
+        title: null,
+        driveId: null
+      }
+      this.cityDTO = null
       this.fecthList()
     },
     // 数据请求
@@ -91,9 +107,9 @@ export default {
       const data = {
         index,
         size,
-        method: 2
+        staffType: 8
       }
-      fecthList(data).then(({ data }) => {
+      fetchList(data).then(({ data }) => {
         if (Array.isArray(data.rows)) {
           this.table.data = data.rows
         }
@@ -107,10 +123,10 @@ export default {
       const data = {
         index,
         size,
-        method: 2,
+        staffType: 8,
         ...item
       }
-      fecthList(data).then(({ data }) => {
+      fetchList(data).then(({ data }) => {
         if (Array.isArray(data.rows)) {
           this.table.data = data.rows
         }
@@ -128,7 +144,16 @@ export default {
       this.pagination.index = value
       this.fecthList()
     },
+    // 弹层操作
+    clickToEditor(index, row) {
+      this.dialogTitle = '编辑仓管员'
+      this.propsParentData.type = 'isUpdate'
+      this.dialogVisible = true
+      this.propsParentData.isUpdate = true
+      this.propsParentData.data = row
+    },
     showAdd() {
+      this.dialogTitle = '新增仓管员'
       this.propsParentData.type = 'add'
       this.propsParentData.isUpdate = false
       this.dialogVisible = true
@@ -144,20 +169,15 @@ export default {
       this.dialogVisible = false
     },
     clickToDelete(index, item) {
-      if (this.table.data.length === 1) {
-        this.$message({ type: 'warning', message: '不能清空数据' })
-        return
-      }
-      this.$confirm('是否确定删除?', '提示', {
+      this.$confirm('是否确定重置密码为123456?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        if (!item.id) return
-        deleteRow({ id: item.id }).then(res => {
+        if (!item.operatorId) return
+        resetKey(item.operatorId).then(res => {
           if (res.code === '0') {
-            this.fecthList()
-            this.$message({ type: 'success', message: '删除成功' })
+            this.$notify({ title: '温馨提示', message: `${res.data.loginName},重置随机密码为: ${res.data.password}`, duration: 10000 })
           }
         }).catch((e) => {
           this.$message({ type: 'error', message: e.msg })
@@ -169,14 +189,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-   .picBox{
-    width: 120px;
-    height: 40px;
-    text-align: center;
-    display: inline-block;
-    overflow: hidden;
-    img{
-      height: 100%;
-    }
-  }
+ 
 </style>
