@@ -189,7 +189,7 @@
 											<span v-cloak>{{form.basePrice}}</span>
                     </el-form-item>
                   </div>
-                  <div>
+                  <!-- <div>
                      <el-form-item label="" style="width:180px">
                       <el-checkbox :disabled="sortFlagType" v-model="form.sortFlag">分拣时按基本单位</el-checkbox> 
                       <el-tooltip content="非标品商品默认分拣时按基本单位" placement="top" effect="light">
@@ -206,7 +206,7 @@
                         <span class="el-checkbox__label">销售汇总时按基本单位</span>
                       </label>
                     </el-form-item>
-                  </div>
+                  </div> -->
                 </div>
 
                 <el-table :data="form.skuList" class="skuListTbale" size="small" :max-height="500" style="width: 100%;" highlight-current-row>

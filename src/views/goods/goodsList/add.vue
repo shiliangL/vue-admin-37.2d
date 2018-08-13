@@ -195,6 +195,9 @@ export default {
   width: 100%;
   position: relative;
   .header-bar {
+    .left{
+      color: #1cbc9c;
+    }
     padding: 0 10px;
     height: 40px;
     line-height: 40px;

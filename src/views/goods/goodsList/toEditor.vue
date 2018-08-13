@@ -336,6 +336,7 @@ import { fecthGoodsClass, fecthUnit, fecthSupplierList, fecthByCategoryId } from
 import { fecthMemberSelect } from '@/api/members.js'
 import { packagingList } from '@/api/brand.js'
 import { fecthList } from '@/api/warehouse/setting.js'
+import { fetchToken } from '@/api/layout.js'
 
 import { mapActions, mapGetters } from 'vuex'
 export default {
@@ -352,6 +353,9 @@ export default {
   },
   data() {
     return {
+      uploadDatas: {
+        token: null
+      },
       ifInfo: true,
       isSku: false,
       imgTypes: ['jpeg', 'png', 'jpg'],
@@ -511,20 +515,16 @@ export default {
     }
   },
   mounted() {
+    this.fetchToken()
     this.fetchGoodClassList()
     this.fecthUnitList()
     this.fecthSupplierList()
     this.fecthSalerList()
     this.fecthList()
     this.fecthBrandList()
-    if (!this.qNtoken) {
-      this.VX_SET_QNTOKEN()
-    }
-    console.log(this.$refs['VueEditor'])
   },
   computed: {
     ...mapGetters([
-      'qNtoken',
       'baseImgUrl'
     ]),
     accept() {
@@ -533,13 +533,6 @@ export default {
         arr.push('image/' + item)
       })
       return arr.join(',')
-    },
-    uploadDatas() {
-      if (this.qNtoken) {
-        return {
-          token: this.qNtoken
-        }
-      }
     },
     sortFlagType() {
       if (this.form.type === 1) {
@@ -563,6 +556,13 @@ export default {
         this.ifInfo = false
         this.isSku = true
       }
+    },
+    fetchToken() {
+      fetchToken().then(({ data }) => {
+        this.uploadDatas.token = data.token
+      }).catch(e => {
+        this.$message({ type: 'error', message: '图片上传参数获取失败,请重新打开页面' })
+      })
     },
     // 加载商品大类
     fetchGoodClassList() {

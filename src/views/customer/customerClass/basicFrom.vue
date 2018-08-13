@@ -128,7 +128,11 @@
 					     <el-row>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label=" 账号状态设置:">
-										<el-radio v-model="form.patUser.status" :label="item.label" v-for="item in accountOption" :key="item.label">
+                    <span v-if="!isAddView"> 
+                      <span v-if="form.patUser.status===1"> 启用 </span>
+                      <span v-else> 禁用 </span>
+                    </span>
+										<el-radio v-else v-model="form.patUser.status" :label="item.label" v-for="item in accountOption" :key="item.label">
 											<span v-cloak> {{item.text}} </span>
 										</el-radio>
 									</el-form-item>
