@@ -86,7 +86,6 @@ export default {
         ],
         [{ type: 'add', name: '新增' }]
       ],
-      title: null,
       isEdit: false,
       form: {
         remark: null,
@@ -110,9 +109,20 @@ export default {
       this.$setKeyValue(this.form, { remark: null, title: null, id: null })
       this.$setKeyValue(this.button, { loading: false, text: '确定' })
     },
-    searchAction(data) {
-      this.title = data.title
-      this.fecthList()
+    searchAction(item) {
+      const { index, size } = this.pagination
+      const data = {
+        index,
+        size,
+        ...item
+      }
+      fetchList(data)
+        .then(({ data }) => {
+          this.table.data = data.rows
+          this.pagination.total = data.total
+        }).catch(e => {
+          this.$message({ type: 'error', message: '列表加载失败' })
+        })
     },
     reset() {
       this.fecthList()
@@ -133,8 +143,7 @@ export default {
       const { index, size } = this.pagination
       const data = {
         index,
-        size,
-        title: this.title
+        size
       }
       fetchList(data)
         .then(({ data }) => {

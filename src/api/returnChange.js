@@ -33,3 +33,10 @@ export function orderDetailUpdate(data) {
     data
   })
 }
+export function orderDetailUpdatePass(data) {
+  return request({
+    url: 'scmsaleRreturnsgoods/update',
+    method: 'PUT',
+    data
+  })
+}

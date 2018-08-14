@@ -19,6 +19,13 @@ export default {
         return false
       }
     },
+    // 是否是加载有效客户
+    isCustomer: {
+      type: Boolean,
+      default: () => {
+        return false
+      }
+    },
     keyName: {
       type: String,
       default: () => {

@@ -13,10 +13,9 @@
               <span>{{scope.$index + 1}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="orderNo" label="订单编号" width="170" align="center"></el-table-column>
-          <el-table-column prop="createdOn" label="下单日期" width="170" align="center"></el-table-column>
+          <el-table-column prop="orderNo" label="订单编号" align="center"></el-table-column>
+          <el-table-column prop="createdOn" label="下单日期" align="center"></el-table-column>
           <el-table-column prop="customerName" label="客户名称" align="center"></el-table-column>
-
           <el-table-column prop="orderSource" label="订单来源" align="center">
           <!-- // 0 代表app 1 微信公众号 2 微信小程序 -->
            <template slot-scope="scope" align="center">
@@ -214,7 +213,7 @@ export default {
       this.fecthList()
     },
     exportFile() {
-      let url = 'scmSalesOrder/exportFile?'
+      let url = 'cmm/scmSalesOrder/exportFile?'
       const data = {
         status: this.curIndex,
         ...this.paramsData

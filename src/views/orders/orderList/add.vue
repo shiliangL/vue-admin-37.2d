@@ -36,7 +36,7 @@
                     <el-row>
                       <el-col :xs="24" :sm="10" :md="8" :lg="6">
                         <el-form-item label="客户名称:" prop="customerName" :rules="rules.select">
-                          <SearchBox style="width:180px" keyName="loginNameOrCustomerName" codeLabel="账号" requestUrl="customer/list" v-model="customerDTO"></SearchBox>
+                          <SearchBox style="width:180px" keyName="loginNameOrCustomerName" codeLabel="账号" isCustomer requestUrl="customer/list" v-model="customerDTO"></SearchBox>
 				                  <el-input size="small" style="width:180px;display: none;" v-model.trim="Addform.customerName" placeholder="不能超过8位数" maxlength="8"></el-input>
                         </el-form-item>
                       </el-col>

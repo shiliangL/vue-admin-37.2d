@@ -8,10 +8,9 @@
         <div class="header-bar" slot="title">
            <div class="left"> {{currentTitle}} </div>
            <div class="right">
-						 <!-- v-if="form.status===0" -->
-              <template>
-                <el-button type="text" size="mini" @click.stop="clickToPass(0)">拒绝</el-button>
-                <el-button type="text" size="mini" @click.stop="clickToPass(1)">同意</el-button>
+              <template v-if="form.status===0">
+                <el-button type="text" size="mini" @click.stop="clickToPass(1)">拒绝</el-button>
+                <el-button type="text" size="mini" @click.stop="clickToPass(0)">同意</el-button>
               </template>
               <el-button type="text" size="mini" @click.stop="dialog.visiable = false">返回</el-button>
             </div>
@@ -177,22 +176,16 @@
 
 						<div class="row-item">
 							<div class="row-title">收货信息</div>
-							<div class="row-content">
+							<div class="row-content" style="padding:20px">
 								<el-row>
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="收货人:" >
-										<span v-cloak>{{form.contacts}}</span>
-									</el-form-item>
+								<el-col :span="8">
+										收货人: <span v-cloak>{{form.contacts}}</span>
 								</el-col>
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="手机号:" >
-										<span v-cloak>{{form.phone}}</span>
-									</el-form-item>
+								<el-col :span="8">
+										手机号: <span v-cloak>{{form.phone}}</span>
 								</el-col>
-								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="收货地址:" >
-										<span v-cloak>{{form.address}}</span>
-									</el-form-item>
+								<el-col :span="8">
+										收货地址: <span v-cloak>{{form.address}}</span>
 								</el-col>
 								</el-row>
 							</div>
@@ -202,8 +195,12 @@
 							<div class="row-title">商品信息</div>
 							<div class="row-content">
 								<el-table :data="form.table" size="small" style="width: 100%;" highlight-current-row>
-									<el-table-column prop="orderNo" label="商品图片" align="center"></el-table-column>
-									<el-table-column prop="stockInfoName" label="商品名称" align="center"></el-table-column>
+									<el-table-column prop="goodsImage" label="商品图片" align="center">
+										<template slot-scope="scope">
+											<div class="picBox"> <img :src="`${scope.row.goodsImage}`"> </div>
+										</template>
+									</el-table-column>
+									<el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
 									<el-table-column prop="skuName" label="规格" align="center"></el-table-column>
 									<el-table-column prop="price" label="价格" align="center"></el-table-column>
 									<el-table-column prop="orderQuantity" label="下单数量" align="center"></el-table-column>
@@ -225,7 +222,7 @@
 
 <script>
 import addModel from '@/public/addModel.js'
-import { orderDetail } from '@/api/returnChange.js'
+import { orderDetail, orderDetailUpdatePass } from '@/api/returnChange.js'
 
 export default {
   mixins: [addModel],
@@ -237,6 +234,8 @@ export default {
       form: {
         'id': null,
         'orderId': null,
+        'description': null,
+        'productName': null,
         'orderNo': null,
         'orderDate': null,
         'customerId': null,
@@ -299,25 +298,57 @@ export default {
         this.form = Object.assign(this.form, data)
         this.form.table = [{
           'goodsImage': this.form.goodsImage,
+          'productName': this.form.productName,
           'skuName': this.form.skuName,
           'price': this.form.price,
           'orderQuantity': this.form.orderQuantity,
           'orderQuantityPrice': this.form.orderQuantityPrice,
-          'amountNumber': this.form.amountNumber
+          'amountNumber': this.form.amountNumber,
+          'description': this.form.description
         }]
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
     },
     clickToPass(type) {
-      const title = type === 1 ? '是否确定同意申请？' : '是否确定拒绝申请？'
+      const title = type === 0 ? '是否确定同意申请？' : '是否确定拒绝申请？'
       this.$confirm(title, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-
+        if (!this.form.id) return
+        const data = {
+          'description': null,
+          'id': this.form.id,
+          'passFlag': type // 是否同意 0 代表同意 1 代表拒绝
+        }
+        orderDetailUpdatePass(data).then(res => {
+          this.$message({ type: 'success', message: res.msg })
+          this.dialog.visiable = false
+          this.$emit('add')
+        }).catch(e => {
+          this.$message({ type: 'error', message: '更新失败' })
+        })
       }).catch(() => {})
+
+      // this.$prompt('', title, {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消'
+      // }).then(({ value }) => {
+      //   const data = {
+      //     'description': value,
+      //     'id': this.form.id,
+      //     'passFlag': type // 是否同意 0 代表同意 1 代表拒绝
+      //   }
+      //   orderDetailUpdatePass(data).then(res => {
+      //     this.$message({ type: 'success', message: res.msg })
+      //     this.dialog.visiable = false
+      //     this.$emit('add')
+      //   }).catch(e => {
+      //     this.$message({ type: 'error', message: '更新失败' })
+      //   })
+      // }).catch(() => {})
     }
   }
 }
@@ -352,4 +383,16 @@ export default {
 .el-form-item{
 	margin-bottom: 0px;
 }
+
+.picBox{
+	width: 120px;
+	height: 40px;
+	text-align: center;
+	display: inline-block;
+	overflow: hidden;
+	img{
+		height: 100%;
+	}
+}
+
 </style>

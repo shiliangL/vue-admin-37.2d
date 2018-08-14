@@ -5,7 +5,7 @@
 			<el-col :span="6">
 				<div class="mc-left">
 					<div class="searchTree">
-						<el-input style="width:180px" v-model.trim="searchTree" size="small" placeholder="输入商品名称检索"></el-input>
+						<el-input style="width:180px" v-model.trim="searchTree" size="small" placeholder="输入商品分类检索"></el-input>
 						<el-button size="small" @click="searchTree=null"> 重置 </el-button>
 					</div>
 					<el-tree ref="tree"

@@ -156,7 +156,18 @@ export default {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'follow', obj: row }})
     },
     refrehList() {
-
+      const { index, size } = this.pagination
+      const data = {
+        index,
+        size,
+        method: this.curIndex
+      }
+      orderList(data).then(({ data }) => {
+        this.table.data = data.rows
+        this.pagination.total = data.total
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
     },
     tabsCallBack(item) {
       this.curIndex = item.value
@@ -166,7 +177,7 @@ export default {
       this.fecthList()
     },
     exportFile(params) {
-      let url = 'scmsaleRreturnsgoods/exportFile?'
+      let url = 'cmm/scmsaleRreturnsgoods/exportFile?'
       const data = {
         method: this.curIndex,
         ...params

@@ -74,7 +74,7 @@ module.exports = {
      * Source Maps
      */
 
-    productionSourceMap: true,
+    productionSourceMap: false, // false 不开启调试，build不会生成map调试文件。默认true，开启
     // https://webpack.js.org/configuration/devtool/#production
     devtool: '#source-map',
 

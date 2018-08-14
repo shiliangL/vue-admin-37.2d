@@ -262,7 +262,8 @@ export default {
     },
     exportFile() {
       this.exportLoading = true
-      let url = 'productInfo/exportFile?'
+      if (!this.exportLoading) return
+      let url = 'cmm/productInfo/exportFile?'
       if (this.levelFecond) {
         this.searchParams.categoryId = this.levelFecond
       } else {

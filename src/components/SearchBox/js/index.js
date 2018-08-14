@@ -44,6 +44,9 @@ export default {
           if (this.keyName) {
             data[this.keyName] = this.name
           }
+          if (this.isCustomer) {
+            data.status = 3
+          }
           fetchBase(this.url, data).then(({ data }) => {
             this.loading = false
             this.progress = false
