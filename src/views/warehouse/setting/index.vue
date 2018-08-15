@@ -24,7 +24,7 @@
 					<el-table-column prop="staffName" label="仓管员" align="center"></el-table-column>
 					<el-table-column prop="createdTime" label="创建时间" align="center" width="90"></el-table-column>
 					<el-table-column prop="createdName" label="创建人" align="center"></el-table-column>
-					<el-table-column prop="updatedTime" label="最近修改时间" align="center"></el-table-column>
+					<el-table-column prop="updatedTime" label="修改时间" align="center" width="90"></el-table-column>
 					<el-table-column prop="updatedName" label="修改人" align="center"></el-table-column>
 					<el-table-column label="操作" align="center" width="180">
 						<template slot-scope="scope" align="center">

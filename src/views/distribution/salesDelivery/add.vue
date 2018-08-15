@@ -440,12 +440,14 @@ export default {
           }
         }
         if (Array.isArray(data.driverList)) {
-          const regionStr = []
           for (const item of data.driverList) {
+            const regionStr = []
             item.table = []
             if (Array.isArray(item.region)) {
               for (const key of item.region) {
-                regionStr.push(` ${key.regionName}`)
+                if (key.regionName) {
+                  regionStr.push(`${key.regionName}`)
+                }
               }
             }
             item.regionStr = regionStr.toString()

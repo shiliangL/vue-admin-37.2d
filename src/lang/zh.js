@@ -61,6 +61,8 @@ export default {
 
     activities: '特价推荐',
     banner: 'banner设置',
+    feedback: '问题反馈',
+
     kFservice: '客服人员',
     operating: '运营人员',
 

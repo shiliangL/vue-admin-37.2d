@@ -51,14 +51,13 @@
 	              <span>{{scope.$index + 1}}</span>
 							</template>
             </el-table-column>
- 
               <el-table-column prop="title" label="商品名称" align="center"></el-table-column>
               <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
               <el-table-column prop="storageType" label="仓库类别" align="center"></el-table-column>
               <el-table-column prop="stockInfoName" label="仓库名称" align="center"></el-table-column>
               <!-- <el-table-column prop="createdName" label="出库明细" align="center"></el-table-column> -->
               <el-table-column prop="stockQuantity" label="实际库存" align="center"></el-table-column>
-              <el-table-column prop="availableQuantity" label="可以库存" align="center"></el-table-column>
+              <el-table-column prop="availableQuantity" label="可用库存" align="center"></el-table-column>
               <el-table-column prop="safeStock" label="安全上限" align="center"></el-table-column>
               <el-table-column prop="safeStockFloor" label="安全下限" align="center"></el-table-column>
               <el-table-column label="操作" align="center" width="180">
@@ -86,7 +85,7 @@
     <!-- 弹层区域 -->
     <el-dialog title="库存上下限设置" class="dialogTitle" width="400px" :visible.sync="dialogVisible" append-to-body center @close="resetForm">
       <div v-if="dialogVisible">
-        <el-form :model="form" ref="form" :rules="rules">
+        <el-form :model="form" ref="form" :rules="rules" :inline="true" style="text-align: center;">
           <el-form-item label="商品名称:" label-width="100px">
             <el-input readonly size="small" style="width:180px" v-model.trim="form.title" ></el-input>
           </el-form-item>

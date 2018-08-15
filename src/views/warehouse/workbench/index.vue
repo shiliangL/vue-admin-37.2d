@@ -6,13 +6,11 @@
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight" :key="curIndex">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
-
           <el-table-column label="序号" width="50" align="center">
             <template slot-scope="scope">
               <span>{{scope.$index + 1}}</span>
             </template>
           </el-table-column>
- 
 					<el-table-column prop="title" label="工作台名称" align="center"></el-table-column>
 					<el-table-column prop="tableNo" label="工作台编号" align="center"></el-table-column>
 					<el-table-column prop="electronicScale" label="外接设备名(电子秤)" align="center"></el-table-column>
@@ -20,11 +18,14 @@
 					<el-table-column prop="barcodeScanner" label="外接设备名(扫码枪)" align="center"></el-table-column>
 					<el-table-column prop="stockName" label="仓库" align="center"></el-table-column>
 					<el-table-column prop="updatedTime" label="修改时间" align="center"></el-table-column>
- 
-          <el-table-column label="操作" align="center" width="180">
+          <el-table-column label="操作" align="center" width="290">
             <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">编辑</el-button>
 							<el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index,scope.row)">删除</el-button>
+              <!-- <el-popover placement="top-start" width="200" trigger="hover" :content="scope.row.workbenchUrl">
+                <el-button type="text" size="mini" slot="reference"> 复制工作台登录网址 </el-button>
+              </el-popover> -->
+              <el-button type="text" size="mini" @click.stop="clickToCopy(scope.$index,scope.row)">复制工作台登录网址</el-button>
             </template>
           </el-table-column>
 
@@ -86,7 +87,7 @@ import model from '@/public/listModel.js'
 import rules from '@/public/rules.js'
 import { Tabs, CascaderBox, SearchBar } from '@/components/base.js'
 import { fecthList, fecthStockList, create, deleteRow, detailRow, updateRow } from '@/api/warehouse/workbench.js'
-
+const baseUrl = 'http://0.0.0.0:8090/#/login?'
 export default {
   name: 'workbench',
   mixins: [model, rules],
@@ -159,28 +160,29 @@ export default {
         size,
         type: this.curIndex
       }
-      fecthList(data)
-        .then(({ data }) => {
+      fecthList(data).then(({ data }) => {
+        if (Array.isArray(data.rows)) {
+          for (const item of data.rows) {
+            item.workbenchUrl = `${baseUrl}type=${this.curIndex}&id=${item.id}&stockId=${item.stockId}`
+          }
           this.table.data = data.rows
-          this.pagination.total = data.total
-        })
-        .catch(e => {
-          this.$message({ type: 'error', message: e.msg })
-        })
+        }
+        this.pagination.total = data.total
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
     },
     fecthStockList() {
-      fecthStockList()
-        .then(({ data }) => {
-          for (const item of data) {
-            item.label = item.title
-            item.value = item.id
-          }
-          this.searchBarDate[0][0].options = data
-          this.stockOption = data
-        })
-        .catch(e => {
-          console.log(e)
-        })
+      fecthStockList().then(({ data }) => {
+        for (const item of data) {
+          item.label = item.title
+          item.value = item.id
+        }
+        this.searchBarDate[0][0].options = data
+        this.stockOption = data
+      }).catch(e => {
+        console.log(e)
+      })
     },
     searchAction(item) {
       if (!item) return
@@ -191,14 +193,17 @@ export default {
         type: this.curIndex,
         ...item
       }
-      fecthList(data)
-        .then(({ data }) => {
+      fecthList(data).then(({ data }) => {
+        if (Array.isArray(data.rows)) {
+          for (const item of data.rows) {
+            item.workbenchUrl = `${baseUrl}type=${this.curIndex}&id=${item.id}&stockId=${item.stockId}`
+          }
           this.table.data = data.rows
-          this.pagination.total = data.total
-        })
-        .catch(e => {
-          this.$message({ type: 'error', message: e.msg })
-        })
+        }
+        this.pagination.total = data.total
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
     },
     // 分页操作区域
     handleSizeChange(value) {
@@ -296,6 +301,16 @@ export default {
           return
         }
       })
+    },
+    clickToCopy(index, item) {
+      if (item && item.id) {
+        const url = `${baseUrl}type=${this.curIndex}&id=${item.id}&stockId=${item.stockId}`
+        this.$copyText(url).then(s => {
+          this.$message({ type: 'success', message: '复制到剪切板成功' })
+        }, e => {
+          this.$message({ type: 'error', message: '复制失败' })
+        })
+      }
     }
   }
 }

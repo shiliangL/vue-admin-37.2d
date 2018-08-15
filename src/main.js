@@ -3,7 +3,7 @@ import Element from 'element-ui'
 // import 'element-ui/lib/theme-chalk/index.css'
 import 'normalize.css/normalize.css'// CSS resets
 import VueLazyLoad from 'vue-lazyload'
-
+import VueClipboard from 'vue-clipboard2'
 import '@/styles/index.scss' // global css
 import '@/styles/element-cmm.scss' //
 
@@ -24,6 +24,7 @@ Vue.config.productionTip = false
 //   loading: './static/loading.png'
 // })
 Vue.use(VueLazyLoad)
+Vue.use(VueClipboard)
 
 Vue.use(Element, {
   size: 'medium', // set element-ui default size

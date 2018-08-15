@@ -84,8 +84,8 @@
               <span v-cloak v-if="scope.row.orderResource ===3"> 后台 </span>
             </template>
           </el-table-column>
-          <el-table-column prop="createdOn" label="创建时间" align="center"></el-table-column>
-          <el-table-column prop="aduitTime" label="审核时间" align="center"></el-table-column>
+          <el-table-column prop="createdOn" label="创建时间" width="90" align="center"></el-table-column>
+          <el-table-column prop="aduitTime" label="审核时间" width="90" align="center"></el-table-column>
           <el-table-column prop="aduitName" label="审核人" align="center"></el-table-column>
           <el-table-column prop="accountStatus" label="账号状态" align="center">
              <template slot-scope="scope" align="center">

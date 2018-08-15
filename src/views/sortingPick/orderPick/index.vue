@@ -7,13 +7,9 @@
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight" :key="curIndex">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
-
           <el-table-column label="序号" width="50" align="center">
-            <template slot-scope="scope">
-              <span>{{scope.$index + 1}}</span>
-            </template>
+            <template slot-scope="scope"> <span>{{scope.$index + 1}}</span> </template>
           </el-table-column>
-
  		      <el-table-column prop="orderNo" label="销售订单号" align="center"></el-table-column>
 					<el-table-column prop="customerName" label="客户名称" align="center"></el-table-column>
 					<el-table-column prop="distributionArea" label="配送区域" align="center"></el-table-column>
@@ -22,8 +18,7 @@
 					<el-table-column prop="packerName" label="打包员" align="center"></el-table-column>
 					<el-table-column prop="barCode" label="订单打包条码" align="center"></el-table-column>
 					<el-table-column prop="completionTime" label="订单打包完成时间" align="center"></el-table-column>
-					<el-table-column prop="createdTime" label="出库单创建时间" align="center"></el-table-column>
- 
+					<el-table-column prop="createdTime" label="出库单创建时间" align="center" width="90"></el-table-column>
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">详情</el-button>

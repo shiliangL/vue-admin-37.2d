@@ -20,6 +20,10 @@ module.exports = {
         changeOrigin: true,
       },
       // '/': {
+      //   target: 'http://10.1.1.131:9001/', // 王艳本机
+      //   changeOrigin: true,
+      // },
+      // '/': {
       //   target: 'http://cmm.ngrok.xiaomiqiu.cn/', // 本地主机
       //   changeOrigin: true,
       // },

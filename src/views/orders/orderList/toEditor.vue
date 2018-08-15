@@ -23,7 +23,7 @@
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="客户账户:">
-                      <span v-cloak>{{form.scmOrder.customerName}}</span>
+                      <span v-cloak>{{form.scmOrder.loginName}}</span>
 									</el-form-item>
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
@@ -416,7 +416,10 @@ export default {
       const productIds = this.form.saleDtails.map(item => {
         return item.productId
       })
-      if (productIds.indexOf(this.addGood.goodsDTO.id) !== -1) {
+      const skuNames = this.form.saleDtails.map(item => {
+        return item.skuId
+      })
+      if (productIds.indexOf(this.addGood.goodsDTO.id) !== -1 && skuNames.indexOf(this.addGood.sku) !== -1) {
         this.$message({ type: 'warning', message: '请勿重复添加' })
         return
       } else {

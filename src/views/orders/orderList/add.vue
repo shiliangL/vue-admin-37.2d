@@ -467,7 +467,10 @@ export default {
       const productIds = this.Addform.saleDtails.map(item => {
         return item.productId
       })
-      if (productIds.indexOf(this.addGood.goodsDTO.id) !== -1) {
+      const skuNames = this.Addform.saleDtails.map(item => {
+        return item.skuId
+      })
+      if (productIds.indexOf(this.addGood.goodsDTO.id) !== -1 && skuNames.indexOf(this.addGood.sku) !== -1) {
         this.$message({ type: 'warning', message: '请勿重复添加' })
         return
       } else {

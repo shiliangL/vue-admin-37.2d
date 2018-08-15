@@ -2,7 +2,7 @@
 <!-- 特惠推荐 -->
 <template>
     <div class="activities">
-			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"  @add="showAdd"></search-bar>
+			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"  @clickBtn="fecthList" @add="showAdd"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -71,7 +71,8 @@ export default {
           // { type: 'reset', name: '重置' }
         ],
         [
-          { type: 'add', name: '新增' }
+          { type: 'add', name: '新增' },
+          { type: 'button', name: '刷新' }
         ]
       ],
       dialogVisible: false,

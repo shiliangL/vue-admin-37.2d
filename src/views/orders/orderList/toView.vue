@@ -23,7 +23,7 @@
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="客户账户:" prop="categoryId">
-                      <span v-cloak>{{form.scmOrder.mobile}}</span>
+                      <span v-cloak>{{form.scmOrder.loginName}}</span>
 									</el-form-item>
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">

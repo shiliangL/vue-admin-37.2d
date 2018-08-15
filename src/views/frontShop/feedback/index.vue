@@ -1,40 +1,37 @@
-
-<!-- banner设置 -->
+<!--问题反馈 -->
 <template>
-    <div class="banner">
-			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"  @add="showAdd" @clickBtn="fecthList"></search-bar>
+    <div class="feedback">
+			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"  @add="showAdd"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
+
           <el-table-column label="序号" width="50" align="center">
             <template slot-scope="scope">
               <span>{{scope.$index + 1}}</span>
             </template>
           </el-table-column>
- 					<el-table-column prop="url" label="图片" align="center">
-						<template slot-scope="scope">
-              <div class="picBox" v-if="scope.row.url"> <img :src="scope.row.url"> </div>
+ 					<el-table-column prop="customerAccount" label="客户账号" align="center"></el-table-column>
+					<el-table-column prop="customerName" label="客户名称" align="center"></el-table-column>
+					<el-table-column prop="contacts" label="联系人" align="center"></el-table-column>
+					<el-table-column prop="sourceType" label="反馈来源" align="center">
+             <template slot-scope="scope">
+               <span v-if="scope.row.sourceType===1" size="small">App</span>
+               <span v-if="scope.row.sourceType===2" size="small">微信公众号</span>
+               <span v-if="scope.row.sourceType===3" size="small">微信小程序</span>
             </template>
-					 </el-table-column>
-					<el-table-column prop="method" label="类型" align="center">
-						<template slot-scope="scope">
-              <span v-if="scope.row.method===1">banner</span>
-              <span v-if="scope.row.method===2">商品推荐</span>
-              <span v-if="scope.row.method===3">热门</span>
-						</template>
           </el-table-column>
-					<!-- <el-table-column prop="productName" label="链接对象" align="center"></el-table-column> -->
-					<el-table-column prop="updateTime" label="上次修改时间" align="center"></el-table-column>
-					<el-table-column prop="status" label="状态" align="center">
-						<template slot-scope="scope">
- 								<el-tag v-if="scope.row.status===1" size="small">启用</el-tag>
-               	<el-tag v-if="scope.row.status===0" size="small" type="danger"> 禁用 </el-tag>
+					<el-table-column prop="content" label="反馈内容" align="center" show-overflow-tooltip width="300"></el-table-column>
+					<el-table-column prop="createdTime" label="反馈时间" align="center"></el-table-column>
+					<el-table-column prop="whetherRead" label="状态" align="center">
+						 <template slot-scope="scope">
+               <el-tag type="info" v-if="scope.row.whetherRead===1" size="small">已读</el-tag>
+               <el-tag v-if="scope.row.whetherRead===0" size="small">未读</el-tag>
             </template>
 					</el-table-column>
           <el-table-column label="操作" align="center" width="140">
             <template slot-scope="scope" align="center">
-              <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">编辑</el-button>
-							<el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index,scope.row)">删除</el-button>
+              <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">查看</el-button>
             </template>
           </el-table-column>
 
@@ -65,10 +62,10 @@
 import model from '@/public/listModel.js'
 import Add from './add'
 import { SearchBar } from '@/components/base.js'
-import { fecthList, deleteRow } from '@/api/frontShop/banner.js'
+import { fetchList } from '@/api/frontShop/feedback.js'
 
 export default {
-  name: 'banner',
+  name: 'feedback',
   mixins: [model],
   components: {
     Add,
@@ -78,17 +75,18 @@ export default {
     return {
       searchBarDate: [
         [
-          // { type: 'option', value: null, key: 'status', class: 'w150', placeholder: '账号状态', options: [
-          //   { label: '启用', value: 1 },
-          //   { label: '禁用', value: 0 }
-          // ] },
-          // { type: 'input', value: null, key: 'name', class: 'w180', placeholder: '输入用户名称检索' },
-          // { type: 'search', name: '查询' },
-          // { type: 'reset', name: '重置' }
+          { type: 'date', value: null, key: 'createdTime', class: 'w180', placeholder: '反馈时间' },
+          { type: 'option', value: null, key: 'sourceType', class: 'w150', placeholder: '反馈来源', options: [
+            { label: 'App', value: 1 },
+            { label: '微信公众号', value: 2 },
+            { label: '微信小程序', value: 3 }
+          ] },
+          { type: 'input', value: null, key: 'inputContent', class: 'w180', placeholder: '输入用户名/客户账号称检索' },
+          { type: 'search', name: '查询' },
+          { type: 'reset', name: '重置' }
         ],
         [
-          { type: 'add', name: '新增' },
-          { type: 'button', name: '刷新' }
+          // { type: 'add', name: '新增' }
         ]
       ],
       dialogVisible: false,
@@ -107,10 +105,9 @@ export default {
       const { index, size } = this.pagination
       const data = {
         index,
-        size,
-        method: 1
+        size
       }
-      fecthList(data).then(({ data }) => {
+      fetchList(data).then(({ data }) => {
         if (Array.isArray(data.rows)) {
           this.table.data = data.rows
         }
@@ -124,10 +121,9 @@ export default {
       const data = {
         index,
         size,
-        method: 1,
         ...item
       }
-      fecthList(data).then(({ data }) => {
+      fetchList(data).then(({ data }) => {
         if (Array.isArray(data.rows)) {
           this.table.data = data.rows
         }
@@ -147,14 +143,14 @@ export default {
     },
     // 弹层操作
     clickToEditor(index, row) {
-      this.dialogTitle = 'banner设置'
+      this.dialogTitle = '反馈内容详情'
       this.propsParentData.type = 'isUpdate'
       this.dialogVisible = true
       this.propsParentData.isUpdate = true
       this.propsParentData.data = row
     },
     showAdd() {
-      this.dialogTitle = 'banner设置'
+      this.dialogTitle = '新增客户经理'
       this.propsParentData.type = 'add'
       this.propsParentData.isUpdate = false
       this.dialogVisible = true
@@ -163,42 +159,16 @@ export default {
       this.fecthList()
     },
     tabsCallBack(item) {
-      this.curIndex = item.value
       this.fecthList()
     },
     resetForm() {
       this.dialogVisible = false
-    },
-    clickToDelete(index, item) {
-      this.$confirm('是否确定删除?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        if (!item.id) return
-        deleteRow({ id: item.id }).then(res => {
-          if (res.code === '0') {
-            this.fecthList()
-            this.$message({ type: 'success', message: '删除成功' })
-          }
-        }).catch((e) => {
-          this.$message({ type: 'error', message: e.msg })
-        })
-      }).catch(() => {})
+      this.fecthList()
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
-   .picBox{
-    width: 120px;
-    height: 40px;
-    text-align: center;
-    display: inline-block;
-    overflow: hidden;
-    img{
-      height: 100%;
-    }
-  }
+ 
 </style>

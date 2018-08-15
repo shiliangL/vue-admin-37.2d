@@ -36,7 +36,7 @@
               <el-button size="small" @click="clickAdd">{{item.name}}</el-button>
             </template>
             <template v-if="item.type === 'button'">
-              <el-button size="small" @click="clickBtn(item)">{{item.name}}</el-button>
+              <el-button type="primary" size="small" @click="clickBtn(item)">{{item.name}}</el-button>
             </template>
             <template v-else-if="item.type === 'more'">
               <el-dropdown trigger="click" @command="clickCommand">

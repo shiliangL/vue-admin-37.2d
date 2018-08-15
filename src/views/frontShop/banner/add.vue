@@ -9,6 +9,7 @@
 							:show-file-list="false"
 							:data="uploadDatas"
 							:on-success="handleAvatarSuccess"
+							:on-error="handleError"
 							:before-upload="beforeAvatarUpload"
 						  :accept="accept">
 							<div class="avatar" v-if="form.url" :src="form.url">
@@ -16,6 +17,7 @@
 							</div>
 							<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 						</el-upload>
+            注:图片格式为JPEG、PNG；不大于1MB；尺寸为750*320像素
 					</el-form-item>
 					<!-- <el-form-item label="链接方式:" label-width="100px">
 						<el-select size="small" v-model="form.type" filterable placeholder="选择仓库">
@@ -121,8 +123,13 @@ export default {
         this.$message({ type: 'error', message: '上传失败' })
       }
     },
-    beforeAvatarUpload() {
-
+    handleError(e) {
+      this.$message({ type: 'error', message: '图片上传失败' })
+    },
+    beforeAvatarUpload(file) {
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isLt2M) this.$message.error('上传图片大小不能超过 2MB!')
+      return isLt2M
     },
     clickSaveOrUpdate(formName) {
       this.$refs[formName].validate(valid => {

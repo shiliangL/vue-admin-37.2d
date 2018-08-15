@@ -13,10 +13,10 @@
               <span>{{scope.$index + 1}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="code" label="销售退货单号" width="170" align="center"></el-table-column>
-          <el-table-column prop="createdTime" label="申请退货时间" width="170" align="center"></el-table-column>
-          <el-table-column prop="orderCode" label="销售订单编号" width="170" align="center"></el-table-column>
-          <el-table-column prop="orderdTime" label="下单时间" align="center"></el-table-column>
+          <el-table-column prop="code" label="销售退货单号" align="center"></el-table-column>
+          <el-table-column prop="createdTime" label="申请退货时间" align="center"></el-table-column>
+          <el-table-column prop="orderCode" label="销售订单编号" align="center"></el-table-column>
+          <el-table-column prop="orderdTime" label="下单时间" width="90" align="center"></el-table-column>
           <el-table-column prop="customerName" label="客户名称" align="center"></el-table-column>
           <el-table-column prop="sum" label="退货金额" align="center"></el-table-column>
           <el-table-column prop="status" label="处理状态" align="center">
@@ -28,7 +28,7 @@
               <span v-if="scope.row.status ===3">已拒绝</span>
             </template>
           </el-table-column>
-          <el-table-column prop="dealTime" label="审核时间" align="center"></el-table-column>
+          <el-table-column prop="dealTime" label="审核时间" width="90" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">查看</el-button>

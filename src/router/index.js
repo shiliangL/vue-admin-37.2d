@@ -59,7 +59,8 @@ export const constantRouterMap = [
       icon: 'component'
     },
     children: [
-      { path: 'banner', component: _import('frontShop/banner/index'), name: 'banner', meta: { title: 'banner', noCache: true }}
+      { path: 'banner', component: _import('frontShop/banner/index'), name: 'banner', meta: { title: 'banner', noCache: true }},
+      { path: 'feedback', component: _import('frontShop/feedback/index'), name: 'feedback', meta: { title: 'feedback', noCache: true }}
     ]
   },
   {
@@ -101,7 +102,7 @@ export const constantRouterMap = [
       { path: 'buyOrders', component: _import('buy/buyOrders/index'), name: 'buyOrders', meta: { title: 'buyOrders', noCache: true }},
       { path: 'buyReturn', component: _import('buy/buyReturn/index'), name: 'buyReturn', meta: { title: 'buyReturn', noCache: true }},
       { path: 'buyer', component: _import('buy/buyer/index'), name: 'buyer', meta: { title: 'buyer', noCache: true }},
-      { path: 'supplier', component: _import('buy/supplier/index'), name: 'supplier', meta: { title: 'supplier', noCache: true }}
+      { path: 'supplier', component: _import('buy/supplier/index'), name: 'supplier', hidden: true, meta: { title: 'supplier', noCache: true }}
     ]
   },
   {
