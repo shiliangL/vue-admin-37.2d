@@ -58,9 +58,9 @@
                           	<el-date-picker :style="{width:'180px'}" size="small" 
                               v-model="Addform.shopTime.sendDate" 
                               value-format="yyyy-MM-dd" type="date" 
-                              :picker-options="pickerOptions"
                               placeholder="要求送达日期"></el-date-picker>
                         </el-form-item>
+                              <!-- :picker-options="pickerOptions" -->
                       </el-col>
                       <el-col :xs="24" :sm="10" :md="8" :lg="6">
                           <div style="width:410px">

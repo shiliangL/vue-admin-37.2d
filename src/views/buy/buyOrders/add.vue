@@ -86,7 +86,7 @@
                     <el-table-column prop="realQuantity" label="实际采购量" align="center"></el-table-column>
                     <el-table-column prop="deliveryTime" label="收货时间" align="center"></el-table-column>
                     <el-table-column prop="weighQuantity" label="收货称重量" align="center"></el-table-column>
-                    <el-table-column prop="receivedStaffName" label="收货人" align="center"></el-table-column>
+                    <!-- <el-table-column prop="receivedStaffName" label="收货人" align="center"></el-table-column> -->
                     <el-table-column prop="receivedQuantity" label="验收接收量" align="center"></el-table-column>
                     <el-table-column prop="iqcStaffName" label="验货人" align="center"></el-table-column>
                     <el-table-column prop="purchasePrice" label="实际采购单价" align="center"></el-table-column>

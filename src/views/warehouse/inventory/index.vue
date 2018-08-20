@@ -36,7 +36,7 @@
 							</el-select>
 						</div>
             <div class="left">
-				      <el-input size="small" style="width:180px"  v-model.trim="searchBarDate.title" placeholder="输入商品名称"></el-input>
+				      <el-input size="small" style="width:180px"  v-model.trim="searchBarDate.title" @keyup.enter.native="fecthTableList" placeholder="输入商品名称"></el-input>
             </div>
 						<div class="left">
           		<el-button type="primary" size="small" @click="fecthTableList"> 搜索 </el-button>

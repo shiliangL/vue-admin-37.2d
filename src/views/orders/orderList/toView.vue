@@ -185,8 +185,10 @@
 
 							<el-table-column prop="exchanage" label="退/换货状态" align="center">
 								<template slot-scope="scope">
-									<span v-cloak v-if="form.scmOrder.exchanage ===0">退货</span>
-									<span v-cloak v-if="form.scmOrder.exchanage ===1">换货 </span>
+									<span v-cloak v-if="scope.row.exchanage ===0">待审核</span>
+									<span v-cloak v-if="scope.row.exchanage ===1">进行中 </span>
+									<span v-cloak v-if="scope.row.exchanage ===2">已完成 </span>
+									<span v-cloak v-if="scope.row.exchanage ===3">已拒绝 </span>
 								</template>
 							</el-table-column>
 							 

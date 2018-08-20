@@ -49,7 +49,7 @@
       <!-- 弹层区域 -->
       <el-dialog :title="dialogTitle" class="dialogTitle" width="450px" :visible.sync="dialogVisible" append-to-body center @close="resetForm">
         <div v-if="dialogVisible">
-          <el-form :model="form" ref="form" :rules="rules">
+          <el-form :model="form" ref="form" :rules="rules" :inline="true">
             <el-form-item label="工作台类型:" label-width="100px">
               <span v-if="curIndex===1"> 验收台 </span>
               <span v-if="curIndex===2"> 入库台 </span>
@@ -217,6 +217,7 @@ export default {
     // 弹层操作
     clickToEditor(index, row) {
       this.isUpdate = true
+      this.dialogTitle = '编辑工作台管理 '
       detailRow({ id: row.id }).then(({ data }) => {
         this.dialogVisible = true
         this.form = Object.assign(this.form, data)
@@ -225,6 +226,7 @@ export default {
       })
     },
     showAdd() {
+      this.dialogTitle = '新增工作台管理 '
       this.isUpdate = false
       this.dialogVisible = true
     },

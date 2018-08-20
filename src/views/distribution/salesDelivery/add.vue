@@ -145,9 +145,7 @@
                         </template>
                       </el-table-column>
                       <el-table-column prop="title" label="商品图片" align="center">
-                        <template slot-scope="scope">
-                          <div class="picBox"><img :src="`${scope.row.goodsImage}`"></div>
-                        </template>
+                        <template slot-scope="scope"> <div class="picBox"><img :src="`${scope.row.goodsImage}`"></div> </template>
                       </el-table-column>
                       <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
                       <el-table-column prop="skuName" label="规格" align="center"></el-table-column>
@@ -157,9 +155,11 @@
                       <el-table-column prop="finalQuantity" label="分拣量(斤)" align="center"></el-table-column>
                       <el-table-column prop="sumPrice" label="实际金额" align="center"></el-table-column>
                       <el-table-column  label="退/换货状态" align="center">
-                       <template slot-scope="scope">
-                          <span v-if="scope.row.exchanage===0"> 退货 </span>
-                          <span v-if="scope.row.exchanage===1"> 换货 </span>
+                        <template slot-scope="scope">
+                          <span v-cloak v-if="scope.row.exchanage ===0">待审核</span>
+                          <span v-cloak v-if="scope.row.exchanage ===1">进行中 </span>
+                          <span v-cloak v-if="scope.row.exchanage ===2">已完成 </span>
+                          <span v-cloak v-if="scope.row.exchanage ===3">已拒绝 </span>
                         </template>
                       </el-table-column>
                     </el-table>
@@ -203,7 +203,6 @@
                     <div class="table">
                       <el-table :data="tableData_L" size="small" max-height="300"  style="width: 100%;" highlight-current-row
                         @selection-change="handleTable_L_Change">
-
                        <el-table-column type="selection" width="40"> </el-table-column>
                         <el-table-column label="序号" width="50" align="center">
                           <template slot-scope="scope">

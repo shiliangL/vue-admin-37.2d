@@ -68,7 +68,7 @@ export default {
   },
   data() {
     return {
-      curIndex: 0,
+      curIndex: 1,
       tabTitles: [
         { title: '销售退货', value: 1 },
         { title: '销售换货', value: 2 }

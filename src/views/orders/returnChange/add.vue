@@ -47,6 +47,7 @@
 													<span v-cloak v-if="form.orderSource ===0">App</span>
 													<span v-cloak v-if="form.orderSource ===1">微信公众号</span>
 													<span v-cloak v-if="form.orderSource ===2">微信小程序</span>
+													<span v-cloak v-if="form.orderSource ===3">后台</span>
 											</el-form-item>
 										</el-col>
 										<el-col :xs="24" :sm="10" :md="8" :lg="6">
@@ -207,7 +208,7 @@
 									<el-table-column prop="orderQuantityPrice" label="下单金额" align="center"></el-table-column>
 									<el-table-column prop="amountNumber" label="实际数量" align="center"></el-table-column>
 									<el-table-column prop="amountPrice" label="实际金额" align="center"></el-table-column>
-									<el-table-column prop="createdTime" label="退货原因" align="center"></el-table-column>
+									<el-table-column prop="reason" label="退货原因" align="center"></el-table-column>
 				        </el-table>
 							</div>
 						</div>
@@ -233,6 +234,8 @@ export default {
       currentTitle: null,
       form: {
         'id': null,
+        'status': null,
+        'reason': null,
         'orderId': null,
         'description': null,
         'productName': null,
@@ -304,6 +307,7 @@ export default {
           'orderQuantity': this.form.orderQuantity,
           'orderQuantityPrice': this.form.orderQuantityPrice,
           'amountNumber': this.form.amountNumber,
+          'reason': this.form.reason,
           'description': this.form.description
         }]
       }).catch(e => {

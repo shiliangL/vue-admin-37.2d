@@ -78,9 +78,9 @@ export default {
   },
   data() {
     return {
-      curIndex: 0,
+      curIndex: null,
       tabTitles: [
-        { title: '全部', value: '' },
+        { title: '全部', value: null },
         { title: '待付款', value: 6 },
         { title: '待发货', value: 0 },
         { title: '待收货', value: 1 },
@@ -89,6 +89,7 @@ export default {
         { title: '已取消', value: 4 },
         { title: '已关闭', value: 5 }
       ],
+      // 状态 0代表待发货 1 代表待收货状态 2 代表退换货状态 3 代表已完成 4代表已取消 5代表已关闭 6 代表待付款
       searchBarData: [
         [
           // 0 代表app 1 微信公众号 2 微信小程序
@@ -153,13 +154,19 @@ export default {
   },
   methods: {
     searchAction(params) {
-      this.paramsData = {
-        orderNoOrName: params.orderNoOrName,
-        orderTime: params.orderTime,
-        paymentType: params.paymentType,
-        orderSource: params.orderSource
+      const { index, size } = this.pagination
+      const data = {
+        index,
+        size,
+        ...params,
+        status: this.curIndex
       }
-      this.fecthList()
+      orderList(data).then(({ data }) => {
+        this.table.data = data.rows
+        this.pagination.total = data.total
+      }).catch(e => {
+        this.$message({ type: 'error', message: e, duration: 0, showClose: true })
+      })
     },
     clickMoreCommand(command) {
       this.$message({ type: 'success', message: command, duration: 0, showClose: true })
@@ -170,8 +177,7 @@ export default {
       const data = {
         index,
         size,
-        status: this.curIndex,
-        ...this.paramsData
+        status: this.curIndex
       }
       orderList(data).then(({ data }) => {
         this.table.data = data.rows
@@ -209,7 +215,6 @@ export default {
       })
     },
     resetSearchBar() {
-      this.curIndex = 0
       this.fecthList()
     },
     exportFile() {

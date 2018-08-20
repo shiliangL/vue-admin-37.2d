@@ -80,7 +80,8 @@ const user = {
           const data = response.data
           // commit('SET_ROLES', data.roles)
           commit('SET_ROLES', ['admin'])
-          commit('SET_NAME', data.loginName)
+          // commit('SET_NAME', data.loginName)
+          commit('SET_NAME', data.staffName)
           commit('SET_AVATAR', data.staffId)
           commit('SET_INTRODUCTION', data.departmentNames)
           resolve(response)

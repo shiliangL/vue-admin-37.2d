@@ -91,7 +91,7 @@ export default {
           { type: 'reset', name: '重置' }
         ],
         [
-          { type: 'add', name: '新增' }
+          { type: 'add', name: '新增入库单' }
         ]
       ]
     }

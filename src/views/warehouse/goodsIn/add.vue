@@ -21,11 +21,15 @@
             <template v-if="this.data.type === 'add'">
 
               <div class="search">
-                  <el-cascader style="320px" v-model="stockDto" size="small"  placeholder="请选择仓库"  filterable :options="options.stock" @active-item-change="handleItemChange" :props="propType" @change="stockChange"></el-cascader>
+
+                  <el-select size="small" v-model="stockId" filterable placeholder="选择仓库">
+                    <el-option v-for="sub in options.stockOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
+                  </el-select>
+
                   <el-select v-model="storageType" placeholder="请选择类型" size="small" style="width:120px" filterable  @change="stockChange">
                     <el-option v-for="item in options.storageType" :key="item.value" :label="item.label" :value="item.value"> </el-option> 
                   </el-select>
-                  <el-button  type="primary" size="small" @click.stop="fecthList" > 搜索 </el-button>
+                  <el-button  type="primary" size="small" @click.stop="fecthList" > 加载数据 </el-button>
               </div>
               <div class="table">
 
@@ -48,7 +52,7 @@
                       <template slot-scope="scope">
                         <div class="item-box">
                           <span v-for="item in scope.row.storageIdsOption" :key="item.pk">
-                          <el-checkbox v-model="item.isCheck" :label="item.number"></el-checkbox>
+                            <el-checkbox class="item-checkbox" v-model="item.isCheck" :label="item.number"></el-checkbox>
                           </span>
                         </div>
                       </template>
@@ -170,19 +174,15 @@
 
 <script>
 import addModel from '@/public/addModel.js'
-import { findMore, createRk, detailRk, fecthBodyDetail, returnChangeList } from '@/api/warehouse/goodsIn.js'
-import {
-  stockCategory,
-  fecthStockByType,
-  fecthAllCW
-} from '@/api/warehouse/setting.js'
+import { findMore, createRk, detailRk, fecthBodyDetail, returnChangeList, fecthStockList } from '@/api/warehouse/goodsIn.js'
+import { fecthAllCW } from '@/api/warehouse/setting.js'
 
 export default {
   mixins: [addModel],
   data() {
     return {
       dialogVisible: false,
-      stockDto: [],
+      stockId: null,
       propType: {
         value: 'value',
         label: 'label',
@@ -207,6 +207,7 @@ export default {
       isShowView: false,
       currentTitle: null,
       options: {
+        stockOption: [],
         stock: [],
         storageType: [
           { label: '采购入库', value: 1 },
@@ -227,7 +228,7 @@ export default {
       this.fecthDetailById()
       this.fecthBodyDetail()
     } else if (this.data.type === 'add') {
-      this.stockCategory()
+      this.fecthStockList()
       this.fecthAllCW()
     }
   },
@@ -257,61 +258,25 @@ export default {
         console.log(e)
       })
     },
-    // 加载仓库类别
-    stockCategory() {
-      stockCategory().then(({ data }) => {
-        if (Array.isArray(data) && data.length > 0) {
-          const arr = []
+    fecthStockList() {
+      fecthStockList().then(({ data }) => {
+        if (Array.isArray(data)) {
           for (const item of data) {
-            arr.push({
-              value: item.pk,
-              label: item.title,
-              children: []
-            })
+            item.label = item.title
+            item.value = item.id
           }
-          this.options.stock = arr
+          this.options.stockOption = data
+          if (data.length > 0) {
+            this.storageType = 1
+            this.stockId = data[0].id
+          }
         }
       }).catch(e => {
-        // this.loadingText = e.msg
+        console.log(e)
       })
     },
-    handleItemChange(value) {
-      const arr = this.options.stock
-      let item = null
-      for (let i = 0; i < arr.length; i++) {
-        const element = arr[i]
-        if (element.value === value[0]) {
-          item = element
-          break
-        }
-      }
-      if (!item) return
-      if (this.timer) {
-        clearTimeout(this.timer)
-      }
-      this.timer = setTimeout(() => {
-        if (item && item.value) {
-          fecthStockByType({ categoryId: item.value })
-            .then(({ data }) => {
-              if (Array.isArray(data) && data.length > 0) {
-                const arr = []
-                for (const item of data) {
-                  arr.push({
-                    value: item.pk,
-                    label: item.title
-                  })
-                }
-                item.children = arr
-              }
-            })
-            .catch(e => {
-              console.log(e)
-            })
-        }
-      }, 400)
-    },
     fecthList() {
-      if (!this.stockDto[1]) {
+      if (!this.stockId) {
         this.$message({ type: 'warning', message: '请选仓库' })
         return
       }
@@ -321,13 +286,11 @@ export default {
       }
       if (this.storageType === 1) {
         // 选中采购入库
-        findMore({ stockId: this.stockDto[1] }).then(({ data }) => {
+        findMore({ stockId: this.stockId }).then(({ data }) => {
           if (!this.cwOption) return
           for (const item of data) {
-            if (this.cwOption[item.stockId]) {
-              item.storageIdsOption = JSON.parse(
-                JSON.stringify(this.cwOption[item.stockId])
-              )
+            if (this.cwOption && this.cwOption[item.stockId]) {
+              item.storageIdsOption = JSON.parse(JSON.stringify(this.cwOption[item.stockId]))
             } else {
               item.storageIdsOption = []
             }
@@ -421,21 +384,22 @@ export default {
         }
         item.storageIds = isCheckArr.toString()
         delete item.storageIdsOption
+        if (item.hasOwnProperty('rate')) {
+          delete item.rate
+        }
       }
       const data = {
         storageType: this.storageType,
-        stockId: this.stockDto[1],
+        stockId: this.stockId,
         stockInDetailList: arr
       }
-      createRk(data)
-        .then(res => {
-          this.dialog.visiable = false
-          this.$message({ type: 'success', message: res.msg })
-          this.$emit('add')
-        })
-        .catch(e => {
-          this.error(e)
-        })
+      createRk(data).then(res => {
+        this.dialog.visiable = false
+        this.$message({ type: 'success', message: res.msg })
+        this.$emit('add')
+      }).catch(e => {
+        this.error(e)
+      })
     },
     stockChange(value) {
       this.form.stockInDetailList = []
@@ -509,5 +473,8 @@ export default {
     .el-form-item {
         margin-bottom: 0;
     }
+}
+.item-checkbox{
+  padding-right: 10px;
 }
 </style>

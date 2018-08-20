@@ -178,7 +178,7 @@
 
           <div class="row-item">
             <div class="row-title">
-              图文详情描述 <el-button type="text" size="small" @click.stop="upDetails"> 点击上传 </el-button> <span class="desc">大小≤2MB，支持JPG、PNG、JPEG,最多支持15张图片</span>
+              图文详情描述 <el-button type="text" size="small" @click.stop="upDetails"> 点击上传 </el-button> <span class="desc">大小≤2MB，支持JPG、PNG、JPEG,最多支持15张图片,图片宽度480 ~ 620像素、高度小于等于960像素的图片</span>
               <!-- <el-popover placement="right" width="600" trigger="click">  
                 <div class="desc">
                   一、基本要求

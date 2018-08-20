@@ -76,14 +76,8 @@ export default {
       tabTitles: [],
       searchBarDate: [
         [
-          {
-            type: 'date',
-            value: null,
-            key: 'createdTime',
-            width: '200px',
-            placeholder: '创建日期'
-          },
-          { type: 'option', value: null, key: 'stockId', class: 'w150', placeholder: '配送区域', options: [] },
+          { type: 'date', value: null, key: 'createOn', width: '200px', placeholder: '配送创建日期' },
+          { type: 'option', value: null, key: 'regionId', class: 'w150', placeholder: '配送区域', options: [] },
           { type: 'option', value: null, key: 'driverName', class: 'w150', placeholder: '配送员', options: [] },
           { type: 'option', value: null, key: 'status', class: 'w150', placeholder: '配送状态', options: [
             { label: '待配送', value: 0 },
@@ -93,7 +87,7 @@ export default {
             { label: '已完成', value: 4 }
           ] },
           { type: 'option', value: null, key: 'stockId', class: 'w150', placeholder: '仓库', options: [] },
-          { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '输入销售单号/客户名检索' },
+          { type: 'input', value: null, key: 'orderNoOrCumstorName', class: 'w180', placeholder: '输入销售单号/客户名检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
