@@ -19,12 +19,12 @@
                 <div class="row-content">
                   <el-row>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="销售订单编号:">
+                      <el-form-item :label="data.obj.flag === 0?'销售订单编号:':'销售换货单号:'">
                         <span v-cloak>{{form.orderNo}}</span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="下单时间:">
+                      <el-form-item :label="data.obj.flag === 0?'下单时间:':'申请换货时间:'">
                         <span v-cloak>{{form.orderDate}}</span>
                       </el-form-item>
                     </el-col>
@@ -43,6 +43,7 @@
                         <span v-if="form.orderSource===0"> App </span>
                         <span v-if="form.orderSource===1"> 微信公众号  </span>
                         <span v-if="form.orderSource===2"> 微信小程序 </span>
+                        <span v-if="form.orderSource===3"> 后台 </span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
@@ -102,7 +103,7 @@
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="手机号:">
-                        <span v-cloak>{{form.phone}}</span>
+                        <span v-cloak>{{form.mobile}}</span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">

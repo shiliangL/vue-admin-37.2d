@@ -98,6 +98,9 @@
                   <el-col :xs="24" :sm="10" :md="8" :lg="6">
                     <el-form-item label="所属仓库:" :rules="rules.select">
                       <span v-cloak>{{form.stockName}}</span>
+                       <el-tooltip content="请认真选择！为防止随意将商品更改仓库，只有新增商品时才能选择所属仓库。供应链部门可在【商品换仓】更改。" placement="top"  effect="light">
+                        <i class="el-icon-warning"></i>
+                      </el-tooltip>
                     </el-form-item>
                   </el-col>
 

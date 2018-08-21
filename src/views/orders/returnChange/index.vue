@@ -18,7 +18,7 @@
           <el-table-column prop="orderCode" label="销售订单编号" align="center"></el-table-column>
           <el-table-column prop="orderdTime" label="下单时间" width="90" align="center"></el-table-column>
           <el-table-column prop="customerName" label="客户名称" align="center"></el-table-column>
-          <el-table-column prop="sum" label="退货金额" align="center"></el-table-column>
+          <el-table-column prop="sum" :label="curIndex===1?'退货金额':'换货金额'" align="center"></el-table-column>
           <el-table-column prop="status" label="处理状态" align="center">
              <template slot-scope="scope" align="center">
 							 <!-- 0:待审核，1:进行中 2：已完成（退货退款结束）,3：已拒绝 , -->
@@ -150,7 +150,7 @@ export default {
     // 弹层操作
     click2view(index, row) {
       row.flag = this.curIndex
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '销售退货详情' }})
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: this.curIndex === 1 ? '销售退货详情' : '销售换货详情' }})
     },
     click2follow(index, row) {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'follow', obj: row }})

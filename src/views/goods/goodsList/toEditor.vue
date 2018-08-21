@@ -123,6 +123,9 @@
                       <el-select size="small" style="width:180px" v-model="form.stockId" placeholder="请选择" filterable>
                         <el-option size="small" v-for="item in options.warehouse" :key="item.id" :label="item.title" :value="item.id"> </el-option>
                       </el-select>
+                      <el-tooltip content="请认真选择！为防止随意将商品更改仓库，只有新增商品时才能选择所属仓库。供应链部门可在【商品换仓】更改。" placement="top"  effect="light">
+                        <i class="el-icon-warning"></i>
+                      </el-tooltip>
                     </el-form-item>
                   </el-col>
 
@@ -244,8 +247,8 @@
                     </el-form-item>
                   </div>
                   <div>
-                    <el-form-item label="基本单位价格:" prop="basePrice" :rules="rules.input">
-                      <el-input size="small" style="width:180px" class="w180" type="number"  placeholder="请输入" v-model.trim="form.basePrice"></el-input>
+                    <el-form-item label="基本单位价格:" prop="basePrice" :rules="[{trigger: 'change', validator: rules.validNumberR2}]">
+                      <el-input size="small" style="width:180px" class="w180" placeholder="请输入" v-model.trim="form.basePrice"></el-input>
                     </el-form-item>
                   </div>
                   <!-- <div>
@@ -291,8 +294,8 @@
                         </el-select>
                       </el-form-item>
 
-                      <el-form-item label="" label-width="0px" :prop="'skuList.'+scope.$index+'.rate'" :rules="rules.input">
-                      =	<el-input style="width:110px" type="number" placeholder="正整数" size="small" v-model.trim="scope.row.rate"></el-input> {{scope.row.baseUnitName}}
+                      <el-form-item label="" label-width="0px" :prop="'skuList.'+scope.$index+'.rate'" :rules="[{trigger: 'change', validator: rules.validNumber}]">
+                      =	<el-input style="width:110px" placeholder="正整数" size="small" v-model.trim="scope.row.rate"></el-input> {{scope.row.baseUnitName}}
                       </el-form-item>
 
                     </template>
@@ -306,8 +309,8 @@
                   <el-table-column prop="price" label="市场价格(全国)" align="center">
                     <template slot-scope="scope">
 
-                      <el-form-item label="" label-width="0px" :prop="'skuList.'+scope.$index+'.price'" :rules="rules.input">
-                        <el-input size="small" class="w110" type="number" placeholder="请输入" v-model.trim="scope.row.price"></el-input>
+                      <el-form-item label="" label-width="0px" :prop="'skuList.'+scope.$index+'.price'" :rules="[{trigger: 'change', validator: rules.validNumberR2}]">
+                        <el-input size="small" class="w110" placeholder="请输入" v-model.trim="scope.row.price"></el-input>
                       </el-form-item>
 
                     </template>
@@ -424,6 +427,18 @@ export default {
         'title': null, // 名称
         'type': 1,
         'sortFlag': 1 // 分拣时按基本单 0是true 1 不是fale,
+      },
+      rules: {
+        validNumber: (rule, value, callback) => {
+          if (!value) {
+            return callback(new Error('请输入'))
+          }
+          var reg = /^[1-9]\d*$/
+          if (!reg.test(value)) {
+            return callback(new Error('请输入非零正整数'))
+          }
+          callback()
+        }
       },
       supplyType: null, // 编辑使用
       options: {

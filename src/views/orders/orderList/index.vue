@@ -69,6 +69,7 @@ import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs } from '@/components/base.js'
 import { orderList } from '@/api/orders.js'
+
 export default {
   name: 'orderList',
   mixins: [model],

@@ -1,4 +1,3 @@
-import request from '@/utils/request'
 
 export default class Util {
   isEmpty(str) {
@@ -23,7 +22,7 @@ export default class Util {
 
   arrayRemove(array, attr, str) {
     for (var obj in array) {
-      if (array[obj][attr] == str) {
+      if (array[obj][attr] === str) {
         return array.splice(obj, 1)
       }
     }
@@ -96,15 +95,6 @@ export default class Util {
     const key = Math.random().toString(36).substring(3, 10)
     data.randomKey = data.randomKey || key
     return key
-  }
-
-  // 获取权七牛 token
-  fetchQnToken(params) {
-    return request({
-      url: 'oss/upToken',
-      method: 'get',
-      params
-    })
   }
 }
 

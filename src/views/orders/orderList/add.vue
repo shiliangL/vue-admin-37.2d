@@ -403,6 +403,7 @@ export default {
           'phone': data.scmOrder.phone,
           'remark': data.scmOrder.remark,
           'sendTime': {
+            'sendDate': data.sendTime.sendDate,
             'beginTime': data.sendTime.beginTime,
             'endTime': data.sendTime.endTime,
             'id': data.sendTime.pk,

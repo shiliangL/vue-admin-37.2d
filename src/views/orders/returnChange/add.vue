@@ -89,12 +89,12 @@
 											</el-form-item>
 										</el-col>
 										<el-col :xs="24" :sm="10" :md="8" :lg="6">
-											<el-form-item label="销售退货单号:">
+											<el-form-item :label="data.obj.flag ===1?'销售退货单号':'销售换货单号'">
 													<span v-cloak>{{form.code}}</span>
 											</el-form-item>
 										</el-col>
 										<el-col :xs="24" :sm="10" :md="8" :lg="6">
-											<el-form-item label="申请退货时间:">
+											<el-form-item :label="data.obj.flag ===1?'申请退货时间':'申请换货时间'">
 													<span v-cloak>{{form.returnDate}}</span>
 											</el-form-item>
 										</el-col>
@@ -104,11 +104,20 @@
 											</el-form-item>
 										</el-col>
 										<el-col :xs="24" :sm="10" :md="8" :lg="6">
-											<el-form-item label="退货完成时间:">
-													<span v-cloak>{{form.finishReturn}}</span>
+											<el-form-item :label="data.obj.flag ===1?'退货完成时间':'换货完成时间'">
+													<span v-cloak>{{form.exchangeeDate}}</span>
 											</el-form-item>
 										</el-col>
-
+										<el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="data.obj.flag ===2">
+											<el-form-item label="换货配送员">
+													<span v-cloak>{{form.driverNameExchange}}</span>
+											</el-form-item>
+										</el-col>
+										<el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="data.obj.flag ===2">
+											<el-form-item label="换货配送单号">
+													<span v-cloak>{{form.serialNumberExchange}}</span>
+											</el-form-item>
+										</el-col>
 		
 									</el-row>
 								</div>
@@ -119,7 +128,7 @@
 							<div class="row-content">
 								<el-row>
 									<el-col :xs="24" :sm="10" :md="8" :lg="8">
-										<el-form-item label="申请退货金额:" >
+										<el-form-item :label="data.obj.flag ===1?'申请退货金额':'申请换货金额'">
 												<span v-cloak>{{form.amountPrice}}</span>
 										</el-form-item>
 									</el-col>
@@ -147,7 +156,7 @@
 									</el-col>
 									<el-col :xs="24" :sm="10" :md="8" :lg="8">
 										<el-form-item label="应付款金额:" >
-												<span v-cloak>{{form.paidAmount}}</span>
+												<span v-cloak>{{form.toPayAmount}}</span>
 										</el-form-item>
 									</el-col>
 									<el-col :xs="24" :sm="10" :md="8" :lg="8">
@@ -161,12 +170,12 @@
 										</el-form-item>
 									</el-col>
 									<el-col :xs="24" :sm="10" :md="8" :lg="8">
-										<el-form-item label="实际退货数量:" >
-												<span v-cloak>{{form.paidAmount}}</span>
+										<el-form-item :label="data.obj.flag ===1?'实际退货数量':'实际换货数量'">
+												<span v-cloak>{{form.checkQuantity}}</span>
 										</el-form-item>
 									</el-col>
 									<el-col :xs="24" :sm="10" :md="8" :lg="8">
-										<el-form-item label="实际退货金额:" >
+										<el-form-item :label="data.obj.flag ===1?'实际退货金额':'实际换货金额'"> 
 												<span v-cloak>{{form.paidAmount}}</span>
 										</el-form-item>
 									</el-col>
@@ -183,7 +192,7 @@
 										收货人: <span v-cloak>{{form.contacts}}</span>
 								</el-col>
 								<el-col :span="8">
-										手机号: <span v-cloak>{{form.phone}}</span>
+										手机号: <span v-cloak>{{form.mobile}}</span>
 								</el-col>
 								<el-col :span="8">
 										收货地址: <span v-cloak>{{form.address}}</span>
@@ -206,9 +215,9 @@
 									<el-table-column prop="price" label="价格" align="center"></el-table-column>
 									<el-table-column prop="orderQuantity" label="下单数量" align="center"></el-table-column>
 									<el-table-column prop="orderQuantityPrice" label="下单金额" align="center"></el-table-column>
-									<el-table-column prop="amountNumber" label="实际数量" align="center"></el-table-column>
-									<el-table-column prop="amountPrice" label="实际金额" align="center"></el-table-column>
-									<el-table-column prop="reason" label="退货原因" align="center"></el-table-column>
+									<el-table-column prop="checkQuantity" label="实际数量" align="center"></el-table-column>
+									<el-table-column prop="toPayAmount" label="实际金额" align="center"></el-table-column>
+									<el-table-column prop="reason" :label="data.obj.flag ===1?'退货原因':'换货原因'"  align="center"></el-table-column>
 				        </el-table>
 							</div>
 						</div>

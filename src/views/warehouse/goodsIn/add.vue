@@ -243,7 +243,7 @@ export default {
     },
     fecthBodyDetail() {
       if (!this.data.obj.id) return
-      fecthBodyDetail({ id: this.data.obj.id }).then(({ data }) => {
+      fecthBodyDetail({ inId: this.data.obj.id }).then(({ data }) => {
         if (Array.isArray(data)) {
           for (const item of data) {
             if (item.makeDate) {

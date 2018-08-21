@@ -99,7 +99,7 @@
                     </template>
                   </el-table-column>
                   <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
-                  <el-table-column prop="xxx" label="规格(规格备注)" align="center"></el-table-column>
+                  <el-table-column prop="specification" label="规格(规格备注)" align="center"></el-table-column>
                   <el-table-column prop="basicUnitName" label="基本单位" align="center"></el-table-column>
                   <el-table-column prop="orderQuantity" label="下单数量" align="center"></el-table-column>
                   <el-table-column prop="sortingQuantity" label="分拣数量" align="center"></el-table-column>

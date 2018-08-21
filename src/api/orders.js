@@ -48,3 +48,11 @@ export function fetchSkuList(params) {
     params
   })
 }
+// 获取服务器时间
+export function getTime(params) {
+  return request({
+    url: 'scmSalesOrder/getTime',
+    method: 'get',
+    params
+  })
+}

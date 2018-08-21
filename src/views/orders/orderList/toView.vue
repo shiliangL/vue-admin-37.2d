@@ -237,6 +237,7 @@ export default {
   },
   data() {
     return {
+      overTime: false,
       form: {
         saleDtails: {
           rows: [],
@@ -296,7 +297,7 @@ export default {
       orderDetail(data).then(({ data }) => {
         this.form = data
         this.pagination.total = data.saleDtails.total
-        if (this.form.scmOrder.paymentType === 0 && this.form.scmOrder.status === 0) {
+        if (this.form.scmOrder.paymentType === 0 && this.form.scmOrder.status === 0 && !this.overTime) {
           setTimeout(() => {
             this.$emit('update:isAllowToShow', true)
           }, 100)

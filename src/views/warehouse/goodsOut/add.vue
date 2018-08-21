@@ -7,7 +7,7 @@
         <div class="header-bar" slot="title">
            <div class="left"> {{currentTitle}} </div>
            <div class="right">
-              <el-button type="text" size="mini" v-if="data.type==='add' && isBlank && TabsTitle.length" @click.stop="createOrder">生成配送单</el-button>
+              <el-button type="text" size="mini" v-if="data.type==='add' && isBlank && TabsTitle.length" @click.stop="createOrder">生成出库单</el-button>
               <el-button type="text" size="mini" @click.stop="dialog.visiable = false">返回</el-button>
             </div>
         </div>
@@ -308,7 +308,7 @@ export default {
         index,
         size,
         inputContent: this.inputContent,
-        id: this.data.obj.id
+        outId: this.data.obj.id
       }
       fetchTableDetail(data).then(({ data }) => {
         if (!data) return

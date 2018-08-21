@@ -65,3 +65,11 @@ export function shipOrderAddList(params) {
     params
   })
 }
+// 新增
+export function fecthRegionAll(params) {
+  return request({
+    url: 'scmshipRegionInfo/regionAll',
+    method: 'get',
+    params
+  })
+}

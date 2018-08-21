@@ -42,18 +42,18 @@
 								</el-col>
 
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="要求送达日期:">
-                      <span v-cloak>{{form.sendTime.sendDate}}</span>
+									<el-form-item label="要求送达日期:" prop="sendTime.sendDate" :rules="rules.select">
+                      <el-date-picker style="width:160px" value-format="yyyy-MM-dd" size="small" v-model="form.sendTime.sendDate" type="date"> </el-date-picker>
 									</el-form-item>
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
 										<div style="width:410px">
 											<el-form-item label="要求送达时间:" prop="sendTime.endTime" :rules="rules.input">
-												<el-time-select style="width:130px" v-model="form.sendTime.beginTime" :picker-options="{ start: '00:00', step: '00:30', end: '24:00',maxTime: form.sendTime.endTime }"> </el-time-select>
+												<el-time-select style="width:130px" size="small" v-model="form.sendTime.beginTime" :picker-options="{ start: '00:00', step: '00:30', end: '24:00',maxTime: form.sendTime.endTime }"> </el-time-select>
 											</el-form-item>
 
 											<el-form-item label="" prop="sendTime.endTime" :rules="rules.input" label-width="0">
-												<el-time-select style="width:130px" v-model="form.sendTime.endTime" :picker-options="{ start: '00:00', step: '00:30', end: '24:00', minTime: form.sendTime.beginTime}"> </el-time-select>
+												<el-time-select style="width:130px" size="small" v-model="form.sendTime.endTime" :picker-options="{ start: '00:00', step: '00:30', end: '24:00', minTime: form.sendTime.beginTime}"> </el-time-select>
 											</el-form-item>
 										</div>
 									</el-col>
@@ -262,7 +262,11 @@ export default {
       dialogVisible: false,
       form: {
         saleDtails: [],
-        sendTime: {},
+        sendTime: {
+          sendDate: '',
+          beginTime: '',
+          endTime: ''
+        },
         scmOrder: {
           pk: null,
           createdBy: null,
@@ -348,7 +352,7 @@ export default {
       if (!ID) true
       orderDetailNoPage({ id: ID }).then(({ data }) => {
         if (!data) return
-        this.form = data
+        this.form = Object.assign(this.form, data)
         this.temAddress = [
           {
             'contacts': data.scmOrder.contacts,

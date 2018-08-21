@@ -16,10 +16,10 @@
  
 					<el-table-column prop="serialNumber" label="销售配送单号" align="center"></el-table-column>
 					<el-table-column prop="driverName" label="配送员" align="center"></el-table-column>
-					<el-table-column prop="orderNo" label="销售订单编号" align="center"></el-table-column>
+					<el-table-column prop="orderNo" :label="curIndex===0?'销售订单编号':'销售换货单号'" align="center"></el-table-column>
 					<el-table-column prop="customerTitle" label="客户名称" align="center"></el-table-column>
 					<el-table-column prop="title" label="配送区域" align="center"></el-table-column>
-					<el-table-column prop="createOn" label="下单时间" align="center"></el-table-column>
+					<el-table-column prop="createOn" :label="curIndex===0?'下单时间':'申请换货时间'" align="center"></el-table-column>
 					<el-table-column prop="stockName" label="仓库" align="center"></el-table-column>
 					<el-table-column prop="status" label="配送状态" align="center">
             <template slot-scope="scope" align="center">
@@ -60,7 +60,8 @@
 import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs, SearchBar } from '@/components/base.js'
-import { fetchList, fecthStockList } from '@/api/distribution/salesDelivery.js'
+import { fetchList, fecthRegionAll } from '@/api/distribution/salesDelivery.js'
+import { fetchDriverList } from '@/api/distribution/areaDelivery.js'
 
 export default {
   name: 'goodsIn',
@@ -86,8 +87,8 @@ export default {
             { label: '退换货', value: 3 },
             { label: '已完成', value: 4 }
           ] },
-          { type: 'option', value: null, key: 'stockId', class: 'w150', placeholder: '仓库', options: [] },
-          { type: 'input', value: null, key: 'orderNoOrCumstorName', class: 'w180', placeholder: '输入销售单号/客户名检索' },
+          // { type: 'option', value: null, key: 'stockId', class: 'w150', placeholder: '仓库', options: [] },
+          { type: 'input', value: null, key: 'orderNoOrCumstorName', class: 'w180', placeholder: '输入单号/客户名检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
@@ -103,7 +104,7 @@ export default {
   },
   mounted() {
     this.fetchList()
-    this.fecthStockList()
+    this.fecthRegionAll()
   },
   methods: {
     tabsCallBack(item) {
@@ -125,15 +126,29 @@ export default {
         this.$message({ type: 'error', message: e.msg })
       })
     },
-    fecthStockList() {
-      fecthStockList().then(({ data }) => {
-        for (const item of data) {
-          item.label = item.title
-          item.value = item.id
+    fecthRegionAll() {
+      fecthRegionAll().then(({ data }) => {
+        if (Array.isArray(data)) {
+          for (const item of data) {
+            item.label = item.title
+            item.value = item.id
+          }
+          this.searchBarDate[0][1].options = data
         }
-        this.searchBarDate[0][1].options = data
       }).catch(e => {
-        console.log(e)
+        this.$message({ type: 'error', message: e.msg })
+      })
+      // 配送员
+      fetchDriverList().then(({ data }) => {
+        if (Array.isArray(data.rows)) {
+          for (const item of data.rows) {
+            item.label = item.title
+            item.value = item.id
+          }
+          this.searchBarDate[0][2].options = data
+        }
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
       })
     },
     searchAction(item) {
@@ -164,8 +179,8 @@ export default {
     // 弹层操作
     clickToEditor(index, row) {
       // 点击查看
-      row.type = this.curIndex
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '销售订单配送详情' }})
+      row.flag = this.curIndex
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: this.curIndex === 0 ? '销售订单配送详情' : '销售换货配送详情' }})
     },
     showAdd() {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, title: '新增配送派单' }})

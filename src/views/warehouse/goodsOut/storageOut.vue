@@ -157,10 +157,10 @@ export default {
     // 弹层操作
     clickToEditor(index, row) {
       // 点击查看
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '入库单信息' }})
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '出库单信息' }})
     },
     showAdd() {
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, title: '新增入库单信息' }})
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, title: '新增出库单信息' }})
     },
     refrehList() {
       this.fecthOutList()

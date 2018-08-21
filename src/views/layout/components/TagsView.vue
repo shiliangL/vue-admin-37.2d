@@ -152,7 +152,8 @@ export default {
         margin-left: 15px;
       }
       &.active {
-        background-color: #fff;
+        font-weight: bold;
+        background-color: #e8f8f5;
         color: #1cbc9c;
         border-color: #1cbc9c;
         .dot{
@@ -160,7 +161,7 @@ export default {
         }
         &::before {
           content: '';
-          background: #fff;
+          // background: #fff;
           display: inline-block;
           width: 8px;
           height: 8px;

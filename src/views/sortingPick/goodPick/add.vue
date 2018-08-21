@@ -80,10 +80,14 @@
                       <span>{{scope.$index + 1}}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="orderNo" label="销售订单编号" align="center"></el-table-column>
+                  <el-table-column :prop="form.header.storehouseType===1?'orderNo':'returnOrderNo'" :label="form.header.storehouseType===1?'销售订单编号':'销售换货'" align="center"></el-table-column>
                   <el-table-column prop="customerName" label="客户名称" align="center"></el-table-column>
-                  <el-table-column prop="specifications" label="规格(规格备注)" align="center"></el-table-column>
-                  <el-table-column prop="orderQuantity" label="下单数量" align="center"></el-table-column>
+                  <el-table-column prop="specification" label="规格(规格备注)" align="center"></el-table-column>
+                  <el-table-column prop="orderQuantity" label="下单数量" align="center">
+                    <template  slot-scope="scope">
+                      <span> {{scope.row.orderQuantity}} {{scope.row.basicUnit}}</span>
+                    </template>
+                  </el-table-column>
                   <el-table-column prop="sortingQuantity" label="分拣数量" align="center"></el-table-column>
                   <el-table-column prop="barCode" label="商品分拣条码" align="center"></el-table-column>
                   <el-table-column prop="sortingTime" label="分拣时间" align="center"></el-table-column>
@@ -117,7 +121,7 @@ export default {
           'stockOutCreatedTime': null,
           'stockOutOrderNo': null,
           'stockInfoName': null,
-          'storehouseType': null,
+          'storehouseType': 1,
           'tableName': null,
           'sorterName': null,
           'basicUnitName': null,
