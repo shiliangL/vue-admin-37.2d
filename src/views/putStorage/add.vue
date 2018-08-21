@@ -20,12 +20,12 @@
                   <el-row>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="入库单号:">
-                        <span v-cloak>{{form.orderRequestNo}}</span>
+                        <span v-cloak>{{form.orderNo}}</span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="仓库:">
-                       <span v-cloak>{{form.applicationDate}}</span>
+                       <span v-cloak>{{form.stockName}}</span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
@@ -61,18 +61,31 @@
                   <el-button style="margin-left:0px" size="small" @click.stop="resetSearch" > 重置 </el-button>
                 </div>
                 <!-- 表格 -->
-                  <el-table :data="form.table" size="small" max-height="450" style="width: 100%;" highlight-current-row>
+                  <el-table :data="form.table" size="small" max-height="450" class="table" style="width: 100%;" highlight-current-row>
                     <el-table-column label="序号" width="50" align="center">
                       <template slot-scope="scope"> <span>{{scope.$index + 1}}</span> </template>
                     </el-table-column>
                     <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
                     <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
                     <el-table-column prop="batchesBarCode" label="商品批次条码" align="center"></el-table-column>
-                    <el-table-column prop="quantity" label="入库数量" align="center"></el-table-column>
-                    <el-table-column prop="warehouseTime" label="入库时间" align="center"></el-table-column>
+                    <el-table-column prop="quantity" label="入库数量" align="center">
+                       <template slot-scope="scope">
+                        <span v-if="scope.row.warehouseTime" v-cloak>{{scope.row.quantity}}</span>
+                        <el-form-item v-else label="" label-width="0px" :prop="'table.'+scope.$index+'.quantity'"  :rules="[{ required: true, validator: rules.validNumber2, trigger: 'change' }]">
+                          <el-input size="small" v-model.trim="scope.row.quantity"></el-input>
+                        </el-form-item>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="warehouseTime" label="入库时间" align="center">
+                      <template slot-scope="scope">
+                        <span v-if="scope.row.warehouseTime" v-cloak>{{scope.row.warehouseTime}}</span>
+                        <span v-else v-cloak> / </span>
+                      </template>
+                    </el-table-column>
                     <el-table-column prop="sum" label="操作" align="center">
                       <template slot-scope="scope">
-                         <el-button type="text" size="mini">打印标签</el-button>
+                         <el-button v-if="!scope.row.warehouseTime" type="text" size="mini" @click.stop="clickToUpdate(scope.$index,scope.row)">保存</el-button>
+                         <el-button v-else type="text" size="mini" disabled="">保存</el-button>
                       </template>
                     </el-table-column>
                   </el-table>
@@ -90,7 +103,7 @@
 
 <script>
 import addModel from '@/public/addModel.js'
-import { fecthHeaderDetail, fecthBodyDetail } from '@/api/putStorage/index.js'
+import { fecthHeaderDetail, fecthBodyDetail, warehousingUpdateQuantity } from '@/api/putStorage/index.js'
 export default {
   mixins: [addModel],
   components: {
@@ -138,14 +151,50 @@ export default {
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
-      fecthBodyDetail({ orderId: this.data.obj.id }).then(({ data }) => {
+      fecthBodyDetail({ inId: this.data.obj.id }).then(({ data }) => {
         this.form.table = data
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
     },
-    clickToSearch() {},
-    resetSearch() {}
+    clickToUpdate(index, item) {
+      this.$refs['form'].validateField(`table.${index}.quantity`, (m) => {
+        if (!m) {
+          const data = {
+            'detailsId': item.id,
+            'productId': item.productId,
+            'quantity': item.quantity
+          }
+          warehousingUpdateQuantity(data).then(res => {
+            this.$message({ type: 'success', message: '保存成功' })
+            this.resetSearch()
+          }).catch(e => {
+            this.$message({ type: 'error', message: e.msg })
+          })
+        } else {
+          this.$message({ type: 'error', message: '请输入有效数值' })
+          return
+        }
+      })
+    },
+    clickToSearch() {
+      if (!this.data.obj.id) return
+      fecthHeaderDetail({ id: this.data.obj.id }).then(({ data }) => {
+        this.form = Object.assign(this.form, data)
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+      fecthBodyDetail({ inId: this.data.obj.id, inputContent: this.searchKey }).then(({ data }) => {
+        this.form.table = data
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
+    resetSearch() {
+      if (!this.data.obj.id) return
+      this.searchKey = null
+      this.clickToSearch()
+    }
   }
 }
 </script>

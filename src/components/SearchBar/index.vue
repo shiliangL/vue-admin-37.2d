@@ -4,7 +4,7 @@
     <template v-if="data && data.length > 0">
       <div class="left" v-for="(item, index) in data[0]" :key="index">
         <template v-if="item.type === 'date'">
-          <el-date-picker :style="{width:'140px'}" size="small" v-model="item.value" value-format="yyyy-MM-dd" type="date" :placeholder="item.placeholder"></el-date-picker>
+          <el-date-picker :clearable="clearableDate" :style="{width:'140px'}" size="small" v-model="item.value" value-format="yyyy-MM-dd" type="date" :placeholder="item.placeholder"></el-date-picker>
         </template>
         <template v-else-if="item.type === 'datetime'">
           <el-date-picker :style="{width:'200px'}" size="small" v-model="item.value" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" :placeholder="item.placeholder"></el-date-picker>
@@ -69,6 +69,10 @@ export default {
     rightVisible: { // 是否需要显示右边区域按钮 默认显示
       type: Boolean,
       default: true
+    },
+    clearableDate: { // 是否需要显删除日期
+      type: Boolean,
+      default: false
     }
   },
   methods: {

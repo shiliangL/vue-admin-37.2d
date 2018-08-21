@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       // '/': {
-      //   target: 'http://39.108.235.6', // 服务器
+      //   target: 'http://39.108.235.6:9002', // 服务器
       //   changeOrigin: true,
       // },
       '/': {
@@ -20,13 +20,9 @@ module.exports = {
         changeOrigin: true,
       },
       // '/': {
-      //   target: 'http://cmm.ngrok.xiaomiqiu.cn/', // 本地主机
+      //   target: 'http://10.1.1.131:9001', // 本地主机
       //   changeOrigin: true,
       // },
-      // '/': {
-      //   target: 'http://192.168.2.75:9001', // 本地王艳
-      //   changeOrigin: true,
-      // }
     },
 
     // Various Dev Server settings

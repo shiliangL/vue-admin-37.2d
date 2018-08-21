@@ -117,7 +117,7 @@
 
 <script>
 import addModel from '@/public/addModel.js'
-import { fecthHeaderDetail, fecthBodyDetail, outUpdateQuantity } from '@/api/packaging/index.js'
+import { fecthHeaderDetail, fecthBodyDetail } from '@/api/packaging/index.js'
 export default {
   mixins: [addModel],
   components: {
@@ -168,7 +168,7 @@ export default {
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
-      fecthBodyDetail({ orderId: this.data.obj.id }).then(({ data }) => {
+      fecthBodyDetail({ packageId: this.data.obj.id }).then(({ data }) => {
         this.form.table = data
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
@@ -176,7 +176,7 @@ export default {
     },
     clickToSearch() {
       if (!this.data.obj.id) return
-      fecthBodyDetail({ orderId: this.data.obj.id, inputContent: this.searchKey }).then(({ data }) => {
+      fecthBodyDetail({ packageId: this.data.obj.id, inputContent: this.searchKey }).then(({ data }) => {
         this.form.table = data
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })

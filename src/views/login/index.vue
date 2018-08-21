@@ -53,7 +53,7 @@ export default {
         'imageCode': 'string',
         'password': '123456',
         'rememberMe': false,
-        'username': 'admin01'
+        'username': '验收 C'
       },
       loginRules: {},
       passwordType: 'password',
@@ -65,11 +65,11 @@ export default {
   },
   mounted() {
     // 初始化例子插件
-    console.log(this.$route.query)
   },
   methods: {
     ...mapActions([
-      'VX_SET_TOKEN'
+      'VX_SET_TOKEN',
+      'VX_SET_LOGINKEY'
     ]),
     showPwd() {
       if (this.passwordType === 'password') {
@@ -79,6 +79,34 @@ export default {
       }
     },
     handleLogin() {
+      // if (this.$route.query.id && this.$route.query.type && this.$route.query.stockId) {
+      //   this.VX_SET_LOGINKEY({
+      //     id: this.$route.query.id,
+      //     type: this.$route.query.type,
+      //     stockId: this.$route.query.stockId
+      //   })
+      //   this.$refs.loginForm.validate(valid => {
+      //     if (valid) {
+      //       this.loading = true
+      //       loginByUsername({ ...this.loginForm }).then(res => {
+      //         if (res.code === '0' && res.data && res.data.operatorId) {
+      //           this.loading = false
+      //           this.VX_SET_TOKEN(res.data.operatorId)
+      //           setToken(res.data.operatorId)
+      //           this.$router.push({ path: '/' })
+      //         }
+      //       }).catch(e => {
+      //         this.loading = false
+      //         this.$message({ type: 'error', message: e.msg })
+      //       })
+      //     } else {
+      //       return
+      //     }
+      //   })
+      // } else {
+      //   this.$message({ type: 'error', message: '登录信息不完整请确认登录链接' })
+      //   return
+      // }
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
@@ -91,7 +119,7 @@ export default {
             }
           }).catch(e => {
             this.loading = false
-            console.log(e)
+            this.$message({ type: 'error', message: e.msg })
           })
         } else {
           return

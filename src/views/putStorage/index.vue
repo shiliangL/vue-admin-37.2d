@@ -2,7 +2,7 @@
 <template>
     <div class="putStorage">
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
-      <search-bar :data="searchBarData" @search="searchAction"  @reset="fecthList"></search-bar>
+      <search-bar :data="searchBarData" @search="searchAction" @reset="resetSearchBar"></search-bar>
       <!-- 表格 -->
       <table-contain :height.sync="table.maxHeight">
         <el-table :data="table.data" v-loading="tableLoading" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -52,6 +52,7 @@ export default {
   },
   data() {
     return {
+      todayTime: '',
       curIndex: 1,
       searchBarData: [
         [
@@ -76,8 +77,13 @@ export default {
     ]
   },
   mounted() {
-    // this.fecthList()
-    this.table.data = [{}]
+    const date = new Date()
+    const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)
+    const day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate()
+    const ymd = date.getFullYear() + '-' + month + '-' + day
+    this.searchBarData[0][0].value = ymd
+    this.todayTime = ymd
+    this.fecthList()
   },
   methods: {
     tabsCallBack(item) {
@@ -91,6 +97,7 @@ export default {
       const data = {
         index,
         size,
+        createdTime: this.searchBarData[0][0].value,
         storageType: this.curIndex
       }
       fecthList(data).then(({ data }) => {
@@ -134,6 +141,10 @@ export default {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '入库信息详情' }})
     },
     refrehList() {
+      this.fecthList()
+    },
+    resetSearchBar() {
+      this.searchBarData[0][0].value = this.todayTime
       this.fecthList()
     }
   }

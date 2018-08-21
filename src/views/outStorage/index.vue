@@ -2,7 +2,7 @@
 <template>
     <div class="outStorage">
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
-      <search-bar :data="searchBarData" @search="searchAction"  @reset="fecthList"></search-bar>
+      <search-bar :data="searchBarData" @search="searchAction"  @reset="resetSearchBar"></search-bar>
       <!-- 表格 -->
       <table-contain :height.sync="table.maxHeight">
         <el-table :data="table.data" v-loading="tableLoading" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -52,11 +52,12 @@ export default {
   },
   data() {
     return {
+      todayTime: '',
       curIndex: 1,
       searchBarData: [
         [
           { type: 'date', value: null, key: 'createdTime', width: '200px', placeholder: '创建时间' },
-          { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '出库信息详情' },
+          { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '出库单号检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
@@ -74,6 +75,12 @@ export default {
     ]
   },
   mounted() {
+    const date = new Date()
+    const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)
+    const day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate()
+    const ymd = date.getFullYear() + '-' + month + '-' + day
+    this.searchBarData[0][0].value = ymd
+    this.todayTime = ymd
     this.fecthList()
   },
   methods: {
@@ -88,6 +95,7 @@ export default {
       const data = {
         index,
         size,
+        createdTime: this.searchBarData[0][0].value,
         storehouseType: this.curIndex
       }
       fecthList(data).then(({ data }) => {
@@ -128,9 +136,13 @@ export default {
     },
     // 弹层操作
     click2view(index, row) {
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '入库信息详情' }})
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '出库信息详情' }})
     },
     refrehList() {
+      this.fecthList()
+    },
+    resetSearchBar() {
+      this.searchBarData[0][0].value = this.todayTime
       this.fecthList()
     }
   }

@@ -6,7 +6,8 @@
         <div class="left">
           <el-date-picker :style="{width:'140px'}" 
             size="small"
-            v-model="searchBarData.createTime" 
+            v-model="searchBarData.createTime"
+            :clearable="false"
             value-format="yyyy-MM-dd" 
             type="date" placeholder="订单创建时间">
             </el-date-picker>
@@ -17,7 +18,7 @@
         </div>
 
         <div class="left">
-          <el-input style="width:180px" v-model="searchBarData.orderNo" size="small" @keyup.enter.native="fecthList" placeholder="输入商品名称检索"></el-input>
+          <el-input style="width:180px" v-model="searchBarData.orderNo" size="small" @keyup.enter.native="fecthList" placeholder="输入订单编号检索"></el-input>
         </div>
 
          <div class="left">
@@ -91,6 +92,7 @@ export default {
   },
   data() {
     return {
+      todayTime: '',
       curIndex: 0,
       CascaderBoxDTO: null,
       TipsBarData: [],
@@ -112,6 +114,12 @@ export default {
     ]
   },
   mounted() {
+    const date = new Date()
+    const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)
+    const day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate()
+    const ymd = date.getFullYear() + '-' + month + '-' + day
+    this.todayTime = ymd
+    this.searchBarData.createTime = ymd
     this.fecthList()
   },
   methods: {
@@ -168,6 +176,7 @@ export default {
         purchaseType: null,
         personnelId: null
       }
+      this.searchBarData.createTime = this.todayTime
       this.fecthList()
     }
   }

@@ -80,11 +80,11 @@
                     </el-table-column>
                     <el-table-column prop="orderNo" label="销售订单编号" align="center"></el-table-column>
                     <el-table-column prop="customerName" label="客户名称" align="center"></el-table-column>
-                    <el-table-column prop="basicUnit" label="规格" align="center"></el-table-column>
+                    <el-table-column prop="specification" label="规格" align="center"></el-table-column>
                     <el-table-column prop="orderQuantity" label="下单数量" align="center"></el-table-column>
                     <el-table-column prop="sortingQuantity" label="分拣数量" align="center">
                       <template slot-scope="scope">
-                        <span v-if="scope.row.outageTime" v-cloak>{{scope.row.sortingQuantity}}</span>
+                        <span v-if="scope.row.barCode" v-cloak>{{scope.row.sortingQuantity}}</span>
                         <el-form-item v-else label="" label-width="0px" :prop="'table.'+scope.$index+'.sortingQuantity'"  :rules="[{ required: true, validator: rules.validNumber2, trigger: 'change' }]">
                           <el-input size="small" v-model.trim="scope.row.sortingQuantity"></el-input>
                         </el-form-item>
@@ -98,7 +98,7 @@
                     </el-table-column>
                     <el-table-column prop="sortingTime" label="分拣时间" align="center">
                       <template slot-scope="scope">
-                        <span v-if="scope.row.outageTime" v-cloak>{{scope.row.outageTime}}</span>
+                        <span v-if="scope.row.barCode" v-cloak>{{scope.row.sortingTime}}</span>
                         <span v-else v-cloak> / </span>
                       </template>
                     </el-table-column>
@@ -194,7 +194,7 @@ export default {
         if (!m) {
           const data = {
             'sortingDetailsId': item.id,
-            'tableId': item.productId,
+            'tableId': '82390d6e674948c282b7be3a218c3dda',
             'weight': item.sortingQuantity
           }
           outUpdateQuantity(data).then(res => {

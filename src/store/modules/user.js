@@ -16,6 +16,7 @@ const user = {
     menuList: [],
     curMenuIndex: 0,
     qNtoken: null,
+    loginKey: null,
     setting: {
       articlePlatform: []
     }
@@ -24,6 +25,9 @@ const user = {
   mutations: {
     SET_CODE: (state, code) => {
       state.code = code
+    },
+    SET_LOGINKEY: (state, loginKey) => {
+      state.loginKey = loginKey
     },
     SET_QNTOKEN: (state, qNtoken) => {
       state.qNtoken = qNtoken
@@ -80,9 +84,10 @@ const user = {
           const data = response.data
           // commit('SET_ROLES', data.roles)
           commit('SET_ROLES', ['admin'])
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
-          commit('SET_INTRODUCTION', data.introduction)
+          commit('SET_NAME', data.staffName)
+          // commit('SET_NAME', data.loginName)
+          commit('SET_AVATAR', data.staffId)
+          commit('SET_INTRODUCTION', data.departmentNames)
           resolve(response)
         }).catch(error => {
           Message.error(error.msg)
@@ -166,6 +171,9 @@ const user = {
     // 设置Token
     VX_SET_TOKEN({ commit }, token) {
       commit('SET_TOKEN', token)
+    },
+    VX_SET_LOGINKEY({ commit }, loginKey) {
+      commit('SET_LOGINKEY', loginKey)
     }
   }
 }

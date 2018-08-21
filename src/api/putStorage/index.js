@@ -22,3 +22,11 @@ export function fecthBodyDetail(params) {
   })
 }
 
+export function warehousingUpdateQuantity(data) {
+  return request({
+    url: 'stockInDetails/warehousingUpdateQuantity',
+    method: 'POST',
+    data
+  })
+}
+

@@ -22,6 +22,36 @@ export function inViewBodyDetail(params) {
     params
   })
 }
+export function updateInView(data) {
+  return request({
+    url: 'purchaseOrderDetails/inspectorPrintLabel',
+    method: 'POST',
+    data
+  })
+}
+// 退换货
+export function returnFetchList(params) {
+  return request({
+    url: 'scmsaleRreturnsgoods/findAccept',
+    method: 'get',
+    params
+  })
+}
+export function returnChangeDetail(params) {
+  return request({
+    url: 'scmsaleRreturnsgoods/findOneAccept',
+    method: 'get',
+    params
+  })
+}
+export function updateReturnChange(data) {
+  return request({
+    url: 'scmsaleRreturnsgoods/updateReturnDto',
+    method: 'PUT',
+    data
+  })
+}
+
 // 新增
 export function createPackaging(data) {
   return request({

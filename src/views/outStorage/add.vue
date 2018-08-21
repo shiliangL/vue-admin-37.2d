@@ -148,7 +148,7 @@ export default {
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
-      fecthBodyDetail({ orderId: this.data.obj.id }).then(({ data }) => {
+      fecthBodyDetail({ outId: this.data.obj.id }).then(({ data }) => {
         this.form.table = data
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
@@ -156,7 +156,7 @@ export default {
     },
     clickToSearch() {
       if (!this.data.obj.id) return
-      fecthBodyDetail({ orderId: this.data.obj.id, inputContent: this.searchKey }).then(({ data }) => {
+      fecthBodyDetail({ outId: this.data.obj.id, inputContent: this.searchKey }).then(({ data }) => {
         this.form.table = data
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
