@@ -17,7 +17,8 @@ const whiteList = ['/login', '/authredirect']// no redirect whitelist
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
-  if (getToken()) { // determine if there has token
+  const key = JSON.parse(sessionStorage.getItem('loginKey'))
+  if (getToken() && key) { // determine if there has token
     if (to.path === '/login') {
       next({ path: '/' })
       NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
@@ -31,7 +32,7 @@ router.beforeEach((to, from, next) => {
           })
         })
         const roles = ['editor', 'develop', 'admin'] // note: roles must be a array! such as: ['editor','develop']
-        const workType = 1
+        const workType = key.type
         store.dispatch('GenerateRoutes', { roles, workType }).then(() => { // 根据roles权限生成可访问的路由表
           router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
           next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record

@@ -79,52 +79,49 @@ export default {
       }
     },
     handleLogin() {
-      // if (this.$route.query.id && this.$route.query.type && this.$route.query.stockId) {
-      //   this.VX_SET_LOGINKEY({
-      //     id: this.$route.query.id,
-      //     type: this.$route.query.type,
-      //     stockId: this.$route.query.stockId
-      //   })
-      //   this.$refs.loginForm.validate(valid => {
-      //     if (valid) {
-      //       this.loading = true
-      //       loginByUsername({ ...this.loginForm }).then(res => {
-      //         if (res.code === '0' && res.data && res.data.operatorId) {
-      //           this.loading = false
-      //           this.VX_SET_TOKEN(res.data.operatorId)
-      //           setToken(res.data.operatorId)
-      //           this.$router.push({ path: '/' })
-      //         }
-      //       }).catch(e => {
-      //         this.loading = false
-      //         this.$message({ type: 'error', message: e.msg })
-      //       })
-      //     } else {
-      //       return
-      //     }
-      //   })
-      // } else {
-      //   this.$message({ type: 'error', message: '登录信息不完整请确认登录链接' })
-      //   return
-      // }
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true
-          loginByUsername({ ...this.loginForm }).then(res => {
-            if (res.code === '0' && res.data && res.data.operatorId) {
+      if (this.$route.query.id && this.$route.query.type && this.$route.query.stockId) {
+        this.VX_SET_LOGINKEY({ id: this.$route.query.id, type: this.$route.query.type, stockId: this.$route.query.stockId })
+        if (window.sessionStorage) window.sessionStorage.setItem('loginKey', JSON.stringify({ id: this.$route.query.id, type: this.$route.query.type, stockId: this.$route.query.stockId }))
+        this.$refs.loginForm.validate(valid => {
+          if (valid) {
+            this.loading = true
+            loginByUsername({ ...this.loginForm }).then(res => {
+              if (res.code === '0' && res.data && res.data.operatorId) {
+                this.loading = false
+                this.VX_SET_TOKEN(res.data.operatorId)
+                setToken(res.data.operatorId)
+                this.$router.push({ path: '/' })
+              }
+            }).catch(e => {
               this.loading = false
-              this.VX_SET_TOKEN(res.data.operatorId)
-              setToken(res.data.operatorId)
-              this.$router.push({ path: '/' })
-            }
-          }).catch(e => {
-            this.loading = false
-            this.$message({ type: 'error', message: e.msg })
-          })
-        } else {
-          return
-        }
-      })
+              this.$message({ type: 'error', message: e.msg })
+            })
+          } else {
+            return
+          }
+        })
+      } else {
+        this.$message({ type: 'error', message: '登录信息不完整请确认登录链接' })
+        return
+      }
+      // this.$refs.loginForm.validate(valid => {
+      //   if (valid) {
+      //     this.loading = true
+      //     loginByUsername({ ...this.loginForm }).then(res => {
+      //       if (res.code === '0' && res.data && res.data.operatorId) {
+      //         this.loading = false
+      //         this.VX_SET_TOKEN(res.data.operatorId)
+      //         setToken(res.data.operatorId)
+      //         this.$router.push({ path: '/' })
+      //       }
+      //     }).catch(e => {
+      //       this.loading = false
+      //       this.$message({ type: 'error', message: e.msg })
+      //     })
+      //   } else {
+      //     return
+      //   }
+      // })
     },
     afterQRScan() {
       // const hash = window.location.hash.slice(1)
