@@ -87,7 +87,7 @@ import model from '@/public/listModel.js'
 import rules from '@/public/rules.js'
 import { Tabs, CascaderBox, SearchBar } from '@/components/base.js'
 import { fecthList, fecthStockList, create, deleteRow, detailRow, updateRow } from '@/api/warehouse/workbench.js'
-const baseUrl = 'http://0.0.0.0:8090/#/login?'
+const baseUrl = 'http://39.108.235.6:8081/workbench#/login?'
 export default {
   name: 'workbench',
   mixins: [model, rules],
@@ -162,9 +162,6 @@ export default {
       }
       fecthList(data).then(({ data }) => {
         if (Array.isArray(data.rows)) {
-          for (const item of data.rows) {
-            item.workbenchUrl = `${baseUrl}type=${this.curIndex}&id=${item.id}&stockId=${item.stockId}`
-          }
           this.table.data = data.rows
         }
         this.pagination.total = data.total
@@ -195,9 +192,6 @@ export default {
       }
       fecthList(data).then(({ data }) => {
         if (Array.isArray(data.rows)) {
-          for (const item of data.rows) {
-            item.workbenchUrl = `${baseUrl}type=${this.curIndex}&id=${item.id}&stockId=${item.stockId}`
-          }
           this.table.data = data.rows
         }
         this.pagination.total = data.total
