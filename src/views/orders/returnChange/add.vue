@@ -161,7 +161,7 @@
 									</el-col>
 									<el-col :xs="24" :sm="10" :md="8" :lg="8">
 										<el-form-item label="未支付金额:" >
-												<span v-cloak>{{form.price}}</span>
+												<span v-cloak>{{form.toPayAmount}}</span>
 										</el-form-item>
 									</el-col>
 									<el-col :xs="24" :sm="10" :md="8" :lg="8">
@@ -176,7 +176,7 @@
 									</el-col>
 									<el-col :xs="24" :sm="10" :md="8" :lg="8">
 										<el-form-item :label="data.obj.flag ===1?'实际退货金额':'实际换货金额'"> 
-												<span v-cloak>{{form.paidAmount}}</span>
+												<span v-cloak>{{form.paidAmountxxx}}</span>
 										</el-form-item>
 									</el-col>
 		
@@ -215,7 +215,7 @@
 									<el-table-column prop="price" label="价格" align="center"></el-table-column>
 									<el-table-column prop="orderQuantity" label="下单数量" align="center"></el-table-column>
 									<el-table-column prop="orderQuantityPrice" label="下单金额" align="center"></el-table-column>
-									<el-table-column prop="checkQuantity" label="实际数量" align="center"></el-table-column>
+									<el-table-column prop="finalQuantity" label="实际数量" align="center"></el-table-column>
 									<el-table-column prop="toPayAmount" label="实际金额" align="center"></el-table-column>
 									<el-table-column prop="reason" :label="data.obj.flag ===1?'退货原因':'换货原因'"  align="center"></el-table-column>
 				        </el-table>
@@ -285,6 +285,8 @@ export default {
         'price': null,
         'orderQuantity': null,
         'orderQuantityPrice': null,
+        'finalQuantity': null,
+        'toPayAmount': null,
         table: []
       }
     }
@@ -309,15 +311,7 @@ export default {
         if (!data) return
         this.form = Object.assign(this.form, data)
         this.form.table = [{
-          'goodsImage': this.form.goodsImage,
-          'productName': this.form.productName,
-          'skuName': this.form.skuName,
-          'price': this.form.price,
-          'orderQuantity': this.form.orderQuantity,
-          'orderQuantityPrice': this.form.orderQuantityPrice,
-          'amountNumber': this.form.amountNumber,
-          'reason': this.form.reason,
-          'description': this.form.description
+          ...this.form
         }]
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })

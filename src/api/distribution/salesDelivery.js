@@ -65,10 +65,19 @@ export function shipOrderAddList(params) {
     params
   })
 }
-// 新增
-export function fecthRegionAll(params) {
+
+// 加载所有配送区域
+export function fecthListRegion(params) {
   return request({
-    url: 'scmshipRegionInfo/regionAll',
+    url: 'scmshipRegionInfo/listRegion',
+    method: 'get',
+    params
+  })
+}
+// 加载所有配员
+export function fecthListListDrive(params) {
+  return request({
+    url: 'scmshipRegionInfo/listDrive',
     method: 'get',
     params
   })

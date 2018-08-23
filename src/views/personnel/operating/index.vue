@@ -145,14 +145,14 @@ export default {
     },
     // 弹层操作
     clickToEditor(index, row) {
-      this.dialogTitle = '编辑供应链主管'
+      this.dialogTitle = '编辑运营人员'
       this.propsParentData.type = 'isUpdate'
       this.dialogVisible = true
       this.propsParentData.isUpdate = true
       this.propsParentData.data = row
     },
     showAdd() {
-      this.dialogTitle = '新增供应链主管'
+      this.dialogTitle = '新增运营人员'
       this.propsParentData.type = 'add'
       this.propsParentData.isUpdate = false
       this.dialogVisible = true

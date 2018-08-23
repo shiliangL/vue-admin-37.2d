@@ -14,7 +14,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="orderNo" label="订单编号" align="center"></el-table-column>
-          <el-table-column prop="createdOn" label="下单日期" align="center"></el-table-column>
+          <el-table-column prop="createdOn" label="下单时间" align="center"></el-table-column>
           <el-table-column prop="customerName" label="客户名称" align="center"></el-table-column>
           <el-table-column prop="orderSource" label="订单来源" align="center">
           <!-- // 0 代表app 1 微信公众号 2 微信小程序 -->
@@ -105,7 +105,7 @@ export default {
             { label: '货到付款', value: 0 },
             { label: '线上支付', value: 1 }]
           },
-          { type: 'datetime', value: null, key: 'orderTime', width: '200px', placeholder: '下单时间' },
+          { type: 'datetimerange', value: '', key: 'orderTime' },
           { type: 'input', value: null, key: 'orderNoOrName', class: 'w180', placeholder: '输入订单编号／客户名称检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }

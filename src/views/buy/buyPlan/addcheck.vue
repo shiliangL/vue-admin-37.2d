@@ -185,7 +185,7 @@ export default {
             item.personnelName = item.purchaseName
           }
           const data = {
-            orderDetailIdList: item.orderDetailIds.split(','),
+            orderDetailIdList: item.orderDetailIds ? item.orderDetailIds.split(',') : null,
             planQuantity: item.orderQuantity,
             productId: item.productId,
             supplierInfoList: [
@@ -212,8 +212,8 @@ export default {
         saveList(arr).then(res => {
           this.$message({ type: 'success', message: `${res.msg}!` })
           this.$emit('close')
-        }).catch(() => {
-          this.$message({ type: 'error', message: '删除失败' })
+        }).catch((e) => {
+          this.$message({ type: 'error', message: e.msg })
         })
       }).catch(() => {})
     },

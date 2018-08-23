@@ -81,7 +81,7 @@ export default {
             { label: '已完成', value: 2 },
             { label: '已拒绝', value: 3 }]
           },
-          { type: 'datetime', value: null, key: 'orderTime', width: '200px', placeholder: '下单时间' },
+          { type: 'datetimerange', value: '', key: 'orderTime' },
           { type: 'date', value: null, key: 'createdTime', width: '200px', placeholder: '申请退货时间' },
           { type: 'date', value: null, key: 'dealTime', width: '200px', placeholder: '审核时间' },
           { type: 'input', value: null, key: 'codeOrNmae', class: 'w210', placeholder: '销售退货单号／销售订单/客户名称检索' },

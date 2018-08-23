@@ -78,7 +78,8 @@
 import model from '@/public/listModel.js'
 import Add from './add'
 import { SelectCity } from '@/components/base.js'
-import { fetchList, fetchDriverList, deleteRow } from '@/api/distribution/areaDelivery.js'
+import { fetchList, deleteRow } from '@/api/distribution/areaDelivery.js'
+import { fecthListListDrive } from '@/api/distribution/salesDelivery.js'
 
 export default {
   name: 'areaDelivery',
@@ -160,12 +161,12 @@ export default {
     },
     fetchOption() {
       // 配送员
-      fetchDriverList().then(({ data }) => {
-        if (Array.isArray(data.rows)) {
-          this.options.driverOption = data.rows
+      fecthListListDrive().then(({ data }) => {
+        if (Array.isArray(data)) {
+          this.options.driverOption = data
         }
       }).catch(e => {
-        console.log(e)
+        this.$message({ type: 'error', message: e.msg })
       })
     },
     // 分页操作区域

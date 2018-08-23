@@ -6,6 +6,10 @@
         <template v-if="item.type === 'date'">
           <el-date-picker :style="{width:'140px'}" size="small" v-model="item.value" value-format="yyyy-MM-dd" type="date" :placeholder="item.placeholder"></el-date-picker>
         </template>
+        <template v-if="item.type === 'datetimerange'">
+          <el-date-picker v-model="item.value" size="small" value-format="yyyy-MM-dd HH:mm:ss" type="datetimerange" range-separator="-" start-placeholder="下单开始时间" end-placeholder="下单结束时间" :default-time="['23:00:00', '22:59:59']" :placeholder="item.placeholder"> </el-date-picker>
+          <!-- <el-date-picker :style="{width:'140px'}" size="small" v-model="item.value" value-format="yyyy-MM-dd" type="date" :placeholder="item.placeholder"></el-date-picker> -->
+        </template>
         <template v-else-if="item.type === 'datetime'">
           <el-date-picker :style="{width:'200px'}" size="small" v-model="item.value" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" :placeholder="item.placeholder"></el-date-picker>
         </template>

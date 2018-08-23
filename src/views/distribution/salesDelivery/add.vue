@@ -13,7 +13,7 @@
         </div>
         <div class="content-bar">
           <template v-if="data.type==='view'">
-            <el-form :model="form" ref="form" class="viewForm" label-width="120px" :inline="true">
+            <el-form :model="form" ref="form" class="viewForm" label-width="130px" :inline="true">
               <div class="row-item">
                 <div class="row-title">基本信息</div>
                 <div class="row-content">
@@ -72,18 +72,18 @@
                           <span v-cloak>{{form.serialNumber}}</span>
                       </el-form-item>
                     </el-col>
-                    <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="仓库:">
-                          <span v-cloak>{{form.stockInfoName}}</span>
-                      </el-form-item>
-                    </el-col> -->
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="配送员:">
+                      <el-form-item label="仓库:">
+                          <span v-cloak>{{form.stockName}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item :label="data.obj.flag === 0?'配送员:':'换货配送员:'">
                         <span v-cloak>{{form.driverName}}</span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="实际送达时间:">
+                      <el-form-item  :label="data.obj.flag === 0?'实际送达时间:':'换货实际送达时间:'"> 
                         <span v-cloak>{{form.factTime}}</span>
                       </el-form-item>
                     </el-col>
@@ -153,7 +153,7 @@
                       <el-table-column prop="price" label="价格" align="center"></el-table-column>
                       <el-table-column prop="orderQuantity" label="下单数量" align="center"></el-table-column>
                       <el-table-column prop="orderQuantityPrice" label="下单金额" align="center"></el-table-column>
-                      <el-table-column prop="finalQuantity" label="分拣量(斤)" align="center"></el-table-column>
+                      <el-table-column prop="finalQuantity" label="实际数量" align="center"></el-table-column>
                       <el-table-column prop="sumPrice" label="实际金额" align="center"></el-table-column>
                       <el-table-column  label="退/换货状态" align="center">
                         <template slot-scope="scope">

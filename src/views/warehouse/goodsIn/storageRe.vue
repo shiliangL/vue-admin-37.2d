@@ -14,6 +14,8 @@
 
 					<el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
 					<el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
+					<el-table-column prop="batchesBarCode" label="商品批次条码" align="center"></el-table-column>
+					<el-table-column prop="inOrderNo" label="关联入库单号" align="center"></el-table-column>
 					<el-table-column prop="stockInfoName" label="仓库" align="center"></el-table-column>
 					<el-table-column prop="stockStorageInfoNumbers" label="仓位" align="center"></el-table-column>
 					<el-table-column prop="storageType" label="入库类型" align="center">

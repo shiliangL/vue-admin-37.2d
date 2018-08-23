@@ -60,8 +60,7 @@
 import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs, SearchBar } from '@/components/base.js'
-import { fetchList, fecthRegionAll } from '@/api/distribution/salesDelivery.js'
-import { fetchDriverList } from '@/api/distribution/areaDelivery.js'
+import { fetchList, fecthListRegion, fecthListListDrive } from '@/api/distribution/salesDelivery.js'
 
 export default {
   name: 'goodsIn',
@@ -87,7 +86,6 @@ export default {
             { label: '退换货', value: 3 },
             { label: '已完成', value: 4 }
           ] },
-          // { type: 'option', value: null, key: 'stockId', class: 'w150', placeholder: '仓库', options: [] },
           { type: 'input', value: null, key: 'orderNoOrCumstorName', class: 'w180', placeholder: '输入单号/客户名检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
@@ -104,7 +102,7 @@ export default {
   },
   mounted() {
     this.fetchList()
-    this.fecthRegionAll()
+    this.fecthOption()
   },
   methods: {
     tabsCallBack(item) {
@@ -126,12 +124,12 @@ export default {
         this.$message({ type: 'error', message: e.msg })
       })
     },
-    fecthRegionAll() {
-      fecthRegionAll().then(({ data }) => {
+    fecthOption() {
+      fecthListRegion().then(({ data }) => {
         if (Array.isArray(data)) {
           for (const item of data) {
             item.label = item.title
-            item.value = item.id
+            item.value = item.pk
           }
           this.searchBarDate[0][1].options = data
         }
@@ -139,10 +137,10 @@ export default {
         this.$message({ type: 'error', message: e.msg })
       })
       // 配送员
-      fetchDriverList().then(({ data }) => {
-        if (Array.isArray(data.rows)) {
-          for (const item of data.rows) {
-            item.label = item.title
+      fecthListListDrive().then(({ data }) => {
+        if (Array.isArray(data)) {
+          for (const item of data) {
+            item.label = item.name
             item.value = item.id
           }
           this.searchBarDate[0][2].options = data
