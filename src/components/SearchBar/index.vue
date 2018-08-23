@@ -90,7 +90,7 @@ export default {
       const params = {}
       if (this.data.length > 0 && this.data[0] && this.data[0].length > 0) {
         const items = this.data[0]
-        const commonlyTypes = ['input', 'select', 'option', 'date', 'datetime']
+        const commonlyTypes = ['input', 'select', 'option', 'date', 'datetime', 'datetimerange']
         for (let i = 0; i < items.length; i++) {
           const item = items[i]
           if (commonlyTypes.indexOf(item['type']) !== -1) {
@@ -117,7 +117,7 @@ export default {
       const params = {}
       if (this.data.length > 0 && this.data[0] && this.data[0].length > 0) {
         const items = this.data[0]
-        const commonlyTypes = ['input', 'select', 'option', 'date', 'datetime']
+        const commonlyTypes = ['input', 'select', 'option', 'date', 'datetime', 'datetimerange']
         for (let i = 0; i < items.length; i++) {
           const item = items[i]
           if (commonlyTypes.indexOf(item['type']) !== -1) {

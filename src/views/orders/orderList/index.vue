@@ -159,14 +159,18 @@ export default {
       const data = {
         index,
         size,
-        ...params,
+        orderNoOrName: params.orderNoOrName,
+        orderSource: params.orderSource,
+        paymentType: params.paymentType,
+        beginOrderTime: params.orderTime ? params.orderTime[0] : null,
+        endOrderTime: params.orderTime ? params.orderTime[1] : null,
         status: this.curIndex
       }
       orderList(data).then(({ data }) => {
         this.table.data = data.rows
         this.pagination.total = data.total
       }).catch(e => {
-        this.$message({ type: 'error', message: e, duration: 0, showClose: true })
+        this.$message({ type: 'error', message: e.msg, duration: 0, showClose: true })
       })
     },
     clickMoreCommand(command) {
@@ -184,7 +188,7 @@ export default {
         this.table.data = data.rows
         this.pagination.total = data.total
       }).catch(e => {
-        this.$message({ type: 'error', message: e, duration: 0, showClose: true })
+        this.$message({ type: 'error', message: e.msg, duration: 0, showClose: true })
       })
     },
     // 分页操作区域

@@ -11,11 +11,11 @@
                       <span v-cloak>{{form.scmOrder.orderNo}}</span>
 									</el-form-item>
 								</el-col>
-								 <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
+								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="下单时间:" prop="categoryId">
-                      <span v-cloak>{{form.scmOrder.createdOn}}</span>
+                      <span v-cloak> 后台字段确认 </span>
 									</el-form-item>
-								</el-col> -->
+								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="客户名称:" prop="categoryId">
                       <span v-cloak>{{form.scmOrder.customerName}}</span>
@@ -50,6 +50,26 @@
 									<el-form-item label="要求送达时间:" prop="categoryId">
                       <span v-cloak>{{form.sendTime.beginTime}}</span> -
                       <span v-cloak>{{form.sendTime.endTime}}</span>
+									</el-form-item>
+								</el-col>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									<el-form-item label="配送番薯:" prop="categoryId">
+                      <span v-cloak> 厨满满专供 </span>
+									</el-form-item>
+								</el-col>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									<el-form-item label="销售配送单号:" prop="categoryId">
+                      <span v-cloak> 后台字段确认 </span>
+									</el-form-item>
+								</el-col>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									<el-form-item label="配送员:" prop="categoryId">
+                      <span v-cloak v-if="form.ship.length"> {{form.ship[0].driverName}} </span>
+									</el-form-item>
+								</el-col>
+								<el-col :xs="24" :sm="10" :md="8" :lg="6">
+									<el-form-item label="实际送达时间:" prop="categoryId">
+                      <span v-cloak> 后台字段确认 </span>
 									</el-form-item>
 								</el-col>
 
@@ -268,6 +288,7 @@ export default {
           phone: null,
           shippingTime: null
         },
+        ship: [],
         totalOrderQuantityPrice: 0,
         totalSumPric: 0,
         activityPreferences: 0,

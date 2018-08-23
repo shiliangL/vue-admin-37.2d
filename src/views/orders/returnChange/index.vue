@@ -110,11 +110,15 @@ export default {
   methods: {
     searchAction(params) {
       const { index, size } = this.pagination
+      const paramsData = JSON.parse(JSON.stringify(params))
+      paramsData.beginOrderTime = params.orderTime ? params.orderTime[0] : null
+      paramsData.endOrderTime = params.orderTime ? params.orderTime[1] : null
+      delete paramsData.orderTime
       const data = {
         index,
         size,
         method: this.curIndex,
-        ...params
+        ...paramsData
       }
       orderList(data).then(({ data }) => {
         this.table.data = data.rows
