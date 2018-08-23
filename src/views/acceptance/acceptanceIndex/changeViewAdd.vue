@@ -180,19 +180,20 @@ export default {
       this.$refs['form'].validateField(`table.${index}.acceptQuantity`, m => { if (m) isTrue = false })
       this.$refs['form'].validateField(`table.${index}.checkQuantity`, m => { if (m) isTrue = false })
       if (isTrue) {
-        // const data = {
-        //   purchaseAcceptId: item.purchaseAcceptId,
-        //   checkQuantity: item.checkQuantity,
-        //   weighQuantity: item.weighQuantity
-        // }
-        const data = JSON.parse(JSON.stringify(item))
-        delete data.table
-        updateReturnChange(data).then(res => {
-          this.$message({ type: 'success', message: '保存成功' })
-          this.resetSearch()
-        }).catch(e => {
-          this.$message({ type: 'error', message: e.msg })
-        })
+        this.$confirm('请核实输入数量,打印标签仅限操作一次，是否确定？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          const data = JSON.parse(JSON.stringify(item))
+          delete data.table
+          updateReturnChange(data).then(res => {
+            this.$message({ type: 'success', message: '保存成功' })
+            this.resetSearch()
+          }).catch(e => {
+            this.$message({ type: 'error', message: e.msg })
+          })
+        }).catch(() => {})
       } else {
         this.$message({ type: 'error', message: '请输入有效数值' })
         return

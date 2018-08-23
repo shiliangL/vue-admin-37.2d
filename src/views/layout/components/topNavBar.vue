@@ -67,11 +67,11 @@ export default {
       this.$store.dispatch('toggleSideBar')
     },
     logout() {
-      if (window.sessionStorage) window.sessionStorage.setItem('loginKey', null)
       this.$router.push({ path: '/login' })
       this.$store.dispatch('LogOut').then(() => {
         location.reload() // In order to re-instantiate the vue-router object to avoid bugs
       })
+      if (window.sessionStorage) window.sessionStorage.setItem('loginKey', null)
     }
   }
 }

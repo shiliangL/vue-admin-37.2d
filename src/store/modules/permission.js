@@ -48,7 +48,8 @@ const permission = {
         let accessedRouters
         if (roles.indexOf('admin') >= 0) {
           for (const item of asyncRouterMap) {
-            item.hidden = true
+            // item.hidden = true
+            item.hidden = false
           }
           asyncRouterMap[workType - 1].hidden = false
           accessedRouters = asyncRouterMap

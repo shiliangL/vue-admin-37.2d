@@ -13,7 +13,8 @@
           <el-table-column prop="customerName" label="客户名称" align="center"></el-table-column>
           <el-table-column prop="distributionArea" label="配送区域" align="center"></el-table-column>
           <el-table-column prop="stockName" label="仓库" align="center"></el-table-column>
-          <el-table-column prop="completionTime" label="出库单创建时间" align="center"></el-table-column>
+          <el-table-column prop="createdTime" label="出库单创建时间" align="center"></el-table-column>
+          <el-table-column prop="completionTime" label="打包完成时间" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">查看</el-button>

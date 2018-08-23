@@ -93,7 +93,12 @@
                     </el-table-column>
                     <el-table-column prop="sum" label="操作" align="center">
                       <template slot-scope="scope">
-                         <el-button type="text" size="mini" v-if="scope.row.whetherCreateStockOrder===0" @click.stop="clickToUpdate(scope.$index,scope.row)">打印标签</el-button>
+                        <template v-if="!scope.row.batchesBarCode">
+                          <el-button type="text" size="mini" v-if="scope.row.whetherCreateStockOrder===0" @click.stop="clickToUpdate(scope.$index,scope.row)">打印标签</el-button>
+                        </template>
+                        <template v-else>
+                          <el-button type="text" size="mini" disabled>打印标签</el-button>
+                        </template>
                       </template>
                     </el-table-column>
                   </el-table>
@@ -177,18 +182,25 @@ export default {
       this.$refs['form'].validateField(`table.${index}.receivedQuantity`, (m) => {
         if (m) { isTrue = false }
       })
+
       if (isTrue) {
-        const data = {
-          'purchaseAcceptId': item.purchaseAcceptId,
-          'receivedQuantity': item.receivedQuantity,
-          'weighQuantity': item.weighQuantity
-        }
-        updateInView(data).then(res => {
-          this.$message({ type: 'success', message: '保存成功' })
-          this.resetSearch()
-        }).catch(e => {
-          this.$message({ type: 'error', message: e.msg })
-        })
+        this.$confirm('请核实输入数量,打印标签仅限操作一次，是否确定？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          const data = {
+            'purchaseAcceptId': item.purchaseAcceptId,
+            'receivedQuantity': item.receivedQuantity,
+            'weighQuantity': item.weighQuantity
+          }
+          updateInView(data).then(res => {
+            this.$message({ type: 'success', message: '保存成功' })
+            this.resetSearch()
+          }).catch(e => {
+            this.$message({ type: 'error', message: e.msg })
+          })
+        }).catch(() => {})
       } else {
         this.$message({ type: 'error', message: '请输入有效数值' })
         return

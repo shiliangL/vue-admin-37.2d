@@ -53,25 +53,25 @@
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="打包台:">
-                        <el-input size="small" style="width:180px"  v-model.trim="form.tableName"></el-input>
-                       <span v-cloak>{{form.tableName}}</span>
+                        <span v-if="form.tableName" v-cloak>{{form.tableName}}</span>
+                        <span v-else v-cloak> / </span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="打包员:">
-                        <el-input size="small" style="width:180px"  v-model.trim="form.packerName"></el-input>
-                       <span v-cloak>{{form.packerName}}</span>
+                        <span v-if="form.packerName" v-cloak>{{form.packerName}}</span>
+                        <span v-else v-cloak> / </span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="订单打包条码:">
-                        <el-input size="small" style="width:180px"  v-model.trim="form.barCode"></el-input>
-                        <span v-cloak>{{form.barCode}}</span>
+                        <span v-if="form.barCode" v-cloak>{{form.barCode}}</span>
+                        <span v-else v-cloak> / </span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="订单打包完成时间:">
-                        <span v-if="!form.completionTime" v-cloak>{{form.completionTime}}</span>
+                        <span v-if="form.completionTime" v-cloak>{{form.completionTime}}</span>
                         <span v-else v-cloak> / </span>
                       </el-form-item>
                     </el-col>
@@ -95,13 +95,13 @@
                       <template slot-scope="scope"> <span>{{scope.$index + 1}}</span> </template>
                     </el-table-column>
                     <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
-                    <el-table-column prop="productName" label="规格" align="center"></el-table-column>
-                    <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
-                    <el-table-column prop="basicUnit" label="下单数量" align="center"></el-table-column>
-                    <el-table-column prop="basicUnit" label="分拣数量" align="center"></el-table-column>
-                    <el-table-column prop="basicUnit" label="商品分拣条码" align="center"></el-table-column>
-                    <el-table-column prop="basicUnit" label="分拣时间" align="center"></el-table-column>
-                    <el-table-column prop="basicUnit" label="打包记录扫码时间" align="center"></el-table-column>
+                    <el-table-column prop="specification" label="规格" align="center"></el-table-column>
+                    <el-table-column prop="basicUnitName" label="基本单位" align="center"></el-table-column>
+                    <el-table-column prop="orderQuantity" label="下单数量" align="center"></el-table-column>
+                    <el-table-column prop="sortingQuantity" label="分拣数量" align="center"></el-table-column>
+                    <el-table-column prop="barCode" label="商品分拣条码" align="center"></el-table-column>
+                    <el-table-column prop="sortingTime" label="分拣时间" align="center"></el-table-column>
+                    <el-table-column prop="scavengingTime" label="打包记录扫码时间" align="center"></el-table-column>
                   </el-table>
                 <div class="footer-block">
                   <span class="page" v-cloak> 共 {{form.table.length}} 条</span>
@@ -117,7 +117,9 @@
 
 <script>
 import addModel from '@/public/addModel.js'
-import { fecthHeaderDetail, fecthBodyDetail } from '@/api/packaging/index.js'
+import { fecthHeaderDetail, fecthBodyDetail, outUpdateQuantity } from '@/api/packaging/index.js'
+const loginKey = JSON.parse(sessionStorage.getItem('loginKey'))
+
 export default {
   mixins: [addModel],
   components: {
@@ -176,6 +178,13 @@ export default {
     },
     clickToSearch() {
       if (!this.data.obj.id) return
+
+      fecthHeaderDetail({ id: this.data.obj.id }).then(({ data }) => {
+        this.form = Object.assign(this.form, data)
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+
       fecthBodyDetail({ packageId: this.data.obj.id, inputContent: this.searchKey }).then(({ data }) => {
         this.form.table = data
       }).catch(e => {
@@ -187,31 +196,29 @@ export default {
       this.clickToSearch()
     },
     clickToUpdate() {
-      this.$confirm('确定打印标签吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-
-      }).catch(() => {})
-
-      // this.$refs['form'].validateField(`table.${index}.realQuantity`, (m) => {
-      //   if (!m) {
-      //     const data = {
-      //       'packageInfoId': 'string',
-      //       'tableId': 'string'
-      //     }
-      //     outUpdateQuantity(data).then(res => {
-      //       this.$message({ type: 'success', message: '保存成功' })
-      //       this.resetSearch()
-      //     }).catch(e => {
-      //       this.$message({ type: 'error', message: e.msg })
-      //     })
-      //   } else {
-      //     this.$message({ type: 'error', message: '请输入有效数值' })
-      //     return
-      //   }
-      // })
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          this.$confirm('打印标签仅限操作一次，是否确定?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            const data = {
+              'packageInfoId': this.data.obj.id,
+              'tableId': loginKey.id
+            }
+            outUpdateQuantity(data).then(res => {
+              this.$message({ type: 'success', message: '保存成功' })
+              this.resetSearch()
+            }).catch(e => {
+              this.$message({ type: 'error', message: e.msg })
+            })
+          }).catch(() => {})
+        } else {
+          this.$message({ type: 'error', message: '请输入有效数值' })
+          return
+        }
+      })
     }
   }
 }

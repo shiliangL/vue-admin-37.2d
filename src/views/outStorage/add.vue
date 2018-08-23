@@ -169,17 +169,23 @@ export default {
     clickToUpdate(index, item) {
       this.$refs['form'].validateField(`table.${index}.realQuantity`, (m) => {
         if (!m) {
-          const data = {
-            'detailsId': item.id,
-            'productId': item.productId,
-            'realQuantity': item.realQuantity
-          }
-          outUpdateQuantity(data).then(res => {
-            this.$message({ type: 'success', message: '保存成功' })
-            this.resetSearch()
-          }).catch(e => {
-            this.$message({ type: 'error', message: e.msg })
-          })
+          this.$confirm('请核实输入数量,保存仅限操作一次，是否确定？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            const data = {
+              'detailsId': item.id,
+              'productId': item.productId,
+              'realQuantity': item.realQuantity
+            }
+            outUpdateQuantity(data).then(res => {
+              this.$message({ type: 'success', message: '保存成功' })
+              this.resetSearch()
+            }).catch(e => {
+              this.$message({ type: 'error', message: e.msg })
+            })
+          }).catch(() => {})
         } else {
           this.$message({ type: 'error', message: '请输入有效数值' })
           return

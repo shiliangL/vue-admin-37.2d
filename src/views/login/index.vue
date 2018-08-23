@@ -53,7 +53,7 @@ export default {
         'imageCode': 'string',
         'password': '123456',
         'rememberMe': false,
-        'username': '验收 C'
+        'username': ''
       },
       loginRules: {},
       passwordType: 'password',

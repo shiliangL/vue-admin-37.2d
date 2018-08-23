@@ -124,6 +124,8 @@
 <script>
 import addModel from '@/public/addModel.js'
 import { fecthHeaderDetail, fecthBodyDetail, outUpdateQuantity } from '@/api/sorting/index.js'
+const loginKey = JSON.parse(sessionStorage.getItem('loginKey'))
+
 export default {
   mixins: [addModel],
   components: {
@@ -192,17 +194,27 @@ export default {
     clickToUpdate(index, item) {
       this.$refs['form'].validateField(`table.${index}.sortingQuantity`, (m) => {
         if (!m) {
-          const data = {
-            'sortingDetailsId': item.id,
-            'tableId': '82390d6e674948c282b7be3a218c3dda',
-            'weight': item.sortingQuantity
+          if (!loginKey) {
+            this.$message({ type: 'error', message: '工作台参数错误' })
+            return
           }
-          outUpdateQuantity(data).then(res => {
-            this.$message({ type: 'success', message: '保存成功' })
-            this.resetSearch()
-          }).catch(e => {
-            this.$message({ type: 'error', message: e.msg })
-          })
+          this.$confirm('请核实输入数量,打印标签仅限操作一次，是否确定？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            const data = {
+              'sortingDetailsId': item.id,
+              'tableId': loginKey.id,
+              'weight': item.sortingQuantity
+            }
+            outUpdateQuantity(data).then(res => {
+              this.$message({ type: 'success', message: '保存成功' })
+              this.resetSearch()
+            }).catch(e => {
+              this.$message({ type: 'error', message: e.msg })
+            })
+          }).catch(() => {})
         } else {
           this.$message({ type: 'error', message: '请输入有效数值' })
           return

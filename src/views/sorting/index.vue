@@ -44,6 +44,7 @@ import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs } from '@/components/base.js'
 import { fecthList } from '@/api/sorting/index.js'
+
 export default {
   name: 'sorting',
   mixins: [model],
@@ -76,6 +77,7 @@ export default {
     ]
   },
   mounted() {
+    this.loginKey = JSON.parse(sessionStorage.getItem('loginKey'))
     const date = new Date()
     const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)
     const day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate()
@@ -96,6 +98,7 @@ export default {
       const data = {
         index,
         size,
+        tableId: this.loginKey ? this.loginKey.id : null,
         stockOutCreatedTime: this.searchBarData[0][0].value,
         storehouseType: this.curIndex
       }
@@ -115,6 +118,7 @@ export default {
         index,
         size,
         ...item,
+        tableId: this.loginKey ? this.loginKey.id : null,
         storehouseType: this.curIndex
       }
       fecthList(data).then(({ data }) => {
