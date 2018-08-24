@@ -164,7 +164,7 @@ export default {
         this.table.data = data.rows
         this.pagination.total = data.total
       }).catch(e => {
-        this.$message({ type: 'error', message: e })
+        this.$message({ type: 'error', message: e.meg })
       })
     },
     // 分页操作区域

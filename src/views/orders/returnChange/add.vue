@@ -104,7 +104,7 @@
 											</el-form-item>
 										</el-col>
 										<el-col :xs="24" :sm="10" :md="8" :lg="6">
-											<el-form-item :label="data.obj.flag ===1?'退货完成时间':'换货完成时间'">
+											<el-form-item :label="data.obj.flag ===1?'退货完成时间:':'换货完成时间:'">
 													<span v-cloak>{{form.exchangeeDate}}</span>
 											</el-form-item>
 										</el-col>

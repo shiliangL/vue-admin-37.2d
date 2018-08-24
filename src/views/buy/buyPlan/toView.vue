@@ -86,36 +86,24 @@
 							<el-table-column prop="basicUnitName" label="基本单位" align="center"></el-table-column>
 							<el-table-column prop="availableQuantity" label="可用库存量" align="center"></el-table-column>
 							<el-table-column prop="planQuantity" label="计划采购量" align="center"></el-table-column>
-							<el-table-column prop="applyQuantity" v-if="this.showType" label="申请采购量" align="center">
-									<template slot-scope="scope">
-                    <div class="w110 el-input el-input--small" @click.stop="clickToChange(scope.$index, scope.row)" style="width:110px">
-                      <div class="el-input__inner" v-cloak> {{scope.row.applyQuantity}} </div>
+							<el-table-column prop="applyQuantity" label="申请采购量" align="center">
+                <template slot-scope="scope">
+                  <div class="w110 el-input el-input--small" @click.stop="clickToChange(scope.$index, scope.row)" style="width:110px" v-if="scope.row.auditStatus ===1">
+                    <div class="el-input__inner" v-cloak> {{scope.row.applyQuantity}} </div>
+                  </div>
+                  <span v-else v-cloak> {{scope.row.applyQuantity}} </span>
+                </template>
+              </el-table-column>
+							<el-table-column label="采购员/供应商" align="center">
+                <template slot-scope="scope">
+                  <el-popover placement="top" width="200" trigger="hover">
+                    <div v-for="(item,index) in scope.row.supplierInfoList" :key="index">
+                      <span>{{item.personnelName}}</span> : <span>{{item.quantity}}</span>;
                     </div>
-									</template>
-							</el-table-column>
-							<el-table-column v-else prop="applyQuantity" label="申请采购量" align="center"></el-table-column>
-
-							<el-table-column v-if="this.showType" label="采购员/供应商" align="center">
-									<template slot-scope="scope">
-                    <el-popover placement="top" width="200" trigger="hover">
-                      <div v-for="(item,index) in scope.row.supplierInfoList" :key="index">
-                        <span>{{item.personnelName}}</span> : <span>{{item.quantity}}</span>;
-                      </div>
-                      <span  slot="reference" v-cloak> {{scope.row.personnelNamesStr}} </span>
-                    </el-popover>
-                    <el-button type="text" size="mini" @click.stop="clickToChange(scope.$index, scope.row)">更改</el-button>
-									</template>
-							</el-table-column>
-              
-              <el-table-column v-else label="采购员/供应商" align="center">
-                	<template slot-scope="scope">
-                   <el-popover placement="top" width="200" trigger="hover">
-                     <div v-for="(item,index) in scope.row.supplierInfoList" :key="index">
-                        <span>{{item.personnelName}}</span> : <span>{{item.quantity}}</span>;
-                      </div>
-                      <el-button type="text" size="mini" slot="reference"> {{scope.row.personnelNamesStr}}  </el-button>
-                    </el-popover>
-									</template>
+                    <span slot="reference" v-cloak> {{scope.row.personnelNamesStr}} </span>
+                  </el-popover>
+                  <el-button v-if="scope.row.auditStatus ===1" type="text" size="mini" @click.stop="clickToChange(scope.$index, scope.row)">更改</el-button>
+                </template>
               </el-table-column>
 
 						</el-table>
@@ -149,6 +137,7 @@ export default {
   data() {
     return {
       showType: null, // 待审核的时候需要显示编辑页面
+      auditStatus: null,
       searchParam: null,
       innerVisible: false,
       curIndex: false,
@@ -200,23 +189,25 @@ export default {
       headerDetail({ id: this.$attrs.loadID }).then(({ data }) => {
         this.form.header = Object.assign(this.form.header, data)
         this.showType = data.auditStatus === 1 // 待审核的时候需要显示编辑页面
+        this.auditStatus = data.auditStatus
+        this.fetchBody()
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
-      this.fetchBody()
     },
     fetchBody() {
       if (!this.$attrs.loadID) return
       bodyDetail({ requestId: this.$attrs.loadID }).then(({ data }) => {
         if (Array.isArray(data)) {
-          const arr = []
           for (const item of data) {
+            const arr = []
+            item.auditStatus = this.auditStatus
             for (const key of item.supplierInfoList) {
               if (key.personnelName) {
                 arr.push(key.personnelName)
               }
             }
-            if (arr.length > 1) {
+            if (arr.length >= 2) {
               item.personnelNamesStr = arr[0] + '...'
             } else if (arr.length === 1) {
               item.personnelNamesStr = arr[0]
@@ -249,7 +240,13 @@ export default {
     validateForm() {
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          this.$emit('callBack', this.form.table)
+          const data = JSON.parse(JSON.stringify(this.form.table))
+          for (const item of data) {
+            if (item.hasOwnProperty('auditStatus')) {
+              delete item.auditStatus
+            }
+          }
+          this.$emit('callBack', data)
         } else {
           this.$message({ type: 'warning', message: '请核实表单' })
           return

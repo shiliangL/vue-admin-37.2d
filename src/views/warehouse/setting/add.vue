@@ -120,17 +120,16 @@ export default {
             this.$message({ type: 'success', message: `${res.msg}!` })
             this.dialog.visiable = false
             this.$emit('add')
-          }).catch(() => {
-            this.$message({ type: 'error', message: '操作失败' })
+          }).catch((e) => {
+            this.$message({ type: 'error', message: e.msg })
           })
         } else {
           createCK(this.sectionOne).then(res => {
             this.$message({ type: 'success', message: `${res.msg}!` })
             this.dialog.visiable = false
             this.$emit('add')
-          }).catch(() => {
-            this.$message({ type: 'error', message: '操作失败'
-            })
+          }).catch((e) => {
+            this.$message({ type: 'error', message: e.msg })
           })
         }
       } else {
@@ -150,16 +149,16 @@ export default {
             this.$message({ type: 'success', message: `${res.msg}!` })
             this.dialog.visiable = false
             this.$emit('add')
-          }).catch(() => {
-            this.$message({ type: 'error', message: '操作失败' })
+          }).catch((e) => {
+            this.$message({ type: 'error', message: e.msg })
           })
         } else {
           createCW(this.sectionTwo).then(res => {
             this.$message({ type: 'success', message: `${res.msg}!` })
             this.dialog.visiable = false
             this.$emit('add')
-          }).catch(() => {
-            this.$message({ type: 'error', message: '操作失败' })
+          }).catch((e) => {
+            this.$message({ type: 'error', message: e.msg })
           })
         }
       }

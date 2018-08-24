@@ -85,6 +85,7 @@
 							<el-table-column prop="planQuantity" label="计划采购量" align="center"></el-table-column>
 							<el-table-column prop="applyQuantity" label="申请采购量" align="center"></el-table-column>
 							<el-table-column prop="availableQuantityStr" v-if="showType" label="可用库存" align="center"></el-table-column>
+
 							<el-table-column prop="waitQuantity" label="待采购量" align="center" v-if="form.header.auditStatus!==4">
                   <template slot-scope="scope">
                     <div class="w110 el-input el-input--small" @click.stop="clickToChange(scope.$index, scope.row)" style="width:110px" v-if="showType">
@@ -93,29 +94,18 @@
                     <div v-else v-cloak> {{scope.row.waitQuantity}} </div>
 									</template>
 							</el-table-column>
-							<el-table-column  v-if="showType" label="采购员/供应商" align="center">
-									<template slot-scope="scope">
+
+              <el-table-column prop="applyQuantity" label="采购员/供应商" align="center">
+                <template slot-scope="scope">
                     <el-popover placement="top" width="200" trigger="hover">
                       <div v-for="(item,index) in scope.row.supplierInfoList" :key="index">
                         <span>{{item.personnelName}}</span> : <span>{{item.quantity}}</span>;
                       </div>
-                      <span type="text" size="small" slot="reference"> {{scope.row.supplierInfoList[0].personnelName}}  </span>
+                      <span type="text" size="small" slot="reference"> {{scope.row.supplierInfoList[0].personnelName}} </span>
                     </el-popover>
-
-									  <el-button type="text" size="mini" @click.stop="clickToChange(scope.$index, scope.row)">更改</el-button>
-									</template>
-								</el-table-column>
-
-                <el-table-column  v-else label="采购员/供应商" align="center">
-                	<template slot-scope="scope">
-                    <el-popover placement="top" width="200" trigger="hover">
-                      <div v-for="(item,index) in scope.row.supplierInfoList" :key="index">
-                        <span>{{item.personnelName}}</span> : <span>{{item.quantity}}</span>;
-                      </div>
-                      <el-button type="text" size="mini" slot="reference"> {{scope.row.supplierInfoList[0].personnelName}}  </el-button>
-                    </el-popover>
-                    </template>
-                </el-table-column>
+									  <el-button type="text" v-if="scope.row.auditStatus === 2" size="mini" @click.stop="clickToChange(scope.$index, scope.row)">更改</el-button>
+                </template>
+              </el-table-column>
 
 						</el-table>
 
@@ -154,6 +144,7 @@ export default {
   data() {
     return {
       showType: false, // 待审核的时候需要显示编辑页面
+      auditStatus: null, // 待审核的时候需要显示编辑页面
       searchParam: null,
       innerVisible: false,
       curIndex: false,
@@ -204,8 +195,8 @@ export default {
       headerDetail({ id: this.$attrs.loadID }).then(({ data }) => {
         this.form.header = Object.assign(this.form.header, data)
         this.showType = data.auditStatus === 2 // 待审核的时候需要显示编辑页面
+        this.auditStatus = data.auditStatus
         bodyDetail({ requestId: this.$attrs.loadID }).then(({ data }) => {
-          console.log(data, 'bodyDetail')
           if (Array.isArray(data)) {
             if (data.length > 0) {
               // for (const item of data) {
@@ -230,6 +221,7 @@ export default {
               // }
               if (this.showType) {
                 for (const item of data) {
+                  item.auditStatus = this.auditStatus
                   if (!item.availableQuantity) {
                     item.availableQuantity = 0
                   }
@@ -263,10 +255,10 @@ export default {
             }
           }
         }).catch(e => {
-          // this.loadingText = e.msg
+          this.$message({ type: 'error', message: e.meg })
         })
       }).catch(e => {
-        // this.loadingText = e.msg
+        this.$message({ type: 'error', message: e.meg })
       })
     },
     sendSearchParam() {
@@ -286,7 +278,13 @@ export default {
       this.$refs['form'].validate((valid) => {
         if (valid) {
           this.$emit('update:isPass', true)
-          this.$emit('input', this.form.table)
+          const data = JSON.parse(JSON.stringify(this.form.table))
+          for (const item of data) {
+            if (item.hasOwnProperty('auditStatus')) {
+              delete item.auditStatus
+            }
+          }
+          this.$emit('input', data)
           // this.$emit('callBack', this.form.table)
         } else {
           this.$message({ type: 'warning', message: '请核实表单' })
@@ -300,7 +298,7 @@ export default {
       bodyDetail({ requestId: this.$attrs.loadID }).then(({ data }) => {
         this.form.table = data
       }).catch(e => {
-        // this.loadingText = e.msg
+        this.$message({ type: 'error', message: e.msg })
       })
     }
   }
