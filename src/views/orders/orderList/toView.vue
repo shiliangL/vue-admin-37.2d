@@ -12,22 +12,22 @@
 									</el-form-item>
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="下单时间:" prop="categoryId">
-                      <span v-cloak> 后台字段确认 </span>
+									<el-form-item label="下单时间:">
+                      <span v-cloak>{{form.scmOrder.orderTime}}</span>
 									</el-form-item>
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="客户名称:" prop="categoryId">
+									<el-form-item label="客户名称:">
                       <span v-cloak>{{form.scmOrder.customerName}}</span>
 									</el-form-item>
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="客户账户:" prop="categoryId">
+									<el-form-item label="客户账户:">
                       <span v-cloak>{{form.scmOrder.loginName}}</span>
 									</el-form-item>
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="订单来源:" prop="categoryId">
+									<el-form-item label="订单来源:">
 											<span v-cloak v-if="form.scmOrder.orderSource ===0">App</span>
 											<span v-cloak v-if="form.scmOrder.orderSource ===1">微信公众号</span>
 											<span v-cloak v-if="form.scmOrder.orderSource ===2">微信小程序</span>
@@ -35,41 +35,41 @@
 									</el-form-item>
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="支付类型:" prop="categoryId">
+									<el-form-item label="支付类型:">
 											<span v-cloak v-if="form.scmOrder.paymentType ===0">货到付款</span>
 											<span v-cloak v-if="form.scmOrder.paymentType ===1">线上支付 </span>
 									</el-form-item>
 								</el-col>
 
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="要求送达日期:" prop="categoryId">
+									<el-form-item label="要求送达日期:">
                       <span v-cloak>{{form.sendTime.sendDate}}</span>
 									</el-form-item>
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="要求送达时间:" prop="categoryId">
+									<el-form-item label="要求送达时间:">
                       <span v-cloak>{{form.sendTime.beginTime}}</span> -
                       <span v-cloak>{{form.sendTime.endTime}}</span>
 									</el-form-item>
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="配送番薯:" prop="categoryId">
+									<el-form-item label="配送番薯:">
                       <span v-cloak> 厨满满专供 </span>
 									</el-form-item>
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="销售配送单号:" prop="categoryId">
-                      <span v-cloak> 后台字段确认 </span>
+									<el-form-item label="销售配送单号:">
+                      <span v-cloak>{{form.scmOrder.shipOrderNo}}</span>
 									</el-form-item>
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="配送员:" prop="categoryId">
+									<el-form-item label="配送员:">
                       <span v-cloak v-if="form.ship.length"> {{form.ship[0].driverName}} </span>
 									</el-form-item>
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="实际送达时间:" prop="categoryId">
-                      <span v-cloak> 后台字段确认 </span>
+									<el-form-item label="实际送达时间:">
+                      <span v-cloak>{{form.scmOrder.factIine}}</span>
 									</el-form-item>
 								</el-col>
 

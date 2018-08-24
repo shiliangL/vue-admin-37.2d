@@ -129,7 +129,7 @@
 								<el-row>
 									<el-col :xs="24" :sm="10" :md="8" :lg="8">
 										<el-form-item :label="data.obj.flag ===1?'申请退货金额':'申请换货金额'">
-												<span v-cloak>{{form.amountPrice}}</span>
+												<span v-cloak>{{form.returnPrice}}</span>
 										</el-form-item>
 									</el-col>
 
@@ -176,7 +176,7 @@
 									</el-col>
 									<el-col :xs="24" :sm="10" :md="8" :lg="8">
 										<el-form-item :label="data.obj.flag ===1?'实际退货金额':'实际换货金额'"> 
-												<span v-cloak>{{form.paidAmountxxx}}</span>
+												<span v-cloak>{{form.checkPrice}}</span>
 										</el-form-item>
 									</el-col>
 		

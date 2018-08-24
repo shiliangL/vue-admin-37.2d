@@ -13,7 +13,7 @@
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="下单时间:">
-                      <span v-cloak>{{form.scmOrder.createdOn}}</span>
+                      <span v-cloak>{{form.scmOrder.orderTime}}</span>
 									</el-form-item>
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
@@ -59,13 +59,13 @@
 								</el-col>
 
                 <el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="配送番薯:" prop="categoryId">
+									<el-form-item label="配送方式:" prop="categoryId">
                       <span v-cloak> 厨满满专供 </span>
 									</el-form-item>
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="销售配送单号:" prop="categoryId">
-                      <span v-cloak> 后台字段确认 </span>
+                       <span v-cloak>{{form.scmOrder.shipOrderNo}}</span>
 									</el-form-item>
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
@@ -75,10 +75,9 @@
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="实际送达时间:" prop="categoryId">
-                      <span v-cloak> 后台字段确认 </span>
+                      <span v-cloak>{{form.scmOrder.factIine}}</span>
 									</el-form-item>
 								</el-col>
-
  
               </el-row>
 						</div>

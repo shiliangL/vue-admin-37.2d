@@ -146,14 +146,14 @@ export default {
     },
     // 弹层操作
     clickToEditor(index, row) {
-      this.dialogTitle = '编辑仓管员'
+      this.dialogTitle = '编辑验收员'
       this.propsParentData.type = 'isUpdate'
       this.dialogVisible = true
       this.propsParentData.isUpdate = true
       this.propsParentData.data = row
     },
     showAdd() {
-      this.dialogTitle = '新增仓管员'
+      this.dialogTitle = '新增验收员'
       this.propsParentData.type = 'add'
       this.propsParentData.isUpdate = false
       this.dialogVisible = true

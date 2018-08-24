@@ -60,7 +60,7 @@
                               value-format="yyyy-MM-dd" type="date" 
                               placeholder="要求送达日期"></el-date-picker>
                         </el-form-item>
-                              <!-- :picker-options="pickerOptions" -->
+                        <!-- :picker-options="pickerOptions" -->
                       </el-col>
                       <el-col :xs="24" :sm="10" :md="8" :lg="6">
                           <div style="width:410px">

@@ -69,8 +69,8 @@
                       <el-table-column prop="outQuantity" label="下单数量" align="center"></el-table-column>
                       <el-table-column prop="realQuantity" label="出库数量" align="center"></el-table-column>
                       <el-table-column prop="outageTime" label="出库时间" align="center"></el-table-column>
-                      <el-table-column prop="sorterName" label="分拣台" align="center"></el-table-column>
-                      <el-table-column prop="sortingTableName" label="分拣员" align="center"></el-table-column>
+                      <el-table-column prop="sortingTableName" label="分拣台" align="center"></el-table-column>
+                      <el-table-column prop="sorterName" label="分拣员" align="center"></el-table-column>
                     </el-table>
                     <el-pagination
                       slot="footer"
