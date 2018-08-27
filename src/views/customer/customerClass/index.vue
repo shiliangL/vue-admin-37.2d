@@ -176,12 +176,13 @@ export default {
     }
   },
   created() {
+    // 0 代表未激活  1 代表 待审核 2 代表审核未通过 3 代表审核通过
     this.tabTitles = [
       { title: '全部', value: null },
       { title: '未激活', value: 0 },
-      { title: '待审核', value: 2 },
+      { title: '待审核', value: 1 },
       { title: '审核通过', value: 3 },
-      { title: '审核拒绝', value: 4 }
+      { title: '审核拒绝', value: 2 }
     ]
   },
   mounted() {

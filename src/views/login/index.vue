@@ -8,13 +8,13 @@
               <span class="title">{{ loginTitle }}</span>
             </div>
             <el-form-item prop="username" :rules="rules.input">
-              <el-input name="username" type="text" v-model.trim="loginForm.username" autoComplete="on" placeholder="username">
+              <el-input name="username" type="text" v-model.trim="loginForm.username" autoComplete="on" placeholder="userName">
                <i slot="prefix" class="el-input__icon el-icon-menu"></i>
                </el-input >
             </el-form-item>
 
             <el-form-item prop="password" :rules="rules.input">
-              <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model.trim="loginForm.password" autoComplete="on" placeholder="password">
+              <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model.trim="loginForm.password" autoComplete="on" placeholder="passWord">
                <i slot="prefix" class="el-input__icon el-icon-view"></i>
               </el-input>
             </el-form-item>
@@ -51,9 +51,9 @@ export default {
     return {
       loginForm: {
         'imageCode': 'string',
-        'password': '123456',
+        'password': '',
         'rememberMe': false,
-        'username': 'admin01'
+        'username': ''
       },
       loginRules: {},
       passwordType: 'password',
