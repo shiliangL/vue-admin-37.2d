@@ -65,7 +65,7 @@
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="销售配送单号:" prop="categoryId">
-                      <span v-cloak v-if="form.ship"> {{form.ship[0].shipOrderNo}} </span>
+                      <span v-cloak v-if="form.ship"> {{form.ship[0].shipNo}} </span>
 									</el-form-item>
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
@@ -75,7 +75,7 @@
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="实际送达时间:" prop="categoryId">
-                      <span v-cloak v-if="form.ship"> {{form.ship[0].factIine}} </span>
+                      <span v-cloak v-if="form.ship"> {{form.ship[0].factTime}} </span>
 									</el-form-item>
 								</el-col>
  
