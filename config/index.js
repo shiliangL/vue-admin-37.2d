@@ -11,14 +11,14 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      // '/': {
-      //   target: 'http://39.108.235.6:9002', // 服务器
-      //   changeOrigin: true,
-      // },
       '/': {
-        target: 'http://10.1.1.181:5858/', // 本地主机
+        target: 'http://39.108.235.6:9002/', // 服务器dev
         changeOrigin: true,
       },
+      // '/': {
+      //   target: 'http://10.1.1.181:5858/', // 本地主机
+      //   changeOrigin: true,
+      // },
       // '/': {
       //   target: 'http://10.1.1.131:9001', // 本地主机
       //   changeOrigin: true,

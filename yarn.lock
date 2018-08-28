@@ -78,6 +78,12 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
+"@xkeshi/vue-barcode@^1.0.0":
+  version "1.0.0"
+  resolved "http://registry.npm.taobao.org/@xkeshi/vue-barcode/download/@xkeshi/vue-barcode-1.0.0.tgz#a504a4c7cd29dc7e387f3d7afb6acd3a2613831c"
+  dependencies:
+    jsbarcode "^3.9.0"
+
 abbrev@1:
   version "1.1.1"
   resolved "http://registry.npm.taobao.org/abbrev/download/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -3740,6 +3746,10 @@ js-yaml@~3.7.0:
     argparse "^1.0.7"
     esprima "^2.6.0"
 
+jsbarcode@^3.9.0:
+  version "3.9.0"
+  resolved "http://registry.npm.taobao.org/jsbarcode/download/jsbarcode-3.9.0.tgz#dabe86e28bc3f189a80dc9d88030036882967912"
+
 jsbn@~0.1.0:
   version "0.1.1"
   resolved "http://registry.npm.taobao.org/jsbn/download/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
@@ -5234,6 +5244,10 @@ pretty-error@^2.0.2:
   dependencies:
     renderkid "^2.0.1"
     utila "~0.4"
+
+print-js@^1.0.50:
+  version "1.0.50"
+  resolved "http://registry.npm.taobao.org/print-js/download/print-js-1.0.50.tgz#40803b9c5b86ff4645faf0929f00cbb8eee86255"
 
 private@^0.1.6, private@^0.1.8:
   version "0.1.8"

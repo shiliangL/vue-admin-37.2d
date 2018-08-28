@@ -135,7 +135,7 @@ export default {
     // 弹层操作
     click2view(index, row) {
       row.flag = this.curIndex
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '销售换货详情' }})
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '查看销售换货详情' }})
     },
     click2follow(index, row) {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'follow', obj: row }})

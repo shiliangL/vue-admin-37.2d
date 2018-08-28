@@ -163,7 +163,7 @@ export default {
     },
     // 弹层操作
     click2view(index, row) {
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '查看入库单信息' }})
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '查看采购入库详情' }})
     },
     refrehList() {
       this.fecthList()

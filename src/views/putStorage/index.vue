@@ -138,7 +138,24 @@ export default {
     },
     // 弹层操作
     click2view(index, row) {
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '入库信息详情' }})
+      let t = null
+      switch (this.curIndex) {
+        case 1:
+          t = '采购订单入库详情'
+          break
+        case 2:
+          t = '销售退货入库详情'
+          break
+        case 3:
+          t = '销售换货入库详情'
+          break
+        case 4:
+          t = '其他入库详情'
+          break
+        default:
+          break
+      }
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: t }})
     },
     refrehList() {
       this.fecthList()

@@ -11,9 +11,9 @@
               <span>{{scope.$index + 1}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="code" label="销售退货单号" width="170" align="center"></el-table-column>
-          <el-table-column prop="productName" label="商品名称" width="170" align="center"></el-table-column>
-          <el-table-column prop="orderCode" label="关联销售订单编号" width="170" align="center"></el-table-column>
+          <el-table-column prop="code" label="销售退货单号" align="center"></el-table-column>
+          <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
+          <el-table-column prop="orderCode" label="关联销售订单编号" align="center"></el-table-column>
           <el-table-column prop="createTime" label="申请退货时间" align="center"></el-table-column>
           <el-table-column prop="examTime" label="退货审核同意时间" align="center"></el-table-column>
           <el-table-column prop="driverName" label="配送员" align="center"></el-table-column>
@@ -140,7 +140,7 @@ export default {
     // 弹层操作
     click2view(index, row) {
       row.flag = this.curIndex
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '销售退货详情' }})
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '查看销售退货详情' }})
     },
     click2follow(index, row) {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'follow', obj: row }})

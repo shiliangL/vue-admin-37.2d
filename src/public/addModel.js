@@ -1,13 +1,14 @@
 // 添加编辑页面公用数据模型
+import { PrintLabel } from '@/components/base.js'
 export default {
   props: {
     data: { // 用于给外部的数据传递
       type: Object,
       default: null
-    },
-    propsSonData: {
-      type: Object
     }
+  },
+  components: {
+    PrintLabel
   },
   data() {
     return {
@@ -19,6 +20,8 @@ export default {
         loading: false, // 确定按钮状态
         text: '确定' // 按钮默认文字
       },
+      propsParentData: null,
+      dialogVisible: false,
       saveLoading: false,
       loading: true,
       loadingText: null,

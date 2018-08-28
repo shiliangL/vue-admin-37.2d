@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="content-bar">
-         	   <el-form :model="form" ref="form" label-width="130px" :inline="true">
+         	   <el-form :model="form" ref="form" label-width="140px" :inline="true">
             <!--基本信息-->
             <div class="row-item">
                 <div class="row-title">基本信息</div>
@@ -68,7 +68,7 @@
                     <el-table-column prop="returnGoodsQuantity" label="申请换货数量" align="center"></el-table-column>
                     <el-table-column prop="acceptQuantity" label="收货称重量" align="center">
                       <template slot-scope="scope">
-                        <span v-if="scope.row.whetherCreateStockOrder===0" v-cloak>{{scope.row.acceptQuantity}}</span>
+                        <span v-if="scope.row.barCode" v-cloak>{{scope.row.acceptQuantity}}</span>
                         <el-form-item v-else label="" label-width="0px" :prop="'table.'+scope.$index+'.acceptQuantity'"  :rules="[{ required: true, validator: rules.validNumber2, trigger: 'change' }]">
                           <el-input size="small" v-model.trim="scope.row.acceptQuantity"></el-input>
                         </el-form-item>
@@ -76,7 +76,7 @@
                     </el-table-column>
                     <el-table-column prop="checkQuantity" label="验收接收量" align="center">
                        <template slot-scope="scope">
-                        <span v-if="scope.row.whetherCreateStockOrder===0" v-cloak>{{scope.row.checkQuantity}}</span>
+                        <span v-if="scope.row.barCode" v-cloak>{{scope.row.checkQuantity}}</span>
                         <el-form-item v-else label="" label-width="0px" :prop="'table.'+scope.$index+'.checkQuantity'"  :rules="[{ required: true, validator: rules.validNumber2, trigger: 'change' }]">
                           <el-input size="small" v-model.trim="scope.row.checkQuantity"></el-input>
                         </el-form-item>
@@ -96,8 +96,8 @@
                     </el-table-column>
                     <el-table-column prop="sum" label="操作" align="center">
                       <template slot-scope="scope">
-                         <el-button type="text" size="mini" v-if="scope.row.putFlag===0" @click.stop="clickToUpdate(scope.$index,scope.row)">打印标签</el-button>
-                         <el-button type="text" size="mini" v-else disabled>打印标签</el-button>
+                         <el-button type="text" size="mini" v-if="!scope.row.barCode" @click.stop="clickToUpdate(scope.$index,scope.row)">生成标签</el-button>
+                         <el-button type="text" size="mini" v-else @click.stop="clickToPrint(scope.$index,scope.row)">打印标签</el-button>
                       </template>
                     </el-table-column>
                   </el-table>
@@ -110,6 +110,13 @@
         </div>
       </div>
     </el-dialog>
+
+
+    <!-- 弹层区域 -->
+    <el-dialog title="条码区域" class="dialogTitle" width="520px" :visible.sync="dialogVisible" append-to-body center @close="closeAdd">
+      <PrintLabel v-if="dialogVisible" @close="closeAdd" :propsSonData="propsParentData"></PrintLabel>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -180,7 +187,7 @@ export default {
       this.$refs['form'].validateField(`table.${index}.acceptQuantity`, m => { if (m) isTrue = false })
       this.$refs['form'].validateField(`table.${index}.checkQuantity`, m => { if (m) isTrue = false })
       if (isTrue) {
-        this.$confirm('请核实输入数量,打印标签仅限操作一次，是否确定？', '提示', {
+        this.$confirm('请核实输入数量,生成标签仅限操作一次，是否确定？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -216,6 +223,15 @@ export default {
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
+    },
+    closeAdd() {
+      this.dialogVisible = false
+      this.propsParentData = null
+    },
+    clickToPrint(index, item) {
+      this.dialogVisible = true
+      item.barcode = item.barCode
+      this.propsParentData = item
     }
   }
 }

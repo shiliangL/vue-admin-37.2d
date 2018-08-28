@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="content-bar">
-         	   <el-form :model="form" ref="form" label-width="130px" :inline="true">
+         	   <el-form :model="form" ref="form" label-width="140px" :inline="true">
             <!--基本信息-->
             <div class="row-item">
                 <div class="row-title">基本信息</div>
@@ -65,7 +65,7 @@
                     <el-table-column prop="realQuantity" label="实际采购量" align="center"></el-table-column>
                     <el-table-column prop="weighQuantity" label="收货称重量" align="center">
                       <template slot-scope="scope">
-                        <span v-if="scope.row.whetherCreateStockOrder!==0" v-cloak>{{scope.row.weighQuantity}}</span>
+                        <span v-if="scope.row.batchesBarCode" v-cloak>{{scope.row.weighQuantity}}</span>
                         <el-form-item v-else label="" label-width="0px" :prop="'table.'+scope.$index+'.weighQuantity'"  :rules="[{ required: true, validator: rules.validNumber2, trigger: 'change' }]">
                           <el-input size="small" v-model.trim="scope.row.weighQuantity"></el-input>
                         </el-form-item>
@@ -73,7 +73,7 @@
                     </el-table-column>
                     <el-table-column prop="receivedQuantity" label="验收接收量" align="center">
                        <template slot-scope="scope">
-                        <span v-if="scope.row.whetherCreateStockOrder!==0" v-cloak>{{scope.row.receivedQuantity}}</span>
+                        <span v-if="scope.row.batchesBarCode" v-cloak>{{scope.row.receivedQuantity}}</span>
                         <el-form-item v-else label="" label-width="0px" :prop="'table.'+scope.$index+'.receivedQuantity'"  :rules="[{ required: true, validator: rules.validNumber2, trigger: 'change' }]">
                           <el-input size="small" v-model.trim="scope.row.receivedQuantity"></el-input>
                         </el-form-item>
@@ -91,13 +91,13 @@
                         <span v-else v-cloak> / </span>
                       </template>
                     </el-table-column>
-                    <el-table-column prop="sum" label="操作" align="center">
+                    <el-table-column prop="sum" label="操作" align="center" width="180">
                       <template slot-scope="scope">
                         <template v-if="!scope.row.batchesBarCode">
-                          <el-button type="text" size="mini" v-if="scope.row.whetherCreateStockOrder===0" @click.stop="clickToUpdate(scope.$index,scope.row)">打印标签</el-button>
+                          <el-button type="text" size="mini" v-if="scope.row.whetherCreateStockOrder===0" @click.stop="clickToUpdate(scope.$index,scope.row)">生成标签</el-button>
                         </template>
                         <template v-else>
-                          <el-button type="text" size="mini" disabled>打印标签</el-button>
+                          <el-button type="text" size="mini" v-if="scope.row.batchesBarCode" @click.stop="clickToPrint(scope.$index,scope.row)">打印标签</el-button>
                         </template>
                       </template>
                     </el-table-column>
@@ -111,6 +111,12 @@
         </div>
       </div>
     </el-dialog>
+
+    <!-- 弹层区域 -->
+    <el-dialog title="条码区域" class="dialogTitle" width="520px" :visible.sync="dialogVisible" append-to-body center @close="closeAdd">
+      <PrintLabel v-if="dialogVisible" @close="closeAdd" :propsSonData="propsParentData"></PrintLabel>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -119,8 +125,6 @@ import addModel from '@/public/addModel.js'
 import { inViewHeaderDetail, inViewBodyDetail, updateInView } from '@/api/acceptance/index.js'
 export default {
   mixins: [addModel],
-  components: {
-  },
   data() {
     return {
       currentTitle: null,
@@ -184,7 +188,7 @@ export default {
       })
 
       if (isTrue) {
-        this.$confirm('请核实输入数量,打印标签仅限操作一次，是否确定？', '提示', {
+        this.$confirm('请核实输入数量,生成标签仅限操作一次，是否确定？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -221,6 +225,15 @@ export default {
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
+    },
+    closeAdd() {
+      this.dialogVisible = false
+      this.propsParentData = null
+    },
+    clickToPrint(index, item) {
+      this.dialogVisible = true
+      item.barcode = item.batchesBarCode
+      this.propsParentData = item
     }
   }
 }
