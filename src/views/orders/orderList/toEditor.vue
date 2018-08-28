@@ -65,17 +65,17 @@
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="销售配送单号:" prop="categoryId">
-                       <span v-cloak>{{form.scmOrder.shipOrderNo}}</span>
+                      <span v-cloak v-if="form.ship"> {{form.ship[0].shipOrderNo}} </span>
 									</el-form-item>
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="配送员:" prop="categoryId">
-                      <span v-cloak v-if="form.ship.length"> {{form.ship[0].driverName}} </span>
+                      <span v-cloak v-if="form.ship"> {{form.ship[0].driverName}} </span>
 									</el-form-item>
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="实际送达时间:" prop="categoryId">
-                      <span v-cloak>{{form.scmOrder.factIine}}</span>
+                      <span v-cloak v-if="form.ship"> {{form.ship[0].factIine}} </span>
 									</el-form-item>
 								</el-col>
  
@@ -155,7 +155,7 @@
 							
 							<el-col :xs="24" :sm="10" :md="8" :lg="8">
 								<el-form-item label="未支付金额:" >
-										<span v-cloak>{{form.unpaidAmount}}</span>
+										<span v-cloak>{{unpaidAmount}}</span>
 								</el-form-item>
 							</el-col>
 
@@ -311,7 +311,7 @@ export default {
           phone: null,
           shippingTime: null
         },
-        ship: [],
+        ship: null,
         totalOrderQuantityPrice: 0,
         totalSumPric: 0,
         activityPreferences: 0,
@@ -355,6 +355,13 @@ export default {
         sum += parseInt(item.orderQuantityPrice)
       }
       return sum
+    },
+    unpaidAmount() {
+      if (!this.form.paidAmount) {
+        return this.form.unpaidAmount
+      } else {
+        return 0
+      }
     }
   },
   methods: {

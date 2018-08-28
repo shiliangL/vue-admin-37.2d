@@ -355,7 +355,7 @@ export default {
       }
       this.$refs['stockInDetailList'].validate(valid => {
         if (valid) {
-          this.$confirm('是否确保保存', '提示', {
+          this.$confirm('是否确保存？', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'

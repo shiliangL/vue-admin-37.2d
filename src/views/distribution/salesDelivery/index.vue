@@ -27,7 +27,7 @@
                <span v-if="scope.row.status===1"> 配送中 </span>
                <span v-if="scope.row.status===2"> 已送达 </span>
                <span v-if="scope.row.status===3"> 退换货 </span>
-               <span v-if="scope.row.status===4"> 已完成 </span>
+               <span v-if="scope.row.status===4"> 已收货 </span>
             </template>
           </el-table-column>
  
@@ -84,7 +84,7 @@ export default {
             { label: '配送中', value: 1 },
             { label: '已送达', value: 2 },
             { label: '退换货', value: 3 },
-            { label: '已完成', value: 4 }
+            { label: '已收货', value: 4 }
           ] },
           { type: 'input', value: null, key: 'orderNoOrCumstorName', class: 'w180', placeholder: '输入单号/客户名检索' },
           { type: 'search', name: '查询' },

@@ -42,7 +42,7 @@
 			</el-row>
 
     <!-- 弹层区域 -->
-    <el-dialog title="修改密码" width="410px" :visible.sync="dialogVisible" append-to-body center @close="closeForm">
+    <el-dialog title="修改密码" width="520px" :visible.sync="dialogVisible" append-to-body center @close="closeForm">
       <div v-if="dialogVisible"> <dialogKey @close="closeForm" @logout="logout"></dialogKey> </div>
     </el-dialog>
 
@@ -52,9 +52,8 @@
 <script>
 import dialogKey from './dialogKey.vue'
 import ScrollPane from '@/components/ScrollPane'
-import { mapGetters } from 'vuex'
 import { Hamburger, Breadcrumb } from '@/components/base.js'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'topNavBar',
