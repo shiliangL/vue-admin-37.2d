@@ -60,3 +60,10 @@ export function classUpdate(data) {
     data
   })
 }
+export function updateSort(data) {
+  return request({
+    url: 'productCategory/updateSort',
+    method: 'PUT',
+    data
+  })
+}

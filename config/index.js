@@ -20,7 +20,7 @@ module.exports = {
       //   changeOrigin: true,
       // },
       // '/': {
-      //   target: 'http://10.1.1.131:9001/', // 王艳本机
+      //   target: 'http://10.1.1.131:9002/', // 王艳本机
       //   changeOrigin: true,
       // },
     },

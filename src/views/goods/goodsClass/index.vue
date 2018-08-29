@@ -9,34 +9,35 @@
 			<div class="goodsClass">
 
         <el-collapse accordion v-if="tableData.length">
-          <el-collapse-item v-for="(item,index) in tableData" :name="index" :key="index">
-            <template slot="title">
-              <div class="flexBox title">
-                <div>{{item.title}}</div>
-                <div> 
-                  <el-button type="text" size="mini" @click.stop="() => adddChild(item,index)"> 添加子类 </el-button>
-                  <el-button type="text" size="mini" @click.stop="() => editorParent(item,index)"> 编辑 </el-button>
-                  <el-button type="text" style="color:red" size="mini" @click.stop="() => deleteParent(item,index)"> 删除 </el-button>
+          <draggable element="el-collapse" :list="tableData" :options="{animation:200,dragClass:'dragClass'}" @update="update">
+            <el-collapse-item v-for="(item,index) in tableData" :name="index" :key="index">
+              <template slot="title">
+                <div class="flexBox title">
+                  <div> <i class="el-icon-rank"></i>  {{item.title}}  </div>
+                  <div> 
+                    <el-button type="text" size="mini" @click.stop="() => adddChild(item,index)"> 添加子类 </el-button>
+                    <el-button type="text" size="mini" @click.stop="() => editorParent(item,index)"> 编辑 </el-button>
+                    <el-button type="text" style="color:red" size="mini" @click.stop="() => deleteParent(item,index)"> 删除 </el-button>
+                  </div>
+                </div>
+              </template>
+              <div class="content">
+                <div class="content-item flexBox" v-if="item.children && item.children.length>0" v-for="(itemSub,indexUsb) in item.children" :key="indexUsb">
+                  <div>
+                    {{itemSub.title}}
+                  </div>
+                  <div>
+                    <el-button type="text" size="mini" @click.stop="() => editorChild(itemSub,indexUsb)"> 编辑 </el-button>
+                    <el-button type="text" style="color:red" size="mini" @click.stop="() => deleteChild(itemSub,indexUsb)"> 删除 </el-button>
+                  </div>
+                </div>
+                <!-- {{item.children}} -->
+                <div v-if="item.children && item.children.length===0" class="pageCunt">
+                  无子类数据
                 </div>
               </div>
-            </template>
-            <div class="content">
-
-              <div class="content-item flexBox" v-if="item.children && item.children.length>0" v-for="(itemSub,indexUsb) in item.children" :key="indexUsb">
-                <div>
-                  {{itemSub.title}}
-                </div>
-                <div>
-                  <el-button type="text" size="mini" @click.stop="() => editorChild(itemSub,indexUsb)"> 编辑 </el-button>
-                  <el-button type="text" style="color:red" size="mini" @click.stop="() => deleteChild(itemSub,indexUsb)"> 删除 </el-button>
-                </div>
-              </div>
-              <!-- {{item.children}} -->
-              <div v-if="item.children && item.children.length===0" class="pageCunt">
-                无子类数据
-              </div>
-            </div>
-          </el-collapse-item>
+            </el-collapse-item>
+          </draggable>
         </el-collapse>
         <div v-else class="pageCunt">
           暂无数据
@@ -50,14 +51,16 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 import model from '@/public/listModel.js'
-import { list, deleteClass } from '@/api/goodsClass.js'
+import { list, deleteClass, updateSort } from '@/api/goodsClass.js'
 import Add from './add'
 
 export default {
   name: 'goodsClass',
   components: {
-    Add
+    Add,
+    draggable
   },
   mixins: [model],
   data() {
@@ -77,9 +80,28 @@ export default {
   },
   mounted() {
     this.fecthList()
+    // 为了防止火狐浏览器拖拽的时候以新标签打开，此代码真实有效
+    document.body.ondrop = (event) => {
+      event.preventDefault()
+      event.stopPropagation()
+    }
   },
   created() {},
   methods: {
+    update(e) {
+      // 往上移动
+      let data = null
+      if (e.newIndex < e.oldIndex) {
+        data = [{ id: this.tableData[e.newIndex].id, sort: this.tableData[e.newIndex + 1].sort }, { id: this.tableData[e.newIndex + 1].id, sort: this.tableData[e.newIndex].sort }]
+      } else {
+        data = [{ id: this.tableData[e.newIndex].id, sort: this.tableData[e.newIndex - 1].sort }, { id: this.tableData[e.newIndex - 1].id, sort: this.tableData[e.newIndex].sort }]
+      }
+      updateSort(data).then(res => {
+        this.fecthList()
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.meg })
+      })
+    },
     refreshPage() {
       this.fecthList()
     },
@@ -185,6 +207,7 @@ export default {
     padding: 0 10px;
   }
   .content-item{
+    cursor: pointer;
     margin: 0 10px;
     &:hover{
       // background-color: #f5f7fa;
@@ -203,6 +226,9 @@ export default {
     // padding: 10px 0;
     text-align: center;
     font-size: 14px;
+  }
+  .dragClass{
+    background: #1cbc9c;
   }
 }
 </style>

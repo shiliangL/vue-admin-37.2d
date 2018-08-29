@@ -40,3 +40,10 @@ export function packagingUpdate(data) {
     data
   })
 }
+export function updateSort(data) {
+  return request({
+    url: 'productUnitInfo/updateSort',
+    method: 'PUT',
+    data
+  })
+}

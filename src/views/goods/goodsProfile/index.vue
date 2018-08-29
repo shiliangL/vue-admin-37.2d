@@ -7,8 +7,8 @@
     <search-bar ref="searchBar" :data="searchBarData" @add="showAdd" @search="searchAction" @reset="reset"></search-bar>
 
     <!-- 表格 -->
-    <table-contain  :height.sync="table.maxHeight">
-      <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
+    <div>
+      <el-table :data="table.data" slot="table" :size="table.size" max-height="420" style="width: 100%;" highlight-current-row>
         <el-table-column label="序号" width="50" align="center">
           <template slot-scope="scope">
             <span>{{scope.$index + 1}}</span>
@@ -16,26 +16,19 @@
         </el-table-column>
         <el-table-column prop="title" label="计量单位名称" align="center"></el-table-column>
         <el-table-column prop="summary" label="简要介绍" align="center"></el-table-column>
-        <el-table-column label="操作" align="center" width="180">
+        <el-table-column label="操作" align="center" width="230">
           <template slot-scope="scope" align="center">
+            <el-button type="text" size="mini" @click.stop="clickToUp(scope.$index,scope.row)"><i class="el-icon-sort-up"></i></el-button>
+            <el-button type="text" size="mini" @click.stop="clickToDown(scope.$index,scope.row)"><i class="el-icon-sort-down"></i></el-button>
             <el-button type="text" size="mini" @click.stop="clickToEdit(scope.$index,scope.row)">编辑</el-button>
             <el-button type="text" size="mini" @click.stop="clickToDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      
-      <el-pagination
-        slot="footer"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="pagination.page"
-        :page-sizes="pagination.pageSizes"
-        :page-size="pagination.size"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total">
-      </el-pagination>
-
-    </table-contain>
+      <div class="footer-block" style="font-size: 14px;color: #747474;">
+        <span class="page" v-cloak> 共 {{table.data.length}} 条</span>
+      </div>
+    </div>
 
 		<!-- 弹层区域 -->
 		<el-dialog :title="dialogTitle"  width="400px" :visible.sync="dialogVisible" append-to-body center @close="resetForm">
@@ -61,7 +54,7 @@ import model from '@/public/listModel.js'
 import addModel from '@/public/addModel.js'
 
 import rules from '@/public/rules.js'
-import { packagingList, createPackaging, deletePackaging, packagingInfo, packagingUpdate } from '@/api/goodsProfile.js'
+import { packagingList, createPackaging, deletePackaging, packagingInfo, packagingUpdate, updateSort } from '@/api/goodsProfile.js'
 
 export default {
   name: 'goodsClass',
@@ -109,15 +102,6 @@ export default {
     reset() {
       this.fecthList()
     },
-    // 分页操作区域
-    handleSizeChange(value) {
-      this.pagination.size = value
-      this.fecthList()
-    },
-    handleCurrentChange(value) {
-      this.pagination.index = value
-      this.fecthList()
-    },
     fecthList() {
       const { index, size } = this.pagination
       const data = {
@@ -126,7 +110,9 @@ export default {
         title: this.searchTitle
       }
       packagingList(data).then(({ data }) => {
-        this.table.data = data.rows
+        if (Array.isArray(data)) {
+          this.table.data = data
+        }
         this.pagination.total = data.total
       }).catch(e => {
         this.$message({ type: 'error', message: '列表加载失败' })
@@ -191,6 +177,24 @@ export default {
           this.$message({ type: 'warning', message: '请核实表单' })
           return
         }
+      })
+    },
+    clickToUp(index, item) {
+      if (index === 0) return
+      const data = [{ id: item.pk, sort: this.table.data[index - 1].sort }, { id: this.table.data[index - 1].pk, sort: item.sort }]
+      updateSort(data).then(res => {
+        this.fecthList()
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.meg })
+      })
+    },
+    clickToDown(index, item) {
+      if (!this.table.data[index + 1]) return
+      const data = [{ id: item.pk, sort: this.table.data[index + 1].sort }, { id: this.table.data[index + 1].pk, sort: item.sort }]
+      updateSort(data).then(res => {
+        this.fecthList()
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.meg })
       })
     }
   }
