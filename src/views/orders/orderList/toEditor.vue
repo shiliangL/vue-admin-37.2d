@@ -358,7 +358,7 @@ export default {
     },
     unpaidAmount() {
       if (!this.form.paidAmount) {
-        return this.form.unpaidAmount
+        return this.form.amountPay
       } else {
         return 0
       }

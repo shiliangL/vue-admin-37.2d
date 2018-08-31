@@ -181,6 +181,18 @@ export const constantRouterMap = [
       { path: 'baler', component: _import('sortingPick/baler/index'), name: 'baler', meta: { noCache: true, title: 'baler' }}
     ]
   },
+  {
+    path: '/system',
+    component: Layout,
+    name: 'system',
+    meta: {
+      title: 'system',
+      icon: 'component'
+    },
+    children: [
+      { path: 'nenuManagement', component: _import('system/nenuManagement/index'), name: 'nenuManagement', meta: { noCache: true, title: 'nenuManagement' }}
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 

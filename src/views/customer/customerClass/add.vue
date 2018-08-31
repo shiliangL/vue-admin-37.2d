@@ -71,7 +71,7 @@
         <div v-if="dialogVisible">
           <el-form :model="addressForm" ref="addressForm" class="form" :rules="rules"  style="padding-left: 60px;">
               <el-form-item label="收货人:" label-width="100px" prop="contacts" :rules="rules.input">
-                <el-input size="small" style="width:180px"  v-model.trim="addressForm.contacts" placeholder="不能超6位数" maxlength="6"></el-input>
+                <el-input size="small" style="width:180px"  v-model.trim="addressForm.contacts" placeholder="不能超6位数" maxlength="10"></el-input>
               </el-form-item>
               <el-form-item label="手机号:" label-width="100px" prop="mobile" :rules="rules.input">
                 <el-input size="small" style="width:180px"  v-model.trim="addressForm.mobile" placeholder="不能超11位数" maxlength="11"></el-input>

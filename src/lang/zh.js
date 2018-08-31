@@ -97,8 +97,9 @@ export default {
     goodPick: '商品分拣',
     orderPick: '订单打包',
     sorter: '分拣员',
-    baler: '打包员'
+    baler: '打包员',
 
+    nenuManagement: '菜单管理'
   },
   navbar: {
     logOut: '退出登录',

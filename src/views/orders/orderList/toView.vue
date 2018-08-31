@@ -206,8 +206,14 @@
 							<el-table-column prop="exchanage" label="退/换货状态" align="center">
 								<template slot-scope="scope">
 									<span v-cloak v-if="scope.row.exchanage ===0">待审核</span>
-									<span v-cloak v-if="scope.row.exchanage ===1">进行中 </span>
-									<span v-cloak v-if="scope.row.exchanage ===2">已完成 </span>
+									<span v-cloak v-if="scope.row.exchanage ===1">
+										<span v-if="scope.row.method===1"> 退货进行中 </span>
+										<span v-if="scope.row.method===2"> 换货进行中 </span>
+									</span>
+									<span v-cloak v-if="scope.row.exchanage ===2"> 
+										<span v-if="scope.row.method===1"> 退货已完成 </span>
+										<span v-if="scope.row.method===2"> 换货已完成 </span>
+									</span>
 									<span v-cloak v-if="scope.row.exchanage ===3">已拒绝 </span>
 								</template>
 							</el-table-column>
@@ -311,7 +317,7 @@ export default {
     ...mapGetters(['baseImgUrl']),
     unpaidAmount() {
       if (!this.form.paidAmount) {
-        return this.form.unpaidAmount
+        return this.form.amountPay
       } else {
         return 0
       }

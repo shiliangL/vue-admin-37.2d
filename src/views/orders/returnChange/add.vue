@@ -105,7 +105,8 @@
 										</el-col>
 										<el-col :xs="24" :sm="10" :md="8" :lg="6">
 											<el-form-item :label="data.obj.flag ===1?'退货完成时间:':'换货完成时间:'">
-													<span v-cloak>{{form.exchangeeDate}}</span>
+													<span v-if="data.obj.flag ===1" v-cloak>{{form.finishReturn}}</span>
+													<span v-if="data.obj.flag ===2" v-cloak>{{form.exchangeeDate}}</span>
 											</el-form-item>
 										</el-col>
 										<el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="data.obj.flag ===2">
@@ -161,7 +162,7 @@
 									</el-col>
 									<el-col :xs="24" :sm="10" :md="8" :lg="8">
 										<el-form-item label="未支付金额:" >
-												<span v-cloak>{{form.toPayAmount}}</span>
+												<span v-cloak>{{unPayAmount}}</span>
 										</el-form-item>
 									</el-col>
 									<el-col :xs="24" :sm="10" :md="8" :lg="8">
@@ -170,12 +171,12 @@
 										</el-form-item>
 									</el-col>
 									<el-col :xs="24" :sm="10" :md="8" :lg="8">
-										<el-form-item :label="data.obj.flag ===1?'实际退货数量':'实际换货数量'">
+										<el-form-item :label="data.obj.flag ===1?'实际退货数量:':'实际换货数量:'">
 												<span v-cloak>{{form.checkQuantity}}</span>
 										</el-form-item>
 									</el-col>
 									<el-col :xs="24" :sm="10" :md="8" :lg="8">
-										<el-form-item :label="data.obj.flag ===1?'实际退货金额':'实际换货金额'"> 
+										<el-form-item :label="data.obj.flag ===1?'实际退货金额:':'实际换货金额:'"> 
 												<span v-cloak>{{form.checkPrice}}</span>
 										</el-form-item>
 									</el-col>
@@ -299,6 +300,15 @@ export default {
     this.currentTitle = this.data.title || ''
     if (this.data.type === 'view') {
       this.orderDetail()
+    }
+  },
+  computed: {
+    unPayAmount() {
+      if (!this.form.paidAmount) {
+        return this.form.toPayAmount
+      } else {
+        return 0
+      }
     }
   },
   methods: {

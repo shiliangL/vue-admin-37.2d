@@ -101,9 +101,9 @@
 
               <el-row :gutter="40" v-if="isShowCar">
                 <el-col :span="12">
-                  <el-card class="box-card">
+                  <el-card class="box-card" style="position: relative;">
                     <div class="search">
-                      <span v-if="AddForm.type===0">发货日期: {{today}}</span>
+                      <span class="today" v-if="AddForm.type===1">发货日期: {{today}}</span>
                       <!-- <el-select size="small" v-model="form.regionId" filterable clearable placeholder="配送区域"  style="width:120px">
                         <el-option v-for="sub in options.regionOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                       </el-select>
@@ -528,6 +528,11 @@ export default {
   }
   .desc{
     padding: 8px;
+  }
+  .today{
+    position: absolute;
+    left: 10px;
+    top:10px;
   }
 // .Loading{
 //     position: fixed;
