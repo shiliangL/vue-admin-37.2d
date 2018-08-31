@@ -155,7 +155,7 @@
 
           <div class="row-item">
             <div class="row-title">
-              图文详情描述  
+              图文详情描述 <span class="desc">大小≤2MB，支持JPG、PNG、JPEG,最多支持15张图片,图片宽度480 ~ 620像素、高度小于等于960像素的图片</span>
             </div>
             <div class="row-content">
               <!-- <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 8}" placeholder="请输入内容" v-model.trim="form.details" /> -->
@@ -714,7 +714,7 @@ export default {
   }
   .details-content{
     padding: 10px;
-    width: 750px;
+    width: 480px;
     max-height: 500px;
     overflow-y: auto;
     overflow-x:hidden;

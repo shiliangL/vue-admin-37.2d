@@ -12,8 +12,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/': {
-        // target: 'http://39.108.235.6:9002/', // 服务器dev
-        target: 'http://10.1.1.181:5858/', // 本地主机
+        target: 'http://39.108.235.6:9002/', // 服务器dev
+        // target: 'http://10.1.1.181:5858/', // 本地主机
         changeOrigin: true,
       },
       // '/': {

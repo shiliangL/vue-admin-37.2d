@@ -869,7 +869,7 @@ export default {
   }
   .details-content{
     padding: 10px;
-    width: 750px;
+    width: 480px;
     max-height: 500px;
     overflow-y: auto;
     overflow-x:hidden;
