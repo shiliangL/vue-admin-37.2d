@@ -50,3 +50,10 @@ export function updateMenu(data) {
     data
   })
 }
+export function createPage(data) {
+  return request({
+    url: 'resource/createPage',
+    method: 'POST',
+    data
+  })
+}

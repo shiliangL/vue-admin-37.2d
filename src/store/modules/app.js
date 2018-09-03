@@ -2,7 +2,7 @@ import Cookies from 'js-cookie'
 
 const app = {
   state: {
-    baseImgUrl: 'http://p8cktaes1.bkt.clouddn.com/',
+    baseImgUrl: 'http://pde00nn7n.bkt.clouddn.com/',
     sidebar: {
       opened: !+Cookies.get('sidebarStatus')
     },

@@ -12,11 +12,11 @@
 						<el-option v-for="(sub,index) in options" :key="index" :label="sub.title" :value="sub.code"></el-option>
 					</el-select>
 				</el-form-item>
-				<el-form-item label="菜单排序:" prop="ordersIndex" :rules="rules.input">
-					<el-input-number size="small" style="width:220px;" v-model="form.ordersIndex" :min="1" :max="1000"></el-input-number>
-				</el-form-item>
 				<el-form-item label="菜单图标:">
 					<el-input style="width:220px;" size="small" v-model="form.resourceIcon" auto-complete="off"></el-input>
+				</el-form-item>
+				<el-form-item label="菜单排序:" prop="ordersIndex" :rules="rules.input">
+					<el-input-number size="small" style="width:220px;" v-model="form.ordersIndex" :min="1" :max="1000"></el-input-number>
 				</el-form-item>
 				<el-form-item label="路由地址:">
 					<el-input style="width:220px;" size="small" type="text" v-model="form.resourceUrl" auto-complete="off"></el-input>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { fetchTypeDropDown, createModule, createMenu, updateMenu } from '@/api/system/nenuManagement.js'
+import { fetchTypeDropDown, createModule, createMenu, updateMenu, createPage } from '@/api/system/nenuManagement.js'
 import addModel from '@/public/addModel.js'
 import rules from '@/public/rules.js'
 
@@ -98,6 +98,17 @@ export default {
         this.$message({ type: 'error', message: e.msg })
       })
     },
+    createPage() {
+      const data = JSON.parse(JSON.stringify(this.form))
+      data.parentId = this.propsSonData.data.id
+      createPage(data).then(res => {
+        this.$message({ type: 'success', message: '创建成功!' })
+        this.$emit('add')
+        this.closeForm()
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
     updateMenu() {
       const data = JSON.parse(JSON.stringify(this.form))
       delete data.orgType
@@ -119,7 +130,11 @@ export default {
           } else if (this.propsSonData.isUpdate && this.propsSonData.isUpdate === 1) {
             this.updateMenu()
           } else {
-            this.createMenu()
+            if (!this.propsSonData.data.parentId) {
+              this.createMenu()
+            } else {
+              this.createPage()
+            }
           }
         } else {
           this.$message({ type: 'warning', message: '请核实表单' })

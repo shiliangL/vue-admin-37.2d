@@ -99,7 +99,9 @@ export default {
     sorter: '分拣员',
     baler: '打包员',
 
-    nenuManagement: '菜单管理'
+    nenuManagement: '菜单管理',
+    institutionsType: '机构类别',
+    institutionsList: '机构列表'
   },
   navbar: {
     logOut: '退出登录',

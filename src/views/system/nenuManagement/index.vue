@@ -14,7 +14,7 @@
                 <span class="custom-tree-node" slot-scope="{ node, data }">
                   <span>{{ node.label }}</span>
                   <span>
-                    <el-button v-if="!data.parentId" type="text" size="small" @click.stop="() => append(data)"> 添加 </el-button>
+                    <el-button type="text" size="small" @click.stop="() => append(data)"> 添加 </el-button>
                     <el-button type="text" size="small" @click.stop="() => editor(data)"> 编辑 </el-button>
                     <el-button style="color:red" type="text" size="small" @click.stop="() => remove(node, data)"> 删除 </el-button>
                   </span>
@@ -109,6 +109,7 @@ export default {
       }).catch(() => {})
     },
     append(data) {
+      console.log(data)
       this.dialogVisible = true
       this.propsParentData = { isUpdate: 0, data }
     },

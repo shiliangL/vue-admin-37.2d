@@ -193,6 +193,19 @@ export const constantRouterMap = [
       { path: 'nenuManagement', component: _import('system/nenuManagement/index'), name: 'nenuManagement', meta: { noCache: true, title: 'nenuManagement' }}
     ]
   },
+  {
+    path: '/platform',
+    component: Layout,
+    name: 'platform',
+    meta: {
+      title: 'platform',
+      icon: 'component'
+    },
+    children: [
+      { path: 'institutionsType', component: _import('platform/institutionsType/index'), name: 'institutionsType', meta: { noCache: true, title: 'institutionsType' }},
+      { path: 'institutionsList', component: _import('platform/institutionsList/index'), name: 'institutionsList', meta: { noCache: true, title: 'institutionsList' }}
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 
