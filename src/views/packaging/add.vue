@@ -203,6 +203,7 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
+            console.log(loginKey)
             const data = {
               'packageInfoId': this.data.obj.id,
               'tableId': loginKey.id

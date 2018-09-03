@@ -81,7 +81,9 @@
                     <el-table-column prop="orderNo" label="销售订单编号" align="center"></el-table-column>
                     <el-table-column prop="customerName" label="客户名称" align="center"></el-table-column>
                     <el-table-column prop="specification" label="规格" align="center"></el-table-column>
-                    <el-table-column prop="orderQuantity" label="下单数量" align="center"></el-table-column>
+                    <el-table-column prop="orderQuantity" label="下单数量" align="center">
+                       <template slot-scope="scope"> <span>{{scope.row.orderQuantity}} {{ scope.row.basicUnitName }}</span> </template>
+                    </el-table-column>
                     <el-table-column prop="sortingQuantity" label="分拣数量" align="center">
                       <template slot-scope="scope">
                         <span v-if="scope.row.barCode" v-cloak>{{scope.row.sortingQuantity}}</span>
@@ -170,11 +172,14 @@ export default {
       if (!this.data.obj.id) return
       fecthHeaderDetail({ id: this.data.obj.id }).then(({ data }) => {
         this.form = Object.assign(this.form, data)
-      }).catch(e => {
-        this.$message({ type: 'error', message: e.msg })
-      })
-      fecthBodyDetail({ scheduleInfoId: this.data.obj.id }).then(({ data }) => {
-        this.form.table = data
+        fecthBodyDetail({ scheduleInfoId: this.data.obj.id }).then(({ data }) => {
+          for (const item of data) {
+            item.basicUnitName = this.form.basicUnitName
+          }
+          this.form.table = data
+        }).catch(e => {
+          this.$message({ type: 'error', message: e.msg })
+        })
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
