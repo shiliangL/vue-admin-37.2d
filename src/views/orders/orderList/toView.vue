@@ -295,6 +295,7 @@ export default {
           shippingTime: null
         },
         ship: null,
+        flag: false,
         totalOrderQuantityPrice: 0,
         totalSumPric: 0,
         activityPreferences: 0,
@@ -334,7 +335,7 @@ export default {
       orderDetail(data).then(({ data }) => {
         this.form = data
         this.pagination.total = data.saleDtails.total
-        if (this.form.scmOrder.paymentType === 0 && this.form.scmOrder.status === 0 && !this.overTime) {
+        if (this.form.scmOrder.paymentType === 0 && this.form.scmOrder.status === 0 && this.form.flag) {
           setTimeout(() => {
             this.$emit('update:isAllowToShow', true)
           }, 100)

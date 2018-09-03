@@ -62,7 +62,7 @@ export default {
     return {
       searchBarDate: [
         [
-          { type: 'input', value: null, key: 'inputContent', class: 'w180', placeholder: '输入户名称检索' },
+          { type: 'input', value: null, key: 'inputContent', class: 'w180', placeholder: '输入名称检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
