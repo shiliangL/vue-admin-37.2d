@@ -206,6 +206,19 @@ export const constantRouterMap = [
       { path: 'institutionsList', component: _import('platform/institutionsList/index'), name: 'institutionsList', meta: { noCache: true, title: 'institutionsList' }}
     ]
   },
+  {
+    path: '/ucControl',
+    component: Layout,
+    name: 'ucControl',
+    meta: {
+      title: 'ucControl',
+      icon: 'component'
+    },
+    children: [
+      { path: 'peopleControl', component: _import('ucControl/peopleControl/index'), name: 'peopleControl', meta: { noCache: true, title: 'peopleControl' }},
+      { path: 'roleControl', component: _import('ucControl/roleControl/index'), name: 'roleControl', meta: { noCache: true, title: 'roleControl' }}
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 

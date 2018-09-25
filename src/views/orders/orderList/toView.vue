@@ -59,17 +59,17 @@
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="销售配送单号:">
-                      <span v-cloak v-if="form.ship"> {{form.ship[0].shipNo}} </span>
+                      <span v-cloak v-if="form.ship && form.ship[0]"> {{form.ship[0].shipNo}} </span>
 									</el-form-item>
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="配送员:">
-                      <span v-cloak v-if="form.ship"> {{form.ship[0].driverName}} </span>
+                      <span v-cloak v-if="form.ship && form.ship[0]"> {{form.ship[0].driverName}} </span>
 									</el-form-item>
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="实际送达时间:">
-                      <span v-cloak v-if="form.ship"> {{form.ship[0].factTime}} </span>
+                      <span v-cloak v-if="form.ship && form.ship[0]"> {{form.ship[0].factTime}} </span>
 									</el-form-item>
 								</el-col>
 

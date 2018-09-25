@@ -15,6 +15,8 @@
 import { Navbar, Sidebar, AppMain, TagsView, topNavBar } from './components'
 import { StickyBar } from '@/components/base.js'
 import { fetchMenuList } from '@/api/layout.js'
+import { listToTree } from '@/utils/toTreeList.js'
+// import { menuToTree } from '@/utils/menuToTree.js'
 import { mapActions } from 'vuex'
 
 export default {
@@ -33,7 +35,7 @@ export default {
     }
   },
   created() {
-
+    console.log(process.env.NODE_ENV, '环境')
   },
   mounted() {
     this.fetchMenu()
@@ -45,7 +47,9 @@ export default {
     fetchMenu() {
       fetchMenuList().then(res => {
         const result = res.data
-        const data = this.initMenuList(result)
+        const data = listToTree(result)
+        // const data = menuToTree(result)
+        // console.log(JSON.stringify(data))
         if (Array.isArray(data) && data.length > 0) {
           this.VX_SET_MENULIST(data)
         } else {
@@ -54,67 +58,6 @@ export default {
       }).catch(e => {
         this.$message({ type: 'error', message: '菜单获取失败,请刷新', duration: 0, showClose: true })
       })
-    },
-    // 初始化菜单列表
-    initMenuList(data) {
-      if (!Array.isArray(data)) return
-      const temp = {}
-      const result = []
-
-      // 遍历子节点
-      const iterNode = (node) => {
-        const { id } = node
-        for (const key in temp) {
-          if (temp[key].parentId === id) {
-            temp[key].flag = true
-            iterNode(temp[key])
-          }
-        }
-      }
-
-      // 遍历父节点
-      const iterParent = (parent) => {
-        if (temp[parent.parentId]) {
-          temp[parent.parentId].flag = true
-          iterParent(temp[parent.parentId])
-        }
-      }
-
-      // data.forEach(item => temp[item.id] = item)
-      for (const item of data) {
-        temp[item.id] = item
-      }
-
-      data.forEach(item => {
-        const { flag, parentId } = item
-        const parent = temp[parentId]
-
-        if (!parent && typeof flag === 'string') {
-          iterNode(item)
-        } else if (parent && typeof flag === 'string') {
-          parent.flag = true
-          iterParent(parent)
-          iterNode(item)
-        }
-      })
-
-      data.forEach(item => {
-        const { flag, parentId } = item
-        const parent = temp[parentId]
-        if (parent && parent.flag && flag) {
-          item.text = item.title
-          if (!parent['children']) {
-            parent['children'] = []
-          }
-          parent['children'].push(item)
-        } else if (!parent && flag) {
-          item.text = item.title
-          result.push(item)
-        }
-      })
-      // 设置所有菜单列表
-      // this.menuList = result
-      return result
     }
   }
 }

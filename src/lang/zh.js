@@ -101,7 +101,10 @@ export default {
 
     nenuManagement: '菜单管理',
     institutionsType: '机构类别',
-    institutionsList: '机构列表'
+    institutionsList: '机构列表',
+
+    peopleControl: '人员管理',
+    roleControl: '角色管理'
   },
   navbar: {
     logOut: '退出登录',

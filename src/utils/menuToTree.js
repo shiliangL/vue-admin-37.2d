@@ -1,12 +1,13 @@
-export function toTreeData(data, attributes) {
+export function menuToTree(data) {
   const resData = data
-  const tree = []
+  const tree = [] // 父级
 
   for (let i = 0; i < resData.length; i++) {
-    if (resData[i].resParentId === attributes.rootId) {
+    // parentId 没有则为顶层父级
+    if (!resData[i].parentId) {
       const obj = {
-        id: resData[i][attributes.id],
-        title: resData[i][attributes.name],
+        id: resData[i].id,
+        title: resData[i].title,
         children: []
       }
       tree.push(obj)
@@ -14,17 +15,17 @@ export function toTreeData(data, attributes) {
       i--
     }
   }
-
   run(tree)
-
   function run(chiArr) {
     if (resData.length !== 0) {
       for (let i = 0; i < chiArr.length; i++) {
         for (let j = 0; j < resData.length; j++) {
-          if (chiArr[i].id === resData[j][attributes.parentId]) {
+          if (chiArr[i].id === resData[j].parentId) {
             const obj = {
-              id: resData[j][attributes.id],
-              title: resData[j][attributes.name],
+              id: resData[j].id,
+              title: resData[j].title,
+              icon: resData[j].icon,
+              resourceUrl: resData[j].resourceUrl,
               children: []
             }
             chiArr[i].children.push(obj)
@@ -44,7 +45,7 @@ export function toTreeData(data, attributes) {
 // // 属性配置信息
 // let attributes = {
 //     id: 'resourcesId',
-//     parentId: 'resParentId',
+//     parentId: 'parentId',
 //     name: 'resName',
 //     rootId: 1
 // };
