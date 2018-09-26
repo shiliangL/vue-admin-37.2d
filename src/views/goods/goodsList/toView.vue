@@ -74,11 +74,11 @@
                   <el-col :xs="24" :sm="10" :md="8" :lg="6">
 
                     <el-form-item label="供应商类别:" v-if="form.purchaseType===2"  :rules="rules.select" prop="supplyType" filterable>
-                      <span v-cloak>{{form.supplier.categoryName}}</span>
+                      <span v-if="form.supplier.categoryName && form.supplier.categoryName" v-cloak>{{form.supplier.categoryName}}</span>
                     </el-form-item>
 
                     <el-form-item label="采购员:" :rules="rules.select" v-else  prop="buyerId">
-                       <span v-cloak>{{form.buyer.buyerName}}</span>
+                       <span v-if="form.buyer && form.buyer.buyerName" v-cloak>{{form.buyer.buyerName}}</span>
                     </el-form-item>
 
                   </el-col>
@@ -344,6 +344,8 @@ export default {
       { title: '商品相关信息', value: 0 },
       { title: 'SKU相关信息', value: 1 }
     ]
+
+    console.log(this.viewData)
 
     if (this.viewData) {
       this.form = {

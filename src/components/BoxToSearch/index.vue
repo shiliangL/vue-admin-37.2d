@@ -36,9 +36,9 @@
             :page-sizes="[10, 20, 50, 100]"
             :current-page="page"
             :page-size="size"
-            layout="total, sizes, prev, pager, next"
+            layout="total, prev, pager, next"
             :total="total">
-				  </el-pagination>		
+				  </el-pagination>
 
 					<!-- <div style="clear: both;text-align: center;margin-top: 6px;">
 						共 {{tableData.length}} 条
