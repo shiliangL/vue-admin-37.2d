@@ -29,7 +29,7 @@
 				</el-form-item>
 				<el-form-item label="法人电话:" prop="telephone" :rules="rules.select">
 					<span class="view-item" v-if="isViewPage" v-cloak> {{form.telephone}} </span>
-					<el-input v-else size="small" style="width:160px" v-model.trim="form.telephone" placeholder="请输入"></el-input>
+					<el-input v-else size="small" style="width:160px" v-model.trim="form.telephone" maxlength="11" placeholder="请输入"></el-input>
 				</el-form-item>
 				<el-form-item label="机构邮箱:">
 					<span class="view-item" v-if="isViewPage" v-cloak> {{form.email}} </span>

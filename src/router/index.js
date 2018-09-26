@@ -216,7 +216,8 @@ export const constantRouterMap = [
     },
     children: [
       { path: 'peopleControl', component: _import('ucControl/peopleControl/index'), name: 'peopleControl', meta: { noCache: true, title: 'peopleControl' }},
-      { path: 'roleControl', component: _import('ucControl/roleControl/index'), name: 'roleControl', meta: { noCache: true, title: 'roleControl' }}
+      { path: 'roleControl', component: _import('ucControl/roleControl/index'), name: 'roleControl', meta: { noCache: true, title: 'roleControl' }},
+      { path: 'department', component: _import('ucControl/department/index'), name: 'department', meta: { noCache: true, title: 'department' }}
     ]
   },
   { path: '*', redirect: '/404', hidden: true }

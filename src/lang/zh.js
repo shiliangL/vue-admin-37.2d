@@ -104,7 +104,8 @@ export default {
     institutionsList: '机构列表',
 
     peopleControl: '人员管理',
-    roleControl: '角色管理'
+    roleControl: '角色管理',
+    department: '部门管理'
   },
   navbar: {
     logOut: '退出登录',
