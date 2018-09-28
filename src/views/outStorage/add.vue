@@ -66,13 +66,14 @@
                     <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
                     <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
                     <el-table-column prop="sortingTableName" label="分拣台" align="center"></el-table-column>
-                    <el-table-column prop="sorterName" label="分拣员" align="center"></el-table-column>
+                    <!-- 加 -->
+                    <el-table-column prop="numberStr" label="实际库存量" align="center"></el-table-column> 
                     <el-table-column prop="outQuantity" label="下单数量" align="center"></el-table-column>
                     <el-table-column prop="realQuantity" label="出库数量" align="center">
                       <template slot-scope="scope">
                         <span v-if="scope.row.outageTime" v-cloak>{{scope.row.realQuantity}}</span>
                         <el-form-item v-else label="" label-width="0px" :prop="'table.'+scope.$index+'.realQuantity'"  :rules="[{ required: true, validator: rules.validNumber2, trigger: 'change' }]">
-                          <el-input size="small" v-model.trim="scope.row.realQuantity"></el-input>
+                          <el-input size="small" :tabindex="(scope.$index + 1).toString()"  @keyup.enter.native="clickToUpdate(scope.$index,scope.row)" v-model.trim="scope.row.realQuantity"></el-input>
                         </el-form-item>
                       </template>
                     </el-table-column>
@@ -82,6 +83,8 @@
                         <span v-else v-cloak> / </span>
                       </template>
                     </el-table-column>
+                    <!-- 加 -->
+                    <el-table-column prop="operator" label="出库操作人" align="center"></el-table-column> 
                     <el-table-column prop="sum" label="操作" align="center">
                       <template slot-scope="scope">
                          <el-button type="text" size="mini" v-if="!scope.row.outageTime" @click.stop="clickToUpdate(scope.$index,scope.row)">保存</el-button>

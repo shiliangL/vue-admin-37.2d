@@ -24,18 +24,18 @@ export const constantRouterMap = [
   }
 ]
 export const asyncRouterMap = [
-  {
-    path: '/acceptance',
-    component: Layout,
-    alwaysShow: true,
-    meta: {
-      title: 'acceptance',
-      icon: 'component'
-    },
-    children: [
-      { path: 'acceptanceIndex', component: _import('acceptance/acceptanceIndex/index'), meta: { title: 'acceptanceIndex' }}
-    ]
-  },
+  // {
+  //   path: '/acceptance',
+  //   component: Layout,
+  //   alwaysShow: true,
+  //   meta: {
+  //     title: 'acceptance',
+  //     icon: 'component'
+  //   },
+  //   children: [
+  //     { path: 'acceptanceIndex', component: _import('acceptance/acceptanceIndex/index'), meta: { title: 'acceptanceIndex' }}
+  //   ]
+  // },
   {
     path: '/putStorage',
     component: Layout,

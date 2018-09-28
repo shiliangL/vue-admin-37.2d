@@ -104,10 +104,16 @@
                         <span v-else v-cloak> / </span>
                       </template>
                     </el-table-column>
+                      <!-- 加 -->
+                    <el-table-column prop="operator" label="分拣操作人" align="center"></el-table-column> 
                     <el-table-column prop="sum" label="操作" align="center">
                       <template slot-scope="scope">
-                         <el-button type="text" size="mini" v-if="!scope.row.barCode" @click.stop="clickToUpdate(scope.$index,scope.row)">打印标签</el-button>
-                         <el-button type="text" size="mini" disabled v-else >打印标签</el-button>
+                          <el-button type="text" size="mini" v-if="!scope.row.barCode" @click.stop="clickToUpdate(scope.$index,scope.row)">生成标签</el-button>
+                           <el-button type="text" size="mini" v-else @click.stop="clickToPrint(scope.$index,scope.row)">打印标签</el-button>
+                          <el-button type="text" size="mini" v-if="scope.row.barCode" @click.stop="clickToRest(scope.$index,scope.row)">重置</el-button>
+                        <!-- <template v-else>
+                         <el-button type="text" size="mini" disabled >打印标签</el-button>
+                        </template> -->
                       </template>
                     </el-table-column>
                   </el-table>
@@ -120,6 +126,12 @@
         </div>
       </div>
     </el-dialog>
+
+    <!-- 弹层区域 -->
+    <el-dialog title="条码区域" class="dialogTitle" width="320px" :visible.sync="dialogVisible" append-to-body center @close="closeAdd">
+      <PrintLabel isSorting v-if="dialogVisible" @close="closeAdd" :propsSonData="propsParentData"></PrintLabel>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -175,6 +187,7 @@ export default {
         fecthBodyDetail({ scheduleInfoId: this.data.obj.id }).then(({ data }) => {
           for (const item of data) {
             item.basicUnitName = this.form.basicUnitName
+            item.productName = this.form.productName
           }
           this.form.table = data
         }).catch(e => {
@@ -183,6 +196,10 @@ export default {
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
+    },
+    clickToRest(index, item) {
+      this.form.table[index].barCode = null
+      this.form.table[index].sortingQuantity = null
     },
     clickToSearch() {
       if (!this.data.obj.id) return
@@ -200,10 +217,10 @@ export default {
       this.$refs['form'].validateField(`table.${index}.sortingQuantity`, (m) => {
         if (!m) {
           if (!loginKey) {
-            this.$message({ type: 'error', message: '工作台参数错误' })
+            this.$message({ type: 'error', message: '工作台参数错误,请重刷新页面或者新登录' })
             return
           }
-          this.$confirm('请核实输入数量,打印标签仅限操作一次，是否确定？', '提示', {
+          this.$confirm('请核实输入数量,是否确定打印标签？', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
@@ -225,6 +242,15 @@ export default {
           return
         }
       })
+    },
+    closeAdd() {
+      this.dialogVisible = false
+      this.propsParentData = null
+    },
+    clickToPrint(index, item) {
+      this.dialogVisible = true
+      item.barcode = item.barCode
+      this.propsParentData = item
     }
   }
 }

@@ -7,7 +7,8 @@
         <div class="header-bar" slot="title">
            <div class="left"> {{currentTitle}} </div>
            <div class="right">
-              <el-button type="text" size="mini" v-if="!form.barCode" @click.stop="clickToUpdate">打印标签</el-button>
+              <el-button type="text" size="mini" v-if="!form.barCode" @click.stop="clickToUpdate">生成标签</el-button>
+              <el-button type="text" size="mini" v-else @click.stop="clickToPrint">打印标签</el-button>
               <el-button type="text" size="mini" @click.stop="onRefresh">刷新</el-button>
               <el-button type="text" size="mini" @click.stop="dialog.visiable = false">返回</el-button>
             </div>
@@ -101,7 +102,8 @@
                     <el-table-column prop="sortingQuantity" label="分拣数量" align="center"></el-table-column>
                     <el-table-column prop="barCode" label="商品分拣条码" align="center"></el-table-column>
                     <el-table-column prop="sortingTime" label="分拣时间" align="center"></el-table-column>
-                    <el-table-column prop="scavengingTime" label="打包记录扫码时间" align="center"></el-table-column>
+                    <el-table-column prop="scavengingTime" label="投框扫码时间" align="center"></el-table-column>
+                    <el-table-column prop="operator" label="投框操作人" align="center"></el-table-column>
                   </el-table>
                 <div class="footer-block">
                   <span class="page" v-cloak> 共 {{form.table.length}} 条</span>
@@ -112,12 +114,18 @@
         </div>
       </div>
     </el-dialog>
+
+    <!-- 弹层区域 -->
+    <el-dialog title="条码区域" class="dialogTitle" width="320px" :visible.sync="dialogVisible" append-to-body center @close="closeAdd">
+      <PrintLabel :isSorting="false" v-if="dialogVisible" @close="closeAdd" :propsSonData="propsParentData"></PrintLabel>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 import addModel from '@/public/addModel.js'
-import { fecthHeaderDetail, fecthBodyDetail, outUpdateQuantity } from '@/api/packaging/index.js'
+import { fecthHeaderDetail, fecthBodyDetail, outUpdateQuantity, packageScavenging } from '@/api/packaging/index.js'
 const loginKey = JSON.parse(sessionStorage.getItem('loginKey'))
 
 export default {
@@ -126,6 +134,12 @@ export default {
   },
   data() {
     return {
+      code: '',
+      lastTime: null,
+      nextTime: null,
+      lastCode: null,
+      nextCode: null,
+
       currentTitle: null,
       searchKey: null,
       form: {
@@ -149,12 +163,52 @@ export default {
     this.$setKeyValue(this.dialog, { title: title, visiable: true })
   },
   mounted() {
+    window.addEventListener('keydown', this.onkeydown)
     this.currentTitle = this.data.title || ''
     if (this.data.type === 'view') {
       this.fecthDetail()
     }
   },
+  beforeDestroy() {
+    window.removeEventListener('keydown', this.onkeydown)
+  },
   methods: {
+    onkeydown(e) {
+      if (!e.which) {
+        this.$message({ type: 'error', message: '浏览器不支持该扫描枪，请使用谷歌浏览器,QQ浏览器' })
+        return
+      }
+      this.nextCode = e.which
+      this.nextTime = new Date().getTime()
+      if (this.lastCode != null && this.lastTime != null && this.nextTime - this.lastTime <= 40) {
+        this.code += String.fromCharCode(this.lastCode)
+      } else if (this.lastCode != null && this.lastTime != null && this.nextTime - this.lastTime > 100) {
+        this.code = ''
+      }
+      this.lastCode = this.nextCode
+      this.lastTime = this.nextTime
+      if (e.which === 13) {
+        const scanningArr = []
+        for (const item of this.form.table) {
+          scanningArr.push(item.barCode)
+          if (item.barCode === this.code && !item.scavengingTime) {
+            this.packageScavenging(item.barCode)
+          }
+        }
+        if (!scanningArr.includes(this.code)) {
+          this.$message({ type: 'warning', message: '该订单无此扫描单号请核实' })
+        }
+        this.code = ''
+      }
+    },
+    packageScavenging(barCode) {
+      packageScavenging({ barCode }).then(({ data }) => {
+        this.$message({ type: 'success', message: '扫描成功' })
+        this.clickToSearch()
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
     closeDialog() {
       this.$emit('input', false)
     },
@@ -196,14 +250,17 @@ export default {
       this.clickToSearch()
     },
     clickToUpdate() {
+      if (!loginKey) {
+        this.$message({ type: 'error', message: '工作台参数错误,请重刷新页面或者新登录' })
+        return
+      }
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          this.$confirm('打印标签仅限操作一次，是否确定?', '提示', {
+          this.$confirm('是否确定生成标签?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            console.log(loginKey)
             const data = {
               'packageInfoId': this.data.obj.id,
               'tableId': loginKey.id
@@ -220,6 +277,14 @@ export default {
           return
         }
       })
+    },
+    closeAdd() {
+      this.dialogVisible = false
+      this.propsParentData = null
+    },
+    clickToPrint() {
+      this.dialogVisible = true
+      this.propsParentData = this.form
     }
   }
 }

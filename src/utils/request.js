@@ -12,7 +12,7 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(config => {
   // Do something before request is sent
-  config.url = `cmm/${config.url}`
+  // config.url = `cmm/${config.url}`
   if (!JSON.parse(sessionStorage.getItem('loginKey'))) {
     Message({ message: `登录过期`, type: 'error', duration: 400, showClose: true })
     store.dispatch('FedLogOut').then(() => {

@@ -21,6 +21,13 @@ export function fecthBodyDetail(params) {
     params
   })
 }
+export function packageScavenging(params) {
+  return request({
+    url: 'packageDetails/packageDetailScavenging',
+    method: 'get',
+    params
+  })
+}
 
 export function outUpdateQuantity(data) {
   return request({

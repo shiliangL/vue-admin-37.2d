@@ -1,3 +1,7 @@
+<!-- 业务实际操作说明
+使用设备 : 电子秤
+ -->
+
 <template>
 <!-- 全屏固定表头弹层组件 -->
   <div class="dialog-content">
@@ -67,12 +71,15 @@
                     </el-table-column>
                     <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
                     <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
-                    <el-table-column prop="batchesBarCode" label="商品批次条码" align="center"></el-table-column>
+                    <!-- <el-table-column prop="batchesBarCode" label="商品批次条码" align="center"></el-table-column>  暂时隐藏-->
+                    <!-- 加 -->
+                    <el-table-column prop="numberStr" label="实际采购量" align="center"></el-table-column> 
                     <el-table-column prop="quantity" label="入库数量" align="center">
                        <template slot-scope="scope">
                         <span v-if="scope.row.warehouseTime" v-cloak>{{scope.row.quantity}}</span>
                         <el-form-item v-else label="" label-width="0px" :prop="'table.'+scope.$index+'.quantity'"  :rules="[{ required: true, validator: rules.validNumber2, trigger: 'change' }]">
-                          <el-input size="small" v-model.trim="scope.row.quantity"></el-input>
+                          <!-- @keyup.enter.native="clickToUpdate(scope.$index,scope.row)" -->
+                          <el-input size="small" :tabindex="(scope.$index + 1).toString()" v-model.trim="scope.row.quantity"></el-input>
                         </el-form-item>
                       </template>
                     </el-table-column>
@@ -82,6 +89,8 @@
                         <span v-else v-cloak> / </span>
                       </template>
                     </el-table-column>
+                    <!-- 加 -->
+                    <el-table-column prop="operator" label="入库操作人" align="center"></el-table-column> 
                     <el-table-column prop="sum" label="操作" align="center">
                       <template slot-scope="scope">
                          <el-button v-if="!scope.row.warehouseTime" type="text" size="mini" @click.stop="clickToUpdate(scope.$index,scope.row)">保存</el-button>
@@ -152,6 +161,12 @@ export default {
         this.$message({ type: 'error', message: e.msg })
       })
       fecthBodyDetail({ inId: this.data.obj.id }).then(({ data }) => {
+        for (const item of data) {
+          item.numberStr = item.quantity
+          if (!item.warehouseTime) {
+            item.quantity = null
+          }
+        }
         this.form.table = data
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
@@ -191,6 +206,12 @@ export default {
         this.$message({ type: 'error', message: e.msg })
       })
       fecthBodyDetail({ inId: this.data.obj.id, inputContent: this.searchKey }).then(({ data }) => {
+        for (const item of data) {
+          item.numberStr = item.quantity
+          if (!item.warehouseTime) {
+            item.quantity = null
+          }
+        }
         this.form.table = data
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
