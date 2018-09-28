@@ -48,7 +48,7 @@
 import rules from '@/public/rules.js'
 import addModel from '@/public/addModel.js'
 
-import { updateRow, fetchDetail, createRow } from '@/api/uc/department.js'
+import { updateRow, fetchDetail, createDepartment } from '@/api/uc/department.js'
 
 export default {
   mixins: [rules, addModel],
@@ -162,7 +162,7 @@ export default {
                 delete data.departmentId
                 delete data.endTime
                 delete data.startTime
-                createRow(data).then(res => {
+                createDepartment(data).then(res => {
                   this.saveLoading = false
                   this.$emit('add')
                   this.close()

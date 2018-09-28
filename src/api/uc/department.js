@@ -34,6 +34,14 @@ export function createOperator(data) {
 
 export function createRow(data) {
   return request({
+    url: 'department/create',
+    method: 'POST',
+    data
+  })
+}
+
+export function createDepartment(data) {
+  return request({
     url: 'staff/createStaff',
     method: 'POST',
     data

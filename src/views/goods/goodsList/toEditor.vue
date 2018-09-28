@@ -526,6 +526,11 @@ export default {
         this.form.buyerId = this.viewData.buyer.buyerId
         this.form.buyerTempId = this.viewData.buyer.id // 中间表 id
       }
+
+      // const lists = this.viewData.attrList
+      // for (const item of lists) {
+      //   item.skuTitle = `${item.rate}${item.baseUnitName}/ ${item.unitName}`
+      // }
       this.form.skuList = this.viewData.attrList
     }
   },
