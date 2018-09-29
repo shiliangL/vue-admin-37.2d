@@ -125,6 +125,10 @@ export default {
       if (this.typeIseditor) {
         const update = {
           id: data.id,
+          brandId: data.brandId,
+          expiry: data.expiry,
+          storage: data.storage,
+
           aliasTitle: data.aliasTitle,
           bannerIds: data.bannerIds,
           barCode: data.barCode,

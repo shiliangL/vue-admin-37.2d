@@ -417,7 +417,7 @@ export default {
       if (!this.data.obj.id) return
       const data = {
         inputContent: this.viewSearch,
-        id: this.data.obj.id
+        inId: this.data.obj.id
       }
       fecthBodyDetail(data).then(({ data }) => {
         this.viewData.tableView = data
