@@ -10,7 +10,8 @@
               <el-button type="text" size="mini" v-if="!form.barCode" @click.stop="clickToUpdate">生成标签</el-button>
               <el-button type="text" size="mini" v-else @click.stop="clickToPrint">打印标签</el-button>
               <el-button type="text" size="mini" @click.stop="onRefresh">刷新</el-button>
-              <el-button type="text" size="mini" @click.stop="dialog.visiable = false">返回</el-button>
+              <!-- dialog.visiable = false -->
+              <el-button type="text" size="mini" @click.stop="closeDialog">返回</el-button>
             </div>
         </div>
         <div class="content-bar">
@@ -22,7 +23,7 @@
                   <el-row>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="出库单创建时间:">
-                        <span v-cloak>{{form.orderRequestNo}}</span>
+                        <span v-cloak>{{form.createdTime}}</span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
@@ -211,6 +212,7 @@ export default {
     },
     closeDialog() {
       this.$emit('input', false)
+      this.$emit('add')
     },
     onRefresh() {
       if (this.data.type === 'view') {
@@ -251,7 +253,7 @@ export default {
     },
     clickToUpdate() {
       if (!loginKey) {
-        this.$message({ type: 'error', message: '工作台参数错误,请重刷新页面或者新登录' })
+        this.$message({ type: 'error', message: '工作台参数错误,F5刷新页面或者新登录' })
         return
       }
       this.$refs['form'].validate((valid) => {

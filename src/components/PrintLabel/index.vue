@@ -43,7 +43,7 @@
 							配送区域: {{propsSonData.distributionArea}} 
 						</div>
 						<div class="item">
-							下单时间: {{propsSonData.productName}}
+							下单时间: {{propsSonData.createdTime}}
 						</div>
 						<div class="item">
 							要求送达日期: {{propsSonData.sendDate}} 

@@ -8,7 +8,7 @@
            <div class="left"> {{currentTitle}} </div>
            <div class="right">
               <el-button type="text" size="mini" @click.stop="onRefresh">刷新</el-button>
-              <el-button type="text" size="mini" @click.stop="dialog.visiable = false">返回</el-button>
+              <el-button type="text" size="mini" @click.stop="closeDialog">返回</el-button>
             </div>
         </div>
         <div class="content-bar">
@@ -54,11 +54,11 @@
                         <span v-cloak>{{form.tableName}}</span>
                       </el-form-item>
                     </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="分拣员:">
                         <span v-cloak>{{form.sorterName}}</span>
                       </el-form-item>
-                    </el-col>
+                    </el-col> -->
     
                   </el-row>
                 </div>
@@ -174,6 +174,7 @@ export default {
   methods: {
     closeDialog() {
       this.$emit('input', false)
+      this.$emit('add')
     },
     onRefresh() {
       if (this.data.type === 'view') {
@@ -203,8 +204,17 @@ export default {
     },
     clickToSearch() {
       if (!this.data.obj.id) return
-      fecthBodyDetail({ scheduleInfoId: this.data.obj.id, inputContent: this.searchKey }).then(({ data }) => {
-        this.form.table = data
+      fecthHeaderDetail({ id: this.data.obj.id }).then(({ data }) => {
+        this.form = Object.assign(this.form, data)
+        fecthBodyDetail({ scheduleInfoId: this.data.obj.id, inputContent: this.searchKey }).then(({ data }) => {
+          for (const item of data) {
+            item.basicUnitName = this.form.basicUnitName
+            item.productName = this.form.productName
+          }
+          this.form.table = data
+        }).catch(e => {
+          this.$message({ type: 'error', message: e.msg })
+        })
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
@@ -217,7 +227,7 @@ export default {
       this.$refs['form'].validateField(`table.${index}.sortingQuantity`, (m) => {
         if (!m) {
           if (!loginKey) {
-            this.$message({ type: 'error', message: '工作台参数错误,请重刷新页面或者新登录' })
+            this.$message({ type: 'error', message: '工作台参数错误,F5刷新页面或者新登录' })
             return
           }
           this.$confirm('请核实输入数量,是否确定打印标签？', '提示', {

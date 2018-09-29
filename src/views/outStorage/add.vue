@@ -8,7 +8,7 @@
            <div class="left"> {{currentTitle}} </div>
            <div class="right">
               <el-button type="text" size="mini" @click.stop="onRefresh">刷新</el-button>
-              <el-button type="text" size="mini" @click.stop="dialog.visiable = false">返回</el-button>
+              <el-button type="text" size="mini" @click.stop="closeDialog">返回</el-button>
             </div>
         </div>
         <div class="content-bar">
@@ -73,7 +73,8 @@
                       <template slot-scope="scope">
                         <span v-if="scope.row.outageTime" v-cloak>{{scope.row.realQuantity}}</span>
                         <el-form-item v-else label="" label-width="0px" :prop="'table.'+scope.$index+'.realQuantity'"  :rules="[{ required: true, validator: rules.validNumber2, trigger: 'change' }]">
-                          <el-input size="small" :tabindex="(scope.$index + 1).toString()"  @keyup.enter.native="clickToUpdate(scope.$index,scope.row)" v-model.trim="scope.row.realQuantity"></el-input>
+                          <!-- @keyup.enter.native="clickToUpdate(scope.$index,scope.row)" -->
+                          <el-input size="small" :tabindex="(scope.$index + 1).toString()"  v-model.trim="scope.row.realQuantity"></el-input>
                         </el-form-item>
                       </template>
                     </el-table-column>
@@ -138,6 +139,7 @@ export default {
   methods: {
     closeDialog() {
       this.$emit('input', false)
+      this.$emit('add')
     },
     onRefresh() {
       if (this.data.type === 'view') {

@@ -12,7 +12,7 @@
            <div class="left"> {{currentTitle}} </div>
            <div class="right">
               <el-button type="text" size="mini" @click.stop="onRefresh">刷新</el-button>
-              <el-button type="text" size="mini" @click.stop="dialog.visiable = false">返回</el-button>
+              <el-button type="text" size="mini" @click.stop="closeDialog">返回</el-button>
             </div>
         </div>
         <div class="content-bar">
@@ -147,6 +147,7 @@ export default {
   methods: {
     closeDialog() {
       this.$emit('input', false)
+      this.$emit('add')
     },
     onRefresh() {
       if (this.data.type === 'view') {
