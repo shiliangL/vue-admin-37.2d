@@ -127,9 +127,9 @@ export default {
         case 2:
           return '采购中'
         case 3:
-          return '待收货'
+          return '待入库'
         case 4:
-          return '已收货'
+          return '已入库'
         default:
           return ''
       }

@@ -91,6 +91,8 @@
                   <el-table-column prop="sortingQuantity" label="分拣数量" align="center"></el-table-column>
                   <el-table-column prop="barCode" label="商品分拣条码" align="center"></el-table-column>
                   <el-table-column prop="sortingTime" label="分拣时间" align="center"></el-table-column>
+                  <el-table-column prop="operator" label="操作人"  align="center"></el-table-column>
+
                 </el-table>
                 <div class="footer-block">
                   <span class="page" v-cloak> 共 {{form.table.length}} 条</span>

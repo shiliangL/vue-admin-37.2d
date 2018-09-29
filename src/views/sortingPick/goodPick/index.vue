@@ -22,10 +22,15 @@
 					<el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
 					<el-table-column prop="basicUnitName" label="基本单位" align="center"></el-table-column>
 					<el-table-column prop="tableName" label="分拣台" align="center"></el-table-column>
-					<el-table-column prop="sorterName" label="分拣员" align="center"></el-table-column>
+					<!-- <el-table-column prop="sorterName" label="分拣员" align="center"></el-table-column> -->
 					<el-table-column prop="stockOutOrderNo" label="关联出库单" align="center"></el-table-column>
 					<el-table-column prop="stockOutCreatedTime" label="创建时间" align="center"></el-table-column>
- 
+          <el-table-column prop="finishStatus" label="出库状态" align="center">
+             <template slot-scope="scope">
+                <el-tag size="mini" type="success" v-if="scope.row.finishStatus===1">完成</el-tag>
+                <el-tag size="mini" type="danger" v-if="scope.row.finishStatus===0">未完成</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">详情</el-button>

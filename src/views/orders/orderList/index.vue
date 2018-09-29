@@ -32,7 +32,8 @@
               <span v-if="scope.row.paymentType ===1">线上支付</span>
             </template>
           </el-table-column>
-
+          <!-- remark -->
+          <el-table-column prop="remark" label="订单备注" show-overflow-tooltip width="200" align="center"></el-table-column>
           <el-table-column prop="status" label="订单状态" align="center">
             <template slot-scope="scope" align="center">
               {{ scope.row.status | filterStatus}}
@@ -40,6 +41,7 @@
           </el-table-column>
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
+              <el-button type="text" style="color:red" v-if="scope.row.status===0" size="mini" @click.stop="click2miss(scope.$index,scope.row)">取消订单</el-button>
               <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">订单查看</el-button>
               <!-- <el-button type="text" size="mini" @click.stop="click2follow(scope.$index, scope.row)">订单跟踪</el-button> -->
             </template>
@@ -68,7 +70,7 @@
 import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs } from '@/components/base.js'
-import { orderList } from '@/api/orders.js'
+import { orderList, deleteOne } from '@/api/orders.js'
 
 export default {
   name: 'orderList',
@@ -199,6 +201,21 @@ export default {
     handleCurrentChange(value) {
       this.pagination.index = value
       this.fecthList()
+    },
+    click2miss(index, item) {
+      this.$confirm('是否确定取消订单?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        if (!item.id) return
+        deleteOne({ id: item.id }).then(res => {
+          this.$message({ type: 'success', message: `${res.msg}!` })
+          this.fecthList()
+        }).catch((e) => {
+          this.$message({ type: 'error', message: e.msg })
+        })
+      }).catch(() => {})
     },
     // 弹层操作
     click2view(index, row) {

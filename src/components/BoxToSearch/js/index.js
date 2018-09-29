@@ -19,6 +19,13 @@ export default {
     this.$watch('$attrs.' + this.rowKey, this.rowKeyChange)
   },
   watch: {
+    total(val) {
+      if (val > 100) {
+        this.popoverWidth = 500
+      } else {
+        this.popoverWidth = 400
+      }
+    },
     codeOrname() {
       if (this.showPopover) {
         this.update()

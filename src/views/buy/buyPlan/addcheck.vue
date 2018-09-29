@@ -57,10 +57,12 @@
 						<span>{{scope.$index + 1}}</span>
 					</template>
 				</el-table-column>
-
+				<el-table-column prop="categoryName" label="商品分类" align="center"></el-table-column>
 				<el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
 				<el-table-column prop="baseUnitName" label="基本单位" align="center"></el-table-column>
-				<el-table-column prop="orderQuantity" label="下单数量" align="center"></el-table-column>
+				<el-table-column prop="orderQuantity" label="下单总量" align="center"></el-table-column>
+				<el-table-column prop="goodsPrchase" label="已生成数量" align="center"></el-table-column>
+				<el-table-column prop="goodsNotPrchase" label="未生成数量" align="center"></el-table-column>
 				<el-table-column label="采购员/供应商" align="center">
         	<template slot-scope="scope">
 						<span>{{scope.row.supplyName || scope.row.purchaseName}}</span>

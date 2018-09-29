@@ -75,16 +75,17 @@
                       <el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
                     </el-form-item>
                   </el-col> -->
-                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
-
+                  
+                  <!-- 默认采购员 -->
+                  <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
                     <el-form-item label="采购类型:" :rules="rules.select">
                       <el-select v-model="form.purchaseType" placeholder="请选择" @change="changePurchaseType" filterable  style="width:180px" disabled>
                         <el-option size="small" v-for="item in options.purchaseType" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                       </el-select>
                     </el-form-item>
-                  </el-col>
-                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                  </el-col> -->
 
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
                     <el-form-item label="供应商类别:" v-if="form.purchaseType===2"  :rules="rules.select" prop="supplyType" filterable>
                       <el-select size="small" style="width:180px" v-model="form.supplyType" placeholder="请选择" @change="supplyTypeChange">
                         <el-option size="small" v-for="item in options.supplierType" :key="item.pk" :label="item.title" :value="item.pk"> </el-option>
@@ -247,7 +248,7 @@
                     </el-form-item>
                   </div>
                   <div>
-                    <el-form-item label="基本单位价格:" prop="basePrice" :rules="[{trigger: 'change', validator: rules.validNumberR2}]">
+                    <el-form-item label="基本单位价格:" prop="basePrice" :rules="[{trigger: 'change', required: true,validator: rules.validNumberR2}]">
                       <el-input size="small" style="width:180px" class="w180" placeholder="请输入" v-model.trim="form.basePrice"></el-input>
                     </el-form-item>
                   </div>

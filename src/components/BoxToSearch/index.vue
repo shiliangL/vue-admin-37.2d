@@ -3,7 +3,7 @@
  -->
 <template>
 	<div class="search-input BoxToSearch">
-		<el-popover ref="searchPopover" placement="bottom-start" width="400"
+		<el-popover ref="searchPopover" placement="bottom-start" :width="popoverWidth"
 			v-model="showPopover"
 			trigger="manual"
 			transition=""

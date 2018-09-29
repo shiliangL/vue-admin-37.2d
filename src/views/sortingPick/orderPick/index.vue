@@ -14,11 +14,17 @@
 					<el-table-column prop="customerName" label="客户名称" align="center"></el-table-column>
 					<el-table-column prop="distributionArea" label="配送区域" align="center"></el-table-column>
 					<el-table-column prop="stockName" label="仓库" align="center"></el-table-column>
-					<el-table-column prop="tableName" label="打包台" align="center"></el-table-column>
-					<el-table-column prop="packerName" label="打包员" align="center"></el-table-column>
-					<el-table-column prop="barCode" label="订单打包条码" align="center"></el-table-column>
-					<el-table-column prop="completionTime" label="订单打包完成时间" align="center"></el-table-column>
-					<el-table-column prop="createdTime" label="出库单创建时间" align="center" width="90"></el-table-column>
+					<!-- <el-table-column prop="tableName" label="打包台" align="center"></el-table-column>
+					<el-table-column prop="packerName" label="打包员" align="center"></el-table-column> -->
+					<!-- <el-table-column prop="barCode" label="订单打包条码" align="center"></el-table-column> -->
+					<!-- <el-table-column prop="completionTime" label="订单打包完成时间" align="center"></el-table-column> -->
+					<el-table-column prop="createdTime" label="创建时间" align="center" width="90"></el-table-column>
+           <el-table-column prop="finishStatus" label="出库状态" align="center">
+             <template slot-scope="scope">
+                <el-tag size="mini" type="success" v-if="scope.row.finishStatus===1">完成</el-tag>
+                <el-tag size="mini" type="danger" v-if="scope.row.finishStatus===0">未完成</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">详情</el-button>

@@ -80,6 +80,7 @@
 									<span>{{scope.$index + 1}}</span>
 								</template>
 							</el-table-column>
+							<el-table-column prop="categoryName" label="商品分类" align="center"></el-table-column>
 							<el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
 							<el-table-column prop="basicUnitName" label="基本单位" align="center"></el-table-column>
 							<el-table-column prop="planQuantity" label="计划采购量" align="center"></el-table-column>

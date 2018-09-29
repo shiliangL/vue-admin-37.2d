@@ -87,13 +87,13 @@ import model from '@/public/listModel.js'
 import rules from '@/public/rules.js'
 import { Tabs, CascaderBox, SearchBar } from '@/components/base.js'
 import { fecthList, fecthStockList, create, deleteRow, detailRow, updateRow } from '@/api/warehouse/workbench.js'
-// const baseUrl = 'http://0.0.0.0:8090/#/login?'
-let baseUrl = null
-if (process.env.NODE_ENV === 'development') {
-  baseUrl = 'http://39.108.235.6:8081/workbench#/login?'
-} else {
-  baseUrl = 'http://0.0.0.0:8090/#/login?'
-}
+const baseUrl = 'http://10.1.1.119:8090/#/login?'
+// let baseUrl = null
+// if (process.env.NODE_ENV === 'development') {
+//   baseUrl = 'http://39.108.235.6:8081/workbench#/login?'
+// } else {
+//   baseUrl = 'http://0.0.0.0:8090/#/login?'
+// }
 export default {
   name: 'workbench',
   mixins: [model, rules],

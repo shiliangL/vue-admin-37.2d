@@ -25,6 +25,12 @@
           </el-table-column>
 					<el-table-column prop="createdName" label="创建人" align="center"></el-table-column>
 					<el-table-column prop="createdTime" label="创建时间" align="center"></el-table-column>
+					<el-table-column prop="finishStatus" label="入库状态" align="center">
+             <template slot-scope="scope">
+                <el-tag size="mini" type="success" v-if="scope.row.finishStatus===1">完成</el-tag>
+                <el-tag size="mini" type="danger" v-if="scope.row.finishStatus===0">未完成</el-tag>
+            </template>
+          </el-table-column>
  
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">

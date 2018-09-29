@@ -81,6 +81,7 @@ export default {
   },
   data() {
     return {
+      popoverWidth: 400,
       codeOrname: '',
       total: 0,
       page: 1,

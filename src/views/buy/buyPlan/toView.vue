@@ -82,6 +82,7 @@
 								</template>
 							</el-table-column>
 
+							<el-table-column prop="categoryName" label="商品分类" align="center"></el-table-column>
 							<el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
 							<el-table-column prop="basicUnitName" label="基本单位" align="center"></el-table-column>
 							<el-table-column prop="availableQuantity" label="可用库存量" align="center"></el-table-column>

@@ -64,13 +64,15 @@
                       <el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.title"></el-input>
                     </el-form-item>
                   </el-col> -->
-                  <el-col :xs="24" :sm="10" :md="8" :lg="6">
 
+                  <!-- 默认采购员 -->
+                  <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
                     <el-form-item label="采购类型:" :rules="rules.select">
                     	<span v-if="form.purchaseType===2"> 供应商直供 </span>
                      	<span v-if="form.purchaseType===1"> 市场自采 </span>
                     </el-form-item>
-                  </el-col>
+                  </el-col> -->
+
                   <el-col :xs="24" :sm="10" :md="8" :lg="6">
 
                     <el-form-item label="供应商类别:" v-if="form.purchaseType===2"  :rules="rules.select" prop="supplyType" filterable>

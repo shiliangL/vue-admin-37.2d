@@ -56,3 +56,10 @@ export function getTime(params) {
     params
   })
 }
+export function deleteOne(params) {
+  return request({
+    url: 'scmSalesOrder/delete',
+    method: 'delete',
+    params
+  })
+}

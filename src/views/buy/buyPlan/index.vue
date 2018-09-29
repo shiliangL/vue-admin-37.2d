@@ -1,6 +1,7 @@
 <!-- 采购计划 -->
 <template>
     <div class="buyPlan">
+      <span class="topTitle">销售订单商品汇总</span>
       <TipsBar :data="TipsBarData" @TipsBarCallBack="TipsBarCallBack"></TipsBar>
 
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
@@ -219,8 +220,17 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .buyPlan{
   background: #fff;
+  .topTitle{
+    border-left: 2px solid #1cbc9c;
+    display: inline-block;
+    padding-left: 10px;
+    padding-top: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #666666;
+  }
 }
 </style>

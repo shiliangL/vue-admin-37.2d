@@ -66,7 +66,8 @@
           </el-table-column>
           <el-table-column prop="categoryName" label="商品分类" align="center"></el-table-column>
           <el-table-column prop="title" label="商品名称" align="center"></el-table-column>
-          <el-table-column prop="titlePrace" label="市场价格(全国)" align="center"></el-table-column>
+          <el-table-column prop="baseUnitName" label="基本单位" align="center"></el-table-column>
+          <el-table-column prop="basePrice" label="基本单位价格" align="center"></el-table-column>
           <el-table-column prop="purchaseType" label="采购类型" align="center">
              <template slot-scope="scope" align="center">
                <span v-if="scope.row.purchaseType ===2">供应商直供</span>
@@ -223,18 +224,18 @@ export default {
       }
       fecthList(data).then(({ data }) => {
         if (Array.isArray(data.rows)) {
-          for (const item of data.rows) {
-            if (item.mixPrice && item.maxPrice) {
-              item.titlePrace = `¥${item.mixPrice}  ~  ${item.maxPrice}`
-            } else {
-              item.titlePrace = `¥${item.maxPrice}`
-            }
-            if (item.purchaseType === 2) {
-              item.titleName = item.supplierName
-            } else {
-              item.titleName = item.buyerName
-            }
-          }
+          // for (const item of data.rows) {
+          //   if (item.mixPrice && item.maxPrice) {
+          //     item.titlePrace = `¥${item.mixPrice}  ~  ${item.maxPrice}`
+          //   } else {
+          //     item.titlePrace = `¥${item.maxPrice}`
+          //   }
+          //   if (item.purchaseType === 2) {
+          //     item.titleName = item.supplierName
+          //   } else {
+          //     item.titleName = item.buyerName
+          //   }
+          // }
           this.table.data = data.rows
         }
         this.pagination.total = data.total

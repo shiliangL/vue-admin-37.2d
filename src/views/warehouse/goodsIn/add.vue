@@ -153,6 +153,7 @@
                       <el-table-column prop="warehouseTime" label="入库时间" width="90" align="center"></el-table-column>
                       <el-table-column prop="makePlace" label="产地" align="center"></el-table-column>
                       <el-table-column prop="makeDateStr" label="生产日期" width="90" align="center"></el-table-column>
+                      <el-table-column prop="operator" label="操作人"  align="center"></el-table-column>
                     </el-table>
                     <div class="footer-block">
                       <span class="page" v-cloak> 共 {{viewData.tableView.length}} 条</span>
