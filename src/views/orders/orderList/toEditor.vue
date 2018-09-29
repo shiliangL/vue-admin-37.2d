@@ -164,6 +164,21 @@
 										<span v-cloak>{{form.paidAmount}}</span>
 								</el-form-item>
 							</el-col>
+
+              	<!-- 加 -->
+							<el-col :xs="24" :sm="10" :md="8" :lg="8">
+								<el-form-item label="付款方式:" >
+										<span v-cloak v-if="form.scmOrder.payType === 0"> 支付宝支付 </span>
+										<span v-cloak v-if="form.scmOrder.payType === 1"> 微信支付 </span>
+								</el-form-item>
+							</el-col>
+
+							<el-col :xs="24" :sm="10" :md="8" :lg="8">
+								<el-form-item label="支付单号/交易号:" >
+										<span v-cloak>{{form.scmOrder.tradeNo}}</span>
+								</el-form-item>
+							</el-col>
+              
    					</el-row>
 					</div>
         </div>

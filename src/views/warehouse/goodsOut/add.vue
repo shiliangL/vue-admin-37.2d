@@ -133,13 +133,13 @@
                   <el-card class="box-card">
                     <SelectTabs :data="TabsTitle" @callBack="tabsCallBack"></SelectTabs>
                     <div v-for="(item,index) in TabsTitle" :key="index" v-show="curIndex===index">
-                      <div class="desc">
+                      <!-- <div class="desc">
                         <el-form-item label="分拣员:" label-width="60px">
                           <el-select size="small" v-model="item.sorterId" filterable clearable placeholder="分拣员"  style="width:180px">
                             <el-option v-for="sub in selectOption" :disabled="sub.disabled" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                           </el-select>
                         </el-form-item>
-                      </div>
+                      </div> -->
                       <div class="table">
                         <el-table :data="item.table" size="small" max-height="300" style="width: 100%;" highlight-current-row
                           @selection-change="handleTable_R_Change">
@@ -430,13 +430,15 @@ export default {
         storehouseType: this.AddForm.type,
         tableList: []
       }
-      for (let i = 0; i < this.TabsTitle.length; i++) {
-        const item = this.TabsTitle[i]
-        if (item.table.length > 0 && !item.sorterId) {
-          this.$message({ type: 'error', message: `${item.name}请选择分拣员`, duration: 0, showClose: true })
-          return
-        }
-      }
+
+      // for (let i = 0; i < this.TabsTitle.length; i++) {
+      //   const item = this.TabsTitle[i]
+      //   if (item.table.length > 0 && !item.sorterId) {
+      //     this.$message({ type: 'error', message: `${item.name}请选择分拣员`, duration: 0, showClose: true })
+      //     return
+      //   }
+      // }
+
       for (const item of this.TabsTitle) {
         data.tableList.push({
           productList: item.table,
