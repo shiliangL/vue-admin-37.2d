@@ -317,6 +317,16 @@
                     </template>
                   </el-table-column>
     
+                  <el-table-column prop="customerPrice" label="客户类别价" align="center">
+                    <template slot-scope="scope">
+                      <span v-for="(item,index) in scope.row.customerPrice" :key="index">
+                        <el-form-item :label="item.title" :prop=" 'skuList.'+scope.$index+'.customerPrice.'+index+'.price' " :rules="[{trigger: 'change', validator: rules.validNumberR2N}]">
+                          <el-input size="small" class="w90" v-model.trim="item.price"></el-input>
+                        </el-form-item>
+                      </span>
+                    </template>
+                  </el-table-column>
+
                 </el-table>
               </div>
           </div>
@@ -336,7 +346,7 @@
 import addModel from '@/public/addModel.js'
 import rules from '@/public/rules.js'
 import { UploadImg, NqQuillEditor, Tabs } from '@/components/base.js'
-import { fecthGoodsClass, fecthUnit, fecthSupplierList, fecthByCategoryId } from '@/api/goodsList.js'
+import { fecthGoodsClass, fecthUnit, fecthSupplierList, fecthByCategoryId, customerType } from '@/api/goodsList.js'
 import { fecthMemberSelect } from '@/api/members.js'
 import { packagingList } from '@/api/brand.js'
 import { fecthList } from '@/api/warehouse/setting.js'
@@ -412,7 +422,8 @@ export default {
             'skuTitle': null, // SKU名称
             'summary': null, // 规格备注
             'unitId': null, // 销售单位id
-            'unitName': null // 销售单位名称
+            'unitName': null, // 销售单位名称
+            'customerPrice': [] // 客户类别
           }
         ],
         'specificationId': null, // 规格ID
@@ -543,6 +554,7 @@ export default {
     this.fecthSalerList()
     this.fecthList()
     this.fecthBrandList()
+    this.customerType()
   },
   computed: {
     ...mapGetters([
@@ -566,6 +578,50 @@ export default {
     }
   },
   methods: {
+    customerType() {
+      customerType().then(({ data }) => {
+        if (Array.isArray(data)) {
+          if (!this.viewData) {
+            for (const item of data) {
+              this.customerPriceArr = data
+              this.form.skuList[0].customerPrice.push({
+                title: item.title,
+                groupId: item.pk,
+                price: null
+              })
+            }
+          } else {
+            console.log('编辑')
+            for (const item of this.form.skuList) {
+              // 客户价格为空
+              if (!item.customerPrice.length) {
+                for (const itemIn of data) {
+                  item.customerPrice.push({
+                    title: itemIn.title,
+                    groupId: itemIn.pk,
+                    price: null
+                  })
+                }
+              } else {
+              // 客户价格不为空 - 比对客户类别
+                for (const itemIn of data) {
+                  const ids = item.customerPrice.map(item => item.groupId)
+                  if (!ids.includes(itemIn.pk)) {
+                    item.customerPrice.push({
+                      title: itemIn.title,
+                      groupId: itemIn.pk,
+                      price: null
+                    })
+                  }
+                }
+              }
+            }
+          }
+        }
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
     ...mapActions([
       'VX_SET_QNTOKEN'
     ]),
@@ -681,7 +737,8 @@ export default {
         'skuTitle': null, // SKU名称
         'summary': null, // 规格备注
         'unitId': null, // 销售单位id
-        'unitName': null // 销售单位名称
+        'unitName': null, // 销售单位名称
+        'customerPrice': [] // 客户类别
       })
     },
     clickToDelSkuLis(index, row) {
@@ -743,7 +800,17 @@ export default {
 
           this.form.sortFlag = this.form.sortFlag ? 0 : 1 // // 0是 1 不是
           this.form.details = this.detailsFileList.toString()
-          const result = this.$copy(this.form)
+          const result = JSON.parse(JSON.stringify(this.form))
+          for (const item of result.skuList) {
+            const arr = []
+            for (const itemIn of item.customerPrice) {
+              if (itemIn.price) {
+                arr.push({ groupId: itemIn.groupId, price: itemIn.price })
+              }
+            }
+            delete item.customerPrice
+            item.customerPrice = arr
+          }
           delete result.supplyType
           this.$emit('callBack', result)
         } else {

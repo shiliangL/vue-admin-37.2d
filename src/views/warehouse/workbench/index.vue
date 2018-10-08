@@ -87,7 +87,9 @@ import model from '@/public/listModel.js'
 import rules from '@/public/rules.js'
 import { Tabs, CascaderBox, SearchBar } from '@/components/base.js'
 import { fecthList, fecthStockList, create, deleteRow, detailRow, updateRow } from '@/api/warehouse/workbench.js'
-const baseUrl = 'http://10.1.1.119:8090/#/login?'
+// const baseUrl = 'http://10.1.1.119:8090/#/login?'// 深圳
+// const baseUrl = 'http://192.168.1.119:8090/#/login?'// 南京
+const baseUrl = 'http://192.168.1.119:8090/#/login?'// 阿里云 dev
 // let baseUrl = null
 // if (process.env.NODE_ENV === 'development') {
 //   baseUrl = 'http://39.108.235.6:8081/workbench#/login?'

@@ -174,8 +174,8 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        if (!item.pk) return
-        deleteOne({ id: item.pk }).then(res => {
+        if (!item.id) return
+        deleteOne({ id: item.id }).then(res => {
           this.$message({ type: 'success', message: `${res.msg}!` })
           this.fecthList()
         }).catch(() => {

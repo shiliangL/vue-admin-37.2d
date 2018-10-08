@@ -57,7 +57,7 @@
                         </div>
                       </template>
                     </el-table-column>
-                    <el-table-column prop="quantity" label="数量" align="center"></el-table-column>
+                    <el-table-column prop="planQuantity" label="数量" align="center"></el-table-column>
                     <el-table-column prop="makePlace" label="产地" align="center" width="100">
                       <template slot-scope="scope">
                         <el-form-item label="" label-width="0">

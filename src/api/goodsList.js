@@ -124,6 +124,14 @@ export function updateSafeStock(data) {
   })
 }
 
+// 客户类别
+export function customerType(params) {
+  return request({
+    url: 'customerCategory/listAll',
+    method: 'get',
+    params
+  })
+}
 export function exportFile(params) {
   return request({
     url: 'productInfo/exportFile',

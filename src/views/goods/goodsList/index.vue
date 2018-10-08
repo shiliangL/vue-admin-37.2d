@@ -74,8 +74,7 @@
                <span v-if="scope.row.purchaseType ===1">市场自采</span>
             </template>
           </el-table-column>
-          <!-- <el-table-column prop="titleName" label="采购员/供应商" align="center"></el-table-column> -->
-          <el-table-column prop="titleName" label="采购员" align="center"></el-table-column>
+          <el-table-column prop="titleName" label="采购员/供应商" align="center"></el-table-column>
           <el-table-column prop="upperGoodsTime" label="上架时间" width="90" align="center">
              <template slot-scope="scope" align="center">
                <span v-if="curIndex ===0">{{scope.row.upperGoodsTime}}</span>

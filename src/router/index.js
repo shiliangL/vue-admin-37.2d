@@ -45,6 +45,7 @@ export const constantRouterMap = [
     },
     children: [
       { path: 'goodsList', component: _import('goods/goodsList/index'), name: 'goodsList', meta: { title: 'goodsList', noCache: true }},
+      { path: 'bulkPricing', component: _import('goods/bulkPricing/index'), name: 'bulkPricing', meta: { title: 'bulkPricing', noCache: true }},
       { path: 'goodsProfile', component: _import('goods/goodsProfile/index'), name: 'goodsProfile', meta: { title: 'goodsProfile', noCache: true }},
       { path: 'goodsClass', component: _import('goods/goodsClass/index'), name: 'goodsClass', meta: { title: 'goodsClass', noCache: true }},
       { path: 'brand', component: _import('goods/brand/index'), name: 'brand', meta: { title: 'brand', noCache: true }}

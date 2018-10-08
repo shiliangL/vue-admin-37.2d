@@ -19,7 +19,7 @@ export default {
   name: 'GoodsCascader',
   props: {
     value: {
-      type: Object
+      type: String
     }
   },
   data() {
@@ -83,7 +83,7 @@ export default {
           }
         })
         .catch(e => {
-          console.log(e)
+          this.$message({ type: 'error', message: e.msg })
         })
     },
     handleItemChange(val) {

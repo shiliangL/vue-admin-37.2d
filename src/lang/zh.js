@@ -57,6 +57,7 @@ export default {
     goodsClass: '商品分类',
     goodsProfile: '辅助资料',
     goodsList: '商品列表',
+    bulkPricing: '批量调价',
     brand: '品牌管理',
 
     activities: '特价推荐',
