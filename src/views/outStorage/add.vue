@@ -67,7 +67,7 @@
                     <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
                     <el-table-column prop="sortingTableName" label="分拣台" align="center"></el-table-column>
                     <!-- 加 -->
-                    <el-table-column prop="numberStr" label="实际库存量" align="center"></el-table-column> 
+                    <el-table-column prop="stockQuantity" label="实际库存量" align="center"></el-table-column> 
                     <el-table-column prop="outQuantity" label="下单数量" align="center"></el-table-column>
                     <el-table-column prop="realQuantity" label="出库数量" align="center">
                       <template slot-scope="scope">

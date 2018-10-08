@@ -3,11 +3,12 @@
 		<div id="box">
 			<div class="box-text">
 				<template v-if="isSorting">
-					<div class="item">
-						分拣条码: {{propsSonData.barCode}}
+					<div class="item center">
+						【 分拣条码: {{propsSonData.barCode}} 】 
 					</div>
 					<div class="item">
-						订单编号: {{propsSonData.orderNo}}
+							<span v-if="propsSonData.storehouseType === 1 "> 	订单编号: {{propsSonData.orderNo}} </span>
+							<span v-if="propsSonData.storehouseType === 2 "> 	换货单号: {{propsSonData.orderNo}} </span>
 					</div>
 					<div class="item">
 						客户名称: {{propsSonData.customerName}}
@@ -30,11 +31,12 @@
 				</template>
 				<template v-else>
 					<div class="title">
-						<div class="item">
-							打包条码: {{propsSonData.barCode}}
+						<div class="item center">
+							【 打包条码: {{propsSonData.barCode}} 】 
 						</div>
 						<div class="item">
-							订单编号: {{propsSonData.orderNo}}
+							<span v-if="propsSonData.storehouseType === 1 "> 	订单编号: {{propsSonData.orderNo}} </span>
+							<span v-if="propsSonData.storehouseType === 2 "> 	换货单号: {{propsSonData.orderNo}} </span>
 						</div>
 						<div class="item">
 							客户名称: {{propsSonData.customerName}} 
@@ -136,11 +138,11 @@ export default {
           text-align: left;
         }
     }
-    .barcode {
-        // margin-top: 10px;
+    .center {
+				margin-bottom: 6px;
     }
     .title {
-      font-size: 12px;
+      font-size: 13px;
     }
 }
 </style>

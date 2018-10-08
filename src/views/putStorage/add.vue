@@ -73,7 +73,7 @@
                     <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
                     <!-- <el-table-column prop="batchesBarCode" label="商品批次条码" align="center"></el-table-column>  暂时隐藏-->
                     <!-- 加 -->
-                    <el-table-column prop="numberStr" label="实际采购量" align="center"></el-table-column> 
+                    <el-table-column prop="planQuantity" label="实际采购量" align="center"></el-table-column> 
                     <el-table-column prop="quantity" label="入库数量" align="center">
                        <template slot-scope="scope">
                         <span v-if="scope.row.warehouseTime" v-cloak>{{scope.row.quantity}}</span>
@@ -162,12 +162,6 @@ export default {
         this.$message({ type: 'error', message: e.msg })
       })
       fecthBodyDetail({ inId: this.data.obj.id }).then(({ data }) => {
-        for (const item of data) {
-          item.numberStr = item.quantity
-          if (!item.warehouseTime) {
-            item.quantity = null
-          }
-        }
         this.form.table = data
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
@@ -207,12 +201,6 @@ export default {
         this.$message({ type: 'error', message: e.msg })
       })
       fecthBodyDetail({ inId: this.data.obj.id, inputContent: this.searchKey }).then(({ data }) => {
-        for (const item of data) {
-          item.numberStr = item.quantity
-          if (!item.warehouseTime) {
-            item.quantity = null
-          }
-        }
         this.form.table = data
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })

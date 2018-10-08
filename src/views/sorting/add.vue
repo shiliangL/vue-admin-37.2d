@@ -230,7 +230,7 @@ export default {
             this.$message({ type: 'error', message: '工作台参数错误,F5刷新页面或者新登录' })
             return
           }
-          this.$confirm('请核实输入数量,是否确定打印标签？', '提示', {
+          this.$confirm('是否确认？', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
@@ -244,6 +244,7 @@ export default {
               this.$message({ type: 'success', message: '保存成功' })
               this.resetSearch()
             }).catch(e => {
+              console.log(e)
               this.$message({ type: 'error', message: e.msg })
             })
           }).catch(() => {})
