@@ -73,7 +73,7 @@
                     <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
                     <!-- <el-table-column prop="batchesBarCode" label="商品批次条码" align="center"></el-table-column>  暂时隐藏-->
                     <!-- 加 -->
-                    <el-table-column prop="planQuantity" label="实际采购量" align="center"></el-table-column> 
+                    <el-table-column prop="planQuantity" :label="storageTypeTitle" align="center"></el-table-column> 
                     <el-table-column prop="quantity" label="入库数量" align="center">
                        <template slot-scope="scope">
                         <span v-if="scope.row.warehouseTime" v-cloak>{{scope.row.quantity}}</span>
@@ -121,6 +121,7 @@ export default {
     return {
       currentTitle: null,
       searchKey: null,
+      storageTypeTitle: '实际采购量',
       form: {
         orderRequestNo: null,
         applicationDate: null,
@@ -158,6 +159,11 @@ export default {
       if (!this.data.obj.id) return
       fecthHeaderDetail({ id: this.data.obj.id }).then(({ data }) => {
         this.form = Object.assign(this.form, data)
+        if (this.form.storageType === 2) {
+          this.storageTypeTitle = '申请退货量'
+        } else if (this.form.storageType === 3) {
+          this.storageTypeTitle = '申请换货量'
+        }
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
