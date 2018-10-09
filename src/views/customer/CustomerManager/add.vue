@@ -1,20 +1,23 @@
 <template>
     <div>
 			<el-form :model="form" ref="form" class="form" :rules="rules"  style="padding-left: 60px;">
-
 					<el-form-item label="岗位角色:" label-width="100px">
 						<span>客户经理</span>
 					</el-form-item>   
 					<el-form-item label="用户密码:" label-width="100px">
 						<span>123456(初始密码,登录后可修改)</span>
 					</el-form-item>   
-					<el-form-item label="用户账号:" label-width="100px" prop="mobile" :rules="rules.input">
-						<span v-if="propsSonData.isUpdate" v-cloak>{{form.mobile}}</span>
-						<el-input v-else size="small" style="width:180px"  v-model.trim="form.mobile" placeholder="手机号" maxlength="11"></el-input>
+					<el-form-item label="用户账号:" label-width="100px" prop="loginName" :rules="rules.input">
+						<span v-if="propsSonData.isUpdate" v-cloak>{{form.loginName}}</span>
+						<el-input v-else size="small" style="width:180px"  v-model.trim="form.loginName" placeholder="" maxlength="11"></el-input>
 					</el-form-item>
 					<el-form-item label="用户名称:" label-width="100px" prop="name" :rules="rules.input">
 						<span v-if="isViewPage" v-cloak>{{form.name}}</span>
 						<el-input v-else size="small" style="width:180px"  v-model.trim="form.name" placeholder="" maxlength="11"></el-input>
+					</el-form-item>
+          <el-form-item label="手机号:" label-width="100px" prop="mobile" :rules="rules.input">
+						<span v-if="isViewPage" v-cloak>{{form.mobile}}</span>
+						<el-input v-else size="small" style="width:180px"  v-model.trim="form.mobile" placeholder="手机号" maxlength="11"></el-input>
 					</el-form-item>
 					<el-form-item label="在职时间:" label-width="100px">
 						<span  v-if="isViewPage" v-cloak>{{form.beginTime}}</span>
@@ -27,7 +30,8 @@
 					<el-form-item label="账号状态:" label-width="100px" prop="status" :rules="rules.input" style="height: 37px;">
 						<el-radio v-model="form.status" :disabled="isViewPage" label="1">启用</el-radio>
 						<el-radio v-model="form.status" :disabled="isViewPage" label="0">禁用</el-radio>
-					</el-form-item>   
+					</el-form-item> 
+
 			</el-form>
 			<div class="footer-block" v-if="!isViewPage">
 				<el-button size="small" @click.stop="close">取 消</el-button>
@@ -51,6 +55,7 @@ export default {
       isUpdate: false,
       form: {
         'beginTime': '',
+        'loginName': '',
         'endTime': '',
         'id': null,
         'mobile': null,

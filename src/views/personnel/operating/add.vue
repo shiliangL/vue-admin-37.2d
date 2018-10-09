@@ -1,7 +1,6 @@
 <template>
     <div>
 			<el-form :model="form" ref="form" class="form" :rules="rules"  style="padding-left: 60px;">
-
 					<el-form-item label="岗位角色:" label-width="100px">
 						<span>运营人员</span>
 					</el-form-item>   
@@ -57,7 +56,7 @@ export default {
         'departureTime': null,
         'loginName': null,
         'mobile': null,
-        'staffType': 6,
+        'staffType': 0,
         'status': '1',
         'staffName': null
       },

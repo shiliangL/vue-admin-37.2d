@@ -106,7 +106,7 @@ export default {
       const data = {
         index,
         size,
-        staffType: 6
+        staffType: 0
       }
       fetchList(data).then(({ data }) => {
         if (Array.isArray(data.rows)) {
@@ -122,7 +122,7 @@ export default {
       const data = {
         index,
         size,
-        staffType: 6,
+        staffType: 0,
         ...item
       }
       fetchList(data).then(({ data }) => {

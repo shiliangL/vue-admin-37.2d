@@ -61,6 +61,7 @@
         <el-col :span="6">
           <div class="settingForm">
             <el-form :model="form" ref="form" class="form" :rules="rules" :inline="true">
+                <span class="topTitle">SKU市场价格</span>
                 <el-form-item label="调价基准:" label-width="100px" prop="changeFlag" :rules="rules.select">
                   <el-select size="small" v-model="form.changeFlag" filterable placeholder="请选择" style="width:160px">
                     <el-option v-for="sub in option.changeFlag" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
@@ -79,6 +80,19 @@
                 <el-form-item label="数值:" label-width="100px" prop="value" :rules="rules.input">
                   <el-input size="small" style="width:140px" v-model.trim="form.value" placeholder="请输入"></el-input> <span v-if="form.changeMethod===1"> % </span>
                 </el-form-item>
+                <span class="topTitle"> SKU客户类别价格 </span>
+                <span v-for="(item,index) in customerPriceArr" :key="index">
+                  <!-- :prop="'customerPrice.'+index+'.value'" :rules="[{trigger: 'change', validator: rules.validNumberR2N}]" -->
+                  <el-form-item :label="item.title" label-width="100px"
+                    :prop=" 'customerPrice.'+index+'.value' "  :rules="[{trigger: 'change', validator: rules.validNumberR2N}]">
+
+                    <!-- <el-select size="small" v-model="form.changeDirection" filterable placeholder="请选择" style="width:70px">
+                      <el-option v-for="sub in option.changeDirection" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
+                    </el-select> -->
+
+                    <el-input size="small" style="width:110px" v-model.trim="item.value" placeholder="请输入"></el-input>
+                  </el-form-item>  
+                </span>
             </el-form>
             <div class="footer-block">
               <el-button size="small" @click.stop="resetForm">重置</el-button>
@@ -96,6 +110,7 @@ import model from '@/public/listModel.js'
 import rules from '@/public/rules.js'
 import Add from './add'
 import { SearchBar, GoodsCascader } from '@/components/base.js'
+import { customerType } from '@/api/goodsList.js'
 import { fetchList, updateRow } from '@/api/bulkPricing.js'
 
 export default {
@@ -125,9 +140,10 @@ export default {
         ]
       ],
       form: {
-        changeFlag: null,
-        changeDirection: null,
+        changeFlag: 0,
+        changeDirection: 0,
         changeMethod: 0,
+        customerPrice: [],
         value: null
       },
       option: {
@@ -144,6 +160,7 @@ export default {
           { label: '按百分百', value: 1 }
         ]
       },
+      customerPriceArr: [],
       saveLoading: false,
       dialogVisible: false,
       dialogTitle: null
@@ -151,6 +168,7 @@ export default {
   },
   mounted() {
     this.fecthList()
+    this.customerType()
   },
   methods: {
     reset() {
@@ -175,6 +193,25 @@ export default {
         this.$message({ type: 'error', message: e.msg })
       })
     },
+    customerType() {
+      customerType().then(({ data }) => {
+        if (data && Array.isArray(data)) {
+          const result = []
+          for (const item of data) {
+            if (item.type !== 0) {
+              result.push({
+                'title': item.title,
+                'groupId': item.pk,
+                'value': null
+              })
+            }
+          }
+          this.customerPriceArr = result
+        }
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
     // 分页操作区域
     handleSizeChange(value) {
       this.pagination.size = value
@@ -192,9 +229,9 @@ export default {
       this.fecthList()
     },
     resetForm() {
-      this.form.changeFlag = null
-      this.form.changeDirection = null
-      this.form.changeMethod = null
+      this.form.changeFlag = 0
+      this.form.changeDirection = 0
+      this.form.changeMethod = 0
       this.form.value = null
       if (this.$refs['form']) this.$refs['form'].resetFields()
     },
@@ -216,6 +253,14 @@ export default {
               const data = JSON.parse(JSON.stringify(this.form))
               data.categoryId = this.GoodsCascaderDTO
               data.title = this.title
+              for (const item of this.customerPriceArr) {
+                if (item.value) {
+                  data.customerPrice.push({
+                    'groupId': item.groupId,
+                    'value': item.value
+                  })
+                }
+              }
               updateRow(data).then(res => {
                 if (res.code === '0') {
                   this.$message({ type: 'success', message: `设置成功` })
@@ -246,16 +291,26 @@ export default {
 <style scoped lang="scss">
 .bulkPricing{
  .settingForm{
+   height: 530px;
+   overflow-y: auto;
+   padding: 20px;
    min-width: 280px;
    margin-top: 10px;
    background: #fff;
-   padding-top: 50px;
  }
-  .footer-block{
-    padding-bottom: 20px;
-  }
   .form{
     text-align: center;
+  }
+  .topTitle{
+    margin-left: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    display: block;
+    font-size: 14px;
+    color: #606266;
+    padding-left: 10px;
+    padding-top: 10px;
+    font-weight: 400;
   }
 }
 </style>

@@ -12,8 +12,9 @@
             </template>
           </el-table-column>
  
- 					<el-table-column prop="mobile" label="用户账号" align="center"></el-table-column>
+ 					<el-table-column prop="loginName" label="用户账号" align="center"></el-table-column>
 					<el-table-column prop="name" label="用户名称" align="center"></el-table-column>
+ 					<el-table-column prop="mobile" label="手机号码" align="center"></el-table-column>
 					<el-table-column prop="createOn" label="创建时间" align="center"></el-table-column>
 					<el-table-column prop="beginTime" label="在岗开始时间" align="center"></el-table-column>
 					<el-table-column prop="endTime" label="离岗时间" align="center"></el-table-column>

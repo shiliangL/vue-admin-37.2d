@@ -43,13 +43,13 @@
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
-							<el-form-item label="有效期:" label-width="100px" prop="effectiveTime" :rules="rules.input">
+							<el-form-item label="有效期:" label-width="100px" prop="effectiveTime">
 								<span  v-if="isViewPage" v-cloak>{{form.effectiveTime}}</span>
       					<el-date-picker v-else style="width:160px" size="small" v-model="form.effectiveTime" value-format="yyyy-MM-dd" type="date"></el-date-picker>
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
-							<el-form-item label="首次发证:" label-width="100px" prop="takeTime" :rules="rules.input">
+							<el-form-item label="首次发证:" label-width="100px" prop="takeTime">
 								<span  v-if="isViewPage" v-cloak>{{form.takeTime}}</span>
       					<el-date-picker v-else style="width:160px" size="small" v-model="form.takeTime" value-format="yyyy-MM-dd" type="date"></el-date-picker>
 							</el-form-item>   
@@ -67,25 +67,25 @@
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
-							<el-form-item label="车架号:" label-width="100px" prop="carId" :rules="rules.input">
+							<el-form-item label="车架号:" label-width="100px" prop="carId">
 								<span  v-if="isViewPage" v-cloak>{{form.carId}}</span>
 								<el-input v-else size="small" style="width:160px"  v-model.trim="form.carId"></el-input>
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
-							<el-form-item label="发动机号:" label-width="100px" prop="engineId" :rules="rules.input">
+							<el-form-item label="发动机号:" label-width="100px" prop="engineId">
 								<span  v-if="isViewPage" v-cloak>{{form.engineId}}</span>
 								<el-input v-else size="small" style="width:160px"  v-model.trim="form.engineId"></el-input>
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
-							<el-form-item label="车辆品牌:" label-width="100px" prop="carBrand" :rules="rules.input">
+							<el-form-item label="车辆品牌:" label-width="100px" prop="carBrand">
 								<span  v-if="isViewPage" v-cloak>{{form.carBrand}}</span>
 								<el-input v-else size="small" style="width:160px"  v-model.trim="form.carBrand"></el-input>
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
-							<el-form-item label="车辆型号:" label-width="100px" prop="carModel" :rules="rules.input">
+							<el-form-item label="车辆型号:" label-width="100px" prop="carModel">
 								<span  v-if="isViewPage" v-cloak>{{form.carModel}}</span>
 								<el-input v-else size="small" style="width:160px"  v-model.trim="form.carModel"></el-input>
 							</el-form-item>   
