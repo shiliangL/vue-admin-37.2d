@@ -185,12 +185,12 @@
                     </el-form-item>
                   </div>
                   <div>
-                    <el-form-item label="采购参考价格:" style="width:180px">
-                      <!-- <el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.subTitle"></el-input> -->
+                    <el-form-item label="最近采购单价:" label-width="180px">
+                      <span v-cloak>{{form.purchasePrice}}</span>
                     </el-form-item>
                   </div>
                   <div>
-                    <el-form-item label="基本单位价格:" prop="basePrice" :rules="rules.input">
+                    <el-form-item label="销售单价:" prop="basePrice" :rules="rules.input">
 											<span v-cloak>{{form.basePrice}}</span>
                     </el-form-item>
                   </div>
@@ -223,6 +223,13 @@
                   <el-table-column prop="skuTitle" label="规格" align="center"></el-table-column>
                   <el-table-column prop="summary" label="规格备注" align="center"></el-table-column>
                   <el-table-column prop="price" label="市场价格(全国)" align="center"></el-table-column>
+                  <el-table-column label="客户类别价" align="center">
+                    <template slot-scope="scope">
+                      <span v-for="(item,index) in scope.row.customerPrice" :key="index"> 
+                        <div v-cloak> {{item.title}} : {{item.price}} </div>
+                      </span>
+                    </template>
+                  </el-table-column>
                 </el-table>
               </div>
           </div>

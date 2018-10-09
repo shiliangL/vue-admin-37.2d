@@ -243,12 +243,12 @@
                     </el-form-item>
                   </div>
                   <div>
-                    <el-form-item label="采购参考价格:" style="width:180px">
-                      <!-- <el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.subTitle"></el-input> -->
+                    <el-form-item label="最近采购单价:" label-width="180px">
+											<span v-cloak>{{form.purchasePrice}}</span>
                     </el-form-item>
                   </div>
                   <div>
-                    <el-form-item label="基本单位价格:" prop="basePrice" :rules="[{trigger: 'change', required: true,validator: rules.validNumberR2}]">
+                    <el-form-item label="销售单价:" prop="basePrice" :rules="[{trigger: 'change', required: true,validator: rules.validNumberR2}]">
                       <el-input size="small" style="width:180px" class="w180" placeholder="请输入" v-model.trim="form.basePrice"></el-input>
                     </el-form-item>
                   </div>
@@ -271,13 +271,12 @@
                     </el-form-item>
                   </div> -->
                 </div>
-
                 <el-table :data="form.skuList" class="skuListTbale" size="small" :max-height="500" style="width: 100%;" highlight-current-row>
-
                   <el-table-column label="操作" width="50" align="center">
                     <template slot-scope="scope">
+                      <!-- v-if="form.skuList && form.skuList.length>1 && scope.$index"  -->
                       <i class="el-icon-plus" style="cursor: pointer;" @click.stop="clickToAddSkuLis"></i>
-                      <i class="el-icon-minus" v-if="form.skuList && form.skuList.length>1 && scope.$index" style="cursor: pointer;" @click.stop="clickToDelSkuLis(scope.$index,scope.$row)"></i>
+                      <i class="el-icon-minus" style="cursor: pointer;" @click.stop="clickToDelSkuLis(scope.$index,scope.$row)"></i>
                     </template>
                   </el-table-column>
                   <el-table-column label="序号" width="50" align="center">
@@ -370,6 +369,7 @@ export default {
       uploadDatas: {
         token: null
       },
+      customerPriceArr: [],
       ifInfo: true,
       isSku: false,
       imgTypes: ['jpeg', 'png', 'jpg'],
@@ -581,30 +581,37 @@ export default {
     customerType() {
       customerType().then(({ data }) => {
         if (Array.isArray(data)) {
+          this.customerPriceArr = data.filter((item) => {
+            return item.type !== 0
+          }) || []
           if (!this.viewData) {
             for (const item of data) {
-              this.customerPriceArr = data
-              this.form.skuList[0].customerPrice.push({
-                title: item.title,
-                groupId: item.pk,
-                price: null
-              })
+              if (item.type !== 0) {
+                // 为0 则是普通客户不需要显示
+                this.form.skuList[0].customerPrice.push({
+                  title: item.title,
+                  groupId: item.pk,
+                  price: null
+                })
+              }
             }
           } else {
-            console.log('编辑')
             for (const item of this.form.skuList) {
               // 客户价格为空
               if (!item.customerPrice.length) {
                 for (const itemIn of data) {
-                  item.customerPrice.push({
-                    title: itemIn.title,
-                    groupId: itemIn.pk,
-                    price: null
-                  })
+                  if (item.type !== 0) {
+                    // 为0 则是普通客户不需要显示
+                    item.customerPrice.push({
+                      title: itemIn.title,
+                      groupId: itemIn.pk,
+                      price: null
+                    })
+                  }
                 }
               } else {
-              // 客户价格不为空 - 比对客户类别
-                for (const itemIn of data) {
+                // 客户价格不为空 - 比对客户类别
+                for (const itemIn of this.customerPriceArr) {
                   const ids = item.customerPrice.map(item => item.groupId)
                   if (!ids.includes(itemIn.pk)) {
                     item.customerPrice.push({
@@ -718,7 +725,7 @@ export default {
       })
     },
     clickToAddSkuLis() {
-      this.form.skuList.push({
+      const data = {
         'areaIds': [
           {
             'areaId': 0,
@@ -739,10 +746,25 @@ export default {
         'unitId': null, // 销售单位id
         'unitName': null, // 销售单位名称
         'customerPrice': [] // 客户类别
-      })
+      }
+      if (Array.isArray(this.customerPriceArr)) {
+        for (const itemIn of this.customerPriceArr) {
+          data.customerPrice.push({
+            title: itemIn.title,
+            groupId: itemIn.pk,
+            price: null
+          })
+        }
+      }
+      this.form.skuList.push(data)
     },
     clickToDelSkuLis(index, row) {
+      if (this.form.skuList.length === 1) {
+        this.$message({ type: 'warning', message: '商品SKU不能全部删除' })
+        return
+      }
       this.form.skuList.splice(index, 1)
+      // if (this.$refs['form']) this.$refs['form'].resetFields()
     },
     selectCategory(value) {
       if (Array.isArray(value) && value.length > 0) {

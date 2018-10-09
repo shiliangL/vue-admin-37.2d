@@ -157,10 +157,22 @@
                       <el-table-column prop="sumPrice" label="实际金额" align="center"></el-table-column>
                       <el-table-column  label="退/换货状态" align="center">
                         <template slot-scope="scope">
-                          <span v-cloak v-if="scope.row.exchanage ===0">待审核</span>
-                          <span v-cloak v-if="scope.row.exchanage ===1">进行中 </span>
-                          <span v-cloak v-if="scope.row.exchanage ===2">已完成 </span>
-                          <span v-cloak v-if="scope.row.exchanage ===3">已拒绝 </span>
+
+                          <template v-if="scope.row.method ===1">
+                            <!-- 退货 -->
+                            <span v-cloak v-if="scope.row.exchanage ===0"> 退货待审核 </span>
+                            <span v-cloak v-if="scope.row.exchanage ===1"> 退货进行中 </span>
+                            <span v-cloak v-if="scope.row.exchanage ===2"> 退货已完成 </span>
+                            <span v-cloak v-if="scope.row.exchanage ===3"> 退货已拒绝 </span>
+                          </template>
+                          <template  v-if="scope.row.method ===2">
+                            <!-- 换货 -->
+                            <span v-cloak v-if="scope.row.exchanage ===0"> 换货待审核 </span>
+                            <span v-cloak v-if="scope.row.exchanage ===1"> 换货进行中 </span>
+                            <span v-cloak v-if="scope.row.exchanage ===2"> 换货已完成 </span>
+                            <span v-cloak v-if="scope.row.exchanage ===3"> 换货已拒绝 </span>
+                          </template>
+ 
                         </template>
                       </el-table-column>
                     </el-table>

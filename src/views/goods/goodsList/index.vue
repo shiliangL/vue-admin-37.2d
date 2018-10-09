@@ -67,7 +67,7 @@
           <el-table-column prop="categoryName" label="商品分类" align="center"></el-table-column>
           <el-table-column prop="title" label="商品名称" align="center"></el-table-column>
           <el-table-column prop="baseUnitName" label="基本单位" align="center"></el-table-column>
-          <el-table-column prop="basePrice" label="基本单位价格" align="center"></el-table-column>
+          <el-table-column prop="basePrice" label="销售单价" align="center"></el-table-column>
           <el-table-column prop="purchaseType" label="采购类型" align="center">
              <template slot-scope="scope" align="center">
                <span v-if="scope.row.purchaseType ===2">供应商直供</span>
@@ -75,7 +75,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="titleName" label="采购员/供应商" align="center"></el-table-column>
-          <el-table-column prop="upperGoodsTime" label="上架时间" width="90" align="center">
+          <el-table-column prop="upperGoodsTime" :label=" curIndex===0? '上架时间' : '下架时间' " width="90" align="center">
              <template slot-scope="scope" align="center">
                <span v-if="curIndex ===0">{{scope.row.upperGoodsTime}}</span>
                <span v-else> - </span>
