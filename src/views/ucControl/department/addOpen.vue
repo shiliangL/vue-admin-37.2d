@@ -33,16 +33,16 @@ export default {
       // 0:普通管理员  2:采购员  3:仓管员  4:分拣员  5:打包员  6:供应链主管   8:验货员  9:客服人员  10:供应商  11:财务
       saveLoading: false,
       selectOption: [
+        { value: 3, label: '仓管员' },
+        { value: 10, label: '供应商' },
         { value: 0, label: '运营人员' },
         { value: 9, label: '客服人员' },
-        { value: 6, label: '供应链主管' },
-        { value: 3, label: '仓管员' },
         { value: 2, label: '采购人员' },
         { value: 4, label: '分拣人员' },
         { value: 5, label: '打包人员' },
         { value: 8, label: '验货人员' },
-        { value: 10, label: '供应商' },
-        { value: 11, label: '财务人员' }
+        { value: 11, label: '财务人员' },
+        { value: 6, label: '供应链主管' }
       ],
       form: {
         loginName: null,
