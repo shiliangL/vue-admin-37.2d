@@ -81,14 +81,14 @@
                   <el-input size="small" style="width:140px" v-model.trim="form.value" placeholder="请输入"></el-input> <span v-if="form.changeMethod===1"> % </span>
                 </el-form-item>
                 <span class="topTitle"> SKU客户类别价格 </span>
-                <span v-for="(item,index) in customerPriceArr" :key="index">
-                  <!-- :prop="'customerPrice.'+index+'.value'" :rules="[{trigger: 'change', validator: rules.validNumberR2N}]" -->
-                  <el-form-item :label="item.title" label-width="100px"
-                    :prop=" 'customerPrice.'+index+'.value' "  :rules="[{trigger: 'change', validator: rules.validNumberR2N}]">
+                <span v-for="(item,index) in form.customerPriceArr" :key="index">
 
-                    <!-- <el-select size="small" v-model="form.changeDirection" filterable placeholder="请选择" style="width:70px">
+                  <el-form-item :label="item.title" label-width="100px"
+                    :prop=" 'customerPriceArr.'+index+'.value' "  :rules="[{trigger: 'change', validator: rules.validNumberR2N}]">
+
+                    <el-select size="small" v-model="form.changeDirection" filterable placeholder="请选择" style="width:70px">
                       <el-option v-for="sub in option.changeDirection" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
-                    </el-select> -->
+                    </el-select>
 
                     <el-input size="small" style="width:110px" v-model.trim="item.value" placeholder="请输入"></el-input>
                   </el-form-item>  
@@ -143,6 +143,7 @@ export default {
         changeFlag: 0,
         changeDirection: 0,
         changeMethod: 0,
+        customerPriceArr: [],
         customerPrice: [],
         value: null
       },
@@ -160,7 +161,6 @@ export default {
           { label: '按百分百', value: 1 }
         ]
       },
-      customerPriceArr: [],
       saveLoading: false,
       dialogVisible: false,
       dialogTitle: null
@@ -169,6 +169,9 @@ export default {
   mounted() {
     this.fecthList()
     this.customerType()
+    // const a = 2
+    // console.log(a)
+    // console.log(a.toFixed(2))
   },
   methods: {
     reset() {
@@ -206,7 +209,7 @@ export default {
               })
             }
           }
-          this.customerPriceArr = result
+          this.form.customerPriceArr = result
         }
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
@@ -253,7 +256,7 @@ export default {
               const data = JSON.parse(JSON.stringify(this.form))
               data.categoryId = this.GoodsCascaderDTO
               data.title = this.title
-              for (const item of this.customerPriceArr) {
+              for (const item of data.customerPriceArr) {
                 if (item.value) {
                   data.customerPrice.push({
                     'groupId': item.groupId,
@@ -261,6 +264,8 @@ export default {
                   })
                 }
               }
+              delete data.customerPriceArr
+
               updateRow(data).then(res => {
                 if (res.code === '0') {
                   this.$message({ type: 'success', message: `设置成功` })

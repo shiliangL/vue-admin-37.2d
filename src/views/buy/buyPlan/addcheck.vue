@@ -4,6 +4,9 @@
         :clearable="false"
       -->
       <div class="search-bar">
+        <div class="left" style="line-height: 44px;">
+          送货日期:
+        </div>
         <div class="left">
           <el-date-picker :style="{width:'140px'}"
             :clearable="false"

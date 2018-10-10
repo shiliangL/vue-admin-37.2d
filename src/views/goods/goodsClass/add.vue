@@ -4,7 +4,7 @@
 
       <el-form :model="form" ref="form"  :inline="true" :rules="rules">
 				<el-form-item label="名称" label-width="100px" prop="title" :rules="rules.input">
-					<el-input size="small" style="width:180px"  v-model.trim="form.title" placeholder="不能超过6位数" maxlength="6"></el-input>
+					<el-input size="small" style="width:180px"  v-model.trim="form.title" placeholder="不能超过6位数" maxlength="8"></el-input>
 				</el-form-item>
 				<!-- <el-form-item label="备注" label-width="100px">
 					<el-input size="small" style="width:180px" type="textarea" autosize  v-model.trim="form.summary" placeholder="不能超100位数" maxlength="100"></el-input>

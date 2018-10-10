@@ -8,14 +8,20 @@
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
-							<el-form-item label="用户账号:" label-width="100px" prop="mobile" :rules="rules.input">
+							<el-form-item label="手机号码:" label-width="100px" prop="mobile" :rules="rules.input">
 								<span v-if="isViewPage" v-cloak>{{form.mobile}}</span>
 								<el-input v-else size="small" style="width:160px"  v-model.trim="form.mobile" placeholder="手机号" maxlength="11"></el-input>
 							</el-form-item>   
 						</el-col>
-						<el-col :xs="24" :sm="10" :md="8" :lg="6">
+						<!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
 							<el-form-item label="登录密码:" label-width="100px">
 								<span>123456（初始密码）</span>
+							</el-form-item>   
+						</el-col> -->
+						<el-col :xs="24" :sm="10" :md="8" :lg="6">
+							<el-form-item label="用户账号:" label-width="100px" prop="loginName" :rules="rules.input">
+								<span  v-if="isViewPage" v-cloak>{{form.loginName}}</span>
+								<el-input v-else size="small" style="width:160px"  v-model.trim="form.loginName" placeholder="不能超过5位数" maxlength="5"></el-input>
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
@@ -55,9 +61,9 @@
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
-							<el-form-item label="是否有车:" label-width="100px" prop="carFlag" :rules="rules.input">
-								<el-radio v-model="form.carFlag"  :disabled="isViewPage" label="0">有</el-radio>
-								<el-radio v-model="form.carFlag"  :disabled="isViewPage" label="1">无</el-radio>
+							<el-form-item label="自有配车:" label-width="100px" prop="carFlag" :rules="rules.input">
+								<el-radio v-model="form.carFlag"  :disabled="isViewPage" label="0"> 自有 </el-radio>
+								<el-radio v-model="form.carFlag"  :disabled="isViewPage" label="1"> 配车</el-radio>
 							</el-form-item>   
 						</el-col>
 						<el-col :xs="24" :sm="10" :md="8" :lg="6">
@@ -157,6 +163,7 @@ export default {
         'idcardPicIds': 'string',
         'mobile': null,
         'name': null,
+        'loginName': null,
         'operatorId': null,
         'phone': null,
         'staffId': null,
