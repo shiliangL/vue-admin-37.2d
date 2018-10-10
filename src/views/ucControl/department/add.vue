@@ -35,7 +35,7 @@
 import rules from '@/public/rules.js'
 import addModel from '@/public/addModel.js'
 
-import { updateRow, fetchDetail, createRow } from '@/api/uc/department.js'
+import { DepartmentUpdate, DepartmentDetail, createRow } from '@/api/uc/department.js'
 
 export default {
   mixins: [rules, addModel],
@@ -67,7 +67,7 @@ export default {
     },
     fetchDetail() {
       if (!this.propsSonData.data.id) return
-      fetchDetail({ id: this.propsSonData.data.id }).then(({ data }) => {
+      DepartmentDetail({ id: this.propsSonData.data.id }).then(({ data }) => {
         this.form = Object.assign(this.form, data)
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
@@ -88,7 +88,7 @@ export default {
                   'shortCode': data.shortCode,
                   'shortName': data.shortName
                 }
-                updateRow(p).then(res => {
+                DepartmentUpdate(p).then(res => {
                   this.saveLoading = false
                   this.$emit('add')
                   this.close()

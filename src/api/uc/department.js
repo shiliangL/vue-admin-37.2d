@@ -63,3 +63,19 @@ export function fetchDetail(params) {
     params
   })
 }
+
+export function DepartmentDetail(params) {
+  return request({
+    url: 'department/getDetail',
+    method: 'get',
+    params
+  })
+}
+
+export function DepartmentUpdate(data) {
+  return request({
+    url: 'department/update',
+    method: 'POST',
+    data
+  })
+}
