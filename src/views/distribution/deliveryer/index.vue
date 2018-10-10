@@ -56,7 +56,7 @@
       <!-- 弹层 -->
 
       <!-- 弹层区域 -->
-      <el-dialog :title="dialogTitle" class="dialogTitle" width="1110px" :visible.sync="dialogVisible" append-to-body center @close="resetForm">
+      <el-dialog :title="dialogTitle" class="dialogTitle" width="960px" :visible.sync="dialogVisible" append-to-body center @close="resetForm">
         <Add v-if="dialogVisible" @close="resetForm" :propsSonData="propsParentData" @add="fetchList"> </Add>
       </el-dialog>
       
