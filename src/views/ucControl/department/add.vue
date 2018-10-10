@@ -1,13 +1,13 @@
 <template>
     <div>
 			<el-form :model="form" ref="form" class="form" :rules="rules" label-width="120px" :inline="true">
-				<el-form-item label="上级名称:">
+				<el-form-item label="上级名称:" v-if="propsSonData.type!=='isUpdate'">
 					<span class="view-item" v-if="isViewPage && !propsSonData.data.title" v-cloak> {{form.code}} </span>
 					<el-input v-else size="small" style="width:180px" readonly v-model.trim="propsSonData.data.title"  placeholder="请输入"></el-input>
 				</el-form-item>
 				<el-form-item label="部门编号:" prop="code" :rules="rules.input">
 					<span class="view-item" v-if="isViewPage" v-cloak> {{form.code}} </span>
-					<el-input v-else size="small" style="width:180px" v-model.trim="form.code"  placeholder="请输入"></el-input>
+					<el-input v-else size="small" :disabled="propsSonData.type==='isUpdate'" style="width:180px" v-model.trim="form.code"  placeholder="请输入"></el-input>
 				</el-form-item>
 				<el-form-item label="部门名称:" prop="deptName" :rules="rules.input">
 					<span class="view-item" v-if="isViewPage" v-cloak> {{form.deptName}} </span>
