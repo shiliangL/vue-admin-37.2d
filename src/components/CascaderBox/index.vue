@@ -6,13 +6,13 @@
         <el-option v-for="sub in form.searchBarOptons.type" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
       </el-select>
 
-      <template v-if="form.searchParams.purchaseType===2">
+      <template v-if="form.searchParams.purchaseType===1">
         <el-select style="180px" size="small" v-model="form.searchParams.buyerId" clearable filterable placeholder="请选择">
           <el-option v-for="sub in form.searchBarOptons.salerList" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
         </el-select>
       </template>
 
-      <template v-if="form.searchParams.purchaseType===1">
+      <template v-if="form.searchParams.purchaseType===2">
         <el-cascader style="180px" v-model="form.searchParams.supplyDto" size="small" filterable :options="form.options" @active-item-change="handleItemChange" :props="form.props" ></el-cascader>
       </template>
 
@@ -50,8 +50,8 @@ export default {
         },
         searchBarOptons: {
           type: [
-            { label: '供应商直供', value: 1 },
-            { label: '市场自采购', value: 2 }
+            // { label: '供应商直供', value: 2 },
+            { label: '市场自采购', value: 1 }
           ],
           salerList: [],
           supplyType: [],

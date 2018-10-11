@@ -596,11 +596,12 @@ export default {
               }
             }
           } else {
+            console.log('编辑')
             for (const item of this.form.skuList) {
               // 客户价格为空
               if (!item.customerPrice.length) {
                 for (const itemIn of data) {
-                  if (item.type !== 0) {
+                  if (itemIn.type !== 0) {
                     // 为0 则是普通客户不需要显示
                     item.customerPrice.push({
                       title: itemIn.title,

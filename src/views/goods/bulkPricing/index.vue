@@ -3,7 +3,7 @@
     <div class="bulkPricing">
 
       <el-row :gutter="10">
-        <el-col :span="18">
+        <el-col :span="16">
           <!-- <search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"  @add="showAdd"></search-bar> -->
           <div class="search-bar">
             <div class="left">
@@ -58,7 +58,7 @@
 
           </table-contain>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="8">
           <div class="settingForm">
             <el-form :model="form" ref="form" class="form" :rules="rules" :inline="true">
                 <span class="topTitle">SKU市场价格</span>
@@ -77,7 +77,7 @@
                     <el-option v-for="sub in option.changeMethod" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                   </el-select>
                 </el-form-item>  
-                <el-form-item label="数值:" label-width="100px" prop="value" :rules="rules.input">
+                <el-form-item label="数值:" label-width="100px" prop="value" :rules="[{trigger: 'change', validator: rules.validNumberR2N}]">
                   <el-input size="small" style="width:140px" v-model.trim="form.value" placeholder="请输入"></el-input> <span v-if="form.changeMethod===1"> % </span>
                 </el-form-item>
                 <span class="topTitle"> SKU客户类别价格 </span>
@@ -90,8 +90,8 @@
                       <el-option v-for="sub in option.changeDirection" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                     </el-select>
 
-                    <el-input size="small" style="width:110px" v-model.trim="item.value" placeholder="请输入"></el-input>
-                  </el-form-item>  
+                    <el-input size="small" style="width:110px" v-model.trim="item.value" placeholder="请输入"></el-input> %
+                  </el-form-item> 
                 </span>
             </el-form>
             <div class="footer-block">
@@ -158,7 +158,7 @@ export default {
         ],
         changeMethod: [
           { label: '按数字额度', value: 0 },
-          { label: '按百分百', value: 1 }
+          { label: '按百分比', value: 1 }
         ]
       },
       saveLoading: false,
@@ -275,6 +275,7 @@ export default {
                 this.saveLoading = false
               }).catch(e => {
                 this.saveLoading = false
+                this.$message({ type: 'error', message: e.msg })
               })
             } else {
               this.saveLoading = false
@@ -298,7 +299,7 @@ export default {
  .settingForm{
    height: 530px;
    overflow-y: auto;
-   padding: 20px;
+   padding: 10px;
    min-width: 280px;
    margin-top: 10px;
    background: #fff;
