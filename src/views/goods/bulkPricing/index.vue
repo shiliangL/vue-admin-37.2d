@@ -4,13 +4,23 @@
 
       <el-row :gutter="10">
         <el-col :span="16">
-          <!-- <search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"  @add="showAdd"></search-bar> -->
-          <div class="search-bar">
+
+        <div class="search-bar">
+
             <div class="left">
-              <GoodsCascader class="CascaderBox" v-model="GoodsCascaderDTO"></GoodsCascader>
+              <el-select class="w110" size="small" v-model="levelFirst" clearable filterable placeholder="一级分类">
+                <el-option v-for="sub in searchBarOptons.categoryOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
+              </el-select>
             </div>
+
+            <div class="left" v-if="searchBarOptons.levelTowOption.length"> 
+              <el-select class="w110" size="small" v-model="levelFecond" clearable filterable placeholder="二级分类">
+                <el-option v-for="sub in searchBarOptons.levelTowOption" :key="sub.id" :label="sub.title" :value="sub.id"></el-option>
+              </el-select>
+            </div>
+
             <div class="left">
-      				<el-input size="small" style="width:180px"  v-model.trim="title" placeholder="商品名称检索"></el-input>
+      				<el-input clearable size="small" style="width:180px"  v-model.trim="title" placeholder="商品名称检索"></el-input>
             </div>
             <div class="left">
                 <el-button  type="primary" size="small" @click.stop="fecthList" > 搜索 </el-button>
@@ -35,13 +45,6 @@
               <el-table-column prop="purchasePrice" label="最近采购单价" align="center"></el-table-column>
               <el-table-column prop="basePrice" label="当前销售单价" align="center"></el-table-column>
               <el-table-column prop="createdOn" label="最近调价时间" align="center"></el-table-column>
-    
-              <!-- <el-table-column label="操作" align="center" width="140">
-                <template slot-scope="scope" align="center">
-                  <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">设置</el-button>
-                  <el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index,scope.row)">重置密码</el-button>
-                </template>
-              </el-table-column> -->
 
             </el-table>
             
@@ -60,40 +63,44 @@
         </el-col>
         <el-col :span="8">
           <div class="settingForm">
-            <el-form :model="form" ref="form" class="form" :rules="rules" :inline="true">
+            <el-form :model="form" ref="form" class="form" :rules="rules">
                 <span class="topTitle">SKU市场价格</span>
-                <el-form-item label="调价基准:" label-width="100px" prop="changeFlag" :rules="rules.select">
-                  <el-select size="small" v-model="form.changeFlag" filterable placeholder="请选择" style="width:160px">
-                    <el-option v-for="sub in option.changeFlag" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="调价方向:" label-width="100px" prop="changeDirection" :rules="rules.select">
-                  <el-select size="small" v-model="form.changeDirection" filterable placeholder="请选择" style="width:160px">
-                    <el-option v-for="sub in option.changeDirection" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="调价方式:" label-width="100px" prop="changeMethod" :rules="rules.select">
-                  <el-select size="small" v-model="form.changeMethod" filterable placeholder="请选择" style="width:160px">
-                    <el-option v-for="sub in option.changeMethod" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
-                  </el-select>
-                </el-form-item>  
-                <el-form-item label="数值:" label-width="100px" prop="value" :rules="[{trigger: 'change', validator: rules.validNumberR2N}]">
-                  <el-input size="small" style="width:140px" v-model.trim="form.value" placeholder="请输入"></el-input> <span v-if="form.changeMethod===1"> % </span>
-                </el-form-item>
-                <span class="topTitle"> SKU客户类别价格 </span>
-                <span v-for="(item,index) in form.customerPriceArr" :key="index">
-
-                  <el-form-item :label="item.title" label-width="100px"
-                    :prop=" 'customerPriceArr.'+index+'.value' "  :rules="[{trigger: 'change', validator: rules.validNumberR2N}]">
-
-                    <el-select size="small" v-model="form.changeDirection" filterable placeholder="请选择" style="width:70px">
+                <div class="input">
+                  <el-form-item label="调价基准:" label-width="100px" prop="changeFlag" :rules="rules.select">
+                    <el-select size="small" v-model="form.changeFlag" filterable placeholder="请选择" style="width:160px">
+                      <el-option v-for="sub in option.changeFlag" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item label="调价方向:" label-width="100px" prop="changeDirection" :rules="rules.select">
+                    <el-select size="small" v-model="form.changeDirection" filterable placeholder="请选择" style="width:160px">
                       <el-option v-for="sub in option.changeDirection" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                     </el-select>
+                  </el-form-item>
+                  <el-form-item label="调价方式:" label-width="100px" prop="changeMethod" :rules="rules.select">
+                    <el-select size="small" v-model="form.changeMethod" filterable placeholder="请选择" style="width:160px">
+                      <el-option v-for="sub in option.changeMethod" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
+                    </el-select>
+                  </el-form-item>  
+                  <el-form-item label="数值:" label-width="100px" prop="value" :rules="[{trigger: 'change', required: true, validator: rules.validNumberR2}]">
+                    <el-input size="small" clearable style="width:160px" v-model.trim="form.value" placeholder="请输入"></el-input> <span v-if="form.changeMethod===1"> % </span>
+                  </el-form-item>
+                </div>
+                <span class="topTitle"> SKU客户类别价格 </span>
 
-                    <el-input size="small" style="width:110px" v-model.trim="item.value" placeholder="请输入"></el-input> %
-                  </el-form-item> 
-                </span>
+                <div class="input">
+                  <span v-for="(item,index) in form.customerPriceArr" :key="index">
+
+                    <el-form-item :label="item.title" label-width="100px"
+                      :prop=" 'customerPriceArr.'+index+'.value' "  :rules="[{trigger: 'change', validator: rules.validNumberR2N}]">
+                      <el-select size="small" v-model="form.changeDirection" filterable placeholder="请选择" style="width:70px">
+                        <el-option v-for="sub in option.changeDirection" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
+                      </el-select>
+                      <el-input size="small" style="width:86px" clearable v-model.trim="item.value" placeholder="请输入"></el-input> %
+                    </el-form-item> 
+                  </span>
+                </div>
             </el-form>
+
             <div class="footer-block">
               <el-button size="small" @click.stop="resetForm">重置</el-button>
               <el-button :loading="saveLoading" size="small" type="primary" @click.stop="clickSaveOrUpdate('form')"> 确定 </el-button>
@@ -109,36 +116,26 @@
 import model from '@/public/listModel.js'
 import rules from '@/public/rules.js'
 import Add from './add'
-import { SearchBar, GoodsCascader } from '@/components/base.js'
 import { customerType } from '@/api/goodsList.js'
 import { fetchList, updateRow } from '@/api/bulkPricing.js'
+import { fecthGoodsClass } from '@/api/goodsList.js'
 
 export default {
   name: 'bulkPricing',
   mixins: [model, rules],
   components: {
-    Add,
-    GoodsCascader,
-    SearchBar
+    Add
   },
   data() {
     return {
-      GoodsCascaderDTO: null,
+      searchBarOptons: {
+        categoryOption: [],
+        levelTowOption: []
+      },
+      levelFirst: '',
+      levelFecond: '',
       title: null,
-      searchBarDate: [
-        [
-          { type: 'option', value: null, key: 'status', class: 'w150', placeholder: '账号状态', options: [
-            { label: '启用', value: 1 },
-            { label: '禁用', value: 0 }
-          ] },
-          { type: 'input', value: null, key: 'name', class: 'w180', placeholder: '输入用户名称检索' },
-          { type: 'search', name: '查询' },
-          { type: 'reset', name: '重置' }
-        ],
-        [
-          // { type: 'add', name: '新增' }
-        ]
-      ],
+
       form: {
         changeFlag: 0,
         changeDirection: 0,
@@ -161,21 +158,32 @@ export default {
           { label: '按百分比', value: 1 }
         ]
       },
-      saveLoading: false,
-      dialogVisible: false,
-      dialogTitle: null
+      saveLoading: false
     }
   },
   mounted() {
     this.fecthList()
     this.customerType()
-    // const a = 2
-    // console.log(a)
-    // console.log(a.toFixed(2))
+    this.fecthGoodsClass()
   },
   methods: {
     reset() {
       this.fecthList()
+    },
+    fecthGoodsClass() {
+      fecthGoodsClass().then(({ data }) => {
+        if (!Array.isArray(data) && data.length <= 0) return
+        const result = []
+        for (const item of data) {
+          if (item.parentId === '0') {
+            result.push({ label: item.title, value: item.id })
+          }
+        }
+        this.levelTypeOption = data
+        this.searchBarOptons.categoryOption = result
+      }).catch(e => {
+        this.$message({ type: 'error', message: '加载分类失败失败' })
+      })
     },
     // 数据请求
     fecthList() {
@@ -183,7 +191,7 @@ export default {
       const { index, size } = this.pagination
       const data = {
         title: this.title,
-        categoryId: this.GoodsCascaderDTO,
+        categoryId: this.levelFecond ? this.levelFecond : this.levelFirst,
         index,
         size
       }
@@ -239,7 +247,8 @@ export default {
       if (this.$refs['form']) this.$refs['form'].resetFields()
     },
     clickToReset() {
-      this.GoodsCascaderDTO = null
+      this.levelFirst = null
+      this.levelFecond = null
       this.title = null
       this.fecthList()
     },
@@ -254,7 +263,7 @@ export default {
             if (valid) {
               this.saveLoading = true
               const data = JSON.parse(JSON.stringify(this.form))
-              data.categoryId = this.GoodsCascaderDTO
+              data.categoryId = this.levelFecond ? this.levelFecond : this.levelFirst
               data.title = this.title
               for (const item of data.customerPriceArr) {
                 if (item.value) {
@@ -290,6 +299,27 @@ export default {
         }
       })
     }
+  },
+  watch: {
+    levelFirst: {
+      handler(val, old) {
+        if (val) {
+          const arr = []
+          for (const item of this.levelTypeOption) {
+            if (val === item.parentId) {
+              arr.push(item)
+            }
+          }
+          this.searchBarOptons.levelTowOption = arr
+        } else {
+          this.levelFecond = ''
+          this.searchBarOptons.levelTowOption = []
+        }
+        if (val && old) {
+          this.levelFecond = ''
+        }
+      }
+    }
   }
 }
 </script>
@@ -305,7 +335,10 @@ export default {
    background: #fff;
  }
   .form{
-    text-align: center;
+    // text-align: center;
+    .input{
+      padding-left: 60px;
+    }
   }
   .topTitle{
     margin-left: 10px;

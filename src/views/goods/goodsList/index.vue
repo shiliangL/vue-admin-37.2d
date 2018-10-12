@@ -149,10 +149,6 @@ export default {
       searchBarOptons: {
         categoryOption: [],
         levelTowOption: [],
-        purchaseTypeOption: [
-          { label: '供应商直供', value: 1 },
-          { label: '市场自采购', value: 2 }
-        ],
         supplierList: [],
         supplyTypeOption: [],
         salerList: []
