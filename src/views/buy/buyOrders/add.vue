@@ -79,19 +79,16 @@
                         <span>{{scope.$index + 1}}</span>
                       </template>
                     </el-table-column>
-          
+                    <el-table-column prop="categoryName" label="商品分类" align="center"></el-table-column>
                     <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
                     <el-table-column prop="basicUnitName" label="基本单位" align="center"></el-table-column>
                     <el-table-column prop="orderQuantity" label="待采购量" align="center"></el-table-column>
-                    <el-table-column prop="realQuantity" label="实际采购量" align="center"></el-table-column>
-                    <el-table-column prop="deliveryTime" label="收货时间" align="center"></el-table-column>
-                    <el-table-column prop="weighQuantity" label="收货称重量" align="center"></el-table-column>
-                    <!-- <el-table-column prop="receivedStaffName" label="收货人" align="center"></el-table-column> -->
-                    <el-table-column prop="receivedQuantity" label="验收接收量" align="center"></el-table-column>
-                    <el-table-column prop="iqcStaffName" label="验货人" align="center"></el-table-column>
                     <el-table-column prop="purchasePrice" label="实际采购单价" align="center"></el-table-column>
+                    <el-table-column prop="realQuantity" label="实际采购量" align="center"></el-table-column>
                     <el-table-column prop="sum" label="实际采购金额" align="center"></el-table-column>
-
+                    <el-table-column prop="warehouseTime" label="入库时间" align="center"></el-table-column>
+                    <el-table-column prop="quantity" label="实际入库量" align="center"></el-table-column>
+                    <el-table-column prop="operator" label="入库操作人" align="center"></el-table-column>
                     <el-table-column prop="auditStatus" label="采购退/换货状态" align="center">
                       <template slot-scope="scope" align="center">
                         <span v-cloak> {{scope.row.returnState | filterStatus }} </span>
