@@ -544,10 +544,12 @@ export default {
 .el-dialog__wrapper{
   transform: translateZ(0);
   min-height: 100%;
-  min-height: 700px;
+  min-height: 1200px;
 }
 .content-box {
   width: 100%;
+  height: 850px;
+  overflow-y: auto;
   position: relative;
   .header-bar {
     .left{

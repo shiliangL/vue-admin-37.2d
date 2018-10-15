@@ -137,9 +137,9 @@ export default {
       title: null,
 
       form: {
-        changeFlag: 0,
+        changeFlag: 1,
         changeDirection: 0,
-        changeMethod: 0,
+        changeMethod: 1,
         customerPriceArr: [],
         customerPrice: [],
         value: null

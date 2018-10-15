@@ -54,7 +54,6 @@
       </table-contain>
 
       <!-- 弹层 -->
-      <h1> sb </h1>
       <!-- 弹层区域 -->
       <el-dialog :title="dialogTitle" class="dialogTitle" width="960px" :visible.sync="dialogVisible" append-to-body center @close="resetForm">
         <Add v-if="dialogVisible" @close="resetForm" :propsSonData="propsParentData" @add="fetchList"> </Add>

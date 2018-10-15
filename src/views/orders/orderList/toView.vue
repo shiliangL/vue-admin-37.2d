@@ -264,7 +264,7 @@
 				</div>
 
 			</el-form>
-      <Loading v-if="loading" @loadingRefresh="onRefresh" :loadingText="loadingText" class="Loading"></Loading>
+      <!-- <Loading v-if="loading" @loadingRefresh="onRefresh" :loadingText="loadingText" class="Loading"></Loading> -->
     </div>
 </template>
 

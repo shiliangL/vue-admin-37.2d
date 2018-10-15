@@ -271,7 +271,7 @@
 				</div>
 			</el-dialog>
 
-      <Loading v-if="loading" @loadingRefresh="onRefresh" :loadingText="loadingText" class="Loading"></Loading>
+      <!-- <Loading v-if="loading" @loadingRefresh="onRefresh" :loadingText="loadingText" class="Loading"></Loading> -->
 
     </div>
 </template>
