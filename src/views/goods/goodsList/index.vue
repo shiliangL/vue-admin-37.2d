@@ -21,7 +21,7 @@
         </div>
 
         <div class="left">
-          <el-input style="width:180px" v-model="searchParams.title" size="small" @keyup.enter.native="clickToSearch" placeholder="输入商品名称检索"></el-input>
+          <el-input clearable style="width:180px" v-model="searchParams.title" size="small" @keyup.enter.native="clickToSearch" placeholder="输入商品名称检索"></el-input>
         </div>
          <div class="left">
             <el-button  type="primary" size="small" @click.stop="clickToSearch" > 搜索 </el-button>
@@ -119,7 +119,7 @@
 import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs, CascaderBox } from '@/components/base.js'
-import { fecthList, fecthGoodsClass, deletepProduct, productsDown, productsUp } from '@/api/goodsList.js'
+import { fecthList, fecthGoodsClass, deletepProduct, productsDown, productsUp, existTitle } from '@/api/goodsList.js'
 import { mapGetters } from 'vuex'
 export default {
   name: 'goodsList',
@@ -327,21 +327,25 @@ export default {
         type: 'warning'
       }).then(() => {
         if (!item.id) return
-        if (item.goodsStatus === 0) {
-          productsDown({ ids: item.id }).then(res => {
-            this.$message({ type: 'success', message: `${res.msg}` })
-            this.fecthList()
-          }).catch(() => {
-            this.$message({ type: 'error', message: '操作失败' })
-          })
-        } else {
-          productsUp({ ids: item.id }).then(res => {
-            this.$message({ type: 'success', message: `${res.msg}` })
-            this.fecthList()
-          }).catch(() => {
-            this.$message({ type: 'error', message: '操作失败' })
-          })
-        }
+        existTitle({ id: item.id, title: item.title }).then(res => {
+          if (item.goodsStatus === 0) {
+            productsDown({ ids: item.id }).then(res => {
+              this.$message({ type: 'success', message: `${res.msg}` })
+              this.fecthList()
+            }).catch((e) => {
+              this.$message({ type: 'error', message: e.msg })
+            })
+          } else {
+            productsUp({ ids: item.id }).then(res => {
+              this.$message({ type: 'success', message: `${res.msg}` })
+              this.fecthList()
+            }).catch((e) => {
+              this.$message({ type: 'error', message: e.msg })
+            })
+          }
+        }).catch(e => {
+          this.$message({ type: 'error', message: e.msg })
+        })
       }).catch(() => {})
     },
     clickToDelete(index, item) {
@@ -354,8 +358,8 @@ export default {
         deletepProduct({ ids: item.id }).then(res => {
           this.$message({ type: 'success', message: `${res.msg}` })
           this.fecthList()
-        }).catch(() => {
-          this.$message({ type: 'error', message: '删除失败' })
+        }).catch((e) => {
+          this.$message({ type: 'error', message: e.msg })
         })
       }).catch(() => {})
     },

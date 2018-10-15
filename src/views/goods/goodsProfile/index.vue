@@ -127,8 +127,8 @@ export default {
         this.form.summary = data.summary
         this.form.title = data.title
         this.form.id = data.pk
-      }).catch(() => {
-        this.$message({ type: 'error', message: '加载失败' })
+      }).catch((e) => {
+        this.$message({ type: 'error', message: e.msg })
       })
     },
     clickToDelete(index, item) {
@@ -141,8 +141,8 @@ export default {
         deletePackaging({ id: item.pk }).then(res => {
           this.$message({ type: 'success', message: `${res.msg}成功!` })
           this.fecthList()
-        }).catch(() => {
-          this.$message({ type: 'error', message: '删除失败' })
+        }).catch((e) => {
+          this.$message({ type: 'error', message: e.msg })
         })
       }).catch(() => {})
     },

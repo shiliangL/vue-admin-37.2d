@@ -132,9 +132,19 @@ export function customerType(params) {
     params
   })
 }
+
 export function exportFile(params) {
   return request({
     url: 'productInfo/exportFile',
+    method: 'get',
+    params
+  })
+}
+
+// 验证商品名称
+export function existTitle(params) {
+  return request({
+    url: 'productInfo/existTitle',
     method: 'get',
     params
   })

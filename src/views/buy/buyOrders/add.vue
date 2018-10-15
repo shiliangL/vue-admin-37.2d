@@ -7,11 +7,13 @@
         <div class="header-bar" slot="title">
            <div class="left"> {{currentTitle}} </div>
            <div class="right">
+              <el-button type="text" size="mini" @click.stop="onRefresh">刷新</el-button>
               <el-button type="text" size="mini" @click.stop="dialog.visiable = false">返回</el-button>
             </div>
         </div>
         <div class="content-bar">
-	        <el-form :model="form" ref="form" label-width="130px" :inline="true">
+	        <el-form :model="form" ref="form" :inline="true">
+            
             <!--基本信息-->
             <div class="row-item">
                 <div class="row-title">基本信息</div>
@@ -66,9 +68,87 @@
                 </div>
             </div>
 
+              <!--费用信息-->
+            <div class="row-item">
+                <div class="row-title">费用信息</div>
+                <div class="row-content info">
+                  <el-row>
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="待采购参考金额:">
+                        <span v-cloak>{{form.purchaseSum}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="实际采购金额:">
+                       <span v-cloak>{{form.finalSum}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="采购退货金额:">
+                       <span v-cloak>{{form.amountlSum}}</span>
+                      </el-form-item>
+                    </el-col> -->
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="应付采购款金额:">
+                        <span v-cloak>{{form.amountlSum}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="未支付采购金额:">
+                        <span v-cloak>{{form.orderNo}}</span>
+                      </el-form-item>
+                    </el-col> -->
+                    <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="已支付采购金额:">
+                        <span v-cloak>{{form.createTime}}</span>
+                      </el-form-item>
+                    </el-col> -->
+
+                    <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="采购结算剩余应付金额:">
+                         <span v-cloak>{{form.remainingSumPayable}}</span>
+                      </el-form-item>
+                    </el-col> -->
+
+                    <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="采购结算应收金额(预付超额):">
+                        <span v-cloak>{{form.personnelName}}</span>
+                      </el-form-item>
+                    </el-col> -->
+    
+                  </el-row>
+                </div>
+            </div>
+
             <!--商品信息-->
             <div class="row-item">
               <div class="row-title">商品信息</div>
+
+                <div class="search-bar">
+                  <div class="left">
+                    <el-select class="w110" size="small" v-model="levelFirst" clearable filterable placeholder="一级分类">
+                      <el-option v-for="sub in searchBarOptons.categoryOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
+                    </el-select>
+                  </div>
+
+                  <div class="left" v-if="searchBarOptons.levelTowOption.length"> 
+                    <el-select class="w110" size="small" v-model="levelFecond" clearable filterable placeholder="二级分类">
+                      <el-option v-for="sub in searchBarOptons.levelTowOption" :key="sub.id" :label="sub.title" :value="sub.id"></el-option>
+                    </el-select>
+                  </div>
+
+                  <div class="left">
+                    <el-input style="width:180px" v-model="productName" size="small" clearable @keyup.enter.native="clickToSearch" placeholder="输入商品名称检索"></el-input>
+                  </div>
+                  <div class="left">
+                      <el-button  type="primary" size="small" @click.stop="clickToSearch" > 搜索 </el-button>
+                  </div>
+                  <div class="left">
+                      <el-button size="small" @click.stop="reset" > 重置 </el-button>
+                  </div>
+
+                </div>
+
               <div class="row-content">
                 <!-- 表格 -->
                 <table-contain  :height.sync="table.maxHeight">
@@ -128,11 +208,20 @@ import addModel from '@/public/addModel.js'
 import model from '@/public/listModel.js'
 
 import { Detail, tableDetail } from '@/api/buy/buyOrders.js'
+import { fecthGoodsClass } from '@/api/goodsList.js'
 
 export default {
   mixins: [addModel, model],
   data() {
     return {
+      searchBarOptons: {
+        categoryOption: [],
+        levelTowOption: []
+      },
+      levelFirst: '',
+      levelFecond: '',
+      productName: '',
+
       dialogVisible: false,
       form: {
         orderRequestNo: null,
@@ -143,6 +232,10 @@ export default {
         orderNo: null,
         purchaseType: null,
         personnelName: null,
+
+        purchaseSum: null,
+        finalSum: null,
+        amountlSum: null,
         table: []
       },
       rules: {},
@@ -161,6 +254,7 @@ export default {
   mounted() {
     this.currentTitle = this.data.title || ''
     this.fecthDetailById()
+    this.fecthGoodsClass()
   },
   filters: {
     filterStatus(status) {
@@ -181,6 +275,47 @@ export default {
     }
   },
   methods: {
+    fecthGoodsClass() {
+      fecthGoodsClass().then(({ data }) => {
+        if (!Array.isArray(data) && data.length <= 0) return
+        const result = []
+        for (const item of data) {
+          if (item.parentId === '0') {
+            result.push({
+              label: item.title,
+              value: item.id
+            })
+          }
+        }
+        this.levelTypeOption = data
+        this.searchBarOptons.categoryOption = result
+      }).catch(e => {
+        this.$message({ type: 'error', message: '加载分类失败失败' })
+      })
+    },
+    reset() {
+      this.productName = null
+      this.levelFirst = null
+      this.levelFecond = null
+      this.fecthDetailById()
+    },
+    clickToSearch() {
+      if (!this.data.obj.id) return
+      const { index, size } = this.pagination
+      const data = {
+        index,
+        size,
+        productName: this.productName,
+        categoryId: this.levelFecond ? this.levelFecond : this.levelFirst,
+        orderId: this.data.obj.id
+      }
+      tableDetail(data).then(({ data }) => {
+        this.table.data = data.rows
+        this.pagination.total = data.total
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
     closeDialog() {
       this.$emit('input', false)
     },
@@ -218,7 +353,6 @@ export default {
         orderId: this.data.obj.id
       }
       tableDetail(data).then(({ data }) => {
-        console.log(data, 'table')
         this.table.data = data.rows
         this.pagination.total = data.total
       }).catch(e => {
@@ -237,6 +371,27 @@ export default {
     validateForm() {
       if (this.$refs['addview']) {
         this.$refs['addview'].validateForm()
+      }
+    }
+  },
+  watch: {
+    levelFirst: {
+      handler(val, old) {
+        if (val) {
+          const arr = []
+          for (const item of this.levelTypeOption) {
+            if (val === item.parentId) {
+              arr.push(item)
+            }
+          }
+          this.searchBarOptons.levelTowOption = arr
+        } else {
+          this.levelFecond = ''
+          this.searchBarOptons.levelTowOption = []
+        }
+        if (val && old) {
+          this.levelFecond = ''
+        }
       }
     }
   }

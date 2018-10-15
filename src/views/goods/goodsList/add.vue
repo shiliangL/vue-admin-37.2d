@@ -34,7 +34,7 @@
 
 <script>
 import addModel from '@/public/addModel.js'
-import { productDetail, productCreate, productUpdate } from '@/api/goodsList.js'
+import { productDetail, productCreate, productUpdate, existTitle } from '@/api/goodsList.js'
 import toView from './toView'
 import toEditor from './toEditor'
 
@@ -123,53 +123,57 @@ export default {
     callBackToSubmit(data) {
       if (!data) return
       if (this.typeIseditor) {
-        const update = {
-          id: data.id,
-          brandId: data.brandId,
-          expiry: data.expiry,
-          storage: data.storage,
+        existTitle({ id: data.id, title: data.title }).then(res => {
+          const update = {
+            id: data.id,
+            brandId: data.brandId,
+            expiry: data.expiry,
+            storage: data.storage,
 
-          aliasTitle: data.aliasTitle,
-          bannerIds: data.bannerIds,
-          barCode: data.barCode,
-          basePrice: data.basePrice,
-          baseUnit: data.baseUnit,
-          baseUnitName: data.baseUnitName,
-          categoryId: data.categoryId,
-          categoryName: data.categoryName,
-          details: data.details,
-          goodsImage: data.goodsImage,
-          goodsStatus: data.goodsStatus,
-          itemNumber: data.itemNumber,
-          purchasePrice: data.purchasePrice,
-          purchaseType: data.purchaseType,
-          sellingPrice: data.sellingPrice,
-          shortCode: data.shortCode,
-          shortTitle: data.shortTitle,
-          sortFlag: data.sortFlag,
-          specificationId: data.specificationId,
-          stockQuantity: data.stockQuantity,
-          subTitle: data.subTitle,
-          summary: data.summary,
-          tags: data.tags,
-          title: data.title,
-          type: data.type
-        }
-        update.skuList = data.skuList
-        update.supply = {
-          id: data.supplyTempId,
-          supplierId: data.supplyId
-        }
-        update.buyer = {
-          id: data.buyerTempId,
-          buyerId: data.buyerId
-        }
-        productUpdate(update).then(res => {
-          if (res.code === '0') {
-            this.$message({ type: 'success', message: res.msg })
-            this.dialog.visiable = false
-            this.$emit('add')
+            aliasTitle: data.aliasTitle,
+            bannerIds: data.bannerIds,
+            barCode: data.barCode,
+            basePrice: data.basePrice,
+            baseUnit: data.baseUnit,
+            baseUnitName: data.baseUnitName,
+            categoryId: data.categoryId,
+            categoryName: data.categoryName,
+            details: data.details,
+            goodsImage: data.goodsImage,
+            goodsStatus: data.goodsStatus,
+            itemNumber: data.itemNumber,
+            purchasePrice: data.purchasePrice,
+            purchaseType: data.purchaseType,
+            sellingPrice: data.sellingPrice,
+            shortCode: data.shortCode,
+            shortTitle: data.shortTitle,
+            sortFlag: data.sortFlag,
+            specificationId: data.specificationId,
+            stockQuantity: data.stockQuantity,
+            subTitle: data.subTitle,
+            summary: data.summary,
+            tags: data.tags,
+            title: data.title,
+            type: data.type
           }
+          update.skuList = data.skuList
+          update.supply = {
+            id: data.supplyTempId,
+            supplierId: data.supplyId
+          }
+          update.buyer = {
+            id: data.buyerTempId,
+            buyerId: data.buyerId
+          }
+          productUpdate(update).then(res => {
+            if (res.code === '0') {
+              this.$message({ type: 'success', message: res.msg })
+              this.dialog.visiable = false
+              this.$emit('add')
+            }
+          }).catch(e => {
+            this.$message({ type: 'error', message: e.msg })
+          })
         }).catch(e => {
           this.$message({ type: 'error', message: e.msg })
         })
