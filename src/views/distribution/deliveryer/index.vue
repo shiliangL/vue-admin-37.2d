@@ -17,10 +17,10 @@
 					<el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
 					<el-table-column prop="entryTime" label="在岗时间" align="center"></el-table-column>
 					<el-table-column prop="departureTime" label="离岗时间" align="center"></el-table-column>
-					<el-table-column prop="carFlag" label="是否有车" align="center">
+					<el-table-column prop="carFlag" label="自有配车" align="center">
              <template slot-scope="scope" align="center">
-               <span v-if="scope.row.carFlag===0"> 有 </span>
-               <span v-if="scope.row.carFlag===1"> 无 </span>
+               <span v-if="scope.row.carFlag===0"> 自有 </span>
+               <span v-if="scope.row.carFlag===1"> 配车 </span>
             </template>
           </el-table-column>
 					<el-table-column prop="status" label="账号状态" align="center">
@@ -54,7 +54,7 @@
       </table-contain>
 
       <!-- 弹层 -->
-
+      <h1> sb </h1>
       <!-- 弹层区域 -->
       <el-dialog :title="dialogTitle" class="dialogTitle" width="960px" :visible.sync="dialogVisible" append-to-body center @close="resetForm">
         <Add v-if="dialogVisible" @close="resetForm" :propsSonData="propsParentData" @add="fetchList"> </Add>

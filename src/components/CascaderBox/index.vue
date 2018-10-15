@@ -151,7 +151,7 @@ export default {
   watch: {
     'form.searchParams.purchaseType': {
       handler(val) {
-        if (val === 1) {
+        if (val === 2) {
           console.log('选择供应商')
           // 选择供应商
 
@@ -174,11 +174,11 @@ export default {
             supplyOrBuyerId: null
           }
           obj.purchaseType = val.purchaseType
-          if (val.purchaseType === 1) {
+          if (val.purchaseType === 2) {
             if (Array.isArray(val.supplyDto) && val.supplyDto.length >= 2) {
               obj.supplyOrBuyerId = val.supplyDto[1]
             }
-          } else if (val.purchaseType === 2) {
+          } else if (val.purchaseType === 1) {
             obj.supplyOrBuyerId = val.buyerId
           }
           this.$emit('input', obj)

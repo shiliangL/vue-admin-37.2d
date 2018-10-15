@@ -205,8 +205,8 @@ export default {
     fecthList() {
       if (this.CascaderBoxDTO) {
         this.searchParams.purchaseType = this.CascaderBoxDTO.purchaseType
-        if (this.CascaderBoxDTO.purchaseType === 0) {
-          this.searchParams.buyerId = this.CascaderBoxDTO.purchaseType
+        if (this.CascaderBoxDTO.purchaseType === 1) {
+          this.searchParams.buyerId = this.CascaderBoxDTO.supplyOrBuyerId
         } else {
           this.searchParams.supplyId = this.CascaderBoxDTO.supplyOrBuyerId
         }

@@ -98,7 +98,7 @@
 		
 				<el-form-item label="自有配车:" label-width="100px" prop="carFlag" :rules="rules.input">
 					<el-radio v-model="form.carFlag"  :disabled="isViewPage" label="0"> 自有 </el-radio>
-					<el-radio v-model="form.carFlag"  :disabled="isViewPage" label="1"> 配车</el-radio>
+					<el-radio v-model="form.carFlag"  :disabled="isViewPage" label="1"> 配车 </el-radio>
 				</el-form-item>   
 
 		
