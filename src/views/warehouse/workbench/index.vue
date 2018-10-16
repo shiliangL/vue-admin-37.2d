@@ -107,7 +107,7 @@ export default {
   },
   data() {
     return {
-      curIndex: 1,
+      curIndex: 2,
       CascaderBoxDTO: null,
       tableOne: [],
       tableTwo: [],
@@ -149,7 +149,7 @@ export default {
   },
   created() {
     this.tabTitles = [
-      { title: '验收台', value: 1 },
+      // { title: '验收台', value: 1 },
       { title: '入库台', value: 2 },
       { title: '出库台', value: 3 },
       { title: '分拣台', value: 4 },
@@ -309,7 +309,7 @@ export default {
     },
     clickToCopy(index, item) {
       if (item && item.id) {
-        const url = `${baseUrl}type=${this.curIndex}&id=${item.id}&stockId=${item.stockId}`
+        const url = `${baseUrl}type=${this.curIndex - 1}&id=${item.id}&stockId=${item.stockId}`
         this.$copyText(url).then(s => {
           this.$message({ type: 'success', message: '复制到剪切板成功' })
         }, e => {

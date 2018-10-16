@@ -24,7 +24,7 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .app-main {
-  transform: translateZ(0);
+  // transform: translateZ(0);
   // background-color: white;
   // margin-top: 5px;
   // margin-left: 15px;

@@ -16,6 +16,7 @@ module.exports = {
         // target: 'http://10.1.1.131:9002/', // 王艳本机
         // target: 'http://192.168.1.166:9002/', // 王艳南京本机
         target: 'http://39.108.235.6:9002/', // 服务器dev
+        // target: 'http://192.168.1.105:9002/', // 服务器dev -仓库王艳
         // target: 'http://192.168.1.199:9002/', // 南京657
         // target: 'http://39.108.235.6/', // 正式
         changeOrigin: true,

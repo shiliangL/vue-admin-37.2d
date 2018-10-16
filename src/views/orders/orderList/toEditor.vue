@@ -183,6 +183,14 @@
 					</div>
         </div>
 
+				<!-- 订单备注 -->
+				<div class="row-item">
+				 	<div class="row-title">订单备注:</div>
+							<div class="row-content">
+								<el-input type="textarea" :autosize="{ minRows: 1, maxRows: 2}" placeholder="请输入内容" v-model.trim="form.scmOrder.remark" />
+							</div>
+				</div>
+
   			<!--商品信息-->
 				<div class="row-item">
 					<div class="row-title">商品信息</div>
@@ -233,16 +241,13 @@
 								
 						</el-table>
  
+            <!-- 分页 -->
+            <div class="footer-block">
+              <span class="page" v-cloak> 共 {{form.saleDtails.length}} 条</span>
+            </div>
 					</div>
 				</div>
 				
-				<!-- 订单备注 -->
-				<div class="row-item">
-				 	<div class="row-title">订单备注:</div>
-							<div class="row-content">
-								<el-input type="textarea" :autosize="{ minRows: 1, maxRows: 2}" placeholder="请输入内容" v-model.trim="form.scmOrder.remark" />
-							</div>
-				</div>
 
 			</el-form>
 

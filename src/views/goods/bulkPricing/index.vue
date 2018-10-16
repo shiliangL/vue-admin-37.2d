@@ -146,7 +146,7 @@ export default {
       },
       option: {
         changeFlag: [
-          { label: '当前销售价格', value: 0 },
+          // { label: '当前销售价格', value: 0 },
           { label: '最近采购单价', value: 1 }
         ],
         changeDirection: [

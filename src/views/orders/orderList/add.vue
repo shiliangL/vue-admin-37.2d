@@ -2,7 +2,7 @@
 <!-- 全屏固定表头弹层组件 -->
 <!-- :title="dialog.title" -->
   <div>
-    <el-dialog :visible.sync="dialog.visiable" @close="closeDialog" :show-close="false" :fullscreen="true" :modal-append-to-body="false" :modal="false">
+    <el-dialog :visible.sync="dialog.visiable" @close="closeDialog"  :fullscreen="true" :modal-append-to-body="false"  :close-on-press-escape="true">
       <div class="content-box">
         <!-- 固定顶部操作菜单+位置明示 -->
         <div class="header-bar" slot="title">
@@ -95,7 +95,14 @@
                   </el-table>
                 </div>
               </div>
-  
+
+              <!-- 订单备注 -->
+              <div class="row-item">
+                <div class="row-title">订单备注:</div>
+                    <div class="row-content">
+                      <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 2}" placeholder="请输入内容" v-model.trim="Addform.remark" />
+                    </div>
+              </div>  
 
               <!--商品信息-->
               <div class="row-item">
@@ -144,17 +151,13 @@
                       
                   </el-table>
       
+                  <!-- 分页 -->
+                  <div class="footer-block">
+                    <span class="page" v-cloak> 共 {{Addform.saleDtails.length}} 条</span>
+                  </div>
                 </div>
               </div>
               
-              <!-- 订单备注 -->
-              <div class="row-item">
-                <div class="row-title">订单备注:</div>
-                    <div class="row-content">
-                      <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 2}" placeholder="请输入内容" v-model.trim="Addform.remark" />
-                    </div>
-              </div>
-
             </el-form>
 
           </template>
@@ -541,11 +544,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.el-dialog__wrapper{
-  transform: translateZ(0);
-  min-height: 100%;
-  min-height: 1200px;
-}
+// .el-dialog__wrapper{
+//   transform: translateZ(0);
+//   min-height: 100%;
+//   min-height: 1200px;
+// }
 .content-box {
   width: 100%;
   height: 850px;

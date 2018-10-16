@@ -189,6 +189,14 @@
 					</div>
 				</div>
 
+				<!-- 订单备注 -->
+				<div class="row-item">
+					<div class="row-title">订单备注:</div>
+					<div class="row-content">
+						<span v-cloak>{{form.scmOrder.remark}}</span>
+					</div>
+				</div>
+				
   			<!--商品信息-->
 				<div class="row-item">
 					<div class="row-title">商品信息</div>
@@ -252,14 +260,6 @@
 								layout="total, sizes, prev, pager, next, jumper"
 								:total="pagination.total">
 							</el-pagination>
-					</div>
-				</div>
-
-				<!-- 订单备注 -->
-				<div class="row-item">
-					<div class="row-title">订单备注:</div>
-					<div class="row-content">
-						<span v-cloak>{{form.scmOrder.remark}}</span>
 					</div>
 				</div>
 

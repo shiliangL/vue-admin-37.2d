@@ -2,7 +2,7 @@
 <!-- 全屏固定表头弹层组件 -->
 <!-- :title="dialog.title" -->
   <div>
-    <el-dialog :visible.sync="dialog.visiable" @close="closeDialog" :show-close="false" :fullscreen="true" :modal="false" :modal-append-to-body="true">
+    <el-dialog :visible.sync="dialog.visiable" @close="closeDialog"  :fullscreen="true" :modal-append-to-body="false"  :close-on-press-escape="true">
       <div class="content-box">
         <!-- 固定顶部操作菜单+位置明示 -->
         <div class="header-bar" slot="title">
