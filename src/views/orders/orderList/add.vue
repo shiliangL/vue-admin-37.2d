@@ -551,8 +551,6 @@ export default {
 // }
 .content-box {
   width: 100%;
-  height: 850px;
-  overflow-y: auto;
   position: relative;
   .header-bar {
     .left{
