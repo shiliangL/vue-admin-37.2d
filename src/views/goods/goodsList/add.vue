@@ -6,8 +6,8 @@
         <!-- 固定顶部操作菜单+位置明示 -->
         <div class="header-bar" slot="title">
            <div class="left"> {{currentTitle}} </div>
-           <div class="right">
-             <template v-if="isShowView">
+           <div class="right" v-if="!isRecord">
+             <template  v-if="isShowView">
                 <el-button type="text" size="mini" @click.stop="clickToEdit">编辑</el-button>
              </template>
               <template v-else>
@@ -16,6 +16,10 @@
               <el-button type="text" size="mini" @click.stop="dialog.visiable = false">返回</el-button>
               <!-- <el-button type="text" size="mini" v-if="this.data.type !== 'add'">刷新</el-button> -->
             </div>
+           <div class="right" v-else>
+              <el-button type="text" size="mini" @click.stop="dialog.visiable = false">返回</el-button>
+              <el-button type="text" size="mini" v-if="this.data.type !== 'add'">刷新</el-button>
+           </div>
         </div>
         <div class="content-bar">
           <template v-if="isShowView">
@@ -23,6 +27,9 @@
           </template>
           <template v-if="isShowEditor">
             <toEditor :viewData="viewData" ref="toEditor" @callBack="callBackToSubmit"></toEditor>
+          </template>
+          <template v-if="isRecord">
+            <alesRecord :loadID="data.obj.id"></alesRecord>
           </template>
         </div>
       </div>
@@ -37,12 +44,14 @@ import addModel from '@/public/addModel.js'
 import { productDetail, productCreate, productUpdate, existTitle } from '@/api/goodsList.js'
 import toView from './toView'
 import toEditor from './toEditor'
+import alesRecord from './alesRecord'
 
 export default {
   mixins: [addModel],
   components: {
     toView,
-    toEditor
+    toEditor,
+    alesRecord
   },
   data() {
     return {
@@ -51,6 +60,7 @@ export default {
       },
       rules: {},
       test: false,
+      isRecord: false,
       isShowView: false,
       isShowEditor: false,
       currentTitle: null,
@@ -72,6 +82,10 @@ export default {
     } else if (this.data.type === 'add') {
       this.currentTitle = '新增商品'
       this.isShowEditor = true
+      this.loading = false
+    } else if (this.data.type === 'record') {
+      this.currentTitle = '查看商品采购/销售历史单价明细'
+      this.isRecord = true
       this.loading = false
     }
   },

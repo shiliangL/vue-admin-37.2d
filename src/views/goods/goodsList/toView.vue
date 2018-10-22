@@ -354,8 +354,6 @@ export default {
       { title: 'SKU相关信息', value: 1 }
     ]
 
-    console.log(this.viewData)
-
     if (this.viewData) {
       this.form = {
         brandName: this.viewData.info.brandName,

@@ -20,7 +20,7 @@
             </el-form-item>
 
             <el-button type="primary" style="width:100%;margin-bottom:30px;" 
-              class="button-login" :loading="loading" @click="handleLogin">{{$t('login.logIn')}}</el-button>
+              class="button-login" :loading="loading" @click="handleLogin">{{$t('login.logIn')}} - 测试 </el-button>
 
           </el-form>
 
@@ -51,9 +51,9 @@ export default {
     return {
       loginForm: {
         'imageCode': 'string',
-        'password': '',
+        'password': '123456',
         'rememberMe': false,
-        'username': ''
+        'username': 'admin01'
       },
       loginRules: {},
       passwordType: 'password',

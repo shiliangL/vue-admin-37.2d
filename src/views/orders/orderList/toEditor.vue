@@ -400,6 +400,9 @@ export default {
       if (!ID) true
       orderDetailNoPage({ id: ID }).then(({ data }) => {
         if (!data) return
+        for (const item of data.saleDtails) {
+          item.orderOldQuantity = item.orderQuantity
+        }
         this.form = Object.assign(this.form, data)
         this.temAddress = [
           {

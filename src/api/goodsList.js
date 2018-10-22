@@ -140,6 +140,13 @@ export function exportFile(params) {
     params
   })
 }
+export function fetchHistoryPrice(params) {
+  return request({
+    url: 'productInfo/getHistoryProductPrice',
+    method: 'get',
+    params
+  })
+}
 
 // 验证商品名称
 export function existTitle(params) {

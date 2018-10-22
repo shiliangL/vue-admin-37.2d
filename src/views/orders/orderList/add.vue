@@ -421,6 +421,7 @@ export default {
         for (const item of data.saleDtails) {
           arr.push({
             'giftFlag': item.giftFlag,
+            'orderOldQuantity': item.orderOldQuantity,
             'id': item.id,
             'orderId': item.orderId,
             'orderQuantity': item.orderQuantity,

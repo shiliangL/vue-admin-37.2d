@@ -17,9 +17,22 @@
             </el-date-picker>
         </div>
 
-        <div class="left">
+
+        <!-- <div class="left">
           <el-select class="w110" size="small" v-model="searchBarData.purchaseStatus" clearable filterable placeholder="采购计划状态">
             <el-option v-for="sub in options.purchaseType" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
+          </el-select>
+        </div> -->
+
+        <div class="left">
+          <el-select class="w110" size="small" v-model="levelFirst" clearable filterable placeholder="一级分类">
+            <el-option v-for="sub in searchBarOptons.categoryOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
+          </el-select>
+        </div>
+
+        <div class="left" v-if="searchBarOptons.levelTowOption.length"> 
+          <el-select class="w110" size="small" v-model="levelFecond" clearable filterable placeholder="二级分类">
+            <el-option v-for="sub in searchBarOptons.levelTowOption" :key="sub.id" :label="sub.title" :value="sub.id"></el-option>
           </el-select>
         </div>
 
@@ -34,11 +47,14 @@
             <el-button  type="primary" size="small" @click.stop="fecthList" > 搜索 </el-button>
         </div>
         <div class="left">
-            <el-button size="small" @click.stop="reset" > 重置 </el-button>
-        </div>
+              <el-button size="small" @click.stop="reset" > 重置 </el-button>
+          </div>
         <div class="right">
           <div class="left">
-            <el-button size="small" @click.stop="clickToCreate" > 生成采购计划 </el-button>
+              <el-button size="small" @click.stop="reset" > 刷新 </el-button>
+          </div>
+          <div class="left">
+            <el-button size="small" type="primary" @click.stop="clickToCreate" > 生成采购计划 </el-button>
           </div>
         </div>
       </div>
@@ -63,7 +79,8 @@
 				<el-table-column prop="categoryName" label="商品分类" align="center"></el-table-column>
 				<el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
 				<el-table-column prop="baseUnitName" label="基本单位" align="center"></el-table-column>
-				<el-table-column prop="orderQuantity" label="下单总量" align="center"></el-table-column>
+				<el-table-column prop="orderQuantity" label="有效下单总量" align="center"></el-table-column>
+				<el-table-column prop="orderCancelQuantity" label="取消订单总量" align="center"></el-table-column>
 				<el-table-column prop="goodsPrchase" label="已生成数量" align="center"></el-table-column>
 				<el-table-column prop="goodsNotPrchase" label="未生成数量" align="center"></el-table-column>
 				<el-table-column label="采购员/供应商" align="center">
@@ -83,6 +100,8 @@
 <script>
 import { CascaderBox } from '@/components/base.js'
 import { purchaseList, saveList } from '@/api/buy/buyPlan.js'
+import { fecthGoodsClass } from '@/api/goodsList.js'
+
 export default {
   name: 'addcheck',
   components: {
@@ -94,13 +113,18 @@ export default {
       CascaderBoxDTO: null,
       searchBarData: {
         sendTime: null,
+        categoryId: null,
         purchaseStatus: null,
         buyerOrSupplyId: null,
         goodName: null
       },
-      options: {
-
+      searchBarOptons: {
+        categoryOption: [],
+        levelTowOption: []
       },
+      levelFirst: '',
+      levelFecond: '',
+      options: {},
       selectArray: null
     }
   },
@@ -124,22 +148,41 @@ export default {
   mounted() {
     if (this.$attrs.data) this.searchBarData.sendTime = this.$attrs.data
     this.fecthList()
+    this.fecthGoodsClass()
   },
   methods: {
+    fecthGoodsClass() {
+      fecthGoodsClass().then(({ data }) => {
+        if (!Array.isArray(data) && data.length <= 0) return
+        const result = []
+        for (const item of data) {
+          if (item.parentId === '0') {
+            result.push({
+              label: item.title,
+              value: item.id
+            })
+          }
+        }
+        this.levelTypeOption = data
+        this.searchBarOptons.categoryOption = result
+      }).catch(e => {
+        this.$message({ type: 'error', message: '加载分类失败失败' })
+      })
+    },
     // 数据请求
     fecthList() {
       if (this.CascaderBoxDTO) {
         this.searchBarData.buyerOrSupplyId = this.CascaderBoxDTO.supplyOrBuyerId
       }
+      this.levelFecond ? this.searchBarData.categoryId = this.levelFecond : this.searchBarData.categoryId = this.levelFirst
       const params = {
         ...this.searchBarData
       }
       purchaseList(params).then(({ data }) => {
         if (Array.isArray(data)) {
           for (const item of data) {
-            if (item.purchaseStatus === null) {
-              item.purchaseStatus = 1
-            }
+            if (item.orderCancelQuantity == null) item.orderCancelQuantity = 0
+            if (item.purchaseStatus === null) item.purchaseStatus = 1
           }
           this.tableData = data
 
@@ -154,13 +197,16 @@ export default {
       })
     },
     checkSelectable(row) {
-      return row.purchaseStatus === 0
+      return row.goodsNotPrchase > 0
     },
     reset() {
       const date = new Date()
       const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)
       const day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate()
       const ymd = date.getFullYear() + '-' + month + '-' + day
+
+      this.levelFirst = null
+      this.levelFecond = null
 
       this.searchBarData.sendTime = ymd
       this.CascaderBoxDTO = null
@@ -226,6 +272,27 @@ export default {
       this.selectArray = item
     }
 
+  },
+  watch: {
+    levelFirst: {
+      handler(val, old) {
+        if (val) {
+          const arr = []
+          for (const item of this.levelTypeOption) {
+            if (val === item.parentId) {
+              arr.push(item)
+            }
+          }
+          this.searchBarOptons.levelTowOption = arr
+        } else {
+          this.levelFecond = ''
+          this.searchBarOptons.levelTowOption = []
+        }
+        if (val && old) {
+          this.levelFecond = ''
+        }
+      }
+    }
   }
 }
 </script>
