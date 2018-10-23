@@ -1,6 +1,6 @@
 <!-- 销售配送 -->
 <template>
-    <div class="goodsIn">
+    <div id="salesDelivery">
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
 
 			<search-bar :data="searchBarDate" @search="searchAction" @reset="fetchList"  @add="showAdd"></search-bar>
@@ -31,8 +31,9 @@
             </template>
           </el-table-column>
  
-          <el-table-column label="操作" align="center" width="90">
+          <el-table-column label="操作" align="center" width="120">
             <template slot-scope="scope" align="center">
+              <el-button type="text" size="mini" @click.stop="clickToPrint(scope.$index,scope.row)">打印</el-button>
               <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">查看</el-button>
             </template>
           </el-table-column>
@@ -61,10 +62,11 @@ import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs, SearchBar } from '@/components/base.js'
 import { fetchList, fecthListRegion, fecthListListDrive } from '@/api/distribution/salesDelivery.js'
+import printOrder from '../component/print.js'
 
 export default {
-  name: 'goodsIn',
-  mixins: [model],
+  name: 'salesDelivery',
+  mixins: [model, printOrder],
   components: {
     Add,
     Tabs,
@@ -182,6 +184,10 @@ export default {
     },
     showAdd() {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, title: '新增配送派单' }})
+    },
+    clickToPrint(index, row) {
+      // console.log(row)
+      this.printGoods()
     },
     refrehList() {
       this.fetchList()

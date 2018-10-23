@@ -25,7 +25,7 @@
 					<!-- <el-table-column prop="sorterName" label="分拣员" align="center"></el-table-column> -->
 					<el-table-column prop="stockOutOrderNo" label="关联出库单" align="center"></el-table-column>
 					<el-table-column prop="stockOutCreatedTime" label="创建时间" align="center"></el-table-column>
-          <el-table-column prop="finishStatus" label="出库状态" align="center">
+          <el-table-column prop="finishStatus" label="状态" align="center">
              <template slot-scope="scope">
                 <el-tag size="mini" type="success" v-if="scope.row.finishStatus===1">完成</el-tag>
                 <el-tag size="mini" type="danger" v-if="scope.row.finishStatus===0">未完成</el-tag>

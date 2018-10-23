@@ -19,7 +19,7 @@
 					<!-- <el-table-column prop="barCode" label="订单打包条码" align="center"></el-table-column> -->
 					<!-- <el-table-column prop="completionTime" label="订单打包完成时间" align="center"></el-table-column> -->
 					<el-table-column prop="createdTime" label="创建时间" align="center" width="90"></el-table-column>
-           <el-table-column prop="finishStatus" label="出库状态" align="center">
+           <el-table-column prop="finishStatus" label="状态" align="center">
              <template slot-scope="scope">
                 <el-tag size="mini" type="success" v-if="scope.row.finishStatus===1">完成</el-tag>
                 <el-tag size="mini" type="danger" v-if="scope.row.finishStatus===0">未完成</el-tag>

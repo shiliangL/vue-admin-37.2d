@@ -42,7 +42,8 @@ export default {
         { value: 5, label: '打包人员' },
         { value: 8, label: '验货人员' },
         { value: 11, label: '财务人员' },
-        { value: 6, label: '供应链主管' }
+        { value: 6, label: '供应链主管' },
+        { value: 7, label: '客户经理' }
       ],
       form: {
         loginName: null,

@@ -11,7 +11,7 @@ export default class Print {
     this.CreatedOKLodop7766 = null
     if (this.needCLodop()) {
       const head = document.head || document.getElementsByTagName('head')[0] || document.documentElement
-      const oscript = document.createElement('script')
+      let oscript = document.createElement('script')
       oscript.src = 'http://localhost:8000/CLodopfuncs.js?priority=1'
       head.insertBefore(oscript, head.firstChild)
       // 引用双端口(8000和18000）避免其中某个被占用：
@@ -32,25 +32,25 @@ export default class Print {
       if (ua.match(/Edge\D?\d+/i) != null) return true
       const verTrident = ua.match(/Trident\D?\d+/i)
       const verIE = ua.match(/MSIE\D?\d+/i)
-      const verOPR = ua.match(/OPR\D?\d+/i)
-      const verFF = ua.match(/Firefox\D?\d+/i)
+      let verOPR = ua.match(/OPR\D?\d+/i)
+      let verFF = ua.match(/Firefox\D?\d+/i)
       const x64 = ua.match(/x64/i)
       if ((verTrident == null) && (verIE == null) && (x64 !== null)) { return true } else
-        if (verFF !== null) {
-          verFF = verFF[0].match(/\d+/)
-          if ((verFF[0] >= 42) || (x64 !== null)) return true
-        } else
-          if (verOPR !== null) {
-            verOPR = verOPR[0].match(/\d+/)
-            if (verOPR[0] >= 32) return true
-          } else
-            if ((verTrident == null) && (verIE == null)) {
-              const verChrome = ua.match(/Chrome\D?\d+/i)
-              if (verChrome !== null) {
-                verChrome = verChrome[0].match(/\d+/)
-                if (verChrome[0] >= 42) return true
-              }
-            }
+      if (verFF !== null) {
+        verFF = verFF[0].match(/\d+/)
+        if ((verFF[0] >= 42) || (x64 !== null)) return true
+      } else
+      if (verOPR !== null) {
+        verOPR = verOPR[0].match(/\d+/)
+        if (verOPR[0] >= 32) return true
+      } else
+      if ((verTrident == null) && (verIE == null)) {
+        let verChrome = ua.match(/Chrome\D?\d+/i)
+        if (verChrome !== null) {
+          verChrome = verChrome[0].match(/\d+/)
+          if (verChrome[0] >= 42) return true
+        }
+      }
       return false
     } catch (err) {
       return true
@@ -66,9 +66,9 @@ export default class Print {
     this.element.$msgbox({
       title: '打印机安装提示',
       message: h('p', null, [
-        h('font', { style: { color: 'rgb(247, 72, 42)' } }, title),
+        h('font', { style: { color: 'rgb(247, 72, 42)' }}, title),
         h('br', null, null),
-        h('a', { domProps: { href: url, download: 'install_lodop' } }, '点击这里执行安装'),
+        h('a', { domProps: { href: url, download: 'install_lodop' }}, '点击这里执行安装'),
         h('br', null, null),
         h('font', null, '安装后请刷新页面')
       ]),
@@ -76,30 +76,29 @@ export default class Print {
       showConfirmButton: false,
       cancelButtonText: '取消'
     }).then(action => {
-    })
+    }).catch(() => {})
   }
   getCLodop(oOBJECT, oEMBED, oCALLBACK) {
-    const staticResourceServer = this.staticResourceServer
-    const lodop32Url = this.staticResourceServer + 'download/print/install_lodop32.exe'
-    const lodop64Url = this.staticResourceServer + 'download/print/install_lodop64.exe'
-    const lodopWin32Url = this.staticResourceServer + 'download/print/CLodop_Setup_for_Win32NT_2.130.exe'
-    const strHtmInstall = '打印控件未安装!'
-    const strHtmUpdate = '打印控件需要升级!'
-    const strHtm64_Install = '打印控件未安装!'
-    const strHtm64_Update = '打印控件需要升级!'
-    const strHtmFireFox = '(注意：如曾安装过Lodop旧版附件npActiveXPLugin,请在【工具】->【附加组件】->【扩展】中先卸它)'
-    const strHtmChrome = '(如果此前正常，仅因浏览器升级或重安装而出问题，需重新执行以上安装)'
-    const strCLodopInstall = 'CLodop云打印服务(localhost本地)未安装启动!'
-    const strCLodopUpdate = 'CLodop云打印服务需升级!</font>'
-    const LODOP
-    
-    let tips = null
-    let  url = null
+    // const staticResourceServer = this.staticResourceServer
+    var lodop32Url = this.staticResourceServer + 'download/print/install_lodop32.exe'
+    var lodop64Url = this.staticResourceServer + 'download/print/install_lodop64.exe'
+    var lodopWin32Url = this.staticResourceServer + 'download/print/CLodop_Setup_for_Win32NT_2.130.exe'
+    var strHtmInstall = '打印控件未安装!'
+    var strHtmUpdate = '打印控件需要升级!'
+    var strHtm64_Install = '打印控件未安装!'
+    var strHtm64_Update = '打印控件需要升级!'
+    var strHtmFireFox = '(注意：如曾安装过Lodop旧版附件npActiveXPLugin,请在【工具】->【附加组件】->【扩展】中先卸它)'
+    var strHtmChrome = '(如果此前正常，仅因浏览器升级或重安装而出问题，需重新执行以上安装)'
+    var strCLodopInstall = 'CLodop云打印服务(localhost本地)未安装启动!'
+    var strCLodopUpdate = 'CLodop云打印服务需升级!</font>'
+    var LODOP
+    var tips = null
+    let url = null
     // debugger
     try {
-      const isIE = (navigator.userAgent.indexOf('MSIE') >= 0) || (navigator.userAgent.indexOf('Trident') >= 0)
+      var isIE = (navigator.userAgent.indexOf('MSIE') >= 0) || (navigator.userAgent.indexOf('Trident') >= 0)
       if (this.needCLodop()) {
-        try { LODOP = getCLodop() } catch (err) { }
+        try { LODOP = getCLodop() } catch (err) { console.log(err) }
         if (!LODOP && document.readyState !== 'complete') {
           this.element.$message.error('C-Lodop没准备好，请稍后再试！')
           return
@@ -120,12 +119,12 @@ export default class Print {
           if (oOBJECT && oOBJECT.parentNode) oOBJECT.parentNode.removeChild(oOBJECT)
         }
       } else {
-        const is64IE = isIE && (navigator.userAgent.indexOf('x64') >= 0)
+        var is64IE = isIE && (navigator.userAgent.indexOf('x64') >= 0)
         // =====如果页面有Lodop就直接使用，没有则新建:==========
-        if (oOBJECT != undefined || oEMBED != undefined) {
+        if (oOBJECT !== undefined || oEMBED !== undefined) {
           if (isIE) LODOP = oOBJECT
           else LODOP = oEMBED
-        } else if (CreatedOKLodop7766 == null) {
+        } else if (this.CreatedOKLodop7766 == null) {
           LODOP = document.createElement('object')
           LODOP.setAttribute('width', 0)
           LODOP.setAttribute('height', 0)
@@ -133,8 +132,8 @@ export default class Print {
           if (isIE) LODOP.setAttribute('classid', 'clsid:2105C259-1E0C-4534-8141-A753534CB4CA')
           else LODOP.setAttribute('type', 'application/x-print-lodop')
           document.documentElement.appendChild(LODOP)
-          CreatedOKLodop7766 = LODOP
-        } else LODOP = CreatedOKLodop7766
+          this.CreatedOKLodop7766 = LODOP
+        } else LODOP = this.CreatedOKLodop7766
         // =====Lodop插件未安装时提示下载地址:==========
         if ((LODOP == null) || (typeof (LODOP.VERSION) === 'undefined')) {
           if (navigator.userAgent.indexOf('Chrome') >= 0) { tips = strHtmChrome }
@@ -143,10 +142,10 @@ export default class Print {
             tips = strHtm64_Install
             url = lodop64Url
           } else
-            if (isIE) {
-              tips = strHtmInstall
-              url = lodop32Url
-            } else { tips = strHtmInstall }
+          if (isIE) {
+            tips = strHtmInstall
+            url = lodop32Url
+          } else { tips = strHtmInstall }
           url = lodop32Url
           this.createDialog(tips, url)
           return LODOP

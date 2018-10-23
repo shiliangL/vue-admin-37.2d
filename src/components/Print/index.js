@@ -4,11 +4,6 @@ class Print extends PrintParent {
   // constructor(opt) {
   //   super(opt)
   // }
-  /**
-	 * 1、业务单据打印（厂商入库单、退厂单、仓出店单、店退仓单、经销出库单、经销退货单、移仓出库单、移仓入库单、盘差单）
-	 * 2、单据条码打印（仓出店单、店退仓单、调货出库单、移仓出库单）
-	 * 条码打印
-	 */
   printCode(dataArr, target, newKeys) {
     this.setTarget(target)
     const LODOP = this.getCLodop()
