@@ -4,7 +4,10 @@ export default {
       required: true
     },
     data: Object, // 设置数据类型 等
-    requestUrl: String, // 请求的Url，在多参数时设置
+    requestUrl: {
+      type: String
+    },
+    // 请求的Url，在多参数时设置
     offsetWidth: String,
     placeholder: {
       type: String,
@@ -19,11 +22,20 @@ export default {
         return false
       }
     },
-    // 是否是加载有效客户
-    isCustomer: {
+    // 是否是仓库入库
+    PutInStorage: {
       type: Boolean,
       default: () => {
         return false
+      }
+    },
+    // 依赖加载
+    updateKey: {
+      type: Object,
+      default: () => {
+        return {
+
+        }
       }
     },
     keyName: {

@@ -8,7 +8,7 @@
            <div class="left"> {{currentTitle}} </div>
            <div class="right">
              <template v-if="isShowView">
-                <!-- <el-button v-if="this.data.type === 'add'" type="text" size="mini" @click.stop="clickToEdit">编辑</el-button> -->
+                <el-button v-if="data.type === 'add'" type="text" size="mini" @click.stop="validateAddForm">保存</el-button>
              </template>
               <template v-else>
                 <el-button type="text" v-if="this.data.type === 'add'" size="mini" @click.stop="validateForm">保存</el-button>
@@ -29,10 +29,102 @@
                   <el-select v-model="storageType" placeholder="请选择类型" size="small" style="width:120px" filterable  @change="stockChange">
                     <el-option v-for="item in options.storageType" :key="item.value" :label="item.label" :value="item.value"> </el-option> 
                   </el-select>
-                  <el-button  type="primary" size="small" @click.stop="fecthList" > 加载数据 </el-button>
-              </div>
-              <div class="table">
+                  <el-button  type="primary" size="small" @click.stop="fecthList" v-if="storageType !==4" > 加载数据 </el-button>
 
+                  <template v-if="storageType ===4">
+                    
+                    <div class="flex-box"> 
+                        <div>
+                          <el-select class="w110" size="small" v-model="levelFirst" clearable filterable placeholder="一级分类">
+                            <el-option v-for="sub in searchBarOptons.categoryOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
+                          </el-select>
+                        </div>
+
+                        <div v-if="searchBarOptons.levelTowOption.length"> 
+                          <el-select class="w110" size="small" v-model="levelFecond" clearable filterable placeholder="二级分类">
+                            <el-option v-for="sub in searchBarOptons.levelTowOption" :key="sub.id" :label="sub.title" :value="sub.id"></el-option>
+                          </el-select>
+                        </div>
+
+                        <div>
+                          <SearchBox style="width:180px" keyName="title"  
+                            :updateKey="updateKey" 
+                            tableName="productName"
+                            tableCode="categoryName" 
+                            nameLabel="商品" 
+                            codeLabel="类别" 
+                            PutInStorage
+                            requestUrl="purchaseAcceptInfo/queryOtherStockInProductList" 
+                            v-model="addDoodsDTO">
+                          </SearchBox>
+                        </div>
+                        <div>
+                            <el-button  type="primary" size="small" @click.stop="clickToAddOther"> 添加 </el-button>
+                        </div>
+
+                    </div>
+                  </template>
+
+              </div>
+
+              <div v-if="storageType ===4">
+
+                 <el-form :model="Addform" :rules="rules" ref="AddInDetailList" label-width="120px" :inline="true">
+
+                  <el-table :data="Addform.stockInDetailList" size="small" class="stockInDetailList" max-height="420" style="width: 100%;" highlight-current-row>
+                    <el-table-column label="序号" width="50" align="center">
+                      <template slot-scope="scope">
+                        <span>{{scope.$index + 1}}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="categoryName" label="商品分类" align="center"></el-table-column>
+                    <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
+                    <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
+                    <el-table-column prop="createdTime" label="仓位" align="center" width="220">
+                      <template slot-scope="scope">
+                        <div class="item-box">
+                          <span v-for="item in scope.row.storageIdsOption" :key="item.pk">
+                            <el-checkbox class="item-checkbox" v-model="item.isCheck" :label="item.number"></el-checkbox>
+                          </span>
+                        </div>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="planQuantity" label="数量" align="center">
+                       <template slot-scope="scope">
+                        <el-form-item label="" label-width="0px" :prop="'stockInDetailList.'+scope.$index+'.planQuantity'" :rules="[{trigger: 'change', validator: rules.validNumberR2N0}]">
+                          <el-input style="width:110px" placeholder="正整数" size="small" v-model.trim="scope.row.planQuantity"></el-input> 
+                        </el-form-item>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="makePlace" label="产地" align="center" width="100">
+                      <template slot-scope="scope">
+                        <el-form-item label="" label-width="0">
+                          <el-input size="small" style="width:90px" class="w180"  placeholder="请输入" v-model.trim="scope.row.makePlace"></el-input>
+                        </el-form-item>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="makeDate" label="生产日期" align="center" width="180">
+                      <template slot-scope="scope">
+                        <el-form-item label="" label-width="0">
+                          <el-date-picker :style="{width:'136px'}" size="small" v-model="scope.row.makeDate" value-format="yyyy-MM-dd" type="date"></el-date-picker>
+                        </el-form-item>
+                      </template>
+                    </el-table-column>
+                    <el-table-column  label="操作" align="center" width="180">
+                      <template slot-scope="scope">
+                        <el-button type="text" style="color:red" @click.stop="clickToDelete(scope.$index, scope.row)" size="mini">删除</el-button>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+
+                </el-form>
+                <div class="footer-block">
+                  <span class="page" v-cloak> 共 {{Addform.stockInDetailList.length}} 条</span>
+                </div>
+              </div>
+
+
+              <div class="table" v-else>
                 <!-- {{form.stockInDetailList}} -->
                 <el-form :model="form" :rules="rules" ref="stockInDetailList" label-width="120px" :inline="true">
 
@@ -174,12 +266,18 @@
 </template>
 
 <script>
+import rules from '@/public/rules.js'
 import addModel from '@/public/addModel.js'
 import { findMore, createRk, detailRk, fecthBodyDetail, returnChangeList, fecthStockList } from '@/api/warehouse/goodsIn.js'
+import { fecthGoodsClass } from '@/api/goodsList.js'
 import { fecthAllCW } from '@/api/warehouse/setting.js'
+import { SearchBox } from '@/components/base.js'
 
 export default {
-  mixins: [addModel],
+  mixins: [addModel, rules],
+  components: {
+    SearchBox
+  },
   data() {
     return {
       dialogVisible: false,
@@ -194,6 +292,9 @@ export default {
         stockId: null,
         stockInDetailList: []
       },
+      Addform: {
+        stockInDetailList: []
+      },
       viewData: {
         orderNo: null,
         stockName: null,
@@ -203,20 +304,32 @@ export default {
         tableView: []
       },
       viewSearch: null,
-      rules: {},
       isShowEditor: false,
       isShowView: false,
       currentTitle: null,
+
+      levelFirst: '',
+      levelFecond: '',
+      updateKey: {
+
+      },
+      searchBarOptons: {
+        categoryOption: [],
+        levelTowOption: []
+      },
+
       options: {
         stockOption: [],
         stock: [],
         storageType: [
           { label: '采购入库', value: 1 },
           { label: '销售退货', value: 2 },
-          { label: '销售换货', value: 3 }
+          { label: '销售换货', value: 3 },
+          { label: '其他', value: 4 }
         ]
       },
-      cwOption: null
+      cwOption: null,
+      addDoodsDTO: null
     }
   },
   created() {
@@ -231,9 +344,29 @@ export default {
     } else if (this.data.type === 'add') {
       this.fecthStockList()
       this.fecthAllCW()
+      this.fecthGoodsClass()
     }
   },
   methods: {
+
+    fecthGoodsClass() {
+      fecthGoodsClass().then(({ data }) => {
+        if (!Array.isArray(data) && data.length <= 0) return
+        const result = []
+        for (const item of data) {
+          if (item.parentId === '0') {
+            result.push({
+              label: item.title,
+              value: item.id
+            })
+          }
+        }
+        this.levelTypeOption = data
+        this.searchBarOptons.categoryOption = result
+      }).catch(e => {
+        this.$message({ type: 'error', message: '加载商品分类失败失败' })
+      })
+    },
     fecthDetailById() {
       if (!this.data.obj.id) return
       detailRk({ id: this.data.obj.id }).then(({ data }) => {
@@ -270,6 +403,9 @@ export default {
           if (data.length > 0) {
             this.storageType = 1
             this.stockId = data[0].id
+            this.updateKey = {
+              stockId: data[0].id
+            }
           }
         }
       }).catch(e => {
@@ -332,6 +468,33 @@ export default {
       this.typeIseditor = true // 点击判断编辑修改提交
       this.isShowView = false
       this.isShowEditor = true
+    },
+    clickToAddOther() {
+      if (!this.addDoodsDTO) {
+        this.$message({ type: 'warning', message: '请选择商品' })
+        return
+      }
+      const data = JSON.parse(JSON.stringify(this.addDoodsDTO))
+      if (this.cwOption && this.cwOption[data.stockId]) {
+        data.storageIdsOption = JSON.parse(JSON.stringify(this.cwOption[data.stockId]))
+      } else {
+        data.storageIdsOption = []
+      }
+
+      const productIds = this.Addform.stockInDetailList.map(item => {
+        return item.productId
+      })
+      if (productIds.indexOf(data.productId) !== -1) {
+        this.$message({ type: 'warning', message: '请勿重复添加' })
+        return
+      } else {
+        this.Addform.stockInDetailList.push(data)
+        this.addDoodsDTO = null
+        console.log(this.rules)
+      }
+    },
+    clickToDelete(index, row) {
+      this.Addform.stockInDetailList.splice(index, 1)
     },
     closeDialog() {
       this.$emit('input', false)
@@ -403,6 +566,7 @@ export default {
       })
     },
     stockChange(value) {
+      value === 4 ? this.isShowView = true : this.isShowView = false
       this.form.stockInDetailList = []
     },
     validatePass() {
@@ -429,6 +593,91 @@ export default {
     resetSearch() {
       this.viewSearch = null
       this.clickToSearch()
+    },
+    validateAddForm() {
+      if (!this.Addform.stockInDetailList.length) {
+        this.$message({ type: 'warning', message: '提交数据不能为空' })
+        return
+      }
+      this.$refs['AddInDetailList'].validate(valid => {
+        if (valid) {
+          this.$confirm('是否确保存？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            const arr = JSON.parse(JSON.stringify(this.Addform.stockInDetailList))
+
+            for (const item of arr) {
+              const isCheckArr = []
+              if (item.makeDate) {
+                item.makeDate = item.makeDate + ' 00:00:00'
+              }
+              for (const k of item.storageIdsOption) {
+                if (k.hasOwnProperty('isCheck')) {
+                  if (k.isCheck) {
+                    isCheckArr.push(k.pk)
+                  }
+                }
+              }
+              item.storageIds = isCheckArr.toString()
+              delete item.storageIdsOption
+              delete item.title
+              delete item.categoryName
+              if (item.hasOwnProperty('rate')) {
+                delete item.rate
+              }
+            }
+            const data = {
+              storageType: this.storageType,
+              stockId: this.stockId,
+              stockInDetailList: arr
+            }
+            createRk(data).then(res => {
+              this.dialog.visiable = false
+              this.$message({ type: 'success', message: res.msg })
+              this.$emit('add')
+            }).catch(e => {
+              this.error(e)
+            })
+          }).catch(() => {})
+        } else {
+          this.$message({ type: 'warning', message: '请核实表单' })
+          return
+        }
+      })
+    }
+  },
+  watch: {
+    levelFirst: {
+      handler(val, old) {
+        if (val) {
+          const arr = []
+          for (const item of this.levelTypeOption) {
+            if (val === item.parentId) {
+              arr.push(item)
+            }
+          }
+          this.searchBarOptons.levelTowOption = arr
+          this.updateKey['categoryId'] = val
+        } else {
+          this.levelFecond = ''
+          this.searchBarOptons.levelTowOption = []
+          this.updateKey = { }
+        }
+        if (val && old) {
+          this.levelFecond = ''
+        }
+      }
+    },
+    levelFecond: {
+      handler(val, old) {
+        if (val) {
+          this.updateKey['categoryId'] = val
+        } else {
+          this.updateKey['categoryId'] = this.levelFirst
+        }
+      }
     }
   }
 }
@@ -458,14 +707,12 @@ export default {
         box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.23);
     }
 }
-// .Loading{
-//     position: fixed;
-//     top: 0;
-//     left: 0;
-//     bottom: 0;
-//     right: 0;
-//     z-index: 10;
-//   }
+ .flex-box{
+   margin-top: 10px;
+   >div{
+     margin-left: 10px;
+   }
+ }
 .stockInDetailList {
     .item-box {
         max-height: 80px;

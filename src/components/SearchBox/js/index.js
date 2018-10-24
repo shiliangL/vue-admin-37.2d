@@ -34,24 +34,29 @@ export default {
         this.loading = true
         this.timer = setTimeout(() => {
           const { index, size } = this.pagination
-          const data = {
+          let datap = {
             index,
             size
           }
           if (this.isGoods) {
-            data.goodsStatus = 0
+            datap.goodsStatus = 0
           }
           if (this.keyName) {
-            data[this.keyName] = this.name
+            datap[this.keyName] = this.name
           }
-          if (this.isCustomer) {
-            data.status = 3
+          if (this.updateKey) {
+            datap = Object.assign(datap, this.updateKey)
           }
-          fetchBase(this.url, data).then(({ data }) => {
+          fetchBase(this.url, datap).then(({ data }) => {
             this.loading = false
             this.progress = false
             this.isLoading = false
             if (Array.isArray(data.rows)) {
+              if (this.PutInStorage) {
+                for (const item of data.rows) {
+                  item.title = item.productName
+                }
+              }
               this.dataList = data.rows
             }
             this.pagination.total = data.total
