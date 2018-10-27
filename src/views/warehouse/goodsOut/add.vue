@@ -53,7 +53,7 @@
                 <div class="row-content">
                    <div class="search">
                       <!-- <span> 发货日期:{{today}}</span> -->
-              				<el-input size="small"  v-model.trim="inputContent" style="width:180px" type="text" placeholder="输入商品名称检索" maxlength="40"></el-input>
+              				<el-input size="small" clearable v-model.trim="inputContent" style="width:180px" type="text" placeholder="输入商品名称检索" maxlength="40"></el-input>
                       <el-button  type="primary" size="small" @click.stop="fetchDetail"> 搜索 </el-button>
                   </div>
                   <!-- 表格 -->
@@ -103,15 +103,12 @@
               <el-row :gutter="40" v-if="isShowCar">
                 <el-col :span="12">
                   <el-card class="box-card" style="position: relative;">
-                    <div class="search">
-                      <span class="today" v-if="AddForm.type===1">发货日期: {{today}}</span>
-                      <!-- <el-select size="small" v-model="form.regionId" filterable clearable placeholder="配送区域"  style="width:120px">
-                        <el-option v-for="sub in options.regionOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
-                      </el-select>
-                      <el-input size="small" style="width:160px" placeholder="订单编号检索" v-model.trim="AddForm.orderNo"></el-input> -->
+                    <div class="search flex-box" v-if="AddForm.type===1">
+                      <div class="today">发货日期: {{today}}</div>
+					            <el-input size="mini" style="width:190px" class="w180" clearable placeholder="请输入商品名称检索" v-model.trim="search.value"></el-input>
                     </div>
                     <div class="table">
-                      <el-table :data="tableData_L" size="small" max-height="300"  style="width: 100%;" highlight-current-row
+                      <el-table :data="tableLeftData" size="small" max-height="300"  style="width: 100%;" highlight-current-row
                         @selection-change="handleTable_L_Change">
                        <el-table-column type="selection" width="40"> </el-table-column>
                         <el-table-column label="序号" width="50" align="center">
@@ -124,7 +121,7 @@
                         <el-table-column prop="orderQuantity" label="下单数量" align="center"></el-table-column>
                       </el-table>
                       <div class="footer-block">
-                        <span class="page" v-cloak> 共 {{tableData_L.length}} 条</span>
+                        <span class="page" v-cloak> 共 {{tableLeftData.length}} 条</span>
                       </div>
                     </div>
                     <el-button type="primary" v-if="TabsTitle.length" size="mini"  @click.stop="clickToRight">添加</el-button>
@@ -187,6 +184,10 @@ export default {
   },
   data() {
     return {
+      search: {
+        date: '',
+        value: null
+      },
       form: {
         'orderNo': null,
         'stockName': null,
@@ -260,6 +261,30 @@ export default {
         }
       }
       return this.options.regionOption
+    },
+
+    // 模糊搜索
+    tableLeftData() {
+      const search = this.search.value
+      if (search) {
+        // filter() 方法创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素。
+        // 注意： filter() 不会对空数组进行检测。
+        // 注意： filter() 不会改变原始数组。
+        return this.tableData_L.filter(data => {
+          // some() 方法用于检测数组中的元素是否满足指定条件;
+          // some() 方法会依次执行数组的每个元素：
+          // 如果有一个元素满足条件，则表达式返回true , 剩余的元素不会再执行检测;
+          // 如果没有满足条件的元素，则返回false。
+          // 注意： some() 不会对空数组进行检测。
+          // 注意： some() 不会改变原始数组。
+          return Object.keys(data).some(key => {
+            // indexOf() 返回某个指定的字符在某个字符串中首次出现的位置，如果没有找到就返回-1；
+            // 该方法对大小写敏感！所以之前需要toLowerCase()方法将所有查询到内容变为小写。
+            return String(data[key]).toLowerCase().indexOf(search) > -1
+          })
+        })
+      }
+      return this.tableData_L
     }
   },
   methods: {
@@ -502,47 +527,21 @@ export default {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.23);
   }
 }
-
-	.car{
-		cursor: pointer;
-		width: 60px;
-		height: 60px;
-    border-radius: 4px;
-    overflow: hidden;
-    border: 1px solid #d9d9d9;
-    img{
-      width: 100%;
-    }
-  }
-
-  .picBox{
-    width: 120px;
-    height: 40px;
-    text-align: center;
-    display: inline-block;
-    overflow: hidden;
-    img{
-      height: 100%;
-    }
-  }
-
   .search{
     margin-bottom: 10px;
   }
   .desc{
     padding: 8px;
   }
-  .today{
-    position: absolute;
-    left: 10px;
-    top:10px;
+  .box-card {
+    .search{
+      position: absolute;
+      left: 10px;
+      top:5px;
+      z-index: 2000;
+    }
+    .today{
+      margin-right: 10px;
+    }
   }
-// .Loading{
-//     position: fixed;
-//     top: 0;
-//     left: 0;
-//     bottom: 0;
-//     right: 0;
-//     z-index: 10;
-//   }
 </style>

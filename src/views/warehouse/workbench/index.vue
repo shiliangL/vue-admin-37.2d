@@ -93,7 +93,7 @@ import { fecthList, fecthStockList, create, deleteRow, detailRow, updateRow } fr
 // const baseUrl = 'http://39.108.235.6:81/workbench#/login?'// 阿里云 正式
 let baseUrl = null
 if (process.env.NODE_ENV === 'development') {
-  baseUrl = 'http://39.108.235.6:8081/workbench#/login?'// 阿里云 dev
+  baseUrl = 'http://10.1.1.119:8090/workbench#/login?'// 阿里云 dev
 } else {
   baseUrl = 'http://39.108.235.6:81/workbench#/login?' // 阿里云 正式
 }

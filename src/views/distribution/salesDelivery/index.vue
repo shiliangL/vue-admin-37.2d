@@ -33,7 +33,7 @@
  
           <el-table-column label="操作" align="center" width="120">
             <template slot-scope="scope" align="center">
-              <el-button type="text" size="mini" @click.stop="clickToPrint(scope.$index,scope.row)">打印</el-button>
+              <!-- <el-button type="text" size="mini" @click.stop="clickToPrint(scope.$index,scope.row)">打印</el-button> -->
               <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">查看</el-button>
             </template>
           </el-table-column>
@@ -55,7 +55,7 @@
       <!-- 弹层 -->
       <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add>
 
-      <table id="salesDelivery" border="1" style="border-collapse:collapse;border:solid 1px;" bordercolor="#000000">
+      <!-- <table id="salesDelivery" border="1" style="border-collapse:collapse;border:solid 1px;" bordercolor="#000000">
         <thead>
           <tr>
             <th>序号</th>
@@ -80,7 +80,7 @@
             <td>实际金额</td>
           </tr>
         </tbody>
-      </table>
+      </table> -->
  
 
     </div>
@@ -274,7 +274,7 @@ export default {
     },
     clickToPrint(index, row) {
       // console.log(row)
-      this.printGoods()
+      // this.printGoods()
     },
     refrehList() {
       this.fetchList()

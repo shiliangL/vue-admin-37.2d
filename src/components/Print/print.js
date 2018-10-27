@@ -94,7 +94,7 @@ export default class Print {
     var LODOP
     var tips = null
     let url = null
-    // debugger
+
     try {
       var isIE = (navigator.userAgent.indexOf('MSIE') >= 0) || (navigator.userAgent.indexOf('Trident') >= 0)
       if (this.needCLodop()) {
