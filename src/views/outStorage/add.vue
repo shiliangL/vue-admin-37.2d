@@ -73,8 +73,8 @@
                       <template slot-scope="scope">
                         <span v-if="scope.row.outageTime" v-cloak>{{scope.row.realQuantity}}</span>
                         <el-form-item v-else label="" label-width="0px" :prop="'table.'+scope.$index+'.realQuantity'"  :rules="[{ required: true, validator: rules.validNumber2, trigger: 'change' }]">
-                          <!-- @keyup.enter.native="clickToUpdate(scope.$index,scope.row)" -->
-                          <el-input size="small" :tabindex="(scope.$index + 1).toString()"  v-model.trim="scope.row.realQuantity"></el-input>
+                          <!-- @keyup.enter.native="clickToUpdate(scope.$index,scope.row)"  :tabindex="(scope.$index + 1).toString()"控制 向下 tab -->
+                          <el-input size="small" v-model.trim="scope.row.realQuantity"></el-input>
                         </el-form-item>
                       </template>
                     </el-table-column>

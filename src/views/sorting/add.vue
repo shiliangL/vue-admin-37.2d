@@ -13,6 +13,7 @@
         </div>
         <div class="content-bar">
          	   <el-form :model="form" ref="form" label-width="130px" :rules="rules" :inline="true">
+
             <!--基本信息-->
             <div class="row-item">
                 <div class="row-title">基本信息</div>
@@ -88,7 +89,7 @@
                       <template slot-scope="scope">
                         <span v-if="scope.row.barCode" v-cloak>{{scope.row.sortingQuantity}}</span>
                         <el-form-item v-else label="" label-width="0px" :prop="'table.'+scope.$index+'.sortingQuantity'"  :rules="[{ required: true, validator: rules.validNumber2, trigger: 'change' }]">
-                          <el-input size="small" v-model.trim="scope.row.sortingQuantity"></el-input>
+                          <el-input size="small" @keyup.enter.native="clickToUpdate(scope.$index,scope.row)" v-model.trim="scope.row.sortingQuantity"></el-input>
                         </el-form-item>
                       </template>
                     </el-table-column>
@@ -109,7 +110,8 @@
                     <el-table-column prop="sum" label="操作" align="center">
                       <template slot-scope="scope">
                           <el-button type="text" size="mini" v-if="!scope.row.barCode" @click.stop="clickToUpdate(scope.$index,scope.row)">生成标签</el-button>
-                           <el-button type="text" size="mini" v-else @click.stop="clickToPrint(scope.$index,scope.row)">打印标签</el-button>
+                           <el-button type="text" size="mini" v-else @click.stop="clickToPrintDD(scope.$index,scope.row)">打印标签N</el-button>
+                           <el-button type="text" size="mini" @click.stop="clickToPrint(scope.$index,scope.row)">打印标签</el-button>
                           <el-button type="text" size="mini" v-if="scope.row.barCode" @click.stop="clickToRest(scope.$index,scope.row)">重置</el-button>
                         <!-- <template v-else>
                          <el-button type="text" size="mini" disabled >打印标签</el-button>
@@ -136,18 +138,23 @@
 </template>
 
 <script>
+
+import VueBarcode from '@xkeshi/vue-barcode'
 import addModel from '@/public/addModel.js'
 import { fecthHeaderDetail, fecthBodyDetail, outUpdateQuantity } from '@/api/sorting/index.js'
 const loginKey = JSON.parse(sessionStorage.getItem('loginKey'))
+import { printWeb } from '../Print/print.js'
 
 export default {
   mixins: [addModel],
   components: {
+    VueBarcode
   },
   data() {
     return {
       currentTitle: null,
       searchKey: null,
+      barCode: null,
       form: {
         'stockOutCreatedTime': null,
         'stockOutOrderNo': null,
@@ -166,6 +173,7 @@ export default {
     this.$setKeyValue(this.dialog, { title: title, visiable: true })
   },
   mounted() {
+    console.log(printWeb.getCLodop)
     this.currentTitle = this.data.title || ''
     if (this.data.type === 'view') {
       this.fecthDetail()
@@ -230,30 +238,55 @@ export default {
             this.$message({ type: 'error', message: '工作台参数错误,F5刷新页面或者新登录' })
             return
           }
-          this.$confirm('是否确认？', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            const data = {
-              'sortingDetailsId': item.id,
-              'tableId': loginKey.id,
-              'weight': item.sortingQuantity
-            }
-            outUpdateQuantity(data).then(res => {
-              this.$message({ type: 'success', message: '保存成功' })
-              this.resetSearch()
-            }).catch(e => {
-              console.log(e)
-              this.$message({ type: 'error', message: e.msg })
-            })
-          }).catch(() => {})
+          const data = {
+            'sortingDetailsId': item.id,
+            'tableId': loginKey.id,
+            'weight': item.sortingQuantity
+          }
+          outUpdateQuantity(data).then(res => {
+            this.$message({ type: 'success', message: '保存成功' })
+            this.resetSearch()
+          }).catch(e => {
+            console.log(e)
+            this.$message({ type: 'error', message: e.msg })
+          })
         } else {
           this.$message({ type: 'error', message: '请输入有效数值' })
           return
         }
       })
     },
+    // clickToUpdate(index, item) {
+    //   this.$refs['form'].validateField(`table.${index}.sortingQuantity`, (m) => {
+    //     if (!m) {
+    //       if (!loginKey) {
+    //         this.$message({ type: 'error', message: '工作台参数错误,F5刷新页面或者新登录' })
+    //         return
+    //       }
+    //       this.$confirm('是否确认？', '提示', {
+    //         confirmButtonText: '确定',
+    //         cancelButtonText: '取消',
+    //         type: 'warning'
+    //       }).then(() => {
+    //         const data = {
+    //           'sortingDetailsId': item.id,
+    //           'tableId': loginKey.id,
+    //           'weight': item.sortingQuantity
+    //         }
+    //         outUpdateQuantity(data).then(res => {
+    //           this.$message({ type: 'success', message: '保存成功' })
+    //           this.resetSearch()
+    //         }).catch(e => {
+    //           console.log(e)
+    //           this.$message({ type: 'error', message: e.msg })
+    //         })
+    //       }).catch(() => {})
+    //     } else {
+    //       this.$message({ type: 'error', message: '请输入有效数值' })
+    //       return
+    //     }
+    //   })
+    // },
     closeAdd() {
       this.dialogVisible = false
       this.propsParentData = null
@@ -262,7 +295,48 @@ export default {
       this.dialogVisible = true
       item.barcode = item.barCode
       this.propsParentData = item
+    },
+    clickToPrintDD(index, item) {
+      this.barCode = item.barCode
+      setTimeout(() => {
+        const LODOP = this.$print.getCLodop()
+        if (!LODOP) {
+          this.$message({ type: 'error', message: '打印插件未安装' })
+          return
+        }
+        LODOP.PRINT_INIT('分拣条码')
+        LODOP.SET_PRINT_PAGESIZE(2, 800, 600, 'CreateCustomPage')
+        LODOP.ADD_PRINT_TEXT(6, 4, 82, 18, '【分拣条码:')
+        LODOP.ADD_PRINT_TEXT(6, 76, 148, 20, item.barCode + '】')
+        LODOP.ADD_PRINT_TEXT(26, 4, 82, 20, '客户名称:')
+        LODOP.ADD_PRINT_TEXT(26, 76, 148, 20, item.customerName)
+        LODOP.ADD_PRINT_TEXT(46, 76, 148, 20, item.distributionArea || '无')
+        LODOP.ADD_PRINT_TEXT(46, 4, 72, 20, '配送区域:')
+        LODOP.ADD_PRINT_TEXT(86, 4, 82, 20, '商品名称:')
+        LODOP.ADD_PRINT_TEXT(67, 77, 148, 20, item.orderNo)
+        if (this.form.storehouseType === 1) {
+          LODOP.ADD_PRINT_TEXT(66, 4, 82, 20, '订单编号:')
+        } else {
+          LODOP.ADD_PRINT_TEXT(66, 4, 82, 20, '换货单号:')
+        }
+        LODOP.ADD_PRINT_TEXT(86, 76, 148, 20, this.form.productName)
+        LODOP.ADD_PRINT_TEXT(106, 4, 82, 20, '下单数量:')
+        LODOP.ADD_PRINT_TEXT(106, 76, 148, 20, `${item.specification} * ${item.saleOrderQuantity}`)
+        LODOP.ADD_PRINT_TEXT(126, 4, 82, 20, '实际数量:')
+        LODOP.ADD_PRINT_TEXT(126, 76, 148, 20, `${item.specification} * ${item.sortingSaleQuantity}`)
+        LODOP.ADD_PRINT_BARCODE(170, 6, 230, 60, 'EAN128C', item.barCode)
+        // LODOP.ADD_PRINT_IMAGE(170, 6, 210, 60, imgs)
+        // LODOP.SET_PRINT_STYLEA(0, 'Stretch', 2)// 按原图比例(不变形)缩放模式
+        LODOP.ADD_PRINT_TEXT(146, 2, 120, 20, '基本单位分拣量：')
+        LODOP.ADD_PRINT_TEXT(146, 96, 128, 20, item.sortingQuantity + ' ' + item.basicUnitName)
+        LODOP.ADD_PRINT_BARCODE(170, 6, 230, 60, 'EAN128C', item.barCode)
+        // LODOP.PREVIEW()
+        // LODOP.PRINT_DESIGN()
+        // LODOP.SET_PREVIEW_WINDOW(0, 0, 0, 0, 0, '')
+        LODOP.PRINT()// 直接打印
+      }, 400)
     }
+
   }
 }
 </script>

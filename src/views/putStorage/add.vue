@@ -94,7 +94,7 @@
                     <el-table-column prop="sum" label="操作" align="center">
                       <template slot-scope="scope">
                          <el-button v-if="!scope.row.warehouseTime" type="text" size="mini" @click.stop="clickToUpdate(scope.$index,scope.row)">保存</el-button>
-                         <el-button v-else type="text" size="mini" disabled="">保存</el-button>
+                         <el-button v-else type="text" size="mini"  @click.stop="clickToReset(scope.$index,scope.row)">从新录入</el-button>
                       </template>
                     </el-table-column>
                   </el-table>
@@ -176,7 +176,7 @@ export default {
     clickToUpdate(index, item) {
       this.$refs['form'].validateField(`table.${index}.quantity`, (m) => {
         if (!m) {
-          this.$confirm('请核实输入数量,保存仅限操作一次，是否确定？', '提示', {
+          this.$confirm('请核实输入数量,是否确定？', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
@@ -198,6 +198,10 @@ export default {
           return
         }
       })
+    },
+    clickToReset(index, item) {
+      item.warehouseTime = null
+      item.quantity = null
     },
     clickToSearch() {
       if (!this.data.obj.id) return

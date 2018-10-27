@@ -23,6 +23,8 @@
           </el-table-column>
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
+              <!-- <el-button type="text" size="mini" v-if="scope.row.finishStatus===1" @click.stop="clickToCreateTip(scope.$index,scope.row)">生成标签</el-button>
+              <el-button type="text" size="mini" v-if="scope.row.finishStatus===1" @click.stop="click2view(scope.$index,scope.row)">打印标签</el-button> -->
               <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">查看</el-button>
             </template>
           </el-table-column>
@@ -52,6 +54,9 @@ import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs } from '@/components/base.js'
 import { fecthList } from '@/api/packaging/index.js'
+import { packageScavenging, outUpdateQuantity } from '@/api/packaging/index.js'
+const loginKey = JSON.parse(sessionStorage.getItem('loginKey'))
+
 export default {
   name: 'packaging',
   mixins: [model],
@@ -61,6 +66,12 @@ export default {
   },
   data() {
     return {
+      code: '',
+      lastTime: null,
+      nextTime: null,
+      lastCode: null,
+      nextCode: null,
+
       todayTime: '',
       curIndex: 1,
       searchBarData: [
@@ -87,6 +98,8 @@ export default {
     ]
   },
   mounted() {
+    window.addEventListener('keydown', this.onkeydown)
+
     const date = new Date()
     const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)
     const day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate()
@@ -95,7 +108,61 @@ export default {
     this.searchBarData[0][0].value = ymd
     this.fecthList()
   },
+  beforeDestroy() {
+    window.removeEventListener('keydown', this.onkeydown)
+  },
   methods: {
+    onkeydown(e) {
+      if (!e.which) {
+        this.$message({ type: 'error', message: '浏览器不支持该扫描枪，请使用谷歌浏览器,QQ浏览器' })
+        return
+      }
+      this.nextCode = e.which
+      this.nextTime = new Date().getTime()
+      if (this.lastCode != null && this.lastTime != null && this.nextTime - this.lastTime <= 40) {
+        this.code += String.fromCharCode(this.lastCode)
+      } else if (this.lastCode != null && this.lastTime != null && this.nextTime - this.lastTime > 100) {
+        this.code = ''
+      }
+      this.lastCode = this.nextCode
+      this.lastTime = this.nextTime
+      if (e.which === 13) {
+        this.packageScavenging(this.code)
+      }
+    },
+    clickToCreateTip() {
+      if (!loginKey) {
+        this.$message({ type: 'error', message: '工作台参数错误,F5刷新页面或者新登录' })
+        return
+      }
+      this.$confirm('是否确定生成标签?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const data = {
+          'packageInfoId': this.data.obj.id,
+          'tableId': loginKey.id
+        }
+        outUpdateQuantity(data).then(res => {
+          this.$message({ type: 'success', message: '保存成功' })
+          this.resetSearch()
+        }).catch(e => {
+          this.$message({ type: 'error', message: e.msg })
+        })
+      }).catch(() => {})
+    },
+    packageScavenging(barCode) {
+      if (this.code) return
+      packageScavenging({ barCode }).then(({ data }) => {
+        this.$message({ type: 'success', message: '扫描成功' })
+        this.fecthList()
+        this.code = ''
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+        this.code = ''
+      })
+    },
     tabsCallBack(item) {
       this.curIndex = item.value
       this.fecthList()
