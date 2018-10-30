@@ -7,8 +7,9 @@
         <div class="header-bar" slot="title">
            <div class="left"> {{currentTitle}} </div>
            <div class="right">
-              <el-button type="text" size="mini" v-if="!form.barCode" @click.stop="clickToUpdate">生成标签</el-button>
-              <el-button type="text" size="mini" v-else @click.stop="clickToPrint">打印标签</el-button>
+              <!-- <el-button type="text" size="mini" v-if="!form.barCode" @click.stop="clickToUpdate">生成标签</el-button>
+              <el-button type="text" size="mini" v-else @click.stop="clickToPrint">打印标签</el-button> -->
+              <el-button type="text" size="mini" @click.stop="clickToUpdate">打印标签</el-button>
               <el-button type="text" size="mini" @click.stop="onRefresh">刷新</el-button>
               <!-- dialog.visiable = false -->
               <el-button type="text" size="mini" @click.stop="closeDialog">返回</el-button>
@@ -127,6 +128,7 @@
 <script>
 import addModel from '@/public/addModel.js'
 import { fecthHeaderDetail, fecthBodyDetail, outUpdateQuantity, packageScavenging } from '@/api/packaging/index.js'
+import { printWeb } from '../Print/print.js'
 const loginKey = JSON.parse(sessionStorage.getItem('loginKey'))
 
 export default {
@@ -175,6 +177,7 @@ export default {
   },
   methods: {
     onkeydown(e) {
+      console.log('xxx0000000000')
       if (!e.which) {
         this.$message({ type: 'error', message: '浏览器不支持该扫描枪，请使用谷歌浏览器,QQ浏览器' })
         return
@@ -252,33 +255,31 @@ export default {
       this.clickToSearch()
     },
     clickToUpdate() {
-      if (!loginKey) {
-        this.$message({ type: 'error', message: '工作台参数错误,F5刷新页面或者新登录' })
-        return
-      }
-      this.$refs['form'].validate((valid) => {
-        if (valid) {
-          this.$confirm('是否确定生成标签?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            const data = {
-              'packageInfoId': this.data.obj.id,
-              'tableId': loginKey.id
-            }
-            outUpdateQuantity(data).then(res => {
-              this.$message({ type: 'success', message: '保存成功' })
-              this.resetSearch()
-            }).catch(e => {
-              this.$message({ type: 'error', message: e.msg })
-            })
-          }).catch(() => {})
-        } else {
-          this.$message({ type: 'error', message: '请输入有效数值' })
+      if (this.form.barCode) {
+        const data = JSON.parse(JSON.stringify(this.form))
+        this.clickToPrintDD(data)
+      } else {
+        if (!loginKey) {
+          this.$message({ type: 'error', message: '工作台参数错误,F5刷新页面或者新登录' })
           return
         }
-      })
+        const data = {
+          'packageInfoId': this.data.obj.id,
+          'tableId': loginKey.id
+        }
+        outUpdateQuantity(data).then(res => {
+          // this.$message({ type: 'success', message: '保存成功' })
+          fecthHeaderDetail({ id: this.data.obj.id }).then(({ data }) => {
+            this.form = Object.assign(this.form, data)
+            const result = JSON.parse(JSON.stringify(this.form))
+            this.clickToPrintDD(result)
+          }).catch(e => {
+            this.$message({ type: 'error', message: e.msg })
+          })
+        }).catch(e => {
+          this.$message({ type: 'error', message: e.msg })
+        })
+      }
     },
     closeAdd() {
       this.dialogVisible = false
@@ -287,6 +288,38 @@ export default {
     clickToPrint() {
       this.dialogVisible = true
       this.propsParentData = this.form
+    },
+    clickToPrintDD(data) {
+      const LODOP = printWeb.getCLodop()
+      if (!LODOP) {
+        this.$message({ type: 'error', message: '打印插件未安装' })
+        return
+      }
+      LODOP.PRINT_INIT('打包条码')
+      LODOP.SET_PRINT_PAGESIZE(2, 800, 600, 'CreateCustomPage')
+      LODOP.ADD_PRINT_TEXT(6, 4, 82, 18, '【打包条码:')
+      LODOP.ADD_PRINT_TEXT(6, 72, 152, 20, data.barCode + '】')
+      LODOP.ADD_PRINT_TEXT(26, 4, 82, 20, '客户名称:')
+      LODOP.ADD_PRINT_TEXT(26, 62, 162, 20, data.customerName)
+      LODOP.ADD_PRINT_TEXT(46, 62, 162, 20, data.distributionArea || '无')
+      LODOP.ADD_PRINT_TEXT(46, 4, 72, 20, '配送区域:')
+      LODOP.ADD_PRINT_TEXT(86, 4, 82, 20, '下单时间:')
+      LODOP.ADD_PRINT_TEXT(67, 62, 162, 20, data.orderNo)
+      LODOP.ADD_PRINT_TEXT(66, 4, 72, 20, '订单编号:')
+      LODOP.ADD_PRINT_TEXT(86, 62, 162, 20, data.createdTime)
+      LODOP.ADD_PRINT_TEXT(106, 4, 82, 20, '送达日期:')
+      LODOP.ADD_PRINT_TEXT(106, 62, 162, 20, data.sendDate)
+      LODOP.ADD_PRINT_TEXT(126, 4, 82, 20, '送达时间:')
+      LODOP.ADD_PRINT_TEXT(126, 62, 162, 20, data.sendTime)
+      LODOP.ADD_PRINT_TEXT(146, 4, 72, 20, '收货人:')
+      LODOP.ADD_PRINT_TEXT(146, 62, 162, 20, data.contacts)
+      LODOP.ADD_PRINT_BARCODE(210, 7, 230, 60, '128A', data.barCode)
+      LODOP.ADD_PRINT_TEXT(165, 4, 72, 20, '收货地址:')
+      LODOP.ADD_PRINT_TEXT(165, 62, 162, 20, data.address)
+      // LODOP.PREVIEW()
+      // LODOP.PRINT_DESIGN()
+      // LODOP.SET_PREVIEW_WINDOW(0, 0, 0, 0, 0, '')
+      LODOP.PRINT()// 直接打印
     }
   }
 }

@@ -23,8 +23,7 @@
           </el-table-column>
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
-              <!-- <el-button type="text" size="mini" v-if="scope.row.finishStatus===1" @click.stop="clickToCreateTip(scope.$index,scope.row)">生成标签</el-button>
-              <el-button type="text" size="mini" v-if="scope.row.finishStatus===1" @click.stop="click2view(scope.$index,scope.row)">打印标签</el-button> -->
+              <el-button type="text" size="mini" @click.stop="clickToCreateTip(scope.$index,scope.row)">打印标签</el-button>
               <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">查看</el-button>
             </template>
           </el-table-column>
@@ -54,7 +53,8 @@ import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs } from '@/components/base.js'
 import { fecthList } from '@/api/packaging/index.js'
-import { packageScavenging, outUpdateQuantity } from '@/api/packaging/index.js'
+import { packageScavenging, outUpdateQuantity, fecthHeaderDetail } from '@/api/packaging/index.js'
+import { printWeb } from '../Print/print.js'
 const loginKey = JSON.parse(sessionStorage.getItem('loginKey'))
 
 export default {
@@ -130,30 +130,86 @@ export default {
         this.packageScavenging(this.code)
       }
     },
-    clickToCreateTip() {
-      if (!loginKey) {
-        this.$message({ type: 'error', message: '工作台参数错误,F5刷新页面或者新登录' })
-        return
-      }
-      this.$confirm('是否确定生成标签?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
+    clickToCreateTip(index, row) {
+      // 打印标签先生成在 打印
+      if (row.barCode) {
+        this.clickToPrintDD(index, row)
+      } else {
+        if (!loginKey) {
+          this.$message({ type: 'error', message: '工作台参数错误,F5刷新页面或者新登录' })
+          return
+        }
         const data = {
-          'packageInfoId': this.data.obj.id,
+          'packageInfoId': row.id,
           'tableId': loginKey.id
         }
         outUpdateQuantity(data).then(res => {
-          this.$message({ type: 'success', message: '保存成功' })
-          this.resetSearch()
+          // this.$message({ type: 'success', message: '保存成功' })
+          this.tableLoading = true
+          const { index, size } = this.pagination
+          const data = {
+            index,
+            size,
+            createdTime: this.searchBarData[0][0].value,
+            storehouseType: this.curIndex
+          }
+          fecthList(data).then(({ data }) => {
+            this.table.data = data.rows
+            this.pagination.total = data.total
+            this.tableLoading = false
+            if (Array.isArray(data.rows) && data.rows.length) {
+              this.clickToPrintDD(index, data.rows[index])
+            }
+          }).catch(e => {
+            this.tableLoading = false
+            this.$message({ type: 'error', message: e.msg })
+          })
         }).catch(e => {
           this.$message({ type: 'error', message: e.msg })
         })
-      }).catch(() => {})
+      }
+    },
+    clickToPrintDD(index, row) {
+      if (!row.id) return
+      fecthHeaderDetail({ id: row.id }).then(({ data }) => {
+        setTimeout(() => {
+          const LODOP = printWeb.getCLodop()
+          if (!LODOP) {
+            this.$message({ type: 'error', message: '打印插件未安装' })
+            return
+          }
+          LODOP.PRINT_INIT('打包条码')
+          LODOP.SET_PRINT_PAGESIZE(2, 800, 600, 'CreateCustomPage')
+          LODOP.ADD_PRINT_TEXT(6, 4, 82, 18, '【打包条码:')
+          LODOP.ADD_PRINT_TEXT(6, 72, 152, 20, data.barCode + '】')
+          LODOP.ADD_PRINT_TEXT(26, 4, 82, 20, '客户名称:')
+          LODOP.ADD_PRINT_TEXT(26, 62, 162, 20, data.customerName)
+          LODOP.ADD_PRINT_TEXT(46, 62, 162, 20, data.distributionArea || '无')
+          LODOP.ADD_PRINT_TEXT(46, 4, 72, 20, '配送区域:')
+          LODOP.ADD_PRINT_TEXT(86, 4, 82, 20, '下单时间:')
+          LODOP.ADD_PRINT_TEXT(67, 62, 162, 20, data.orderNo)
+          LODOP.ADD_PRINT_TEXT(66, 4, 72, 20, '订单编号:')
+          LODOP.ADD_PRINT_TEXT(86, 62, 162, 20, data.createdTime)
+          LODOP.ADD_PRINT_TEXT(106, 4, 82, 20, '送达日期:')
+          LODOP.ADD_PRINT_TEXT(106, 62, 162, 20, data.sendDate)
+          LODOP.ADD_PRINT_TEXT(126, 4, 82, 20, '送达时间:')
+          LODOP.ADD_PRINT_TEXT(126, 62, 162, 20, data.sendTime)
+          LODOP.ADD_PRINT_TEXT(146, 4, 72, 20, '收货人:')
+          LODOP.ADD_PRINT_TEXT(146, 62, 162, 20, data.contacts)
+          LODOP.ADD_PRINT_BARCODE(210, 7, 230, 60, '128A', data.barCode)
+          LODOP.ADD_PRINT_TEXT(165, 4, 72, 20, '收货地址:')
+          LODOP.ADD_PRINT_TEXT(165, 62, 162, 20, data.address)
+          // LODOP.PREVIEW()
+          // LODOP.PRINT_DESIGN()
+          // LODOP.SET_PREVIEW_WINDOW(0, 0, 0, 0, 0, '')
+          LODOP.PRINT()// 直接打印
+        }, 400)
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
     },
     packageScavenging(barCode) {
-      if (this.code) return
+      if (!barCode) return
       packageScavenging({ barCode }).then(({ data }) => {
         this.$message({ type: 'success', message: '扫描成功' })
         this.fecthList()

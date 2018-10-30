@@ -148,7 +148,7 @@ export default {
     // 弹层操作
     click2view(index, row) {
       if (!row.whetherOut) {
-        this.$message({ type: 'warning', message: '商品暂未出库，无法查看详情' })
+        this.$message({ type: 'warning', message: '商品暂未出库，无法查看详情', duration: 3000 })
         return
       }
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '商品分拣详细信息' }})

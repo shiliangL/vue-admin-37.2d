@@ -109,9 +109,9 @@
                     <el-table-column prop="operator" label="分拣操作人" align="center"></el-table-column> 
                     <el-table-column prop="sum" label="操作" align="center">
                       <template slot-scope="scope">
-                          <el-button type="text" size="mini" v-if="!scope.row.barCode" @click.stop="clickToUpdate(scope.$index,scope.row)">生成标签</el-button>
-                           <el-button type="text" size="mini" v-else @click.stop="clickToPrintDD(scope.$index,scope.row)">打印标签N</el-button>
-                           <el-button type="text" size="mini" @click.stop="clickToPrint(scope.$index,scope.row)">打印标签</el-button>
+                          <el-button type="text" size="mini" v-if="!scope.row.barCode" @click.stop="clickToUpdate(scope.$index,scope.row)">保存</el-button>
+                           <el-button type="text" size="mini" v-else @click.stop="clickToPrintDD(scope.$index,scope.row)">打印标签</el-button>
+                           <!-- <el-button type="text" size="mini" @click.stop="clickToPrint(scope.$index,scope.row)">打印标签</el-button> -->
                           <el-button type="text" size="mini" v-if="scope.row.barCode" @click.stop="clickToRest(scope.$index,scope.row)">重置</el-button>
                         <!-- <template v-else>
                          <el-button type="text" size="mini" disabled >打印标签</el-button>
@@ -297,39 +297,37 @@ export default {
       this.propsParentData = item
     },
     clickToPrintDD(index, item) {
-      this.barCode = item.barCode
       setTimeout(() => {
-        const LODOP = this.$print.getCLodop()
+        const LODOP = printWeb.getCLodop()
+        // const LODOP = this.$print.getCLodop()
         if (!LODOP) {
-          this.$message({ type: 'error', message: '打印插件未安装' })
+          // this.$message({ type: 'error', message: '打印插件未安装' })
           return
         }
         LODOP.PRINT_INIT('分拣条码')
         LODOP.SET_PRINT_PAGESIZE(2, 800, 600, 'CreateCustomPage')
         LODOP.ADD_PRINT_TEXT(6, 4, 82, 18, '【分拣条码:')
-        LODOP.ADD_PRINT_TEXT(6, 76, 148, 20, item.barCode + '】')
+        LODOP.ADD_PRINT_TEXT(6, 72, 152, 20, item.barCode + '】')
         LODOP.ADD_PRINT_TEXT(26, 4, 82, 20, '客户名称:')
-        LODOP.ADD_PRINT_TEXT(26, 76, 148, 20, item.customerName)
-        LODOP.ADD_PRINT_TEXT(46, 76, 148, 20, item.distributionArea || '无')
+        LODOP.ADD_PRINT_TEXT(26, 62, 162, 20, item.customerName)
+        LODOP.ADD_PRINT_TEXT(46, 62, 162, 20, item.distributionArea || '无')
         LODOP.ADD_PRINT_TEXT(46, 4, 72, 20, '配送区域:')
         LODOP.ADD_PRINT_TEXT(86, 4, 82, 20, '商品名称:')
-        LODOP.ADD_PRINT_TEXT(67, 77, 148, 20, item.orderNo)
+        LODOP.ADD_PRINT_TEXT(67, 62, 162, 20, item.orderNo)
         if (this.form.storehouseType === 1) {
           LODOP.ADD_PRINT_TEXT(66, 4, 82, 20, '订单编号:')
         } else {
           LODOP.ADD_PRINT_TEXT(66, 4, 82, 20, '换货单号:')
         }
-        LODOP.ADD_PRINT_TEXT(86, 76, 148, 20, this.form.productName)
+        LODOP.ADD_PRINT_TEXT(86, 62, 162, 20, this.form.productName)
         LODOP.ADD_PRINT_TEXT(106, 4, 82, 20, '下单数量:')
-        LODOP.ADD_PRINT_TEXT(106, 76, 148, 20, `${item.specification} * ${item.saleOrderQuantity}`)
+        LODOP.ADD_PRINT_TEXT(106, 62, 162, 20, `${item.specification} * ${item.saleOrderQuantity}`)
         LODOP.ADD_PRINT_TEXT(126, 4, 82, 20, '实际数量:')
-        LODOP.ADD_PRINT_TEXT(126, 76, 148, 20, `${item.specification} * ${item.sortingSaleQuantity}`)
-        LODOP.ADD_PRINT_BARCODE(170, 6, 230, 60, 'EAN128C', item.barCode)
-        // LODOP.ADD_PRINT_IMAGE(170, 6, 210, 60, imgs)
-        // LODOP.SET_PRINT_STYLEA(0, 'Stretch', 2)// 按原图比例(不变形)缩放模式
+        LODOP.ADD_PRINT_TEXT(126, 62, 162, 20, `${item.specification} * ${item.sortingSaleQuantity}`)
         LODOP.ADD_PRINT_TEXT(146, 2, 120, 20, '基本单位分拣量：')
         LODOP.ADD_PRINT_TEXT(146, 96, 128, 20, item.sortingQuantity + ' ' + item.basicUnitName)
-        LODOP.ADD_PRINT_BARCODE(170, 6, 230, 60, 'EAN128C', item.barCode)
+        LODOP.ADD_PRINT_BARCODE(170, 6, 240, 60, '128A', item.barCode)
+
         // LODOP.PREVIEW()
         // LODOP.PRINT_DESIGN()
         // LODOP.SET_PREVIEW_WINDOW(0, 0, 0, 0, 0, '')

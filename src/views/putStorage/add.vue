@@ -78,8 +78,8 @@
                        <template slot-scope="scope">
                         <span v-if="scope.row.warehouseTime" v-cloak>{{scope.row.quantity}}</span>
                         <el-form-item v-else label="" label-width="0px" :prop="'table.'+scope.$index+'.quantity'"  :rules="[{ required: true, validator: rules.validNumber2, trigger: 'change' }]">
-                          <!-- @keyup.enter.native="clickToUpdate(scope.$index,scope.row)" -->
-                          <el-input size="small" :tabindex="(scope.$index + 1).toString()" v-model.trim="scope.row.quantity"></el-input>
+                          <!-- @keyup.enter.native="clickToUpdate(scope.$index,scope.row)" :tabindex="(scope.$index + 1).toString()" -->
+                          <el-input size="small" v-model.trim="scope.row.quantity"></el-input>
                         </el-form-item>
                       </template>
                     </el-table-column>
@@ -94,7 +94,7 @@
                     <el-table-column prop="sum" label="操作" align="center">
                       <template slot-scope="scope">
                          <el-button v-if="!scope.row.warehouseTime" type="text" size="mini" @click.stop="clickToUpdate(scope.$index,scope.row)">保存</el-button>
-                         <el-button v-else type="text" size="mini"  @click.stop="clickToReset(scope.$index,scope.row)">从新录入</el-button>
+                         <el-button v-else type="text" size="mini"  @click.stop="clickToReset(scope.$index,scope.row)">再次增加</el-button>
                       </template>
                     </el-table-column>
                   </el-table>

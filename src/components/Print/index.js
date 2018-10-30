@@ -2,6 +2,7 @@
  * 打印工具类
  */
 import ElementUI from 'element-ui'
+
 export default class Print {
   setStaticResourceServer(url) {
     this.staticResourceServer = url
@@ -63,6 +64,8 @@ export default class Print {
 
   createDialog(title, url) {
     const h = this.element.$createElement
+
+    debugger
     this.element.$msgbox({
       title: '打印机安装提示',
       message: h('p', null, [
