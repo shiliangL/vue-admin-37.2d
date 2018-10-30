@@ -235,7 +235,12 @@
                 </el-col>
                 <el-col :span="12" v-if="TabsTitle.length">
                   <el-card class="box-card">
-                    <SelectTabs :data="TabsTitle" @callBack="tabsCallBack">></SelectTabs>
+                    <!-- el-icon-info -->
+                    <el-tooltip content="鼠标移入选项 滚动鼠标滚轮 点击切换选择" placement="top" effect="light">
+                      <i class="el-icon-info tips"></i>
+                    </el-tooltip>
+
+                    <SelectTabs class="salesDeliverySelect" :data="TabsTitle" @callBack="tabsCallBack">></SelectTabs>
                     <div v-for="(item,index) in TabsTitle" :key="index" v-show="curIndex===index">
                       <div class="desc">
                         <p v-cloak>关联配送区域:{{item.regionStr}};</p>
@@ -601,6 +606,15 @@ export default {
     overflow: hidden;
     img{
       height: 100%;
+    }
+  }
+
+  .box-card{
+    position: relative;
+    .tips{
+      position: absolute;
+      left: 20px;
+      top:10px;
     }
   }
 

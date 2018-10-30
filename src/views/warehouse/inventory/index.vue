@@ -25,11 +25,11 @@
 			<el-col :span="18">
 				<div class="mc-right">
 					<div class="search-bar">
-						<div class="left">
+						<!-- <div class="left">
 							<el-select class="w90'" size="small" v-model="searchBarDate.stockCategory" clearable filterable placeholder="选择仓库类别">
 								<el-option v-for="sub in options.stockCategory" :key="sub.pk" :label="sub.title" :value="sub.pk"></el-option>
 							</el-select>
-						</div>
+						</div> -->
 						<div class="left">
 							<el-select class="w90'" size="small" v-model="searchBarDate.stockId" clearable filterable placeholder="选择仓库">
 								<el-option v-for="sub in options.stock" :key="sub.id" :label="sub.title" :value="sub.id"></el-option>
@@ -53,7 +53,7 @@
             </el-table-column>
               <el-table-column prop="title" label="商品名称" align="center"></el-table-column>
               <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
-              <el-table-column prop="storageType" label="仓库类别" align="center"></el-table-column>
+              <!-- <el-table-column prop="storageType" label="仓库类别" align="center"></el-table-column> -->
               <el-table-column prop="stockInfoName" label="仓库名称" align="center"></el-table-column>
               <!-- <el-table-column prop="createdName" label="出库明细" align="center"></el-table-column> -->
               <el-table-column prop="stockQuantity" label="实际库存" align="center"></el-table-column>
@@ -176,7 +176,7 @@ export default {
   },
   mounted() {
     this.fecthGoodsClass()
-    this.fecthStockCategory()
+    // this.fecthStockCategory()
     this.fecthStockList()
     this.fecthTableList()
   },

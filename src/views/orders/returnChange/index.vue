@@ -81,10 +81,10 @@ export default {
             { label: '已完成', value: 2 },
             { label: '已拒绝', value: 3 }]
           },
-          { type: 'datetimerange', value: '', key: 'orderTime' },
+          { type: 'multiple-date', value: [], key1: 'beginOrderTime', key2: 'endOrderTime', placeholder1: '开始日期', placeholder2: '结束日期' },
           { type: 'date', value: null, key: 'createdTime', width: '200px', placeholder: '申请退货时间' },
           { type: 'date', value: null, key: 'dealTime', width: '200px', placeholder: '审核时间' },
-          { type: 'input', value: null, key: 'codeOrNmae', class: 'w210', placeholder: '销售退货单号／销售订单/客户名称检索' },
+          { type: 'input', value: null, key: 'codeOrNmae', width: '270px', placeholder: '单号／订单/客户名称检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
@@ -111,9 +111,8 @@ export default {
     searchAction(params) {
       const { index, size } = this.pagination
       const paramsData = JSON.parse(JSON.stringify(params))
-      paramsData.beginOrderTime = params.orderTime ? params.orderTime[0] : null
-      paramsData.endOrderTime = params.orderTime ? params.orderTime[1] : null
-      delete paramsData.orderTime
+      paramsData.beginOrderTime = params.beginOrderTime
+      paramsData.endOrderTime = params.endOrderTime
       const data = {
         index,
         size,

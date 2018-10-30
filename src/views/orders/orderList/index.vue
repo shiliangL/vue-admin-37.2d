@@ -107,8 +107,8 @@ export default {
             { label: '货到付款', value: 0 },
             { label: '线上支付', value: 1 }]
           },
-          { type: 'datetimerange', value: '', key: 'orderTime' },
-          { type: 'input', value: null, key: 'orderNoOrName', class: 'w180', placeholder: '输入订单编号／客户名称检索' },
+          { type: 'multiple-date', value: [], key1: 'beginOrderTime', key2: 'endOrderTime', placeholder1: '开始日期', placeholder2: '结束日期' },
+          { type: 'input', value: null, key: 'orderNoOrName', class: 'w220', placeholder: '订单编号／客户名称检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
@@ -157,6 +157,8 @@ export default {
   },
   methods: {
     searchAction(params) {
+      console.log(params)
+
       const { index, size } = this.pagination
       const data = {
         index,
@@ -164,8 +166,8 @@ export default {
         orderNoOrName: params.orderNoOrName,
         orderSource: params.orderSource,
         paymentType: params.paymentType,
-        beginOrderTime: params.orderTime ? params.orderTime[0] : null,
-        endOrderTime: params.orderTime ? params.orderTime[1] : null,
+        beginOrderTime: params.beginOrderTime,
+        endOrderTime: params.endOrderTime,
         status: this.curIndex
       }
       orderList(data).then(({ data }) => {

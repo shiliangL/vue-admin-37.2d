@@ -127,9 +127,9 @@ export default {
         case 2:
           return '采购中'
         case 3:
-          return '待入库'
-        case 4:
-          return '已入库'
+          return '已采购'
+        // case 4:
+        //   return '已入库'
         default:
           return ''
       }
@@ -140,8 +140,8 @@ export default {
       { title: '全部', value: null },
       { title: '待采购', value: 1 },
       { title: '采购中', value: 2 },
-      { title: '待收货', value: 3 },
-      { title: '已收货', value: 4 }
+      { title: '已采购', value: 3 }
+      // { title: '已收货', value: 4 }
     ]
   },
   mounted() {

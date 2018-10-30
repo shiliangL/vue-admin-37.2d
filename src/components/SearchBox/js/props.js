@@ -29,6 +29,12 @@ export default {
         return false
       }
     },
+    isCustomer: {
+      type: Boolean,
+      default: () => {
+        return false
+      }
+    },
     // 依赖加载
     updateKey: {
       type: Object,

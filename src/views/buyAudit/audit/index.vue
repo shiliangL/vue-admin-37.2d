@@ -25,7 +25,7 @@
           </el-table-column>
           <el-table-column prop="applicationDate" label="采购申请时间" align="center"></el-table-column>
           <el-table-column prop="purchaserName" label="申请人" align="center"></el-table-column>
-          <el-table-column prop="auditDate" label="采购审核间" align="center">
+          <el-table-column prop="auditDate" label="采购审核时间" align="center">
             <template slot-scope="scope" align="center">
               <span v-cloak v-if="scope.row.auditStatus ===2">  </span>
               <span v-cloak v-else> {{scope.row.auditDate}} </span>
@@ -92,8 +92,8 @@ export default {
             { label: '销售订单', value: 1 },
             { label: '后台新增', value: 2 }]
           },
-          { type: 'date', value: null, key: 'auditDate', width: '200px', placeholder: '创建时间' },
-          { type: 'date', value: null, key: 'applicationDate', width: '200px', placeholder: '申请时间' },
+          { type: 'date', value: null, key: 'auditDate', width: '200px', placeholder: '申请时间' },
+          { type: 'date', value: null, key: 'applicationDate', width: '200px', placeholder: '审核时间' },
           { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '输入采购计划单号检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }

@@ -39,6 +39,12 @@
             <el-date-picker :style="{width:'140px'}" size="small" v-model="searchBarData.createdOn" value-format="yyyy-MM-dd" placeholder="创建时间" type="date"></el-date-picker>
         </div>
 
+         <div class="left">
+          <el-select size="small" style="width: 90px;" v-model="searchBarData.userStatus" clearable filterable placeholder="账号状态">
+            <el-option v-for="sub in options.status" :key="sub.label" :label="sub.title" :value="sub.label" ></el-option>
+          </el-select>
+        </div>
+
         <div class="left">
           <el-input style="width:180px" v-model="searchBarData.loginNameOrCustomerName" size="small" @keyup.enter.native="fecthList" placeholder="输入客户名称/账号检索"></el-input>
         </div>
@@ -87,12 +93,14 @@
           <el-table-column prop="createdOn" label="创建时间" width="90" align="center"></el-table-column>
           <el-table-column prop="aduitTime" label="审核时间" width="90" align="center"></el-table-column>
           <el-table-column prop="aduitName" label="审核人" align="center"></el-table-column>
+
           <el-table-column prop="accountStatus" label="账号状态" align="center">
              <template slot-scope="scope" align="center">
-              <span v-cloak  v-if="scope.row.accountStatus===0"> 禁用 </span>
-              <span v-cloak  v-if="scope.row.accountStatus===1"> 启用 </span>
+              <el-tag v-cloak size="mini" v-if="scope.row.accountStatus ===1"> 启用 </el-tag>
+              <el-tag size="mini" type="danger" v-cloak v-if="scope.row.accountStatus===0"> 禁用 </el-tag>
             </template>
           </el-table-column>
+
           <el-table-column prop="status" label="状态" align="center">
              <template slot-scope="scope" align="center">
               <span> {{scope.row.status | filterStatus}}</span>
@@ -143,6 +151,7 @@ export default {
       TipsBarData: [],
       searchBarData: {
         categoryId: null,
+        userStatus: null,
         staffId: null,
         regionId: null,
         driverId: null,
@@ -155,7 +164,8 @@ export default {
         driverOption: [],
         categoryOption: [],
         areaOption: [],
-        channelOption: [{ label: 0, title: 'App' }, { label: 1, title: '公众号' }, { label: 2, title: '小程序' }, { label: 3, title: '后台' }]
+        channelOption: [{ label: 0, title: 'App' }, { label: 1, title: '公众号' }, { label: 2, title: '小程序' }, { label: 3, title: '后台' }],
+        status: [{ label: 0, title: '禁用' }, { label: 1, title: '启用' }]
       }
     }
   },
@@ -249,6 +259,7 @@ export default {
         regionId: null,
         driverId: null,
         createdOn: null,
+        userStatus: null,
         loginNameOrCustomerName: null,
         orderResource: null })
       this.fecthList()

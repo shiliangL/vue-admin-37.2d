@@ -20,13 +20,13 @@
             </el-form-item>
 
             <el-button type="primary" style="width:100%;margin-bottom:30px;" 
-              class="button-login" :loading="loading" @click="handleLogin">{{$t('login.logIn')}} - 测试 </el-button>
+              class="button-login" :loading="loading" @click="handleLogin">{{$t('login.logIn')}}</el-button>
 
           </el-form>
 
         </el-card>
         <div class="copyright">
-          <p> Copyright © www.chumanduo.com, All Rights Reserved </p>
+          <p> Copyright © www.chumanduo.com, All Rights Reserved20181027</p>
         </div>
       </div>
     
@@ -51,9 +51,9 @@ export default {
     return {
       loginForm: {
         'imageCode': 'string',
-        'password': '123456',
+        'password': '',
         'rememberMe': false,
-        'username': 'admin01'
+        'username': ''
       },
       loginRules: {},
       passwordType: 'password',

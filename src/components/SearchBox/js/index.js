@@ -41,6 +41,10 @@ export default {
           if (this.isGoods) {
             datap.goodsStatus = 0
           }
+          if (this.isCustomer) {
+            datap.status = 3
+            datap.userStatus = 1
+          }
           if (this.keyName) {
             datap[this.keyName] = this.name
           }
