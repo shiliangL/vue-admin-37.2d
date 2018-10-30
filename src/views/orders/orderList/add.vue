@@ -118,7 +118,7 @@
                         </el-select>
                      </el-form-item>
                      <el-form-item label="数量:" label-width="50px">
-				                <el-input size="small" style="width:180px"  v-model.trim="addGood.number"></el-input>
+				                <el-input size="small" placeholder="正整数" style="width:180px"  v-model.trim="addGood.number"></el-input>
                      </el-form-item>
                     <el-button  type="primary" size="small" @click.stop="clickToAdd" > 添加 </el-button>
                   </div>
@@ -137,8 +137,8 @@
                     <el-table-column prop="skuPrice" label="价格" align="center"></el-table-column>
                     <el-table-column prop="orderQuantity" label="下单数量" align="center">
                       <template slot-scope="scope">
-                        <el-form-item label="" label-width="0px"  :prop="'saleDtails.'+scope.$index+'.orderQuantity'" :rules="[{trigger: 'change', validator: rules.validNumberR2}]">
-                          <el-input size="small" class="w110" @change="changeNumber(scope.row)" placeholder="请输入" v-model.trim="scope.row.orderQuantity"></el-input>
+                        <el-form-item label="" label-width="0px"  :prop="'saleDtails.'+scope.$index+'.orderQuantity'" :rules="[{trigger: 'change', validator: rules.validNumberZZS}]">
+                          <el-input size="small" class="w110" @change="changeNumber(scope.row)" placeholder="正整数" v-model.trim="scope.row.orderQuantity"></el-input>
                         </el-form-item>
                       </template>
                     </el-table-column>
@@ -421,7 +421,7 @@ export default {
         for (const item of data.saleDtails) {
           arr.push({
             'giftFlag': item.giftFlag,
-            'orderOldQuantity': item.orderOldQuantity,
+            // 'orderOldQuantity': item.orderOldQuantity,
             'id': item.id,
             'orderId': item.orderId,
             'orderQuantity': item.orderQuantity,
@@ -466,7 +466,7 @@ export default {
       }
       const reg = /^[1-9]\d*$/
       if (!reg.test(this.addGood.number)) {
-        this.$message({ type: 'warning', message: '数量为不为0的正整数' })
+        this.$message({ type: 'warning', message: '请输入正整数' })
         return
       }
       const productIds = this.Addform.saleDtails.map(item => {
@@ -489,7 +489,7 @@ export default {
             'productId': this.addGood.goodsDTO.id,
             'goodsImage': this.addGood.goodsDTO.goodsImage,
             'productName': this.addGood.goodsDTO.title,
-            'totalPrice': (skuObj[0].price * 1) * (this.addGood.number * 1),
+            'totalPrice': ((skuObj[0].price * 1) * (this.addGood.number * 1)).toFixed(2),
             'skuId': skuObj[0].id,
             'skuName': skuObj[0].skuTitle,
             'skuPrice': skuObj[0].price
@@ -500,7 +500,9 @@ export default {
     },
     changeNumber(item) {
       if (!isNaN(item.orderQuantity)) {
-        item.totalPrice = item.orderQuantity * item.skuPrice
+        const f = item.orderQuantity * 1
+        const s = item.skuPrice * 1
+        item.totalPrice = (f * s).toFixed(2)
       } else {
         item.totalPrice = 0
       }

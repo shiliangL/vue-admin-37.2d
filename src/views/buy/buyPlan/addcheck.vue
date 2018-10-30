@@ -138,7 +138,7 @@ export default {
     unfinishedTotal() {
       let total = 0
       this.tableData.map(item => {
-        if (item.purchaseStatus === 0) {
+        if (item.goodsNotPrchase > 0) {
           total += 1
         }
       })
@@ -225,7 +225,7 @@ export default {
       }
       const arr = []
       for (const item of this.selectArray) {
-        if (item.purchaseStatus === 0) {
+        if (item.goodsNotPrchase > 0) {
           if (item.supplyId) {
             item.purchaseType = 2
             item.personnelId = item.supplyId
@@ -237,7 +237,8 @@ export default {
           }
           const data = {
             orderDetailIdList: item.orderDetailIds ? item.orderDetailIds.split(',') : null,
-            planQuantity: item.orderQuantity,
+            // planQuantity: item.orderQuantity,
+            planQuantity: item.goodsNotPrchase,
             productId: item.productId,
             supplierInfoList: [
               {

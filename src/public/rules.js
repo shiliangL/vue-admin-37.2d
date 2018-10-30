@@ -41,6 +41,16 @@ export default {
             return callback(new Error('请输入有效数字'))
           }
           callback()
+        },
+        validNumberZZS: (rule, value, callback) => {
+          if (!value) {
+            return callback(new Error('请输入'))
+          }
+          const reg = /^[1-9]\d*$/
+          if (!reg.test(value)) {
+            return callback(new Error('请输入正整数'))
+          }
+          callback()
         }
       }
     }
