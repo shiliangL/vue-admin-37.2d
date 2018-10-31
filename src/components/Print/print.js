@@ -1,7 +1,6 @@
-/**
- * 打印工具类
- */
-import ElementUI from 'element-ui'
+import ElementUI, { msgbox } from 'element-ui'
+// import Vue from 'vue'
+
 export default class Print {
   setStaticResourceServer(url) {
     this.staticResourceServer = url
@@ -10,8 +9,8 @@ export default class Print {
   constructor() {
     this.CreatedOKLodop7766 = null
     if (this.needCLodop()) {
-      const head = document.head || document.getElementsByTagName('head')[0] || document.documentElement
-      let oscript = document.createElement('script')
+      var head = document.head || document.getElementsByTagName('head')[0] || document.documentElement
+      var oscript = document.createElement('script')
       oscript.src = 'http://localhost:8000/CLodopfuncs.js?priority=1'
       head.insertBefore(oscript, head.firstChild)
       // 引用双端口(8000和18000）避免其中某个被占用：
@@ -20,21 +19,19 @@ export default class Print {
       head.insertBefore(oscript, head.firstChild)
     }
   }
-  /**
-   * 判断是否需要安装CLodop云打印服务器
-   */
+
   needCLodop() {
     try {
-      const ua = navigator.userAgent
+      var ua = navigator.userAgent
       if (ua.match(/Windows\sPhone/i) != null) return true
       if (ua.match(/iPhone|iPod/i) != null) return true
       if (ua.match(/Android/i) != null) return true
       if (ua.match(/Edge\D?\d+/i) != null) return true
-      const verTrident = ua.match(/Trident\D?\d+/i)
-      const verIE = ua.match(/MSIE\D?\d+/i)
-      let verOPR = ua.match(/OPR\D?\d+/i)
-      let verFF = ua.match(/Firefox\D?\d+/i)
-      const x64 = ua.match(/x64/i)
+      var verTrident = ua.match(/Trident\D?\d+/i)
+      var verIE = ua.match(/MSIE\D?\d+/i)
+      var verOPR = ua.match(/OPR\D?\d+/i)
+      var verFF = ua.match(/Firefox\D?\d+/i)
+      var x64 = ua.match(/x64/i)
       if ((verTrident == null) && (verIE == null) && (x64 !== null)) { return true } else
       if (verFF !== null) {
         verFF = verFF[0].match(/\d+/)
@@ -45,7 +42,7 @@ export default class Print {
         if (verOPR[0] >= 32) return true
       } else
       if ((verTrident == null) && (verIE == null)) {
-        let verChrome = ua.match(/Chrome\D?\d+/i)
+        var verChrome = ua.match(/Chrome\D?\d+/i)
         if (verChrome !== null) {
           verChrome = verChrome[0].match(/\d+/)
           if (verChrome[0] >= 42) return true
@@ -63,8 +60,8 @@ export default class Print {
 
   createDialog(title, url) {
     const h = this.element.$createElement
-    this.element.$msgbox({
-      title: '打印机安装提示',
+    msgbox({
+      title: '打印机插件安装提示',
       message: h('p', null, [
         h('font', { style: { color: 'rgb(247, 72, 42)' }}, title),
         h('br', null, null),
@@ -75,30 +72,35 @@ export default class Print {
       showCancelButton: true,
       showConfirmButton: false,
       cancelButtonText: '取消'
-    }).then(action => {
-    }).catch(() => {})
+    }).then(action => { })
   }
+
   getCLodop(oOBJECT, oEMBED, oCALLBACK) {
     // const staticResourceServer = this.staticResourceServer
-    var lodop32Url = this.staticResourceServer + 'download/print/install_lodop32.exe'
-    var lodop64Url = this.staticResourceServer + 'download/print/install_lodop64.exe'
-    var lodopWin32Url = this.staticResourceServer + 'download/print/CLodop_Setup_for_Win32NT_2.130.exe'
-    var strHtmInstall = '打印控件未安装!'
-    var strHtmUpdate = '打印控件需要升级!'
-    var strHtm64_Install = '打印控件未安装!'
-    var strHtm64_Update = '打印控件需要升级!'
-    var strHtmFireFox = '(注意：如曾安装过Lodop旧版附件npActiveXPLugin,请在【工具】->【附加组件】->【扩展】中先卸它)'
-    var strHtmChrome = '(如果此前正常，仅因浏览器升级或重安装而出问题，需重新执行以上安装)'
-    var strCLodopInstall = 'CLodop云打印服务(localhost本地)未安装启动!'
-    var strCLodopUpdate = 'CLodop云打印服务需升级!</font>'
-    var LODOP
-    var tips = null
-    let url = null
+    // const lodop32Url = this.staticResourceServer + 'install_lodop32.exe'
+    // const lodop64Url = this.staticResourceServer + 'install_lodop64.exe'
+    // const lodopWin32Url = this.staticResourceServer + 'CLodop_Setup_for_Win32NT_2.130.exe'
 
+    const lodop32Url = '/static/' + 'install_lodop32.exe'
+    const lodop64Url = '/static/' + 'install_lodop64.exe'
+    const lodopWin32Url = '/static/' + 'CLodop_Setup_for_Win32NT_2.130.exe'
+
+    const strHtmInstall = '打印控件未安装!'
+    const strHtmUpdate = '打印控件需要升级!'
+    const strHtm64_Install = '打印控件未安装!'
+    const strHtm64_Update = '打印控件需要升级!'
+    const strHtmFireFox = '(注意：如曾安装过Lodop旧版附件npActiveXPLugin,请在【工具】->【附加组件】->【扩展】中先卸它)'
+    const strHtmChrome = '(如果此前正常，仅因浏览器升级或重安装而出问题，需重新执行以上安装)'
+    const strCLodopInstall = 'CLodop云打印服务(localhost本地)未安装启动!'
+    const strCLodopUpdate = 'CLodop云打印服务需升级!</font>'
+    let LODOP
+    let tips = null
+    let url = null
+    // debugger
     try {
       var isIE = (navigator.userAgent.indexOf('MSIE') >= 0) || (navigator.userAgent.indexOf('Trident') >= 0)
       if (this.needCLodop()) {
-        try { LODOP = getCLodop() } catch (err) { console.log(err) }
+        try { LODOP = getCLodop() } catch (err) { console.log(err, 'Lodop插件未安装') }
         if (!LODOP && document.readyState !== 'complete') {
           this.element.$message.error('C-Lodop没准备好，请稍后再试！')
           return

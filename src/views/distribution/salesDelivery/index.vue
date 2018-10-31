@@ -259,10 +259,7 @@ export default {
         data: {
           type: 'view',
           obj: row,
-          title:
-                        this.curIndex === 0
-                          ? '销售订单配送详情'
-                          : '销售换货配送详情'
+          title: this.curIndex === 0 ? '销售订单配送详情' : '销售换货配送详情'
         }
       })
     },
@@ -273,6 +270,7 @@ export default {
       })
     },
     clickToPrint(index, row) {
+      this.printBarCode([1, 3, 3])
       // console.log(row)
       // this.printGoods()
     },
