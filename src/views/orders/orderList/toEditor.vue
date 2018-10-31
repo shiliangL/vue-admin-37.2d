@@ -434,6 +434,11 @@ export default {
           data.address = this.temAddress[0].address
           data.contacts = this.temAddress[0].contacts
           data.mobile = this.temAddress[0].mobile
+          let num = 0
+          for (const item of data.saleDtails) {
+            num += (item.orderQuantityPrice) * 1
+          }
+          data.scmOrder.orderSum = num
           this.$emit('callBack', data)
         } else {
           this.$message({ type: 'warning', message: '请核实表单' })

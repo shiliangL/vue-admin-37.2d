@@ -228,7 +228,7 @@ export default {
                   }
                   if (item.availableQuantity * 1 !== 0) {
                     // 申请采购量 - 可用库存量 判断正负
-                    const tem = (item.applyQuantity * 1) - (item.availableQuantity * 1)
+                    const tem = ((item.applyQuantity * 1) - (item.availableQuantity * 1)).toFixed(2)
                     for (const key of item.supplierInfoList) {
                       key.quantity = 0
                     }
