@@ -26,7 +26,7 @@
 
         </el-card>
         <div class="copyright">
-          <p> Copyright © www.chumanduo.com, All Rights Reserved</p>
+          <p> Copyright © www.chumanduo.com, All Rights Reserved 20181030</p>
         </div>
       </div>
     
@@ -167,7 +167,6 @@ export default {
   .form-group {
     margin-top: -150px;
     background: transparent;
-    // width: 300px; // 重新设置卡片阴影
     .title-container{
       text-align: center;
       .title{

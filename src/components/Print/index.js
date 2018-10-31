@@ -64,8 +64,6 @@ export default class Print {
 
   createDialog(title, url) {
     const h = this.element.$createElement
-
-    debugger
     this.element.$msgbox({
       title: '打印机安装提示',
       message: h('p', null, [
@@ -84,9 +82,9 @@ export default class Print {
 
   getCLodop(oOBJECT, oEMBED, oCALLBACK) {
     // const staticResourceServer = this.staticResourceServer
-    var lodop32Url = this.staticResourceServer + 'download/print/install_lodop32.exe'
-    var lodop64Url = this.staticResourceServer + 'download/print/install_lodop64.exe'
-    var lodopWin32Url = this.staticResourceServer + 'download/print/CLodop_Setup_for_Win32NT_2.130.exe'
+    var lodop32Url = this.staticResourceServer + '/install_lodop32.exe'
+    var lodop64Url = this.staticResourceServer + '/install_lodop64.exe'
+    var lodopWin32Url = this.staticResourceServer + '/CLodop_Setup_for_Win32NT_2.130.exe'
     var strHtmInstall = '打印控件未安装!'
     var strHtmUpdate = '打印控件需要升级!'
     var strHtm64_Install = '打印控件未安装!'
