@@ -381,7 +381,7 @@ export default {
               this.$emit('add')
             }
           }).catch(e => {
-            this.$message({ type: 'error', message: '新增失败' })
+            this.$message({ type: 'error', message: e.msg })
           })
         } else {
           this.$message({ type: 'warning', message: '请核实表单' })

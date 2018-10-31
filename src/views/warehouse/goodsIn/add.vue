@@ -92,7 +92,7 @@
                     <el-table-column prop="planQuantity" label="数量" align="center">
                        <template slot-scope="scope">
                         <el-form-item label="" label-width="0px" :prop="'stockInDetailList.'+scope.$index+'.planQuantity'" :rules="[{trigger: 'change', validator: rules.validNumberR2N0}]">
-                          <el-input style="width:110px" placeholder="正整数" size="small" v-model.trim="scope.row.planQuantity"></el-input> 
+                          <el-input style="width:110px" placeholder="请输入" size="small" v-model.trim="scope.row.planQuantity"></el-input> 
                         </el-form-item>
                       </template>
                     </el-table-column>
@@ -256,6 +256,7 @@
               </div>
 
             </template>
+            
         </div>
       </div>
 
