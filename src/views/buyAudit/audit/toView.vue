@@ -69,8 +69,11 @@
 
 							<!-- 添加区域 -->
 						<div class="AddTableList">
-          			<el-input style="width:180px" v-model.trim="searchParam" size="small" placeholder="输入商品名称检索"></el-input>
-							 <!-- <el-button  type="primary" size="small"> 搜索 </el-button> -->
+          		<el-input style="width:180px" v-model.trim="searchParam" size="small" placeholder="输入商品名称检索"></el-input>
+							<!-- <el-button  type="primary" size="small"> 搜索 </el-button> -->
+
+              <!-- <el-button type="text" size="mini"> 批量修改采购员 </el-button> -->
+
 						</div>
 
 						<el-table :data="tableSearch" class="table" size="small" :max-height="500" style="width: 100%;" highlight-current-row>
@@ -243,7 +246,7 @@ export default {
                     const tem = ((item.availableQuantity * 1) - (item.applyQuantity * 1))
                     if (tem <= 0) {
                       item.waitQuantity = Math.abs(tem.toFixed(2))
-                      item.lockQuantity = (item.applyQuantity * 1)
+                      item.availableQuantity > 0 ? item.lockQuantity = (item.availableQuantity * 1) : item.lockQuantity = 0
                     } else {
                       // 大于 0 说明够发待采购 则为 0 锁定 申请
                       item.waitQuantity = 0
