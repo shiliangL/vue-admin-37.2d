@@ -147,6 +147,10 @@ export default {
         if (!this.toViewObj) return
         const arr = JSON.parse(JSON.stringify(this.toViewObj))
         for (const item of arr) {
+          // 差值 可用 - 申请
+          const tem = ((item.availableQuantity * 1) - (item.applyQuantity * 1))
+          tem !== 0 ? item.availableQuantity = tem.toFixed(2) : item.availableQuantity = 0
+
           const arrItem = item.supplierInfoList
           for (const key of arrItem) {
             if (key.buyerId || key.supplierId) {

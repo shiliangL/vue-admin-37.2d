@@ -200,55 +200,58 @@ export default {
         bodyDetail({ requestId: this.$attrs.loadID }).then(({ data }) => {
           if (Array.isArray(data)) {
             if (data.length > 0) {
-              // for (const item of data) {
-              //   if (!item.availableQuantity) {
-              //     item.availableQuantity = 0
-              //   }
-              //   if (item.availableQuantity !== 0) {
-              //     // 申请采购量 - 可用库存量 判断正负
-              //     const tem = (item.applyQuantity) - (item.availableQuantity)
-              //     for (const key of item.supplierInfoList) {
-              //       key.quantity = 0
-              //     }
-              //     if (tem > 0) {
-              //       item.waitQuantity = tem
-              //       item.supplierInfoList[0].quantity = tem
-              //     } else if (tem < 0) {
-              //       item.waitQuantity = 0
-              //     }
-              //   } else {
-              //     item.waitQuantity = item.applyQuantity
-              //   }
-              // }
+              //  planQuantity 计划采购/ applyQuantity 申请采购/ availableQuantityStr(展示) 可用库存/ waitQuantity 待采购
               if (this.showType) {
+                // for (const item of data) {
+                //   item.auditStatus = this.auditStatus
+                //   if (!item.availableQuantity) {
+                //     item.availableQuantity = 0
+                //   }
+                //   if (item.availableQuantity * 1 !== 0) {
+                //     // 申请采购量 - 可用库存量 判断正负
+                //     const tem = ((item.applyQuantity * 1) - (item.availableQuantity * 1)).toFixed(2)
+                //     for (const key of item.supplierInfoList) {
+                //       key.quantity = 0
+                //     }
+                //     if (tem > 0) {
+                //       item.lockQuantity = item.availableQuantity
+                //       item.availableQuantity = 0
+                //       item.waitQuantity = tem
+                //       item.supplierInfoList[0].quantity = tem
+                //     } else if (tem < 0) {
+                //       item.lockQuantity = item.applyQuantity
+                //       item.waitQuantity = 0
+                //       item.availableQuantity = -tem
+                //     } else if (tem === 0) {
+                //       item.lockQuantity = item.applyQuantity
+                //       item.waitQuantity = 0
+                //       item.availableQuantity = 0
+                //     }
+                //   } else {
+                //     item.lockQuantity = 0
+                //     item.waitQuantity = item.applyQuantity
+                //   }
+                // }
+
                 for (const item of data) {
                   item.auditStatus = this.auditStatus
                   if (!item.availableQuantity) {
                     item.availableQuantity = 0
                   }
-                  if (item.availableQuantity * 1 !== 0) {
-                    // 申请采购量 - 可用库存量 判断正负
-                    const tem = ((item.applyQuantity * 1) - (item.availableQuantity * 1)).toFixed(2)
-                    for (const key of item.supplierInfoList) {
-                      key.quantity = 0
-                    }
-                    if (tem > 0) {
-                      item.lockQuantity = item.availableQuantity
-                      item.availableQuantity = 0
-                      item.waitQuantity = tem
-                      item.supplierInfoList[0].quantity = tem
-                    } else if (tem < 0) {
-                      item.lockQuantity = item.applyQuantity
+                  if (item.availableQuantity * 1 > 0) {
+                  // 差值 可用 - 申请
+                    const tem = ((item.availableQuantity * 1) - (item.applyQuantity * 1))
+                    if (tem <= 0) {
+                      item.waitQuantity = Math.abs(tem.toFixed(2))
+                      item.lockQuantity = (item.applyQuantity * 1)
+                    } else {
+                      // 大于 0 说明够发待采购 则为 0 锁定 申请
                       item.waitQuantity = 0
-                      item.availableQuantity = -tem
-                    } else if (tem === 0) {
-                      item.lockQuantity = item.applyQuantity
-                      item.waitQuantity = 0
-                      item.availableQuantity = 0
+                      item.lockQuantity = (item.applyQuantity * 1)
                     }
                   } else {
                     item.lockQuantity = 0
-                    item.waitQuantity = item.applyQuantity
+                    item.waitQuantity = (item.applyQuantity * 1)
                   }
                 }
               }

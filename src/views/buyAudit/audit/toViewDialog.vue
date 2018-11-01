@@ -4,7 +4,8 @@
 			<el-form :model="form" :rules="rules" ref="form" >
 
          <el-form-item label="待采购量" label-width="100px">
-          <span>{{totalNumber}}</span>
+          <!-- <span>{{totalNumber}}</span> -->
+          <span>{{value.waitQuantity}}</span>
         </el-form-item>
 
 				 <!-- 表格 -->
@@ -193,7 +194,7 @@ export default {
         personnelId: null, // 人员id(供应商/采购员)
         personnelName: null, // 人员姓名(供应商/采购员)
         purchaseType: 1, // 采购类型(1:市场自采,2:供应商直供)
-        quantity: 1 // 数量
+        quantity: 0 // 数量
       })
     },
     clickToDelete(index, item) {
@@ -210,6 +211,14 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           const list = JSON.parse(JSON.stringify(this.form.table))
+          let total = 0
+          for (const item of list) {
+            total += (item.quantity * 1)
+          }
+          if (total !== this.value.waitQuantity) {
+            this.$message({ type: 'warning', message: '输入数量之和应该等于待采购量', duration: 3000 })
+            return
+          }
           const data = {
             detailsId: this.value.detailId,
             waitQuantity: this.totalNumber,
