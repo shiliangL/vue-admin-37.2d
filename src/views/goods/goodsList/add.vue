@@ -17,8 +17,8 @@
               <!-- <el-button type="text" size="mini" v-if="this.data.type !== 'add'">刷新</el-button> -->
             </div>
            <div class="right" v-else>
+              <el-button type="text" size="mini" v-if="this.data.type !== 'add'" @click.stop="refreshRecord">刷新</el-button>
               <el-button type="text" size="mini" @click.stop="dialog.visiable = false">返回</el-button>
-              <el-button type="text" size="mini" v-if="this.data.type !== 'add'">刷新</el-button>
            </div>
         </div>
         <div class="content-bar">
@@ -29,7 +29,7 @@
             <toEditor :viewData="viewData" ref="toEditor" @callBack="callBackToSubmit"></toEditor>
           </template>
           <template v-if="isRecord">
-            <alesRecord :loadID="data.obj.id"></alesRecord>
+            <alesRecord ref="alesRecord" :loadID="data.obj.id"></alesRecord>
           </template>
         </div>
       </div>
@@ -202,6 +202,9 @@ export default {
           this.$message({ type: 'error', message: e.msg })
         })
       }
+    },
+    refreshRecord() {
+      if (this.$refs['alesRecord']) this.$refs['alesRecord'].refresh()
     }
   }
 }

@@ -87,11 +87,11 @@
                <el-tag size="small" type="warning" v-if="scope.row.goodsStatus ===1">下架</el-tag>
             </template>
           </el-table-column>
-          <!-- <el-table-column prop="goodsStatus" label="采购/销售历史单价" align="center">
+          <el-table-column prop="goodsStatus" label="采购/销售历史单价" align="center">
            <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="clickToRecord(scope.$index, scope.row)">查看</el-button>
            </template>
-          </el-table-column> -->
+          </el-table-column>
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">详情</el-button>

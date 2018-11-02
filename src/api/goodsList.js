@@ -148,6 +148,14 @@ export function fetchHistoryPrice(params) {
   })
 }
 
+export function fetchPurchasePriceHistory(params) {
+  return request({
+    url: 'productPurchasePriceHistory/page',
+    method: 'get',
+    params
+  })
+}
+
 // 验证商品名称
 export function existTitle(params) {
   return request({
