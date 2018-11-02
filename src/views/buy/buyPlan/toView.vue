@@ -95,7 +95,7 @@
                   <span v-else v-cloak> {{scope.row.applyQuantity}} </span>
                 </template>
               </el-table-column>
-							<el-table-column label="采购员/供应商" align="center">
+							<el-table-column label="采购员" align="center">
                 <template slot-scope="scope">
                   <el-popover placement="top" width="200" trigger="hover">
                     <div v-for="(item,index) in scope.row.supplierInfoList" :key="index">
@@ -116,7 +116,7 @@
 					</div>
 				</div>
 
-  			<el-dialog width="700px" title="更改采购员/供应商" :visible.sync="innerVisible" append-to-body center :modal="false">
+  			<el-dialog width="700px" title="更改采购员" :visible.sync="innerVisible" append-to-body center :modal="false">
           <toViewDialog v-model="dialogData" @edit="refrehList" @callBack="toViewDialogCallBack" v-if="innerVisible"  @close="innerVisible = false"></toViewDialog>
         </el-dialog>
 

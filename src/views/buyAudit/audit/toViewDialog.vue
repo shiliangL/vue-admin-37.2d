@@ -26,7 +26,7 @@
 						<template slot-scope="scope">
 
 							<el-form-item label="" label-width="0px" :prop="'table.'+scope.$index+'.quantity'" :rules="[{trigger: 'change', validator: rules.validNumberR2}]">
-								<el-input size="small" class="w110" @change="changeNumber(scope.row)" placeholder="请输入" v-model.trim="scope.row.quantity"></el-input>
+								<el-input size="small" class="w110" placeholder="请输入" v-model.trim="scope.row.quantity"></el-input>
 							</el-form-item>
 
 						</template>
@@ -150,17 +150,6 @@ export default {
     this.fecthTree()
     this.fecthSalerList()
   },
-  computed: {
-    totalNumber() {
-      let t = 0
-      for (const item of this.form.table) {
-        if (!isNaN(item.quantity)) {
-          t += (item.quantity * 1)
-        }
-      }
-      return t
-    }
-  },
   methods: {
     close() {
       this.$emit('close')
@@ -204,9 +193,6 @@ export default {
         this.$message({ type: 'warning', message: '不能为空' })
       }
     },
-    changeNumber(item) {
-      console.log(item)
-    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -215,13 +201,12 @@ export default {
           for (const item of list) {
             total += (item.quantity * 1)
           }
-          if (total !== this.value.waitQuantity) {
+          if ((total.toFixed(2) * 1) !== (this.value.waitQuantity * 1)) {
             this.$message({ type: 'warning', message: '输入数量之和应该等于待采购量', duration: 3000 })
             return
           }
           const data = {
             detailsId: this.value.detailId,
-            waitQuantity: this.totalNumber,
             table: list
           }
           this.$emit('callBack', data)

@@ -10,7 +10,7 @@
 				 <!-- 表格 -->
         <el-table :data="form.table" size="small" :max-height="300" style="width: 100%;" highlight-current-row>
 
-          <el-table-column label="操作" align="center" width="90">
+          <!-- <el-table-column label="操作" align="center" width="90">
             <template slot-scope="scope" align="center">
 							<span class="handler-icon" @click.stop="clickToAdd" >
 								<i class="el-icon-plus"></i>
@@ -19,7 +19,7 @@
 								<i class="el-icon-minus"></i>
 							</span>
             </template>
-          </el-table-column>
+          </el-table-column> -->
 
 					<el-table-column prop="quantity" label="采购量" align="center"  width="180">
 						<template slot-scope="scope">
@@ -31,7 +31,7 @@
 						</template>
 					</el-table-column>
 
-          <el-table-column prop="goodsImage" label="采购员/供应商" align="center">
+          <el-table-column prop="goodsImage" label="采购员" align="center">
              <template slot-scope="scope">
                
               <el-form-item label="" style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.purchaseType'"  :rules="rules.select">

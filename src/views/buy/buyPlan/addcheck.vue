@@ -83,7 +83,7 @@
 				<el-table-column prop="orderCancelQuantity" label="取消订单总量" align="center"></el-table-column>
 				<el-table-column prop="goodsPrchase" label="已生成数量" align="center"></el-table-column>
 				<el-table-column prop="goodsNotPrchase" label="未生成数量" align="center"></el-table-column>
-				<el-table-column label="采购员/供应商" align="center">
+				<el-table-column label="采购员" align="center">
         	<template slot-scope="scope">
 						<span>{{scope.row.supplyName || scope.row.purchaseName}}</span>
 					</template>

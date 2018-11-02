@@ -72,7 +72,7 @@
           		<el-input style="width:180px" v-model.trim="searchParam" size="small" placeholder="输入商品名称检索"></el-input>
 							<!-- <el-button  type="primary" size="small"> 搜索 </el-button> -->
 
-              <!-- <el-button type="text" size="mini"> 批量修改采购员 </el-button> -->
+              <el-button v-if="form.header.auditStatus===2" class="clearfix" style="float: right;" type="text" size="mini" @click.stop="volumeVisible = true"> 批量修改采购员 </el-button>
 
 						</div>
 
@@ -99,7 +99,7 @@
 									</template>
 							</el-table-column>
 
-              <el-table-column prop="applyQuantity" label="采购员/供应商" align="center">
+              <el-table-column prop="applyQuantity" label="采购员" align="center">
                 <template slot-scope="scope">
                     <el-popover placement="top" width="200" trigger="hover">
                       <div v-for="(item,index) in scope.row.supplierInfoList" :key="index">
@@ -121,8 +121,12 @@
 					</div>
 				</div>
 
-  			<el-dialog width="700px" title="更改采购员/供应商" :visible.sync="innerVisible" append-to-body center :modal="false">
+  			<el-dialog width="700px" title="更改采购员" :visible.sync="innerVisible" append-to-body center>
           <toViewDialog v-model="dialogData" @edit="refrehList" @callBack="toViewDialogCallBack" v-if="innerVisible" @close="innerVisible = false"></toViewDialog>
+        </el-dialog>
+        
+  			<el-dialog width="344px" title="批量设置采购员" :visible.sync="volumeVisible" append-to-body center>
+          <volumeSet v-model="form.table" @callBack="volumeSetCallBack" v-if="volumeVisible" @close="volumeVisible = false"></volumeSet>
         </el-dialog>
 
 
@@ -133,12 +137,14 @@
 <script>
 import { headerDetail, bodyDetail } from '@/api/buy/buyPlan.js'
 import toViewDialog from './toViewDialog'
+import volumeSet from './volumeSet'
 
 import rules from '@/public/rules.js'
 export default {
   mixins: [rules],
   components: {
-    toViewDialog
+    toViewDialog,
+    volumeSet
   },
   props: {
     value: {
@@ -151,6 +157,7 @@ export default {
       auditStatus: null, // 待审核的时候需要显示编辑页面
       searchParam: null,
       innerVisible: false,
+      volumeVisible: false,
       curIndex: false,
       dialogData: null,
       form: {
@@ -256,6 +263,10 @@ export default {
                     item.lockQuantity = 0
                     item.waitQuantity = (item.applyQuantity * 1)
                   }
+
+                  if (item.supplierInfoList[0]) {
+                    item.supplierInfoList[0].quantity = item.waitQuantity
+                  }
                 }
               }
               this.form.table = data
@@ -277,8 +288,41 @@ export default {
       this.dialogData = item
     },
     toViewDialogCallBack(item) {
+      console.log(item.table)
       this.form.table[this.curIndex].supplierInfoList = item.table
-      this.form.table[this.curIndex].waitQuantity = item.waitQuantity
+    },
+    volumeSetCallBack(data) {
+      // 批量操作
+      for (const item of this.form.table) {
+        const cpItem = JSON.parse(JSON.stringify(item.supplierInfoList))[0]
+        const itemData = [
+          {
+            'pk': null,
+            'orderRequestId': cpItem.orderRequestId,
+            'orderRequestDetailsId': cpItem.orderRequestDetailsId,
+            'purchaseType': 1,
+            'personnelId': data.personnelId,
+            'personnelName': data.personnelName,
+            'quantity': item.waitQuantity,
+            'buyerId': data.personnelId,
+            'buyerName': data.personnelName,
+            'supplierId': null,
+            'supplierName': null,
+            'supplyDto': []
+          }
+        ]
+        if (data.level) {
+          if (item.categoryName.split('/')[0] === data.categoryName) {
+            item.supplierInfoList = itemData
+          }
+        } else {
+          if (item.categoryName === data.categoryName) {
+            item.supplierInfoList = itemData
+          }
+        }
+      }
+
+      console.log(this.form.table)
     },
     // 触发校验 处理参数
     validateForm() {

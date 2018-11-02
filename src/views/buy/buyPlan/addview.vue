@@ -23,6 +23,7 @@
 							<el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
 							<el-table-column prop="baseUnitName" label="基本单位" align="center"></el-table-column>
 							<el-table-column prop="availableQuantity" label="可用库存量" align="center"></el-table-column>
+							<el-table-column prop="stockQuantity" label="实际库存量" align="center"></el-table-column>
 							<el-table-column prop="planQuantity" label="计划采购量" align="center">
                 <template slot-scope="scope">
                   <div class="w110 el-input el-input--small" @click.stop="clickToChange(scope.$index, scope.row)" style="width:110px">
@@ -31,7 +32,7 @@
                 </template>
 							</el-table-column>
 
-							<el-table-column label="采购员/供应商" align="center">
+							<el-table-column label="采购员" align="center">
 								<template slot-scope="scope">
                   <div class="clearfix">
                     <span  v-cloak> {{scope.row.supplierInfoList[0].personnelName}} </span>
@@ -52,7 +53,7 @@
 					</div>
 				</div>
 
-        <el-dialog width="700px" title="更改采购员/供应商" :visible.sync="innerVisible" append-to-body center :modal="false">
+        <el-dialog width="700px" title="更改采购员" :visible.sync="innerVisible" append-to-body center :modal="false">
           <changeDialog v-model="dialogData" @callBack="changeDialogCallBack" v-if="innerVisible" @close="innerVisible = false"></changeDialog>
         </el-dialog>
 
@@ -152,6 +153,7 @@ export default {
             productName: item.name,
             baseUnitName: item.baseUnitName,
             availableQuantity: item.availableQuantity || 0,
+            stockQuantity: item.stockQuantity || 0,
             planQuantity: 1,
             supplierInfoList: [
               {
