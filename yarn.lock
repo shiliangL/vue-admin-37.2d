@@ -5257,6 +5257,10 @@ pretty-error@^2.0.2:
     renderkid "^2.0.1"
     utila "~0.4"
 
+print-js@^1.0.50:
+  version "1.0.53"
+  resolved "http://registry.npm.taobao.org/print-js/download/print-js-1.0.53.tgz#241a733e5dadd7cca29011d756a37a5e6468a663"
+
 private@^0.1.6, private@^0.1.8:
   version "0.1.8"
   resolved "http://registry.npm.taobao.org/private/download/private-0.1.8.tgz#2381edb3689f7a53d653190060fcf822d2f368ff"

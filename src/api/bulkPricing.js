@@ -16,3 +16,11 @@ export function updateRow(data) {
     data
   })
 }
+
+export function importPurchasePriceHistoryExcel(data) {
+  return request({
+    url: 'productPurchasePriceHistory/importPurchasePriceHistoryExcel',
+    method: 'POST',
+    data
+  })
+}

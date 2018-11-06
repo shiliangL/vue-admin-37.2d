@@ -6,18 +6,33 @@ export default {
     this.$print.setTarget(this)
   },
   methods: {
-    printBarCode(data) {
-      const pageW = 800
-      const pageH = 600
+    printBarCode() {
       const LODOP = this.$print.getCLodop()
       if (!LODOP) return
-      if (data.length > 0) {
-        LODOP.SET_PRINT_PAGESIZE(1, pageW, pageH, '')
-        LODOP.PRINT_INIT('商品条码打印', 0)
+      debugger
+      LODOP.ADD_PRINT_TABLE(128, '', '260mm', '135mm', document.getElementById('table1').innerHTML)
+      LODOP.SET_PRINT_STYLEA(0, 'ItemType', 1)
+      LODOP.SET_PRINT_STYLEA(0, 'LinkedItem', 1)
 
-        LODOP.PREVIEW()
-        // LODOP.PRINT_DESIGN();
-      }
+      LODOP.ADD_PRINT_TABLE(128, '', '260mm', '135mm', document.getElementById('table2').innerHTML)
+      LODOP.SET_PRINT_STYLEA(0, 'ItemType', 1)
+      LODOP.SET_PRINT_STYLEA(0, 'LinkedItem', 1)
+
+      LODOP.ADD_PRINT_TABLE(128, '', '260mm', '135mm', document.getElementById('table3').innerHTML)
+      LODOP.SET_PRINT_STYLEA(0, 'ItemType', 1)
+      LODOP.SET_PRINT_STYLEA(0, 'LinkedItem', 1)
+
+      LODOP.ADD_PRINT_TABLE(128, '', '260mm', '135mm', document.getElementById('table4').innerHTML)
+      LODOP.SET_PRINT_STYLEA(0, 'ItemType', 1)
+      LODOP.SET_PRINT_STYLEA(0, 'LinkedItem', 1)
+
+      LODOP.PREVIEW()
+      // if (data.length > 0) {
+      //   LODOP.SET_PRINT_PAGESIZE(1, 1500, 1000, 'CreateCustomPage')
+      //   LODOP.PRINT_INIT('商品条码打印', 0)
+      //   LODOP.PREVIEW()
+      //   // LODOP.PRINT_DESIGN();
+      // }
     }
   }
 }

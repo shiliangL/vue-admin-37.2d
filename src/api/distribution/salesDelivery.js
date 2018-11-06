@@ -82,3 +82,10 @@ export function fecthListListDrive(params) {
     params
   })
 }
+export function fecthPrint(params) {
+  return request({
+    url: 'scmshipOrderInfo/detailNotPage',
+    method: 'get',
+    params
+  })
+}

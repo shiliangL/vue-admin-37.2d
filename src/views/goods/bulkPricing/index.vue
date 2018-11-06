@@ -28,6 +28,9 @@
             <div class="left">
                 <el-button size="small" @click.stop="clickToReset" > 重置 </el-button>
             </div>
+            <div class="right">
+                <el-button size="small" @click.stop="clickToImport" > 导入 </el-button>
+            </div>
           </div>
           <!-- 表格 -->
           <table-contain  :height.sync="table.maxHeight">
@@ -109,6 +112,17 @@
         </el-col>
       </el-row>
 
+
+      <el-dialog title="单据导入" width="340px" append-to-body center :visible.sync="dialogImport" @close="closeImportdigo" :close-on-click-modal="false">
+          <TableImport
+            v-if="dialogImport"
+            actionUrl="cmm/productPurchasePriceHistory/importPurchasePriceHistoryExcel"
+            tplHref="http://pde00nn7n.bkt.clouddn.com/%E9%87%87%E8%B4%AD%E5%8E%86%E5%8F%B2%E4%B8%8A%E4%BC%A0%E6%A8%A1%E7%89%88.xlsx"
+            @close="closeImportdigo" 
+            @success="importSuccess">
+          </TableImport>
+      </el-dialog>
+
     </div>
 </template>
 
@@ -119,12 +133,14 @@ import Add from './add'
 import { customerType } from '@/api/goodsList.js'
 import { fetchList, updateRow } from '@/api/bulkPricing.js'
 import { fecthGoodsClass } from '@/api/goodsList.js'
+import { TableImport } from '@/components/base.js'
 
 export default {
   name: 'bulkPricing',
   mixins: [model, rules],
   components: {
-    Add
+    Add,
+    TableImport
   },
   data() {
     return {
@@ -158,7 +174,8 @@ export default {
           { label: '按百分比', value: 1 }
         ]
       },
-      saveLoading: false
+      saveLoading: false,
+      dialogImport: false
     }
   },
   mounted() {
@@ -167,6 +184,15 @@ export default {
     this.fecthGoodsClass()
   },
   methods: {
+    clickToImport() {
+      this.dialogImport = true
+    },
+    closeImportdigo() {
+      this.dialogImport = false
+    },
+    importSuccess() {
+      this.fecthList()
+    },
     reset() {
       this.fecthList()
     },

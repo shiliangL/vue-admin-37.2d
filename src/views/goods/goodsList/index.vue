@@ -32,8 +32,14 @@
         <div class="right">
           <div class="left">
             <el-button size="small" @click.stop="showAdd" > 新增 </el-button>
-            <el-button size="small" @click.stop="exportFile" :loading="exportLoading" > 导出Excel </el-button>
+            <!-- <el-button size="small" @click.stop="exportFile" :loading="exportLoading" > 导出Excel </el-button> -->
           </div>
+           <el-dropdown class="right" trigger="click" @command="clickCommandEx">
+              <el-button size="small"> 导出 <i class="el-icon-arrow-down el-icon--right"></i></el-button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item v-for="label in options.export" :key="label" :command="label">{{label}}</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
            <el-dropdown class="right" trigger="click" @command="clickCommand">
               <el-button size="small"> 批量操作 <i class="el-icon-arrow-down el-icon--right"></i></el-button>
               <el-dropdown-menu slot="dropdown">
@@ -140,6 +146,7 @@ export default {
       curIndex: 0,
       options: {
         moreOptins: ['批量上架', '批量下架', '批量删除'],
+        export: ['商品完整信息', '用于批量调价'],
         goodsClass: []
       },
       CascaderBoxDTO: null,
@@ -262,10 +269,10 @@ export default {
         this.$message({ type: 'error', message: '加载分类失败失败' })
       })
     },
-    exportFile() {
+    exportFile(type) {
       this.exportLoading = true
       if (!this.exportLoading) return
-      let url = 'cmm/productInfo/exportFile?'
+      let url = type === 0 ? 'cmm/productInfo/exportFile?' : 'cmm/productInfo/exportByModel?'
       if (this.levelFecond) {
         this.searchParams.categoryId = this.levelFecond
       } else {
@@ -446,6 +453,20 @@ export default {
           }).catch(() => {
             this.$message({ type: 'error', message: '删除失败' })
           })
+          break
+        }
+        default:
+          break
+      }
+    },
+    clickCommandEx(command) {
+      switch (command) {
+        case '商品完整信息': {
+          this.exportFile(0)
+          break
+        }
+        case '用于批量调价': {
+          this.exportFile(1)
           break
         }
         default:
