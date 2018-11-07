@@ -4,7 +4,7 @@
     <template v-if="data && data.length > 0">
       <div class="left" v-for="(item, index) in data[0]" :key="index">
         <template v-if="item.type === 'date'">
-          <el-date-picker :style="{width:'140px'}" size="small" v-model="item.value" value-format="yyyy-MM-dd" type="date" :placeholder="item.placeholder"></el-date-picker>
+          <el-date-picker :clearable="isDateClear" :style="{width:'140px'}" size="small" v-model="item.value" value-format="yyyy-MM-dd" type="date" :placeholder="item.placeholder"></el-date-picker>
         </template>
         <template v-if="item.type === 'datetimerange'">
           <el-date-picker v-model="item.value" size="small" value-format="yyyy-MM-dd HH:mm:ss" type="datetimerange" range-separator="-" start-placeholder="下单开始时间" end-placeholder="下单结束时间" :default-time="['23:00:00', '22:59:59']" :placeholder="item.placeholder"> </el-date-picker>
@@ -65,6 +65,10 @@ export default {
     data: {
       type: Array,
       default: []
+    },
+    isDateClear: { // 日期是否可以清除 默认可以
+      type: Boolean,
+      default: true
     },
     rightVisible: { // 是否需要显示右边区域按钮 默认显示
       type: Boolean,

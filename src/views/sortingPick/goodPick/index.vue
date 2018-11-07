@@ -2,7 +2,7 @@
 <template>
     <div class="goodPick">
 
-			<search-bar :data="searchBarDate" @search="searchAction" @reset="fetchList"></search-bar>
+			<search-bar :data="searchBarDate" ref="searchBar" @search="searchAction" @reset="resetFetchList" :isDateClear="false"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight" :key="curIndex">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -24,7 +24,7 @@
 					<el-table-column prop="tableName" label="分拣台" align="center"></el-table-column>
 					<!-- <el-table-column prop="sorterName" label="分拣员" align="center"></el-table-column> -->
 					<el-table-column prop="stockOutOrderNo" label="关联出库单" align="center"></el-table-column>
-					<el-table-column prop="stockOutCreatedTime" label="创建时间" align="center"></el-table-column>
+					<el-table-column prop="stockOutCreatedTime" label="创建时间" width="90" align="center"></el-table-column>
           <el-table-column prop="finishStatus" label="状态" align="center">
              <template slot-scope="scope">
                 <el-tag size="mini" type="success" v-if="scope.row.finishStatus===1">完成</el-tag>
@@ -63,6 +63,7 @@ import Add from './add'
 import model from '@/public/listModel.js'
 import { SearchBar } from '@/components/base.js'
 import { fetchList, fecthStockList, fecthWorkbench } from '@/api/sortingPick/goodPick.js'
+import Util from '@/utils'
 
 export default {
   name: 'goodPick',
@@ -101,7 +102,9 @@ export default {
     ]
   },
   mounted() {
-    this.fetchList()
+    const util = new Util()
+    this.searchBarDate[0][0].value = util.getToday()
+    if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     this.fecthStockList()
     this.fecthWorkbench()
   },
@@ -111,7 +114,8 @@ export default {
       const { index, size } = this.pagination
       const data = {
         index,
-        size
+        size,
+        stockOutCreatedTime: this.searchBarDate[0][0].value
       }
       fetchList(data).then(({ data }) => {
         if (Array.isArray(data.rows)) {
@@ -121,6 +125,11 @@ export default {
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
+    },
+    resetFetchList() {
+      const util = new Util()
+      this.searchBarDate[0][0].value = util.getToday()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     fecthStockList() {
       fecthStockList().then(({ data }) => {
@@ -164,11 +173,11 @@ export default {
     // 分页操作区域
     handleSizeChange(value) {
       this.pagination.size = value
-      this.fetchList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     handleCurrentChange(value) {
       this.pagination.index = value
-      this.fetchList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     // 弹层操作
     clickToEditor(index, row) {
@@ -176,7 +185,7 @@ export default {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '查看商品分拣详细信息' }})
     },
     refrehList() {
-      this.fetchList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].clickReset()
     }
   }
 }

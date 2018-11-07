@@ -3,7 +3,7 @@
     <div class="orderPick">
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
 
-			<search-bar :data="searchBarDate" @search="searchAction" @reset="fetchList"></search-bar>
+			<search-bar :data="searchBarDate" @search="searchAction" @reset="resetFetchList" ref="searchBar" :isDateClear="false"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight" :key="curIndex">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -57,6 +57,7 @@ import Add from './add'
 import model from '@/public/listModel.js'
 import { SearchBar, Tabs } from '@/components/base.js'
 import { fetchList, fecthStockList, fecthWorkbench } from '@/api/sortingPick/orderPick.js'
+import Util from '@/utils'
 
 export default {
   name: 'orderPick',
@@ -92,14 +93,16 @@ export default {
     ]
   },
   mounted() {
-    this.fetchList()
+    const util = new Util()
+    this.searchBarDate[0][0].value = util.getToday()
+    if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     this.fecthStockList()
     this.fecthWorkbench()
   },
   methods: {
     tabsCallBack(item) {
       this.curIndex = item.value
-      this.fetchList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     // 数据请求
     fetchList() {
@@ -143,6 +146,11 @@ export default {
         this.$message({ type: 'error', message: e.msg })
       })
     },
+    resetFetchList() {
+      const util = new Util()
+      this.searchBarDate[0][0].value = util.getToday()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
+    },
     fecthWorkbench() {
       fecthWorkbench({ type: 5 }).then(({ data }) => {
         for (const item of data) {
@@ -157,11 +165,11 @@ export default {
     // 分页操作区域
     handleSizeChange(value) {
       this.pagination.size = value
-      this.fetchList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     handleCurrentChange(value) {
       this.pagination.index = value
-      this.fetchList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     // 弹层操作
     clickToEditor(index, row) {

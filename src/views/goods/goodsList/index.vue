@@ -293,7 +293,7 @@ export default {
       for (const key in data) {
         if (data.hasOwnProperty(key)) {
           const element = data[key]
-          if (element) {
+          if (element || element === 0) {
             url += `${key}=${element}&`
           }
         }

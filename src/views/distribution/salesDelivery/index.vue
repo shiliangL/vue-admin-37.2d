@@ -3,7 +3,7 @@
     <div class="salesDeliveryA">
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
 
-			<search-bar :data="searchBarDate" @search="searchAction" @reset="fetchList"  @add="showAdd"></search-bar>
+			<search-bar :data="searchBarDate" @search="searchAction" @add="showAdd" ref="searchBar" @reset="resetFetchList" :isDateClear="false"></search-bar>
 
       <table-contain  :height.sync="table.maxHeight" :key="curIndex">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -162,6 +162,8 @@ import {
   fecthListRegion,
   fecthListListDrive
 } from '@/api/distribution/salesDelivery.js'
+import Util from '@/utils'
+
 // import printOrder from '../component/print.js'
 
 export default {
@@ -255,13 +257,15 @@ export default {
     ]
   },
   mounted() {
-    this.fetchList()
+    const util = new Util()
+    this.searchBarDate[0][0].value = util.getToday()
+    if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     this.fecthOption()
   },
   methods: {
     tabsCallBack(item) {
       this.curIndex = item.value
-      this.fetchList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     // 数据请求
     fetchList() {
@@ -271,14 +275,12 @@ export default {
         size,
         type: this.curIndex
       }
-      fetchList(data)
-        .then(({ data }) => {
-          this.table.data = data.rows
-          this.pagination.total = data.total
-        })
-        .catch(e => {
-          this.$message({ type: 'error', message: e.msg })
-        })
+      fetchList(data).then(({ data }) => {
+        this.table.data = data.rows
+        this.pagination.total = data.total
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
     },
     fecthOption() {
       fecthListRegion()
@@ -318,23 +320,26 @@ export default {
         type: this.curIndex,
         ...item
       }
-      fetchList(data)
-        .then(({ data }) => {
-          this.table.data = data.rows
-          this.pagination.total = data.total
-        })
-        .catch(e => {
-          this.$message({ type: 'error', message: e.msg })
-        })
+      fetchList(data).then(({ data }) => {
+        this.table.data = data.rows
+        this.pagination.total = data.total
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
+    resetFetchList() {
+      const util = new Util()
+      this.searchBarDate[0][0].value = util.getToday()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     // 分页操作区域
     handleSizeChange(value) {
       this.pagination.size = value
-      this.fetchList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     handleCurrentChange(value) {
       this.pagination.index = value
-      this.fetchList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     // 弹层操作
     clickToEditor(index, row) {
@@ -378,7 +383,7 @@ export default {
       })
     },
     refrehList() {
-      this.fetchList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     }
   }
 }
