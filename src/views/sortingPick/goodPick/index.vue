@@ -63,6 +63,7 @@ import Add from './add'
 import model from '@/public/listModel.js'
 import { SearchBar } from '@/components/base.js'
 import { fetchList, fecthStockList, fecthWorkbench } from '@/api/sortingPick/goodPick.js'
+import { fecthMemberSelect } from '@/api/members.js'
 import Util from '@/utils'
 
 export default {
@@ -107,6 +108,7 @@ export default {
     if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     this.fecthStockList()
     this.fecthWorkbench()
+    this.fecthMemberSelect()
   },
   methods: {
     // 数据请求
@@ -151,6 +153,13 @@ export default {
           item.value = item.pk
         }
         this.searchBarDate[0][3].options = data
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+    fecthMemberSelect() {
+      fecthMemberSelect({ staffType: 4 }).then(({ data }) => {
+        this.searchBarDate[0][4].options = data || []
       }).catch(e => {
         console.log(e)
       })
