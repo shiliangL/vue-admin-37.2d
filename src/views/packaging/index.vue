@@ -15,15 +15,26 @@
           <el-table-column prop="stockName" label="仓库" align="center"></el-table-column>
           <el-table-column prop="createdTime" label="出库单创建时间" align="center"></el-table-column>
           <el-table-column prop="completionTime" label="打包完成时间" align="center"></el-table-column>
-          <el-table-column prop="finishStatus" label="状态" align="center">
+          <el-table-column prop="finishStatus" label="扫描状态" align="center">
               <template slot-scope="scope"> 
+                <!-- 订单明细是否完全被扫描完成 -->
                 <el-tag size="mini" type="success" v-if="scope.row.finishStatus===1">完成</el-tag>
                 <el-tag size="mini" type="danger" v-if="scope.row.finishStatus===0">未完成</el-tag>
               </template>
           </el-table-column>
+          <el-table-column prop="finishStatus" label="打印状态" align="center">
+              <template slot-scope="scope"> 
+                <!-- 订单生成条码之后完成状态 -->
+                <el-tag size="mini" type="success" v-if="scope.row.barCodeStatus===1">已打印</el-tag>
+                <el-tag size="mini" type="warning" v-if="scope.row.barCodeStatus===0">未打印</el-tag>
+              </template>
+          </el-table-column> 
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
-              <el-button type="text" size="mini" @click.stop="clickToCreateTip(scope.$index,scope.row)">打印标签</el-button>
+              <template v-if="scope.row.finishStatus===1">
+                <el-button type="text" size="mini" v-if="!scope.row.barCode" style="color: #c0c4cc;" @click.stop="clickToCreateTip(scope.$index,scope.row)">打印标签</el-button>
+                <el-button type="text" size="mini" v-else @click.stop="clickToCreateTip(scope.$index,scope.row)">打印标签</el-button>
+              </template>
               <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">查看</el-button>
             </template>
           </el-table-column>
@@ -139,31 +150,10 @@ export default {
           this.$message({ type: 'error', message: '工作台参数错误,F5刷新页面或者新登录' })
           return
         }
-        const data = {
-          'packageInfoId': row.id,
-          'tableId': loginKey.id
-        }
+        const data = { 'packageInfoId': row.id, 'tableId': loginKey.id }
         outUpdateQuantity(data).then(res => {
-          // this.$message({ type: 'success', message: '保存成功' })
-          this.tableLoading = true
-          const { index, size } = this.pagination
-          const data = {
-            index,
-            size,
-            createdTime: this.searchBarData[0][0].value,
-            storehouseType: this.curIndex
-          }
-          fecthList(data).then(({ data }) => {
-            this.table.data = data.rows
-            this.pagination.total = data.total
-            this.tableLoading = false
-            if (Array.isArray(data.rows) && data.rows.length) {
-              this.clickToPrintDD(index, data.rows[index])
-            }
-          }).catch(e => {
-            this.tableLoading = false
-            this.$message({ type: 'error', message: e.msg })
-          })
+          this.fecthList()
+          this.clickToPrintDD(index, row)
         }).catch(e => {
           this.$message({ type: 'error', message: e.msg })
         })
@@ -179,7 +169,7 @@ export default {
             return
           }
           LODOP.PRINT_INIT('打包条码')
-          LODOP.SET_PRINT_PAGESIZE(2, 800, 600, 'CreateCustomPage')
+          LODOP.SET_PRINT_PAGESIZE(1, 1000, 1500, 'CreateCustomPage')
           LODOP.ADD_PRINT_TEXT(6, 4, 82, 18, '【打包条码:')
           LODOP.ADD_PRINT_TEXT(6, 72, 152, 20, data.barCode + '】')
           LODOP.ADD_PRINT_TEXT(26, 4, 82, 20, '客户名称:')
