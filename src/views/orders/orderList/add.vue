@@ -56,6 +56,7 @@
                       <el-col :xs="24" :sm="10" :md="8" :lg="6">
                         <el-form-item label="要求送达日期:" prop="shopTime.sendDate" :rules="rules.select">
                           	<el-date-picker :style="{width:'180px'}" size="small" 
+                              :picker-options="pickerOptions"
                               v-model="Addform.shopTime.sendDate" 
                               value-format="yyyy-MM-dd" type="date" 
                               placeholder="要求送达日期"></el-date-picker>
@@ -265,7 +266,7 @@ export default {
       pickerOptions: {
         disabledDate(time) {
           const data = new Date()
-          return time.getTime() < (data.getTime() + 3600 * 1000 * 24) - 8.64e7
+          return time.getTime() < (data.getTime()) - 8.64e7
         }
       },
       loadID: null,

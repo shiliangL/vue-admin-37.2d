@@ -57,7 +57,7 @@
 
       <div id="salesDelivery" v-if="PrintData.customerTitle" style="font-size: 12px;width:100%;text-align:center;">
 
-        <table id="table1" style="width:100%">
+        <table id="table1" style="width:100%;margin-bottom: 6px;">
            <thead>
               <tr> 
                 <th width="10%" style="font-weight: 400;font-size: 14px"> 厨满满商城销售订单商品清单 </th>
@@ -111,8 +111,9 @@
               <td align="center">{{item.price}}</td>
               <td align="center">{{item.orderQuantity}}</td>
               <td align="center">{{item.finalQuantity}}</td>
+
               <td align="center">{{item.orderQuantityPrice}}</td>
-              <td align="center">{{item.finalQuantity}}</td>
+              <td align="center">{{item.sumPrice}}</td>
               <td align="center"> </td>
             </tr>
           </tbody>
@@ -127,7 +128,7 @@
                 <th width="25%" align="left" style="font-weight: normal;">应付金额(不含退/换货):{{PrintData.amountPay}}</th>
               </tr>
               <tr>
-                <th width="25%" align="left" style="font-weight: normal;">备注说明:</th>
+                <th width="25%" align="left" style="font-weight: normal;height: 26px;">备注说明:</th>
                 <th width="25%"></th>
                 <th width="25%"></th>
                 <th width="25%"></th>
@@ -164,6 +165,27 @@ import {
 } from '@/api/distribution/salesDelivery.js'
 import Util from '@/utils'
 
+var beforePrint = function() {
+  console.log('Functionality to run before printing.小星星')
+}
+
+var afterPrint = function() {
+  console.log('Functionality to run after printing小学生')
+}
+
+if (window.matchMedia) {
+  var mediaQueryList = window.matchMedia('print')
+  mediaQueryList.addListener(function(mql) {
+    if (mql.matches) {
+      beforePrint()
+    } else {
+      afterPrint()
+    }
+  })
+}
+
+window.onbeforeprint = beforePrint
+window.onafterprint = afterPrint
 // import printOrder from '../component/print.js'
 
 export default {
