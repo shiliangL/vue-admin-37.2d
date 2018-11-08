@@ -60,11 +60,11 @@
               <el-table-column prop="availableQuantity" label="可用库存" align="center"></el-table-column>
               <el-table-column prop="safeStock" label="安全上限" align="center"></el-table-column>
               <el-table-column prop="safeStockFloor" label="安全下限" align="center"></el-table-column>
-              <!-- <el-table-column label="出入库明细" align="center">
+              <el-table-column label="出入库明细" align="center">
                 <template slot-scope="scope" align="center">
                   <el-button type="text" size="mini" @click.stop="clickToView(scope.$index,scope.row)">查看</el-button>
                 </template>
-              </el-table-column> -->
+              </el-table-column>
               <el-table-column label="操作" align="center" width="180">
                 <template slot-scope="scope" align="center">
                   <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">设置上下限</el-button>
@@ -113,8 +113,8 @@
 
 
     <!-- 弹层区域 -->
-    <el-dialog title="查看商品出/入库数量明细" class="dialogTitle" :visible.sync="dialogVisibleView" append-to-body center :fullscreen="true">
-      <Add v-if="dialogVisibleView" :propsSonData="propsParentData"></Add>
+    <el-dialog title="查看商品出/入库数量明细" class="dialogTitle" :visible.sync="dialogVisibleView" :fullscreen="true" :modal-append-to-body="false"  :close-on-press-escape="true">
+      <Add v-if="dialogVisibleView" :propsSonData="propsParentData" @close="dialogVisibleView = false"></Add>
     </el-dialog>
 
 	</div>
@@ -300,6 +300,7 @@ export default {
     },
     clickToView(index, item) {
       this.dialogVisibleView = true
+      this.propsParentData = item
     },
     clickSaveOrUpdate(formName) {
       if (this.form.safeStockFloor > this.form.safeStock) {

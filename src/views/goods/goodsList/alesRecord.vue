@@ -3,7 +3,7 @@
  	<el-form :model="form"  ref="form" label-width="120px" :inline="true">
 
     <div class="row-item">
-        <div class="row-title">基本信息</div>
+        <div class="row-title" style="margin-left: 10px;">基本信息</div>
         <div class="row-content basicInfo">
           <el-row>
 
@@ -29,12 +29,12 @@
         </div>
     </div>
 
-    <div class="row-item">
-      <div class="row-title">详细信息</div>
+    <div class="row-item" style="margin-top: -30px;">
       <div class="row-content">
         <el-row :gutter="30">
         
           <el-col :span="12">
+              <div class="row-title">采购单价历史记录</div>
               <search-bar :data="searchBarData" @search="searchAction" @reset="reset"></search-bar>
               <!-- 表格 -->
               <table-contain  :height.sync="table.maxHeight">
@@ -65,6 +65,7 @@
           </el-col>
 
           <el-col :span="12">
+              <div class="row-title">销售单价历史记录</div>
               <search-bar :data="searchBarDataH" @search="searchActionH" @reset="resetH"></search-bar>
               <!-- 表格 -->
               <table-contain  :height.sync="table.maxHeight">
