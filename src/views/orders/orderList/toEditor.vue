@@ -195,10 +195,12 @@
 				<div class="row-item">
 					<div class="row-title">商品信息</div>
 					<div class="row-content">
-
 						<div class="add-bar">
                 <el-form-item label="商品:" label-width="50px">
-                  <SearchBox style="width:180px" keyName="title" isGoods nameLabel="商品" codeLabel="类别" tableCode="categoryName" requestUrl="productInfo/listProductInfo" v-model="addGood.goodsDTO"></SearchBox>
+                  <SearchBox style="width:180px" keyName="title" isGoods 
+                   nameLabel="商品" codeLabel="类别" tableCode="categoryName" 
+                  :isRelativeUp="{ type: true, key: form.scmOrder?form.scmOrder.categoryId: null, keyName:'groupId' }"
+                  requestUrl="productInfo/listProductInfo" v-model="addGood.goodsDTO"></SearchBox>
                 </el-form-item>
                 <el-form-item label="规格:" label-width="50px">
                   <el-select size="small" v-model="addGood.sku" filterable placeholder="选择规格">
@@ -309,6 +311,7 @@ export default {
         },
         scmOrder: {
           pk: null,
+          categoryId: null,
           createdBy: null,
           createdOn: null,
           updatedBy: null,
@@ -525,35 +528,19 @@ export default {
     }
   },
   watch: {
-    customerDTO: {
-      handler(val) {
-        if (val) {
-          this.Addform.customerId = val.id
-          this.Addform.customerName = val.title
-          this.Addform.mobile = val.loginName
-          setTimeout(() => {
-            this.fetchCustomersAddress(val.id)
-          }, 400)
-        } else {
-          this.Addform.customerId = null
-          this.Addform.customerName = null
-          this.Addform.mobile = null
-          this.temAddress = []
-        }
-      }
-    },
     'addGood.goodsDTO': {
       handler(n, o) {
         if (n && o && n.id !== o.id) {
           this.addGood.sku = null
+          this.addGood.number = null
           this.skuOption = []
         }
+
         if (n) {
-          setTimeout(() => {
-            this.fetchSkuList(n.id)
-          }, 400)
+          this.skuOption = n.skuList || []
         } else {
           this.addGood.sku = null
+          this.addGood.number = null
           this.skuOption = []
         }
       }

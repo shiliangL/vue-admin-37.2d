@@ -22,6 +22,12 @@ export default {
         return false
       }
     },
+    categoryId: {
+      type: String,
+      default: () => {
+        return null
+      }
+    },
     // 是否是仓库入库
     PutInStorage: {
       type: Boolean,
@@ -41,6 +47,17 @@ export default {
       default: () => {
         return {
 
+        }
+      }
+    },
+    // 是否是关联加载
+    isRelativeUp: {
+      type: Object,
+      default: () => {
+        return {
+          type: false,
+          keyName: null,
+          key: null
         }
       }
     },

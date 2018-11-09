@@ -41,6 +41,9 @@ export default {
           if (this.isGoods) {
             datap.goodsStatus = 0
           }
+          if (this.isRelativeUp && this.isRelativeUp.type) {
+            datap[this.isRelativeUp.keyName] = this.isRelativeUp.key
+          }
           if (this.isCustomer) {
             datap.status = 3
             datap.userStatus = 1
@@ -76,10 +79,19 @@ export default {
       }
     },
     handleFocus() {
-      this.className = 'input-layout1'
-      this.tableVisiable = true
-      this.$emit('foucs')
-      this.fetchList()
+      if (this.isRelativeUp.type) {
+        if (this.isRelativeUp.key) {
+          this.className = 'input-layout1'
+          this.tableVisiable = true
+          this.$emit('foucs')
+          this.fetchList()
+        }
+      } else {
+        this.className = 'input-layout1'
+        this.tableVisiable = true
+        this.$emit('foucs')
+        this.fetchList()
+      }
     },
     handleBlur() {
       this.className = 'input-layout'

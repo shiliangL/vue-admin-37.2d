@@ -111,7 +111,10 @@
                 <div class="row-content">
                   <div class="add-bar">
                      <el-form-item label="商品:" label-width="50px">
-                        <SearchBox style="width:180px" keyName="title" isGoods nameLabel="商品" codeLabel="类别" tableCode="categoryName" requestUrl="productInfo/listProductInfo" v-model="addGood.goodsDTO"></SearchBox>
+                        <SearchBox style="width:180px" keyName="title" isGoods 
+                          nameLabel="商品" codeLabel="类别" tableCode="categoryName" 
+                          :isRelativeUp="{ type: true, key: customerDTO?customerDTO.categoryId: null, keyName:'groupId' }"
+                          requestUrl="productInfo/listProductInfo" v-model="addGood.goodsDTO"></SearchBox>
                      </el-form-item>
                       <el-form-item label="规格:" label-width="50px">
                         <el-select size="small" v-model="addGood.sku" filterable placeholder="选择规格">
@@ -123,7 +126,6 @@
                      </el-form-item>
                     <el-button  type="primary" size="small" @click.stop="clickToAdd" > 添加 </el-button>
                   </div>
-
                   <el-table :data="Addform.saleDtails" class="saleDtails" size="small" :max-height="500" style="width: 100%;" highlight-current-row>
                     <el-table-column label="序号" width="50" align="center">
                       <template slot-scope="scope"> <span>{{scope.$index + 1}}</span> </template>
@@ -215,6 +217,7 @@ export default {
   },
   data() {
     return {
+      isRelativeUp: { type: true, key: null },
       temAddress: [],
       dialogArry: [],
       customerDTO: null,
@@ -431,7 +434,8 @@ export default {
             'productPrice': item.productPrice,
             'remark': item.remark,
             'skuId': item.skuId,
-            'skuName': item.skuId,
+            'skuName': item.skuName,
+            'skuPrice': item.skuPrice,
             'sum': item.sum
           })
         }
@@ -511,7 +515,17 @@ export default {
   },
   watch: {
     customerDTO: {
-      handler(val) {
+      handler(val, oldVal) {
+        if (val && oldVal) {
+          if (val.title !== oldVal.title) {
+            this.Addform.saleDtails = []
+
+            this.addGood.goodsDTO = null
+            this.addGood.sku = null
+            this.addGood.number = null
+            this.skuOption = []
+          }
+        }
         if (val) {
           this.Addform.customerId = val.id
           this.Addform.customerName = val.title
@@ -524,6 +538,11 @@ export default {
           this.Addform.customerName = null
           this.Addform.mobile = null
           this.temAddress = []
+          // 客户清空的时候清空商品明细
+          this.Addform.saleDtails = []
+          this.addGood.sku = null
+          this.addGood.number = null
+          this.skuOption = []
         }
       }
     },
@@ -531,14 +550,15 @@ export default {
       handler(n, o) {
         if (n && o && n.id !== o.id) {
           this.addGood.sku = null
+          this.addGood.number = null
           this.skuOption = []
         }
+
         if (n) {
-          setTimeout(() => {
-            this.fetchSkuList(n.id)
-          }, 400)
+          this.skuOption = n.skuList || []
         } else {
           this.addGood.sku = null
+          this.addGood.number = null
           this.skuOption = []
         }
       }
@@ -548,11 +568,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-// .el-dialog__wrapper{
-//   transform: translateZ(0);
-//   min-height: 100%;
-//   min-height: 1200px;
-// }
 .content-box {
   width: 100%;
   position: relative;
