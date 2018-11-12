@@ -362,9 +362,7 @@ export default {
             this.$emit('update:isAllowToShow', true)
           }, 100)
         }
-        setTimeout(() => {
-          this.loading = false
-        }, 200)
+        setTimeout(() => { this.loading = false }, 200)
       }).catch(e => {
         this.loadingText = e.msg
       })

@@ -95,7 +95,8 @@ export default {
     }
   },
   mounted() {
-    this.fecthList()
+    // this.fecthList()
+    if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
   },
   methods: {
     showAdd() {
@@ -116,57 +117,41 @@ export default {
         size,
         ...item
       }
-      fetchList(data)
-        .then(({ data }) => {
-          this.table.data = data.rows
-          this.pagination.total = data.total
-        }).catch(e => {
-          this.$message({ type: 'error', message: '列表加载失败' })
-        })
+      fetchList(data).then(({ data }) => {
+        this.table.data = data.rows
+        this.pagination.total = data.total
+      }).catch(e => {
+        this.$message({ type: 'error', message: '列表加载失败' })
+      })
     },
     reset() {
-      this.fecthList()
-    },
-    refrehList() {
-      this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     // 分页操作区域
     handleSizeChange(value) {
       this.pagination.size = value
-      this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     handleCurrentChange(value) {
       this.pagination.index = value
-      this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     fecthList() {
-      const { index, size } = this.pagination
-      const data = {
-        index,
-        size
-      }
-      fetchList(data)
-        .then(({ data }) => {
-          this.table.data = data.rows
-          this.pagination.total = data.total
-        }).catch(e => {
-          this.$message({ type: 'error', message: '列表加载失败' })
-        })
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     clickToEdit(index, item) {
       if (!item.id) return
-      detail({ id: item.id })
-        .then(({ data }) => {
-          this.form.remark = data.remark
-          this.form.title = data.title
-          this.form.id = data.pk
+      detail({ id: item.id }).then(({ data }) => {
+        this.form.remark = data.remark
+        this.form.title = data.title
+        this.form.id = data.pk
 
-          this.dialogTitle = '编辑'
-          this.isEdit = true
-          this.dialogVisible = true
-        }).catch(() => {
-          this.$message({ type: 'error', message: '加载失败' })
-        })
+        this.dialogTitle = '编辑'
+        this.isEdit = true
+        this.dialogVisible = true
+      }).catch(() => {
+        this.$message({ type: 'error', message: '加载失败' })
+      })
     },
     clickToDelete(index, item) {
       this.$confirm('是否需要删除数据?', '提示', {
@@ -203,10 +188,7 @@ export default {
               this.$message({ type: 'error', message: e.msg })
             })
           } else {
-            create({
-              remark: this.form.remark,
-              title: this.form.title
-            }).then(res => {
+            create({ remark: this.form.remark, title: this.form.title }).then(res => {
               this.dialogVisible = false
               this.$message({ type: 'success', message: `${res.msg}!` })
               this.fecthList()
