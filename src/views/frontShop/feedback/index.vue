@@ -1,7 +1,7 @@
 <!--问题反馈 -->
 <template>
     <div class="feedback">
-			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"  @add="showAdd"></search-bar>
+			<search-bar ref="searchBar" :data="searchBarDate" @search="searchAction" @reset="reset"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -52,7 +52,7 @@
 
       <!-- 弹层区域 -->
       <el-dialog :title="dialogTitle" class="dialogTitle" width="720px" :visible.sync="dialogVisible" append-to-body center @close="resetForm">
-          <Add v-if="dialogVisible" @close="resetForm" @add="fecthList" :propsSonData="propsParentData"></Add>
+          <Add v-if="dialogVisible" @close="resetForm" :propsSonData="propsParentData"></Add>
       </el-dialog>
       
     </div>
@@ -94,27 +94,12 @@ export default {
     }
   },
   mounted() {
-    this.fecthList()
+    // this.fecthList()
+    if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
   },
   methods: {
     reset() {
-      this.fecthList()
-    },
-    // 数据请求
-    fecthList() {
-      const { index, size } = this.pagination
-      const data = {
-        index,
-        size
-      }
-      fetchList(data).then(({ data }) => {
-        if (Array.isArray(data.rows)) {
-          this.table.data = data.rows
-        }
-        this.pagination.total = data.total
-      }).catch(e => {
-        this.$message({ type: 'error', message: e.msg })
-      })
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     searchAction(item) {
       const { index, size } = this.pagination
@@ -135,11 +120,11 @@ export default {
     // 分页操作区域
     handleSizeChange(value) {
       this.pagination.size = value
-      this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     handleCurrentChange(value) {
       this.pagination.index = value
-      this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     // 弹层操作
     clickToEditor(index, row) {
@@ -149,21 +134,9 @@ export default {
       this.propsParentData.isUpdate = true
       this.propsParentData.data = row
     },
-    showAdd() {
-      this.dialogTitle = '新增客户经理'
-      this.propsParentData.type = 'add'
-      this.propsParentData.isUpdate = false
-      this.dialogVisible = true
-    },
-    refrehList() {
-      this.fecthList()
-    },
-    tabsCallBack(item) {
-      this.fecthList()
-    },
     resetForm() {
       this.dialogVisible = false
-      this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     }
   }
 }

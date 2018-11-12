@@ -53,7 +53,7 @@
 									</el-form-item>
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="配送番薯:">
+									<el-form-item label="配送方式:">
                       <span v-cloak> 厨满满专供 </span>
 									</el-form-item>
 								</el-col>

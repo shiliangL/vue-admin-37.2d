@@ -126,10 +126,9 @@ export default {
       }
     }
   },
-  created() {
-  },
   mounted() {
-    this.fecthList()
+    // this.fecthList()
+    if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
   },
   filters: {
     // <!-- status;//状态  0 待发货  1 待收货  2 退换货  3 已完成  4已取消 5 已关闭  6 待付款 -->
@@ -156,8 +155,6 @@ export default {
   },
   methods: {
     searchAction(params) {
-      console.log(params)
-
       const { index, size } = this.pagination
       const data = {
         index,
@@ -197,11 +194,11 @@ export default {
     // 分页操作区域
     handleSizeChange(value) {
       this.pagination.size = value
-      this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     handleCurrentChange(value) {
       this.pagination.index = value
-      this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     click2miss(index, item) {
       this.$confirm('是否确定取消订单?', '提示', {
@@ -229,7 +226,7 @@ export default {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, title: '新增销售订单' }})
     },
     refrehList() {
-      this.fecthList()
+      this.resetSearchBar()
     },
     tabsCallBack(item) {
       this.curIndex = item.value
@@ -238,18 +235,18 @@ export default {
       })
     },
     resetSearchBar() {
-      this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
-    exportFile() {
+    exportFile(item) {
       let url = 'cmm/scmSalesOrder/exportFile?'
       const data = {
         status: this.curIndex,
-        ...this.paramsData
+        ...item
       }
       for (const key in data) {
         if (data.hasOwnProperty(key)) {
           const element = data[key]
-          if (element) {
+          if (element || element === 0) {
             url += `${key}=${element}&`
           }
         }

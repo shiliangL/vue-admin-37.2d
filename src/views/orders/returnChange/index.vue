@@ -101,11 +101,9 @@ export default {
       }
     }
   },
-  created() {
-
-  },
   mounted() {
-    this.fecthList()
+    // this.fecthList()
+    if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
   },
   methods: {
     searchAction(params) {
@@ -144,11 +142,11 @@ export default {
     // 分页操作区域
     handleSizeChange(value) {
       this.pagination.size = value
-      this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     handleCurrentChange(value) {
       this.pagination.index = value
-      this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     // 弹层操作
     click2view(index, row) {
@@ -159,25 +157,14 @@ export default {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'follow', obj: row }})
     },
     refrehList() {
-      const { index, size } = this.pagination
-      const data = {
-        index,
-        size,
-        method: this.curIndex
-      }
-      orderList(data).then(({ data }) => {
-        this.table.data = data.rows
-        this.pagination.total = data.total
-      }).catch(e => {
-        this.$message({ type: 'error', message: e.msg })
-      })
+      this.resetSearchBar()
     },
     tabsCallBack(item) {
       this.curIndex = item.value
-      this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     resetSearchBar() {
-      this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     exportFile(params) {
       let url = 'cmm/scmsaleRreturnsgoods/exportFile?'
@@ -188,7 +175,7 @@ export default {
       for (const key in data) {
         if (data.hasOwnProperty(key)) {
           const element = data[key]
-          if (element) {
+          if (element || element === 0) {
             url += `${key}=${element}&`
           }
         }

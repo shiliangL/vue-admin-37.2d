@@ -26,10 +26,9 @@
 
         </el-card>
         <div class="copyright">
-          <p> Copyright © www.chumanduo.com, All Rights Reserved 2018110818:53:45</p>
+          <p> Copyright © www.chumanduo.com, All Rights Reserved 2018110809</p>
         </div>
       </div>
-    
     </div>
   </div>
 </template>

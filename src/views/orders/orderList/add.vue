@@ -539,6 +539,7 @@ export default {
           this.Addform.mobile = null
           this.temAddress = []
           // 客户清空的时候清空商品明细
+          this.addGood.goodsDTO = null
           this.Addform.saleDtails = []
           this.addGood.sku = null
           this.addGood.number = null
