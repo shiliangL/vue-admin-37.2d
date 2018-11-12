@@ -375,9 +375,9 @@ export default {
     totalOrderQuantityPrice() {
       let sum = 0
       for (const item of 	this.form.saleDtails) {
-        sum += parseInt(item.orderQuantityPrice)
+        sum += (item.orderQuantityPrice * 1)
       }
-      return sum
+      return sum.toFixed(2)
     },
     unpaidAmount() {
       if (!this.form.paidAmount) {
