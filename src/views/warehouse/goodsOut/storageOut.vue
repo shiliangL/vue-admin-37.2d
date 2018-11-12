@@ -2,7 +2,7 @@
 <template>
     <div class="goodsOut">
 
-			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthOutList"  @add="showAdd"></search-bar>
+			<search-bar ref="searchBar" :data="searchBarDate" @search="searchAction" @reset="refrehList"  @add="showAdd"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight" :key="curIndex">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -104,8 +104,8 @@ export default {
     ]
   },
   mounted() {
-    this.fecthOutList()
     this.fecthStockList()
+    if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
   },
   methods: {
     // 数据请求
@@ -151,11 +151,11 @@ export default {
     // 分页操作区域
     handleSizeChange(value) {
       this.pagination.size = value
-      this.fecthOutList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     handleCurrentChange(value) {
       this.pagination.index = value
-      this.fecthOutList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     clickMoreCommand(command) {
       this.$message({ type: 'success', message: command, duration: 0, showClose: true })
@@ -169,7 +169,7 @@ export default {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, title: '新增出库单信息' }})
     },
     refrehList() {
-      this.fecthOutList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     }
   }
 }

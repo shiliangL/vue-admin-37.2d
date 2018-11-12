@@ -1,7 +1,7 @@
 <!-- 入库记录 -->
 <template>
     <div class="storageRe">
-			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"></search-bar>
+			<search-bar ref="searchBar" :data="searchBarDate" @search="searchAction" @reset="reset"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight" :key="curIndex">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -87,8 +87,9 @@ export default {
     ]
   },
   mounted() {
-    this.fecthList()
+    // this.fecthList()
     this.fecthStockList()
+    if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
   },
   methods: {
     // 数据请求
@@ -152,11 +153,14 @@ export default {
     // 分页操作区域
     handleSizeChange(value) {
       this.pagination.size = value
-      this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     handleCurrentChange(value) {
       this.pagination.index = value
-      this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
+    },
+    reset() {
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     }
   }
 }

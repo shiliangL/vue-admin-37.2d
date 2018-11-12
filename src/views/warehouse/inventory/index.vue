@@ -6,7 +6,7 @@
 				<div class="mc-left">
 					<div class="searchTree">
 						<el-input style="width:180px" v-model.trim="searchTree" size="small" placeholder="输入商品分类检索"></el-input>
-						<el-button size="small" @click="searchTree=null"> 重置 </el-button>
+						<el-button size="small" @click="searchTreeReset"> 重置 </el-button>
 					</div>
 					<el-tree ref="tree"
 						class="mc-tree"
@@ -181,6 +181,10 @@ export default {
     this.fecthTableList()
   },
   methods: {
+    searchTreeReset() {
+      this.searchTree = null
+      this.fecthGoodsClass()
+    },
     fecthGoodsClass() {
       fecthGoodsClass().then(({ data }) => {
         if (Array.isArray(data) && data.length > 0) {

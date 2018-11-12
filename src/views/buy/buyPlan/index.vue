@@ -127,12 +127,14 @@ export default {
     ]
   },
   mounted() {
-    this.fecthList()
+    // this.fecthList()
+    if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
   },
   methods: {
     tabsCallBack(item) {
       this.curIndex = item.value
-      this.fecthList()
+      // this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     searchAction(params) {
       const { index, size } = this.pagination
@@ -159,10 +161,7 @@ export default {
             if (data.hasOwnProperty(key)) {
               const element = data[key]
               const title = key === 'yesterday' ? '昨日' : key === 'today' ? '今日' : '明日'
-              arr.push({
-                title,
-                ...element
-              })
+              arr.push({ title, ...element })
             }
           }
           this.TipsBarData = arr
@@ -190,11 +189,11 @@ export default {
     // 分页操作区域
     handleSizeChange(value) {
       this.pagination.size = value
-      this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     handleCurrentChange(value) {
       this.pagination.index = value
-      this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     // 弹层操作
     click2view(index, row) {
@@ -210,11 +209,10 @@ export default {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'check', obj: value, title: '销售订单采购计划' }})
     },
     refrehList() {
-      this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     resetSearchBar() {
-      this.curIndex = 0
-      this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     }
   }
 }

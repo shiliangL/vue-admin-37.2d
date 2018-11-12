@@ -2,7 +2,7 @@
 <template>
     <div class="workbench">
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
-			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"  @add="showAdd"></search-bar>
+			<search-bar ref="searchBar" :data="searchBarDate" @search="searchAction" @reset="fecthList"  @add="showAdd"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight" :key="curIndex">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -159,26 +159,13 @@ export default {
     ]
   },
   mounted() {
-    this.fecthList()
     this.fecthStockList()
+    if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
   },
   methods: {
     // 数据请求
     fecthList() {
-      const { index, size } = this.pagination
-      const data = {
-        index,
-        size,
-        type: this.curIndex
-      }
-      fecthList(data).then(({ data }) => {
-        if (Array.isArray(data.rows)) {
-          this.table.data = data.rows
-        }
-        this.pagination.total = data.total
-      }).catch(e => {
-        this.$message({ type: 'error', message: e.msg })
-      })
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     fecthStockList() {
       fecthStockList().then(({ data }) => {
@@ -240,7 +227,7 @@ export default {
     },
     tabsCallBack(item) {
       this.curIndex = item.value
-      this.fecthList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     resetForm() {
       this.isUpdate = false
