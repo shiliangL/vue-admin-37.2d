@@ -32,7 +32,7 @@
       </el-col>
       <el-col :span="18">
 
-      <search-bar :data="searchBarDate" @search="searchAction" @reset="reset"  @add="showAdd"></search-bar>
+      <search-bar ref="searchBar" :data="searchBarDate" @search="searchAction" @reset="reset"  @add="showAdd"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -242,11 +242,11 @@ export default {
     // 分页操作区域
     handleSizeChange(value) {
       this.pagination.size = value
-      this.fetchStaffList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     handleCurrentChange(value) {
       this.pagination.index = value
-      this.fetchStaffList()
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     // 弹层操作
     clickToEditor(index, row) {

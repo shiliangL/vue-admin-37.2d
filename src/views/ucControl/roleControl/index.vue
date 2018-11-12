@@ -1,7 +1,7 @@
 <!-- 角色管理 -->
 <template>
     <div class="roleControl">
-			<search-bar :data="searchBarDate" @search="searchAction" @reset="fetchList"  @add="showAdd"></search-bar>
+			<search-bar ref="searchBar" :data="searchBarDate" @search="searchAction" @reset="fetchList"  @add="showAdd"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -91,19 +91,7 @@ export default {
   methods: {
     // 数据请求
     fetchList() {
-      const { index, size } = this.pagination
-      const data = {
-        index,
-        size
-      }
-      fetchList(data).then(({ data }) => {
-        if (Array.isArray(data.rows)) {
-          this.table.data = data.rows
-        }
-        this.pagination.total = data.total
-      }).catch(e => {
-        this.$message({ type: 'error', message: e.msg })
-      })
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     searchAction(item) {
       const { index, size } = this.pagination
