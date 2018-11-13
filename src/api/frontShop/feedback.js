@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchList(params) {
   return request({
-    url: 'problemFeedback/page',
+    url: 'cmm/problemFeedback/page',
     method: 'get',
     params
   })
@@ -10,7 +10,7 @@ export function fetchList(params) {
 
 export function fetchDetail(params) {
   return request({
-    url: 'problemFeedback/confirmationRead',
+    url: 'cmm/problemFeedback/confirmationRead',
     method: 'get',
     params
   })

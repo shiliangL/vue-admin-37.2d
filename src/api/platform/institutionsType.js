@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchList(params) {
   return request({
-    url: 'orgType/list',
+    url: 'cmm/orgType/list',
     method: 'get',
     params
   })
@@ -10,7 +10,7 @@ export function fetchList(params) {
 
 export function fetchDetail(params) {
   return request({
-    url: 'orgType/getDetail',
+    url: 'cmm/orgType/getDetail',
     method: 'get',
     params
   })
@@ -18,7 +18,7 @@ export function fetchDetail(params) {
 
 export function deleteRow(params) {
   return request({
-    url: 'orgType/delete',
+    url: 'cmm/orgType/delete',
     method: 'delete',
     params
   })
@@ -26,7 +26,7 @@ export function deleteRow(params) {
 
 export function createRow(data) {
   return request({
-    url: 'orgType/create',
+    url: 'cmm/orgType/create',
     method: 'POST',
     data
   })
@@ -34,7 +34,7 @@ export function createRow(data) {
 
 export function updateRow(data) {
   return request({
-    url: 'orgType/update',
+    url: 'cmm/orgType/update',
     method: 'POST',
     data
   })

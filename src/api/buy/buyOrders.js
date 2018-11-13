@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fecthList(params) {
   return request({
-    url: 'purchaseOrderInfo/page',
+    url: 'cmm/purchaseOrderInfo/page',
     method: 'get',
     params
   })
@@ -10,7 +10,7 @@ export function fecthList(params) {
 // 详情
 export function Detail(params) {
   return request({
-    url: 'purchaseOrderInfo/getDetail',
+    url: 'cmm/purchaseOrderInfo/getDetail',
     method: 'get',
     params
   })
@@ -18,7 +18,7 @@ export function Detail(params) {
 // 详情tbale
 export function tableDetail(params) {
   return request({
-    url: 'purchaseOrderDetails/page',
+    url: 'cmm/purchaseOrderDetails/page',
     method: 'get',
     params
   })

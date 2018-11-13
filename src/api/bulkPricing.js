@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 加载列表
 export function fetchList(params) {
   return request({
-    url: 'productInfo/changePrice',
+    url: 'cmm/productInfo/changePrice',
     method: 'get',
     params
   })
@@ -11,7 +11,7 @@ export function fetchList(params) {
 
 export function updateRow(data) {
   return request({
-    url: 'productInfo/updatePrice',
+    url: 'cmm/productInfo/updatePrice',
     method: 'POST',
     data
   })
@@ -19,7 +19,7 @@ export function updateRow(data) {
 
 export function importPurchasePriceHistoryExcel(data) {
   return request({
-    url: 'productPurchasePriceHistory/importPurchasePriceHistoryExcel',
+    url: 'cmm/productPurchasePriceHistory/importPurchasePriceHistoryExcel',
     method: 'POST',
     data
   })

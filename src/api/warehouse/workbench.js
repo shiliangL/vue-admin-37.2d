@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 加载仓库列表
 export function fecthList(params) {
   return request({
-    url: 'workbench/page',
+    url: 'cmm/workbench/page',
     method: 'get',
     params
   })
@@ -12,7 +12,7 @@ export function fecthList(params) {
 // 仓库List
 export function fecthStockList(params) {
   return request({
-    url: 'stockInfo/list',
+    url: 'cmm/stockInfo/list',
     method: 'get',
     params
   })
@@ -20,7 +20,7 @@ export function fecthStockList(params) {
 
 export function create(data) {
   return request({
-    url: 'workbench/create',
+    url: 'cmm/workbench/create',
     method: 'post',
     data
   })
@@ -28,7 +28,7 @@ export function create(data) {
 
 export function deleteRow(params) {
   return request({
-    url: 'workbench/delete',
+    url: 'cmm/workbench/delete',
     method: 'delete',
     params
   })
@@ -36,7 +36,7 @@ export function deleteRow(params) {
 // 明细CK
 export function detailRow(params) {
   return request({
-    url: 'workbench/getDetail',
+    url: 'cmm/workbench/getDetail',
     method: 'get',
     params
   })
@@ -44,7 +44,7 @@ export function detailRow(params) {
 // 更新CK
 export function updateRow(data) {
   return request({
-    url: 'workbench/update',
+    url: 'cmm/workbench/update',
     method: 'POST',
     data
   })

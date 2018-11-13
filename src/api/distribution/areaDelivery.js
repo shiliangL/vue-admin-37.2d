@@ -2,28 +2,28 @@ import request from '@/utils/request'
 // 加载列表
 export function fetchList(params) {
   return request({
-    url: 'scmshipRegionInfo/list',
+    url: 'cmm/scmshipRegionInfo/list',
     method: 'get',
     params
   })
 }
 export function fetchAllList(params) {
   return request({
-    url: 'scmshipRegionInfo/listAll',
+    url: 'cmm/scmshipRegionInfo/listAll',
     method: 'get',
     params
   })
 }
 export function createRow(data) {
   return request({
-    url: 'scmshipRegionInfo/add',
+    url: 'cmm/scmshipRegionInfo/add',
     method: 'post',
     data
   })
 }
 export function deleteRow(params) {
   return request({
-    url: 'scmshipRegionInfo/delete',
+    url: 'cmm/scmshipRegionInfo/delete',
     method: 'delete',
     params
   })
@@ -31,7 +31,7 @@ export function deleteRow(params) {
 
 export function fetchDetail(params) {
   return request({
-    url: 'scmshipRegionInfo/detail',
+    url: 'cmm/scmshipRegionInfo/detail',
     method: 'get',
     params
   })
@@ -39,7 +39,7 @@ export function fetchDetail(params) {
 
 export function updateRow(data) {
   return request({
-    url: 'scmshipRegionInfo/update',
+    url: 'cmm/scmshipRegionInfo/update',
     method: 'PUT',
     data
   })
@@ -48,7 +48,7 @@ export function updateRow(data) {
 // 加载下拉选项
 export function fetchDriverList(params) {
   return request({
-    url: 'scmShipDriverinfo/list',
+    url: 'cmm/scmShipDriverinfo/list',
     method: 'get',
     params
   })
@@ -56,7 +56,7 @@ export function fetchDriverList(params) {
 
 export function fetchViewList(params) {
   return request({
-    url: 'customer/regionPage',
+    url: 'cmm/customer/regionPage',
     method: 'get',
     params
   })

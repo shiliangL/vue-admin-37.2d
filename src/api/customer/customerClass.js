@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 加载列表
 export function fetchList(params) {
   return request({
-    url: 'customer/list',
+    url: 'cmm/customer/list',
     method: 'get',
     params
   })
@@ -11,7 +11,7 @@ export function fetchList(params) {
 // 新增
 export function create(data) {
   return request({
-    url: 'customer/createCustomer',
+    url: 'cmm/customer/createCustomer',
     method: 'post',
     data
   })
@@ -19,7 +19,7 @@ export function create(data) {
 // 明细
 export function fecthDetail(params) {
   return request({
-    url: 'customer/getDetail',
+    url: 'cmm/customer/getDetail',
     method: 'get',
     params
   })
@@ -27,7 +27,7 @@ export function fecthDetail(params) {
 // 更新
 export function update(data) {
   return request({
-    url: 'customer/update',
+    url: 'cmm/customer/update',
     method: 'POST',
     data
   })
@@ -36,7 +36,7 @@ export function update(data) {
 // 加载下拉选项
 export function fetchOptions(params) {
   return request({
-    url: 'scmshipRegionInfo/listAll',
+    url: 'cmm/scmshipRegionInfo/listAll',
     method: 'get',
     params
   })
@@ -45,7 +45,7 @@ export function fetchOptions(params) {
 // 根据客户 id 加载地址
 export function fetchCustomersAddress(params) {
   return request({
-    url: 'customerShippingAddress/list',
+    url: 'cmm/customerShippingAddress/list',
     method: 'get',
     params
   })

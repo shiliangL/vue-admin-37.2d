@@ -2,7 +2,7 @@ import request from '@/utils/request'
 // 加载列表
 export function fetchList(params) {
   return request({
-    url: 'scmshipOrderInfo/list',
+    url: 'cmm/scmshipOrderInfo/list',
     method: 'get',
     params
   })
@@ -10,7 +10,7 @@ export function fetchList(params) {
 
 export function fetchDetail(params) {
   return request({
-    url: 'scmshipOrderInfo/detail',
+    url: 'cmm/scmshipOrderInfo/detail',
     method: 'get',
     params
   })
@@ -18,14 +18,14 @@ export function fetchDetail(params) {
 
 export function createRow(data) {
   return request({
-    url: 'scmshipOrderInfo/add',
+    url: 'cmm/scmshipOrderInfo/add',
     method: 'POST',
     data
   })
 }
 export function updateRow(data) {
   return request({
-    url: 'scmshipRegionInfo/update',
+    url: 'cmm/scmshipRegionInfo/update',
     method: 'PUT',
     data
   })
@@ -34,7 +34,7 @@ export function updateRow(data) {
 // 加载下拉选项
 export function fetchDriverList(params) {
   return request({
-    url: 'scmShipDriverinfo/list',
+    url: 'cmm/scmShipDriverinfo/list',
     method: 'get',
     params
   })
@@ -42,7 +42,7 @@ export function fetchDriverList(params) {
 
 export function fetchViewList(params) {
   return request({
-    url: 'customer/regionPage',
+    url: 'cmm/customer/regionPage',
     method: 'get',
     params
   })
@@ -51,7 +51,7 @@ export function fetchViewList(params) {
 // 加载仓库
 export function fecthStockList(params) {
   return request({
-    url: 'stockInfo/list',
+    url: 'cmm/stockInfo/list',
     method: 'get',
     params
   })
@@ -60,7 +60,7 @@ export function fecthStockList(params) {
 // 新增
 export function shipOrderAddList(params) {
   return request({
-    url: 'scmshipOrderInfo/shipOrderAddList',
+    url: 'cmm/scmshipOrderInfo/shipOrderAddList',
     method: 'get',
     params
   })
@@ -69,7 +69,7 @@ export function shipOrderAddList(params) {
 // 加载所有配送区域
 export function fecthListRegion(params) {
   return request({
-    url: 'scmshipRegionInfo/listRegion',
+    url: 'cmm/scmshipRegionInfo/listRegion',
     method: 'get',
     params
   })
@@ -77,14 +77,14 @@ export function fecthListRegion(params) {
 // 加载所有配员
 export function fecthListListDrive(params) {
   return request({
-    url: 'scmshipRegionInfo/listDrive',
+    url: 'cmm/scmshipRegionInfo/listDrive',
     method: 'get',
     params
   })
 }
 export function fecthPrint(params) {
   return request({
-    url: 'scmshipOrderInfo/detailNotPage',
+    url: 'cmm/scmshipOrderInfo/detailNotPage',
     method: 'get',
     params
   })

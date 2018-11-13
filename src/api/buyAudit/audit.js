@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fecthList(params) {
   return request({
-    url: 'purchaseOrderRequestProcess/pageProcess',
+    url: 'cmm/purchaseOrderRequestProcess/pageProcess',
     method: 'get',
     params
   })
@@ -10,7 +10,7 @@ export function fecthList(params) {
 // 新增
 export function save(data) {
   return request({
-    url: 'purchaseOrderRequest/save?sourceType=2',
+    url: 'cmm/purchaseOrderRequest/save?sourceType=2',
     method: 'post',
     data
   })
@@ -19,7 +19,7 @@ export function save(data) {
 // 详情H
 export function headerDetail(params) {
   return request({
-    url: 'purchaseOrderRequest/getDetail',
+    url: 'cmm/purchaseOrderRequest/getDetail',
     method: 'get',
     params
   })
@@ -27,7 +27,7 @@ export function headerDetail(params) {
 // 详情B
 export function bodyDetail(params) {
   return request({
-    url: 'purchaseOrderRequestDetails/checkList',
+    url: 'cmm/purchaseOrderRequestDetails/checkList',
     method: 'get',
     params
   })
@@ -35,7 +35,7 @@ export function bodyDetail(params) {
 // 申请采购计划
 export function applyCreate(data) {
   return request({
-    url: 'purchaseOrderRequestProcess/create',
+    url: 'cmm/purchaseOrderRequestProcess/create',
     method: 'POST',
     data
   })
@@ -44,7 +44,7 @@ export function applyCreate(data) {
 // 同意采购审核 --
 export function applyPassCreate(data) {
   return request({
-    url: 'purchaseOrderRequestProcess/create',
+    url: 'cmm/purchaseOrderRequestProcess/create',
     method: 'POST',
     data
   })
@@ -53,7 +53,7 @@ export function applyPassCreate(data) {
 // 采购清单
 export function purchaseList(params) {
   return request({
-    url: 'scmSalesOrder/productPurchase',
+    url: 'cmm/scmSalesOrder/productPurchase',
     method: 'get',
     params
   })
@@ -62,7 +62,7 @@ export function purchaseList(params) {
 // 采购审核
 export function saveList(data) {
   return request({
-    url: 'purchaseOrderRequest/save?sourceType=1',
+    url: 'cmm/purchaseOrderRequest/save?sourceType=1',
     method: 'post',
     data
   })

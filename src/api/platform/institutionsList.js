@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchTypeDropDown(params) {
   return request({
-    url: 'orgType/list4DropDown',
+    url: 'cmm/orgType/list4DropDown',
     method: 'get',
     params
   })
@@ -10,7 +10,7 @@ export function fetchTypeDropDown(params) {
 
 export function fetchList(params) {
   return request({
-    url: 'organization/list',
+    url: 'cmm/organization/list',
     method: 'get',
     params
   })
@@ -18,7 +18,7 @@ export function fetchList(params) {
 
 export function fetchDetail(params) {
   return request({
-    url: 'organization/getDetail',
+    url: 'cmm/organization/getDetail',
     method: 'get',
     params
   })
@@ -26,7 +26,7 @@ export function fetchDetail(params) {
 
 export function deleteRow(params) {
   return request({
-    url: 'organization/delete',
+    url: 'cmm/organization/delete',
     method: 'delete',
     params
   })
@@ -34,7 +34,7 @@ export function deleteRow(params) {
 
 export function createRow(data) {
   return request({
-    url: 'organization/create',
+    url: 'cmm/organization/create',
     method: 'POST',
     data
   })
@@ -42,14 +42,14 @@ export function createRow(data) {
 
 export function updateRow(data) {
   return request({
-    url: 'organization/update',
+    url: 'cmm/organization/update',
     method: 'POST',
     data
   })
 }
 export function updateApplication(data) {
   return request({
-    url: 'organization/commitUpdateApplication',
+    url: 'cmm/organization/commitUpdateApplication',
     method: 'POST',
     data
   })

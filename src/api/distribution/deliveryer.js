@@ -2,21 +2,21 @@ import request from '@/utils/request'
 // 加载列表
 export function fetchList(params) {
   return request({
-    url: 'scmShipDriverinfo/list',
+    url: 'cmm/scmShipDriverinfo/list',
     method: 'get',
     params
   })
 }
 export function createRow(data) {
   return request({
-    url: 'scmShipDriverinfo/add',
+    url: 'cmm/scmShipDriverinfo/add',
     method: 'post',
     data
   })
 }
 export function deleteRow(params) {
   return request({
-    url: 'scmShipDriverinfo/delete',
+    url: 'cmm/scmShipDriverinfo/delete',
     method: 'delete',
     params
   })
@@ -24,7 +24,7 @@ export function deleteRow(params) {
 
 export function fetchDetail(params) {
   return request({
-    url: 'scmShipDriverinfo/detail',
+    url: 'cmm/scmShipDriverinfo/detail',
     method: 'get',
     params
   })
@@ -32,14 +32,14 @@ export function fetchDetail(params) {
 
 export function updateRow(data) {
   return request({
-    url: 'scmShipDriverinfo/update',
+    url: 'cmm/scmShipDriverinfo/update',
     method: 'PUT',
     data
   })
 }
 export function resetPassword(data) {
   return request({
-    url: 'scmShipDriverinfo/resetPassword',
+    url: 'cmm/scmShipDriverinfo/resetPassword',
     method: 'PUT',
     data
   })
@@ -48,7 +48,7 @@ export function resetPassword(data) {
 // 加载下拉选项
 export function fetchDriverList(params) {
   return request({
-    url: 'scmShipDriverinfo/list',
+    url: 'cmm/scmShipDriverinfo/list',
     method: 'get',
     params
   })
@@ -56,7 +56,7 @@ export function fetchDriverList(params) {
 
 export function fetchViewList(params) {
   return request({
-    url: 'customer/regionPage',
+    url: 'cmm/customer/regionPage',
     method: 'get',
     params
   })

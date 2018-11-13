@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 加载列表
 export function packagingList(params) {
   return request({
-    url: 'productBrand/listProductBrand',
+    url: 'cmm/productBrand/listProductBrand',
     method: 'get',
     params
   })
@@ -11,7 +11,7 @@ export function packagingList(params) {
 // 新增
 export function createPackaging(data) {
   return request({
-    url: 'productBrand/createProductBrand',
+    url: 'cmm/productBrand/createProductBrand',
     method: 'post',
     data
   })
@@ -19,7 +19,7 @@ export function createPackaging(data) {
 // 删除
 export function deletePackaging(params) {
   return request({
-    url: 'productBrand/deleteProductBrand',
+    url: 'cmm/productBrand/deleteProductBrand',
     method: 'delete',
     params
   })
@@ -27,7 +27,7 @@ export function deletePackaging(params) {
 // 加载明细 by id
 export function packagingInfo(params) {
   return request({
-    url: 'productBrand/getProductBrand',
+    url: 'cmm/productBrand/getProductBrand',
     method: 'get',
     params
   })
@@ -35,7 +35,7 @@ export function packagingInfo(params) {
 // 更新包装单位 id
 export function packagingUpdate(data) {
   return request({
-    url: 'productBrand/updateProductBrand',
+    url: 'cmm/productBrand/updateProductBrand',
     method: 'PUT',
     data
   })

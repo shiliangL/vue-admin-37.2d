@@ -1,21 +1,21 @@
 import request from '@/utils/request'
 export function fetchList(params) {
   return request({
-    url: 'sortingScheduleInfo/page',
+    url: 'cmm/sortingScheduleInfo/page',
     method: 'get',
     params
   })
 }
 export function fetchDetail(params) {
   return request({
-    url: 'sortingScheduleInfo/getDetail',
+    url: 'cmm/sortingScheduleInfo/getDetail',
     method: 'get',
     params
   })
 }
 export function fetchTable(params) {
   return request({
-    url: 'sortingDetails/list',
+    url: 'cmm/sortingDetails/list',
     method: 'get',
     params
   })
@@ -23,7 +23,7 @@ export function fetchTable(params) {
 // 加载仓库
 export function fecthStockList(params) {
   return request({
-    url: 'stockInfo/list',
+    url: 'cmm/stockInfo/list',
     method: 'get',
     params
   })
@@ -32,7 +32,7 @@ export function fecthStockList(params) {
 // 工作台类型 type (1: QC验收台, 2: 入库台, 3: 出库台, 4: 分拣台, 5: 打包台)
 export function fecthWorkbench(params) {
   return request({
-    url: 'workbench/querySelect',
+    url: 'cmm/workbench/querySelect',
     method: 'get',
     params
   })

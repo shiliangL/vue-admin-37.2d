@@ -4,7 +4,7 @@ import request from '@/utils/request'
 // 加载列表
 export function fecthList(params) {
   return request({
-    url: 'stockInInfo/page',
+    url: 'cmm/stockInInfo/page',
     method: 'get',
     params
   })
@@ -12,7 +12,7 @@ export function fecthList(params) {
 // 明细
 export function detailRk(params) {
   return request({
-    url: 'stockInInfo/getDetail',
+    url: 'cmm/stockInInfo/getDetail',
     method: 'get',
     params
   })
@@ -21,7 +21,7 @@ export function detailRk(params) {
 // 新增仓位
 export function createRk(data) {
   return request({
-    url: 'stockInInfo/create',
+    url: 'cmm/stockInInfo/create',
     method: 'post',
     data
   })
@@ -29,7 +29,7 @@ export function createRk(data) {
 // 入库单-------------
 export function fecthListInfo(params) {
   return request({
-    url: 'stockInDetails/page',
+    url: 'cmm/stockInDetails/page',
     method: 'get',
     params
   })
@@ -38,7 +38,7 @@ export function fecthListInfo(params) {
 // 采购收货传递仓库 id stockId
 export function findMore(params) {
   return request({
-    url: 'purchaseAcceptInfo/list',
+    url: 'cmm/purchaseAcceptInfo/list',
     method: 'get',
     params
   })
@@ -46,7 +46,7 @@ export function findMore(params) {
 // 销售/退货入库
 export function returnChangeList(params) {
   return request({
-    url: 'scmsaleRreturnsgoods/findByMethod',
+    url: 'cmm/scmsaleRreturnsgoods/findByMethod',
     method: 'get',
     params
   })
@@ -55,7 +55,7 @@ export function returnChangeList(params) {
 // 加载仓库
 export function fecthStockList(params) {
   return request({
-    url: 'stockInfo/list',
+    url: 'cmm/stockInfo/list',
     method: 'get',
     params
   })
@@ -64,7 +64,7 @@ export function fecthStockList(params) {
 // 加载明细表体
 export function fecthBodyDetail(params) {
   return request({
-    url: 'stockInDetails/list',
+    url: 'cmm/stockInDetails/list',
     method: 'get',
     params
   })

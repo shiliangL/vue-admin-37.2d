@@ -3,14 +3,14 @@ import request from '@/utils/request'
 // 加载仓库列表
 export function fecthList(params) {
   return request({
-    url: 'stockInfo/list',
+    url: 'cmm/stockInfo/list',
     method: 'get',
     params
   })
 }
 export function fecthCKDetail(params) {
   return request({
-    url: 'stockInfo/getDetail',
+    url: 'cmm/stockInfo/getDetail',
     method: 'get',
     params
   })
@@ -18,7 +18,7 @@ export function fecthCKDetail(params) {
 // 加载仓位列表
 export function fecthTableList(params) {
   return request({
-    url: 'stockStorageInfo/page',
+    url: 'cmm/stockStorageInfo/page',
     method: 'get',
     params
   })
@@ -26,7 +26,7 @@ export function fecthTableList(params) {
 // 仓库类别List
 export function stockCategory(params) {
   return request({
-    url: 'stockCategory/listAll',
+    url: 'cmm/stockCategory/listAll',
     method: 'get',
     params
   })
@@ -34,7 +34,7 @@ export function stockCategory(params) {
 // 仓库List
 export function fetchStock(params) {
   return request({
-    url: 'stockInfo/list',
+    url: 'cmm/stockInfo/list',
     method: 'get',
     params
   })
@@ -42,7 +42,7 @@ export function fetchStock(params) {
 // 新增仓库
 export function createCK(data) {
   return request({
-    url: 'stockInfo/create',
+    url: 'cmm/stockInfo/create',
     method: 'post',
     data
   })
@@ -50,7 +50,7 @@ export function createCK(data) {
 // 新增仓位
 export function createCW(data) {
   return request({
-    url: 'stockStorageInfo/create',
+    url: 'cmm/stockStorageInfo/create',
     method: 'post',
     data
   })
@@ -59,7 +59,7 @@ export function createCW(data) {
 // 删除CK
 export function deleteCK(params) {
   return request({
-    url: 'stockInfo/delete',
+    url: 'cmm/stockInfo/delete',
     method: 'delete',
     params
   })
@@ -67,7 +67,7 @@ export function deleteCK(params) {
 // 删除CW
 export function deleteCW(params) {
   return request({
-    url: 'stockStorageInfo/delete',
+    url: 'cmm/stockStorageInfo/delete',
     method: 'delete',
     params
   })
@@ -75,7 +75,7 @@ export function deleteCW(params) {
 // 明细CK
 // export function detailCK(params) {
 //   return request({
-//     url: 'customerCategory/detail',
+//     url: 'cmm/customerCategory/detail',
 //     method: 'get',
 //     params
 //   })
@@ -83,7 +83,7 @@ export function deleteCW(params) {
 // 明细CW
 export function detailCW(params) {
   return request({
-    url: 'stockStorageInfo/getDetail',
+    url: 'cmm/stockStorageInfo/getDetail',
     method: 'get',
     params
   })
@@ -91,7 +91,7 @@ export function detailCW(params) {
 // 更新CK
 export function updateCK(data) {
   return request({
-    url: 'stockInfo/update',
+    url: 'cmm/stockInfo/update',
     method: 'POST',
     data
   })
@@ -99,7 +99,7 @@ export function updateCK(data) {
 // 更新CW
 export function updateCW(data) {
   return request({
-    url: 'stockStorageInfo/update',
+    url: 'cmm/stockStorageInfo/update',
     method: 'POST',
     data
   })
@@ -109,21 +109,21 @@ export function updateCW(data) {
 // 新增-仓库类别
 export function createType(data) {
   return request({
-    url: 'stockCategory/create',
+    url: 'cmm/stockCategory/create',
     method: 'post',
     data
   })
 }
 export function deleteType(params) {
   return request({
-    url: 'stockCategory/delete',
+    url: 'cmm/stockCategory/delete',
     method: 'delete',
     params
   })
 }
 export function updateType(data) {
   return request({
-    url: 'stockCategory/update',
+    url: 'cmm/stockCategory/update',
     method: 'POST',
     data
   })
@@ -131,7 +131,7 @@ export function updateType(data) {
 // 明细CW
 export function detailType(params) {
   return request({
-    url: 'stockCategory/getDetail',
+    url: 'cmm/stockCategory/getDetail',
     method: 'get',
     params
   })
@@ -141,7 +141,7 @@ export function detailType(params) {
 // 根据类别加载 仓库
 export function fecthStockByType(params) {
   return request({
-    url: 'stockInfo/listByCategoryId',
+    url: 'cmm/stockInfo/listByCategoryId',
     method: 'get',
     params
   })
@@ -149,7 +149,7 @@ export function fecthStockByType(params) {
 // 获取所有仓位
 export function fecthAllCW(params) {
   return request({
-    url: 'stockInfo/getStockMap',
+    url: 'cmm/stockInfo/getStockMap',
     method: 'get',
     params
   })

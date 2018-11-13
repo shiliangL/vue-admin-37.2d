@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 获取今天昨天明天数据
 export function fecthTipsBar(params) {
   return request({
-    url: 'scmSalesOrder/getCountData',
+    url: 'cmm/scmSalesOrder/getCountData',
     method: 'get',
     params
   })
@@ -11,14 +11,14 @@ export function fecthTipsBar(params) {
 
 export function fecthList(params) {
   return request({
-    url: 'purchaseOrderRequest/page',
+    url: 'cmm/purchaseOrderRequest/page',
     method: 'get',
     params
   })
 }
 export function fecthTree(params) {
   return request({
-    url: 'supplier/listSupplierTree',
+    url: 'cmm/supplier/listSupplierTree',
     method: 'get',
     params
   })
@@ -26,7 +26,7 @@ export function fecthTree(params) {
 // 新增
 export function save(data) {
   return request({
-    url: 'purchaseOrderRequest/save?sourceType=2',
+    url: 'cmm/purchaseOrderRequest/save?sourceType=2',
     method: 'post',
     data
   })
@@ -34,7 +34,7 @@ export function save(data) {
 // 详情H
 export function headerDetail(params) {
   return request({
-    url: 'purchaseOrderRequest/getDetail',
+    url: 'cmm/purchaseOrderRequest/getDetail',
     method: 'get',
     params
   })
@@ -42,7 +42,7 @@ export function headerDetail(params) {
 // 详情B
 export function bodyDetail(params) {
   return request({
-    url: 'purchaseOrderRequestDetails/checkList',
+    url: 'cmm/purchaseOrderRequestDetails/checkList',
     method: 'get',
     params
   })
@@ -50,7 +50,7 @@ export function bodyDetail(params) {
 // 申请采购计划
 export function applyCreate(data) {
   return request({
-    url: 'purchaseOrderRequestProcess/create',
+    url: 'cmm/purchaseOrderRequestProcess/create',
     method: 'POST',
     data
   })
@@ -58,7 +58,7 @@ export function applyCreate(data) {
 // 采购清单
 export function purchaseList(params) {
   return request({
-    url: 'scmSalesOrder/productPurchase',
+    url: 'cmm/scmSalesOrder/productPurchase',
     method: 'get',
     params
   })
@@ -67,7 +67,7 @@ export function purchaseList(params) {
 // 采购审核
 export function saveList(data) {
   return request({
-    url: 'purchaseOrderRequest/save?sourceType=1',
+    url: 'cmm/purchaseOrderRequest/save?sourceType=1',
     method: 'post',
     data
   })
@@ -75,7 +75,7 @@ export function saveList(data) {
 // 采购审核
 export function undateTableRow(data) {
   return request({
-    url: 'purchaseOrderRequestDetails/updateRequestDetailsApplyQuantity',
+    url: 'cmm/purchaseOrderRequestDetails/updateRequestDetailsApplyQuantity',
     method: 'post',
     data
   })

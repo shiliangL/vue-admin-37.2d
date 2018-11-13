@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 加载列表 -- 出库----------------
 export function fecthOutList(params) {
   return request({
-    url: 'stockOutRecords/page',
+    url: 'cmm/stockOutRecords/page',
     method: 'get',
     params
   })
@@ -11,7 +11,7 @@ export function fecthOutList(params) {
 
 export function fecthOutRe(params) {
   return request({
-    url: 'stockOutDetails/page',
+    url: 'cmm/stockOutDetails/page',
     method: 'get',
     params
   })
@@ -19,7 +19,7 @@ export function fecthOutRe(params) {
 // 明细
 export function fecthOutDetail(params) {
   return request({
-    url: 'stockOutRecords/getDetail',
+    url: 'cmm/stockOutRecords/getDetail',
     method: 'get',
     params
   })
@@ -27,7 +27,7 @@ export function fecthOutDetail(params) {
 // 加载列表 -- 出库----------------
 export function fecthOutTableDetail(params) {
   return request({
-    url: 'stockOutDetails/list',
+    url: 'cmm/stockOutDetails/list',
     method: 'get',
     params
   })
@@ -35,28 +35,28 @@ export function fecthOutTableDetail(params) {
 
 export function fecthOutReList(params) {
   return request({
-    url: 'stockOutDetails/page',
+    url: 'cmm/stockOutDetails/page',
     method: 'get',
     params
   })
 }
 export function fetchDetail(params) {
   return request({
-    url: 'stockOutRecords/getDetail',
+    url: 'cmm/stockOutRecords/getDetail',
     method: 'get',
     params
   })
 }
 export function fetchTableDetail(params) {
   return request({
-    url: 'stockOutDetails/page',
+    url: 'cmm/stockOutDetails/page',
     method: 'get',
     params
   })
 }
 export function createRow(data) {
   return request({
-    url: 'stockOutRecords/create',
+    url: 'cmm/stockOutRecords/create',
     method: 'POST',
     data
   })
@@ -65,14 +65,14 @@ export function createRow(data) {
 //  addList  stockId deliveryTime
 export function addProductList(params) {
   return request({
-    url: 'stockOutRecords/queryOutProductList',
+    url: 'cmm/stockOutRecords/queryOutProductList',
     method: 'get',
     params
   })
 }
 export function addReturnList(params) {
   return request({
-    url: 'stockOutRecords/queryOutProductReturnList',
+    url: 'cmm/stockOutRecords/queryOutProductReturnList',
     method: 'get',
     params
   })
@@ -81,7 +81,7 @@ export function addReturnList(params) {
 // 加载仓库 公共
 export function fecthStockList(params) {
   return request({
-    url: 'stockInfo/list',
+    url: 'cmm/stockInfo/list',
     method: 'get',
     params
   })
@@ -90,7 +90,7 @@ export function fecthStockList(params) {
 // 工作台类型(1: QC验收台, 2: 入库台, 3: 出库台, 4: 分拣台, 5: 打包台)
 export function fecthWorkBench(params) {
   return request({
-    url: 'workbench/querySelect',
+    url: 'cmm/workbench/querySelect',
     method: 'get',
     params
   })
@@ -99,7 +99,7 @@ export function fecthWorkBench(params) {
 // 帐号类型(0:普通管理员 1:配送人员 2:采购员 3:仓管员 4:分拣员 5:打包员 6:供应链主管 7:客户经理)
 export function fecthWorkbenchUser(params) {
   return request({
-    url: 'workbenchUser/querySelect',
+    url: 'cmm/workbenchUser/querySelect',
     method: 'get',
     params
   })

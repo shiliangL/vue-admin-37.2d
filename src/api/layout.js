@@ -8,7 +8,7 @@ export function loginByUsername(username, password) {
     'username': 'admin01'
   }
   return request({
-    url: 'operator/login',
+    url: 'cmm/operator/login',
     method: 'post',
     data
   })
@@ -16,14 +16,14 @@ export function loginByUsername(username, password) {
 
 export function logout() {
   return request({
-    url: 'operator/logout',
+    url: 'cmm/operator/logout',
     method: 'post'
   })
 }
 
 export function changePassword(data) {
   return request({
-    url: 'operator/alterPassword',
+    url: 'cmm/operator/alterPassword',
     method: 'post',
     data
   })
@@ -32,7 +32,7 @@ export function changePassword(data) {
 // 获取权限菜单列表
 export function fetchMenuList(params) {
   return request({
-    url: 'resource/list4CurrentOperator',
+    url: 'cmm/resource/list4CurrentOperator',
     method: 'get',
     params
   })
@@ -41,7 +41,7 @@ export function fetchMenuList(params) {
 // 获取权七牛 token
 export function fetchToken(params) {
   return request({
-    url: 'oss/upToken',
+    url: 'cmm/oss/upToken',
     method: 'get',
     params
   })

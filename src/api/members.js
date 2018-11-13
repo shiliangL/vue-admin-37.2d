@@ -13,35 +13,35 @@ import request from '@/utils/request'
 // 9: 客服人员
 export function fetchList(params) {
   return request({
-    url: 'workbenchUser/page',
+    url: 'cmm/workbenchUser/page',
     method: 'get',
     params
   })
 }
 export function fetchDetail(params) {
   return request({
-    url: 'workbenchUser/getDetail',
+    url: 'cmm/workbenchUser/getDetail',
     method: 'get',
     params
   })
 }
 export function createRow(data) {
   return request({
-    url: 'workbenchUser/create',
+    url: 'cmm/workbenchUser/create',
     method: 'post',
     data
   })
 }
 export function updateRow(data) {
   return request({
-    url: 'workbenchUser/update',
+    url: 'cmm/workbenchUser/update',
     method: 'POST',
     data
   })
 }
 export function resetKey(id) {
   return request({
-    url: 'operator/resetPassword?id=' + `${id}`,
+    url: 'cmm/operator/resetPassword?id=' + `${id}`,
     method: 'POST'
   })
 }
@@ -56,7 +56,7 @@ export function resetKey(id) {
 // 7: 客户经理
 export function fecthMemberSelect(params) {
   return request({
-    url: 'workbenchUser/querySelect',
+    url: 'cmm/workbenchUser/querySelect',
     method: 'get',
     params
   })
