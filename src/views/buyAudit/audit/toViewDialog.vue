@@ -86,7 +86,7 @@ export default {
       },
       searchBarOptons: {
         type: [
-          { label: '供应商直供', value: 2, disabled: true },
+          // { label: '供应商直供', value: 2, disabled: true },
           { label: '市场自采购', value: 1 }
         ],
         salerList: [],
@@ -95,9 +95,6 @@ export default {
       },
       rules: {
         validNumberR2: (rule, value, callback) => {
-          if (!value) {
-            return callback(new Error('请输入'))
-          }
           var reg = /^([0-9][\d]{0,5})(\.[\d]{1,2})?$/
           if (!reg.test(value)) {
             return callback(new Error('请输入有效数字'))
@@ -147,7 +144,7 @@ export default {
     }
   },
   mounted() {
-    this.fecthTree()
+    // this.fecthTree()
     this.fecthSalerList()
   },
   methods: {

@@ -19,6 +19,7 @@ export default {
         loading: false, // 确定按钮状态
         text: '确定' // 按钮默认文字
       },
+      currentTitle: null,
       saveLoading: false,
       loading: true,
       loadingText: null

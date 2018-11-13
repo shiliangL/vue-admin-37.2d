@@ -86,7 +86,7 @@ export default {
       },
       searchBarOptons: {
         type: [
-          { label: '供应商直供', value: 2, disabled: true },
+          // { label: '供应商直供', value: 2, disabled: true },
           { label: '市场自采购', value: 1 }
         ],
         salerList: [],
@@ -163,7 +163,7 @@ export default {
     }
   },
   mounted() {
-    this.fecthTree()
+    // this.fecthTree()
     this.fecthSalerList()
   },
   computed: {
