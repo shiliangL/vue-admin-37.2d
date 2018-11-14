@@ -10,7 +10,7 @@
 				<!-- 输入 -->
 				<el-input size="small" style="width:180px"  v-model.trim="form.title" placeholder="不能超过5位数" maxlength="5"></el-input>
 				<!-- 日期 -->
-      			<el-date-picker :style="{width:'140px'}" size="small" v-model="value" value-format="yyyy-MM-dd" type="date" :placeholder="item.placeholder"></el-date-picker>
+      	<el-date-picker :style="{width:'140px'}" size="small" v-model="value" value-format="yyyy-MM-dd" type="date" :placeholder="item.placeholder"></el-date-picker>
 				<!-- 分页 -->
 				<div class="footer-block">
 					<span class="page" v-cloak> 共 {{tableOne.length}} 条</span>

@@ -17,3 +17,11 @@ export function fetchBase(url, params, method = 'get') {
     params
   })
 }
+
+export function fetchTreeByLevel(params) {
+  return request({
+    url: 'cmm/cnArea/getTreeByLeve',
+    method: 'get',
+    params
+  })
+}

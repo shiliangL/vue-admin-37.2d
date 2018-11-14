@@ -7,152 +7,190 @@
         <div class="header-bar" slot="title">
            <div class="left"> {{currentTitle}} </div>
            <div class="right">
-              <el-button type="text" size="mini" @click.stop="onRefresh">刷新</el-button>
+              <el-button type="text" v-if="data.type === 'view'" size="mini" @click.stop="onRefresh">刷新</el-button>
+              <el-button type="text" v-if="data.type === 'editor'" :loading="saveLoading" size="mini" @click.stop="submitUpdateForm('form')">更新</el-button>
+              <el-button type="text" v-if="data.type === 'add'" :loading="saveLoading" size="mini" @click.stop="submitForm('form')">保存</el-button>
               <el-button type="text" size="mini" @click.stop="dialog.visiable = false">返回</el-button>
             </div>
         </div>
         <div class="content-bar">
-          <template>
-            <el-form :model="form" ref="form" class="viewForm" label-width="130px" :inline="true">
+          <el-form v-if="data.type === 'check'" :model="form" ref="form" class="viewForm" label-width="130px" :inline="true">
 
-              <div class="row-item">
-                <div class="row-title">基本信息</div>
-                <div class="row-content">
+            <div class="row-item">
+              <div class="row-title">基本信息</div>
+              <div class="row-content">
+                <el-row>
+                  <el-col :sm="10" :md="8" :lg="8">
+                    <el-form-item label="供应商账号:" prop="loginName" :rules="rules.input" v-if="data.type === 'add'">
+                      <el-input v-if="isUpdate" size="small" maxlength="11" style="width:160px" :disabled="data.type === 'editor'" v-model.trim="form.loginName" placeholder="名称/手机"></el-input>
+                      <span v-else v-cloak>{{form.loginName}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :sm="10" :md="8" :lg="8">
+                    <el-form-item label="供应商名称:" prop="staffName" :rules="rules.input">
+                      <el-input v-if="isUpdate" size="small" style="width:160px"  v-model.trim="form.staffName" placeholder=""></el-input>
+                      <span v-else v-cloak>{{form.staffName}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :sm="10" :md="8" :lg="8">
+                    <el-form-item label="别名:">
+                      <el-input v-if="isUpdate" size="small" style="width:160px"  v-model.trim="form.aliasTitle" placeholder=""></el-input>
+                      <span v-else v-cloak>{{form.aliasTitle}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :sm="10" :md="8" :lg="8">
+                    <el-form-item label="简称:">
+                      <el-input v-if="isUpdate" size="small" style="width:160px"  v-model.trim="form.shortTitle" placeholder=""></el-input>
+                      <span v-else v-cloak>{{form.shortTitle}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :sm="10" :md="8" :lg="8">
+                    <el-form-item label="联系人:" prop="contacts" :rules="rules.input">
+                      <el-input v-if="isUpdate" size="small" style="width:160px"  v-model.trim="form.contacts" placeholder=""></el-input>
+                      <span v-else v-cloak>{{form.contacts}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :sm="10" :md="8" :lg="8">
+                    <el-form-item label="联系人电话:" prop="mobile" :rules="rules.input">
+                      <el-input v-if="isUpdate" size="small" style="width:160px"  v-model.trim="form.mobile" placeholder=""></el-input>
+                      <span v-else v-cloak>{{form.mobile}}</span>
+                    </el-form-item>
+                  </el-col>                   
+                </el-row>
                   <el-row>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="供应商账号:">
-                        <span v-cloak>{{form.orderNo}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="供应商名称:">
-                        <span v-cloak>{{form.orderDate}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="别名:">
-                        <span v-cloak>{{form.customerTitle}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="简称:">
-                        <span v-cloak>{{form.loginName}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="联系人:">
-                         
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="联系人电话:">
-                        
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="地址:">
-                          <span v-cloak>{{form.sendDate}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="简要说明:">
-                          
-                      </el-form-item>
-                    </el-col>
+                    <el-col :span="24">
+                      <el-form-item label="地址:" prop="addressArrt" :rules="rules.input">
+
+                      <AddressSelect width="130px" :ids="idsArr" v-if="isUpdate" @change="selectAddress"/>
+                      <el-input v-if="isUpdate" size="small" style="width:160px;display:none"  v-model.trim="form.addressArrt" placeholder=""></el-input>
+
+                      <el-input  v-if="isUpdate" 
+                        type="textarea"
+                        :autosize="{ minRows: 2, maxRows: 4}" 
+                        placeholder="不能超30位数" maxlength="30"
+                        size="small" style="width:400px" v-model.trim="form.address"></el-input>
+
+                      <span v-else v-cloak> {{form.provinceName}} {{form.cityName}}  {{form.areaName}} {{form.address}}</span>
+                    </el-form-item>
                     
+                    </el-col>
                   </el-row>
-                </div>
-              </div>
 
-              <div class="row-item">
-                <div class="row-title">资金账户信息</div>
-                <div class="row-content">
                   <el-row>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="开户银行:">
-                        <span v-cloak>{{form.contactsName}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="银行卡号:">
-                        <span v-cloak>{{form.mobile}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="应付金额:" label-width="130px">
-                        <span v-if="form.receiverFlag===0"> 当面签收 </span>
-                        <span v-if="form.receiverFlag===1"> 拍照签收 </span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="应收金额:">
-                        <span v-if="form.receiverFlag===1"> 拍照签收 </span>
-                      </el-form-item>
+                    <el-col :span="24">
+                      <el-form-item label="简要说明:">
+                      <el-input size="small" v-if="isUpdate" 
+                      type="textarea"
+                      :autosize="{ minRows: 2, maxRows: 3}" 
+                      v-model.trim="form.summary" 
+                      style="width:400px" placeholder="不能超30位数" maxlength="30"></el-input>
+                      <span v-else v-cloak>{{form.summary}}</span>
+                    </el-form-item>
                     </el-col>
                   </el-row>
-                </div>
               </div>
+            </div>
 
-              <div class="row-item">
-                <div class="row-title">工商信息</div>
-                <div class="row-content">
-                  <el-row>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="工商注册名:">
-                        <span v-cloak>{{form.contactsName}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="法人:">
-                        <span v-cloak>{{form.mobile}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="税号:" label-width="130px">
-                        <span v-if="form.receiverFlag===0"> 当面签收 </span>
-                        <span v-if="form.receiverFlag===1"> 拍照签收 </span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="注册地址:">
-                        <span v-if="form.receiverFlag===1"> 拍照签收 </span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="营业执照号:">
-                        <span v-if="form.receiverFlag===1"> 拍照签收 </span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="营业执照图:">
-                        <span v-if="form.receiverFlag===1"> 拍照签收 </span>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                </div>
+            <div class="row-item">
+              <div class="row-title">资金账户信息</div>
+              <div class="row-content">
+                <el-row>
+                  <el-col :sm="10" :md="8" :lg="8">
+                    <el-form-item label="开户银行:" prop="companyBank" :rules="rules.input">
+                      <el-input v-if="isUpdate" size="small" style="width:160px"  v-model.trim="form.companyBank" placeholder=""></el-input>
+                      <span v-else v-cloak>{{form.companyBank}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :sm="10" :md="8" :lg="8">
+                    <el-form-item label="银行卡号:" prop="bankNo" :rules="rules.input">
+                      <el-input v-if="isUpdate" size="small" style="width:160px"  v-model.trim="form.bankNo" placeholder=""></el-input>
+                      <span v-else v-cloak>{{form.bankNo}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :sm="10" :md="8" :lg="8">
+                    <el-form-item label="应付金额:" label-width="130px">
+                      <span>{{form.mustGather}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :sm="10" :md="8" :lg="8">
+                    <el-form-item label="应收金额:">
+                      <span>{{form.payGather}}</span>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
               </div>
+            </div>
 
-              <div class="row-item">
-                <div class="row-title">账号状态设置</div>
-                <div class="row-content">
-                  <el-row>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="">
-                        <!-- <span v-if="!isAddView"> 
-                          <span v-if="form.patUser.status===1"> 启用 </span>
-                          <span v-else> 禁用 </span>
-                        </span>
-                        <el-radio v-else v-model="form.patUser.status" :label="item.label" v-for="item in accountOption" :key="item.label">
-                          <span v-cloak> {{item.text}} </span>
-                        </el-radio> -->
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                </div>
+            <div class="row-item">
+              <div class="row-title">工商信息</div>
+              <div class="row-content">
+                <el-row>
+                  <el-col :sm="10" :md="8" :lg="8">
+                    <el-form-item label="工商注册名:">
+                      <el-input v-if="isUpdate" size="small" style="width:160px"  v-model.trim="form.companyName" placeholder=""></el-input>
+                      <span v-else v-cloak>{{form.companyName}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :sm="10" :md="8" :lg="8">
+                    <el-form-item label="法人:">
+                      <el-input v-if="isUpdate" size="small" style="width:160px"  v-model.trim="form.legalPerson" placeholder=""></el-input>
+                      <span v-else v-cloak>{{form.legalPerson}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :sm="10" :md="8" :lg="8">
+                    <el-form-item label="税号:" label-width="130px">
+                      <el-input v-if="isUpdate" size="small" style="width:160px"  v-model.trim="form.creditCode" placeholder=""></el-input>
+                      <span v-else v-cloak>{{form.creditCode}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :sm="10" :md="8" :lg="8">
+                    <el-form-item label="注册地址:">
+                      <el-input v-if="isUpdate" size="small" style="width:160px"  v-model.trim="form.companyAddress" placeholder=""></el-input>
+                      <span v-else v-cloak>{{form.companyAddress}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :sm="10" :md="8" :lg="8">
+                    <el-form-item label="营业执照号:">
+                      <el-input v-if="isUpdate" size="small" style="width:160px"  v-model.trim="form.licenseNumber" placeholder=""></el-input>
+                      <span v-else v-cloak>{{form.licenseNumber}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :sm="10" :md="8" :lg="8">
+                    <el-form-item label="营业执照图:">
+                      <el-input v-if="isUpdate" size="small" style="width:160px"  v-model.trim="form.businessLicensePicUrl" placeholder=""></el-input>
+                      <span v-else v-cloak>{{form.businessLicensePicUrl}}</span>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
               </div>
- 
-            </el-form>
-          </template>
+            </div>
+
+            <div class="row-item">
+              <div class="row-title">账号状态设置</div>
+              <div class="row-content">
+                <el-row>
+                  <el-col :sm="10" :md="8" :lg="8">
+                    <el-form-item label="账号状态:">
+
+                      <span v-if="!isUpdate"> 
+                        <el-tag v-cloak size="mini" v-if="form.status ===1"> 启用 </el-tag>
+                        <el-tag size="mini" type="danger" v-cloak v-if="form.status===0"> 禁用 </el-tag>
+                      </span>
+
+                      <el-radio v-else v-model="form.status" :label="item.label" v-for="item in statusOption" :key="item.label">
+                        <span v-cloak> {{item.text}} </span>
+                      </el-radio>
+
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+            </div>
+
+          </el-form>
+          <div v-else>
+            <h3>测试</h3>
+          </div>
         </div>
       </div>
 
@@ -162,58 +200,61 @@
 
 <script>
 import addModel from '@/public/addModel.js'
-import { fetchDetail } from '@/api/distribution/salesDelivery.js'
+import rules from '@/public/rules.js'
+import { fecthDetail, createRow, updateRow } from '@/api/buy/supplier.js'
+import { AddressSelect } from '@/components/base.js'
+
 export default {
-  mixins: [addModel],
+  mixins: [addModel, rules],
   components: {
+    AddressSelect
   },
   data() {
     return {
       form: {
-        'id': null,
-        'orderId': null,
-        'orderNo': null,
-        'orderDate': null,
-        'customerId': null,
-        'customerTitle': null,
-        'loginName': null,
-        'orderSource': null,
-        'paymentType': null,
-        'beginTime': null,
-        'endTime': null,
-        'sendDate': null,
-        'serialNumber': null,
-        'driverId': null,
-        'driverName': null,
-        'factTime': null,
-        'contactsName': null,
-        'phone': null,
-        'status': null,
-        'mobile': null,
         'address': null,
-        'receiver': null,
-        'receiverFlag': null,
-        'photos': null,
-        'type': null
-      }
+        'addressArrt': null, // 验证
+        'aliasTitle': null,
+        'areaId': null,
+        'bankNo': null,
+        'businessLicensePicUrl': null,
+        'cityId': null,
+        'companyAddress': null,
+        'companyBank': null,
+        'companyName': null,
+        'contacts': null,
+        'creditCode': null,
+        'legalPerson': null,
+        'licenseNumber': null,
+        'loginName': null,
+        'mobile': null,
+        'provinceId': null,
+        'shortTitle': null,
+        'staffName': null,
+        'status': 1,
+        'summary': null,
+        'telphone': null,
+        'payGather': 0,
+        'mustGather': 0
+      },
+      idsArr: []
     }
   },
   created() {
-    const title = this.data.type === 'view' ? '查看' : '跟踪'
-    this.$setKeyValue(this.dialog, { title: title, visiable: true })
+    this.$setKeyValue(this.dialog, { visiable: true })
+    this.statusOption = [
+      { label: 1, text: '启用' },
+      { label: 0, text: '禁用' }
+    ]
   },
   mounted() {
+    console.log(this.data.type === 'check')
     this.currentTitle = this.data.title || ''
-    if (this.data.type === 'view') {
+    this.isUpdate = this.data.type === 'add' || this.data.type === 'editor'
+    if (this.data.type === 'view' || this.data.type === 'editor') {
       this.fetchDetail()
     } else {
-      this.fecthStockList()
-      this.fecthRegionList()
-      const date = new Date()
-      const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)
-      const day = date.getDate() + 1 > 9 ? date.getDate() : '0' + date.getDate()
-      const ymd = date.getFullYear() + '-' + month + '-' + day
-      this.today = ymd
+      console.log('x')
     }
   },
   methods: {
@@ -221,19 +262,18 @@ export default {
       this.$emit('input', false)
     },
     fetchDetail() {
-      if (!this.data.obj.id) return
-      const { index, size } = this.pagination
+      if (!this.data.obj.operatorId) return
       const data = {
-        index,
-        size,
-        type: this.data.obj.type,
-        id: this.data.obj.id
+        operatorId: this.data.obj.operatorId
       }
-      fetchDetail(data).then(({ data }) => {
-        if (!data) return
+      fecthDetail(data).then(({ data }) => {
         this.form = Object.assign(this.form, data)
-        this.table.data = data.saleDtails.rows
-        this.pagination.total = data.saleDtails.total
+        this.form.addressArrt = '编辑'
+        this.idsArr = [
+          { id: this.form.provinceId, title: this.form.provinceName },
+          { id: this.form.cityId, title: this.form.cityName },
+          { id: this.form.areaId, title: this.form.areaName }
+        ]
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
@@ -242,6 +282,69 @@ export default {
       if (this.data.type === 'view') {
         this.fetchDetail()
       }
+    },
+    selectAddress(item) {
+      if (item) {
+        if (item.province && item.city && item.area) {
+          this.form.addressArrt = `${item.province.title}/${item.city.title}/${item.area.title}`
+          this.form.provinceId = item.province.id
+          this.form.cityId = item.city.id
+          this.form.areaId = item.area.id
+        }
+      } else {
+        this.form.addressArrt = null
+      }
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid && !this.saveLoading) {
+          this.saveLoading = true
+          const data = JSON.parse(JSON.stringify(this.form))
+          delete data.addressArrt
+          delete data.payGather
+          delete data.mustGather
+          createRow(data).then(res => {
+            this.$emit('add')
+            this.closeDialog()
+            this.$message({ type: 'success', message: `${res.msg}!` })
+          }).catch(e => {
+            this.saveLoading = false
+            this.$message({ type: 'error', message: e.msg })
+          })
+        } else {
+          this.saveLoading = false
+          this.$message({ type: 'warning', message: '请核实表单' })
+          return
+        }
+      })
+    },
+    submitUpdateForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid && !this.saveLoading) {
+          this.saveLoading = true
+          const data = JSON.parse(JSON.stringify(this.form))
+          delete data.addressArrt
+          delete data.payGather
+          delete data.mustGather
+          delete data.loginName
+          delete data.provinceName
+          delete data.cityName
+          delete data.areaName
+
+          updateRow(data).then(res => {
+            this.$emit('add')
+            this.closeDialog()
+            this.$message({ type: 'success', message: `${res.msg}!` })
+          }).catch(e => {
+            this.saveLoading = false
+            this.$message({ type: 'error', message: e.msg })
+          })
+        } else {
+          this.saveLoading = false
+          this.$message({ type: 'warning', message: '请核实表单' })
+          return
+        }
+      })
     }
   }
 }
@@ -308,6 +411,10 @@ export default {
     p{
       margin: 5px 0;
     }
+  }
+
+  .el-form-item{
+    margin-bottom: 18px;
   }
  
 </style>

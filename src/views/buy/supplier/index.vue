@@ -5,7 +5,7 @@
 			<search-bar :data="searchBarDate" @search="searchAction" @add="showAdd" ref="searchBar" @reset="fetchList"></search-bar>
 
       <table-contain  :height.sync="table.maxHeight">
-        <el-table :data="table.data = [{}]" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
+        <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
 
           <el-table-column label="序号" width="50" align="center">
             <template slot-scope="scope">
@@ -13,19 +13,19 @@
             </template>
           </el-table-column>
  
-					<el-table-column prop="serialNumber" label="供应商账号" align="center"></el-table-column>
-					<el-table-column prop="serialNumber" label="供应商名称" align="center"></el-table-column>
-					<el-table-column prop="serialNumber" label="联系人" align="center"></el-table-column>
-					<el-table-column prop="serialNumber" label="联系电话" align="center"></el-table-column>
-					<el-table-column prop="serialNumber" label="应付供应商金额" align="center"></el-table-column>
-					<el-table-column prop="serialNumber" label="应收供应商金额" align="center"></el-table-column>
-					<el-table-column prop="serialNumber" label="采购订单" align="center">
+					<el-table-column prop="loginName" label="供应商账号" align="center"></el-table-column>
+					<el-table-column prop="staffName" label="供应商名称" align="center"></el-table-column>
+					<el-table-column prop="contacts" label="联系人" align="center"></el-table-column>
+					<el-table-column prop="mobile" label="联系电话" align="center"></el-table-column>
+					<el-table-column prop="mustGather" label="应付供应商金额" align="center"></el-table-column>
+					<el-table-column prop="payGather" label="应收供应商金额" align="center"></el-table-column>
+					<el-table-column label="采购订单" align="center">
 						<template slot-scope="scope" align="center">
-              <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">查看</el-button>
+              <el-button type="text" size="mini" @click.stop="clickToCheck(scope.$index,scope.row)">查看</el-button>
             </template>
 					</el-table-column>
-					<el-table-column prop="serialNumber" label="创建时间" align="center" width="90"></el-table-column>
-					<el-table-column prop="serialNumber" label="账号状态" align="center">
+					<el-table-column prop="createTime" label="创建时间" align="center" width="90"></el-table-column>
+					<el-table-column label="账号状态" align="center">
 						<template slot-scope="scope" align="center">
               <el-tag v-cloak size="mini" v-if="scope.row.status ===1"> 启用 </el-tag>
               <el-tag size="mini" type="danger" v-cloak v-if="scope.row.status===0"> 禁用 </el-tag>
@@ -64,7 +64,7 @@
 import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs, SearchBar } from '@/components/base.js'
-import { fetchList } from '@/api/distribution/salesDelivery.js'
+import { fetchList } from '@/api/buy/supplier.js'
 
 export default {
   name: 'supplier',
@@ -92,14 +92,14 @@ export default {
           {
             type: 'input',
             value: null,
-            key: 'orderNoOrCumstorName',
+            key: 'inputContent',
             class: 'w180',
             placeholder: '输入供应商账号/名称'
           },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
-        [{ type: 'add', name: '新增配送派单' }]
+        [{ type: 'add', name: '新增' }]
       ]
     }
   },
@@ -136,13 +136,17 @@ export default {
       if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     // 弹层操作
-    clickToEditor(index, row, type) {
+    clickToEditor(index, row) {
       // 点击查看
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '编辑供应商信息' }})
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'editor', obj: row, title: '编辑供应商信息' }})
     },
-    clickToView(index, row, type) {
+    clickToView(index, row) {
       // 点击查看
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '查看供应商信息' }})
+    },
+    clickToCheck(index, row) {
+      // 点击查看
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'check', obj: row, title: '查看供应商关联采购订单' }})
     },
     showAdd() {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, title: '新增供应商' }})
