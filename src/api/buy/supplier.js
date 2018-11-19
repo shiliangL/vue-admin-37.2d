@@ -39,3 +39,27 @@ export function deleteRow(data) {
     data
   })
 }
+
+// 供应商关联采购单
+export function fetchPurchaseOrderInfo(params) {
+  return request({
+    url: 'cmm/purchaseOrderInfo/page',
+    method: 'get',
+    params
+  })
+}
+// 供应商关联采购单详情
+export function fetchPurchaseOrderHeaderInfoDetail(params) {
+  return request({
+    url: 'cmm/purchaseOrderInfo/getDetail',
+    method: 'get',
+    params
+  })
+}
+export function fetchPurchaseOrderTableInfoDetail(params) {
+  return request({
+    url: 'cmm/purchaseOrderDetails/page',
+    method: 'get',
+    params
+  })
+}

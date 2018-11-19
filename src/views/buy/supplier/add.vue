@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="content-bar">
-          <el-form v-if="data.type === 'check'" :model="form" ref="form" class="viewForm" label-width="130px" :inline="true">
+          <el-form v-if="data.type !== 'check'" :model="form" ref="form" class="viewForm" label-width="130px" :inline="true">
 
             <div class="row-item">
               <div class="row-title">基本信息</div>
@@ -52,7 +52,7 @@
                   </el-col>
                   <el-col :sm="10" :md="8" :lg="8">
                     <el-form-item label="联系人电话:" prop="mobile" :rules="rules.input">
-                      <el-input v-if="isUpdate" size="small" style="width:160px"  v-model.trim="form.mobile" placeholder=""></el-input>
+                      <el-input v-if="isUpdate" size="small" style="width:160px" maxlength="11"  v-model.trim="form.mobile" placeholder=""></el-input>
                       <span v-else v-cloak>{{form.mobile}}</span>
                     </el-form-item>
                   </el-col>                   
@@ -60,15 +60,14 @@
                   <el-row>
                     <el-col :span="24">
                       <el-form-item label="地址:" prop="addressArrt" :rules="rules.input">
-
                       <AddressSelect width="130px" :ids="idsArr" v-if="isUpdate" @change="selectAddress"/>
                       <el-input v-if="isUpdate" size="small" style="width:160px;display:none"  v-model.trim="form.addressArrt" placeholder=""></el-input>
 
-                      <el-input  v-if="isUpdate" 
+                      <!-- <el-input  v-if="isUpdate" 
                         type="textarea"
                         :autosize="{ minRows: 2, maxRows: 4}" 
                         placeholder="不能超30位数" maxlength="30"
-                        size="small" style="width:400px" v-model.trim="form.address"></el-input>
+                        size="small" style="width:400px" v-model.trim="form.address"></el-input> -->
 
                       <span v-else v-cloak> {{form.provinceName}} {{form.cityName}}  {{form.areaName}} {{form.address}}</span>
                     </el-form-item>
@@ -189,7 +188,93 @@
 
           </el-form>
           <div v-else>
-            <h3>测试</h3>
+            <div class="buyOrders">
+
+              <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
+
+              <div class="search-bar">
+                <div class="left">
+                  <el-date-picker :style="{width:'140px'}" 
+                    size="small"
+                    v-model="searchBarData.createTime" 
+                    value-format="yyyy-MM-dd" 
+                    type="date" placeholder="订单创建时间">
+                    </el-date-picker>
+                </div>
+
+                <div class="left">
+                  <CascaderBox v-model="CascaderBoxDTO"></CascaderBox>
+                </div>
+
+                <div class="left">
+                  <el-input style="width:180px" v-model="searchBarData.orderNo" size="small" @keyup.enter.native="fecthList" placeholder="输入商品名称检索"></el-input>
+                </div>
+
+                <div class="left">
+                    <el-button  type="primary" size="small" @click.stop="fecthList" > 搜索 </el-button>
+                </div>
+
+                <div class="left">
+                    <el-button size="small" @click.stop="reset" > 重置 </el-button>
+                </div>
+
+                <div class="right">
+                  <div class="left">
+                    <!-- <el-button size="small"> 导出Excel </el-button> -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- 表格 -->
+              <table-contain  :height.sync="table.maxHeight">
+                <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
+
+                  <el-table-column label="序号" width="50" align="center">
+                    <template slot-scope="scope">
+                      <span>{{scope.$index + 1}}</span>
+                    </template>
+                  </el-table-column>
+        
+                  <el-table-column prop="orderNo" label="采购订单编号" align="center"></el-table-column>
+                  <el-table-column prop="createdOn" label="采购订单创建时间" align="center"></el-table-column>
+                  <el-table-column prop="personnelName" label="采购员" align="center"></el-table-column>
+                  <el-table-column prop="auditStatus" label="采购订单状态" align="center">
+                    <template slot-scope="scope" align="center">
+                      <span v-cloak> {{scope.row.procurementStatus | filterStatus }} </span>
+                    </template>
+                  </el-table-column>
+        
+                  <el-table-column label="操作" align="center" width="180">
+                    <template slot-scope="scope" align="center">
+                      <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">查看</el-button>
+                    </template>
+                  </el-table-column>
+                </el-table>
+                
+                <el-pagination
+                  slot="footer"
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                  :current-page="pagination.page"
+                  :page-sizes="pagination.pageSizes"
+                  :page-size="pagination.size"
+                  layout="total, sizes, prev, pager, next, jumper"
+                  :total="pagination.total">
+                </el-pagination>
+
+              </table-contain>
+
+              <!-- 弹层 -->
+              <el-dialog title="供应商相关采购订单详情" 
+                :visible.sync="dialogVisible" 
+                append-to-body center  
+                :fullscreen="true" 
+                :modal-append-to-body="false"  
+                :close-on-press-escape="true">
+                <AddDetail v-if="dialogVisible" :propsSonData="propsParentData"> </AddDetail>
+              </el-dialog>
+
+            </div>
           </div>
         </div>
       </div>
@@ -200,15 +285,15 @@
 
 <script>
 import addModel from '@/public/addModel.js'
+import model from '@/public/listModel.js'
 import rules from '@/public/rules.js'
-import { fecthDetail, createRow, updateRow } from '@/api/buy/supplier.js'
-import { AddressSelect } from '@/components/base.js'
+import { fecthDetail, createRow, updateRow, fetchPurchaseOrderInfo } from '@/api/buy/supplier.js'
+import { AddressSelect, Tabs, CascaderBox } from '@/components/base.js'
+import AddDetail from './AddDetail'
 
 export default {
-  mixins: [addModel, rules],
-  components: {
-    AddressSelect
-  },
+  mixins: [addModel, rules, model],
+  components: { AddressSelect, Tabs, CascaderBox, AddDetail },
   data() {
     return {
       form: {
@@ -237,7 +322,16 @@ export default {
         'payGather': 0,
         'mustGather': 0
       },
-      idsArr: []
+      idsArr: [],
+      curIndex: 0,
+      CascaderBoxDTO: null,
+      TipsBarData: [],
+      searchBarData: {
+        createTime: null,
+        orderNo: null,
+        purchaseType: null,
+        personnelId: null
+      }
     }
   },
   created() {
@@ -246,15 +340,42 @@ export default {
       { label: 1, text: '启用' },
       { label: 0, text: '禁用' }
     ]
+    if (this.data.type === 'check') {
+      this.tabTitles = [
+        { title: '全部', value: null },
+        { title: '待采购', value: 1 },
+        { title: '采购中', value: 2 },
+        { title: '已采购', value: 3 }
+      // { title: '已收货', value: 4 }
+      ]
+    }
   },
   mounted() {
-    console.log(this.data.type === 'check')
     this.currentTitle = this.data.title || ''
     this.isUpdate = this.data.type === 'add' || this.data.type === 'editor'
     if (this.data.type === 'view' || this.data.type === 'editor') {
       this.fetchDetail()
-    } else {
-      console.log('x')
+    }
+    if (this.data.type === 'check') {
+      this.fecthList()
+    }
+  },
+  filters: {
+    filterStatus(status) {
+      switch (status) {
+        case 0:
+          return '全部'
+        case 1:
+          return '待采购'
+        case 2:
+          return '采购中'
+        case 3:
+          return '已采购'
+        // case 4:
+        //   return '已入库'
+        default:
+          return ''
+      }
     }
   },
   methods: {
@@ -272,7 +393,8 @@ export default {
         this.idsArr = [
           { id: this.form.provinceId, title: this.form.provinceName },
           { id: this.form.cityId, title: this.form.cityName },
-          { id: this.form.areaId, title: this.form.areaName }
+          { id: this.form.areaId, title: this.form.areaName },
+          this.form.address
         ]
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
@@ -285,11 +407,12 @@ export default {
     },
     selectAddress(item) {
       if (item) {
-        if (item.province && item.city && item.area) {
+        if (item.province && item.city && item.area && item.address) {
           this.form.addressArrt = `${item.province.title}/${item.city.title}/${item.area.title}`
           this.form.provinceId = item.province.id
           this.form.cityId = item.city.id
           this.form.areaId = item.area.id
+          this.form.address = item.address
         }
       } else {
         this.form.addressArrt = null
@@ -345,6 +468,56 @@ export default {
           return
         }
       })
+    },
+    // 查看供应商关联采购订单
+    fecthList() {
+      if (!this.data.obj.operatorId) return
+      if (this.CascaderBoxDTO) {
+        this.searchBarData.purchaseType = this.CascaderBoxDTO.purchaseType
+        this.searchBarData.personnelId = this.CascaderBoxDTO.supplyOrBuyerId
+      }
+      const { index, size } = this.pagination
+      const data = {
+        index,
+        size,
+        supplierInfoId: this.data.obj.operatorId,
+        procurementStatus: this.curIndex,
+        ...this.searchBarData
+      }
+      fetchPurchaseOrderInfo(data).then(({ data }) => {
+        this.table.data = data.rows
+        this.pagination.total = data.total
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
+    tabsCallBack(item) {
+      this.curIndex = item.value
+      this.fecthList()
+    },
+    // 分页操作区域
+    handleSizeChange(value) {
+      this.pagination.size = value
+      this.fecthList()
+    },
+    handleCurrentChange(value) {
+      this.pagination.index = value
+      this.fecthList()
+    },
+    reset() {
+      this.CascaderBoxDTO = null
+      this.searchBarData = {
+        createTime: null,
+        orderNo: null,
+        purchaseType: null,
+        personnelId: null
+      }
+      this.fecthList()
+    },
+    click2view(index, item) {
+      this.dialogVisible = true
+      item.operatorId = this.data.obj.operatorId
+      this.propsParentData = item
     }
   }
 }

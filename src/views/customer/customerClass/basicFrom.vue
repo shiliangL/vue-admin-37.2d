@@ -4,10 +4,10 @@
         <!--基本信息-->
 		    <div class="row-item">
 						<div class="row-title">账户基本信息</div>
-						<div class="row-content basicInfo">
+						<div class="row-content">
 					     <el-row>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="客户账号:" prop="mobile"  :rules="rules.input">
+									<el-form-item label="客户账号:" prop="mobile" :rules="[{trigger: 'change', required:true, validator: rules.validPhone}]">
 										<el-input v-if="isAddView" size="small" style="width:180px" class="w180"  placeholder="仅限中国大陆手机号" v-model.trim="form.mobile" maxlength="11"></el-input>
 										<span v-else v-cloak> {{ form.mobile }} </span>
 									</el-form-item>
@@ -19,18 +19,20 @@
 									</el-form-item>
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="联系人:" prop="dto.contacts"  :rules="rules.input">
-										<el-input v-if="isAddView" size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.dto.contacts" maxlength="11"></el-input>
-										<span v-else v-cloak> {{ form.dto.contacts }} </span>
+									<el-form-item label="联系人:" prop="contacts"  :rules="rules.input">
+										<el-input v-if="isAddView" size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.contacts" maxlength="11"></el-input>
+										<span v-else v-cloak> {{ form.contacts }} </span>
 									</el-form-item>
 								</el-col>
 
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="客户经理:" prop="staffId" :rules="rules.select">
-										
-										<el-select  v-if="isAddView" size="small" style="width:180px" v-model="form.staffId" placeholder="请选择" @change="selectManager" clearable filterable>
-											<el-option size="small" style="width:180px" v-for="item in options.managerOption" :key="item.staffId" :label="item.staffName" :value="item.staffId"> </el-option>
+
+										<el-select  v-if="isAddView" size="small" style="width:180px" v-model="managerDTO" placeholder="请选择" @change="selectManager" filterable value-key="staffId">
+											<el-option size="small" style="width:180px" v-for="item in options.managerOption" :key="item.staffId" :label="item.staffName" :value="item"> </el-option>
 										</el-select> 
+										<el-input v-if="isAddView" size="small" style="width:180px;display: none;" placeholder="验证使用" v-model.trim="form.staffId"></el-input>
+
 										<span v-else v-cloak> {{ form.managerName }} </span>
 
 									</el-form-item>
@@ -47,8 +49,7 @@
 
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="配送区域:" prop="regionId" :rules="rules.select">
-									<!-- regionId (string, optional): 区域Id ,
-									regionName (string, optional), -->
+									<!-- regionId (string, optional): 区域Id , regionName (string, optional), -->
 										<el-select v-if="isAddView" size="small" style="width:180px" v-model="form.regionId" placeholder="请选择" clearable filterable>
 											<el-option size="small" v-for="item in options.areaOption" :key="item.id" :label="item.title" :value="item.id"> </el-option>
 										</el-select> 
@@ -56,20 +57,10 @@
 									</el-form-item>
 								</el-col>
 
-								<!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
-									<el-form-item label="配送员:" prop="driverId" :rules="rules.select">
-										<el-select  v-if="isAddView"  size="small" style="width:180px" v-model="form.driverId" placeholder="请选择">
-											<el-option size="small" style="width:180px" v-for="item in options.driverOption" :key="item.driverId" :label="item.name" :value="item.driverId"> </el-option>
-										</el-select> 
-										<span v-else v-cloak> {{ form.driverName }} </span>
-									</el-form-item>
-								</el-col> -->
-
 
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="客户类别:" prop="categoryId" :rules="rules.select">
-										<!-- "categoryId": "string",
-										"categoryName": "string", -->
+										<!-- "categoryId": "string", "categoryName": "string", -->
 										<el-select v-if="isAddView" size="small" style="width:180px" v-model="form.categoryId" placeholder="请选择">
 											<el-option size="small" style="width:180px" v-for="item in options.categoryOption" :key="item.pk" :label="item.title" :value="item.pk"> </el-option>
 										</el-select> 
@@ -84,11 +75,22 @@
                       <img :src="form.patUser.portraitId" alt="">
                     </div>
                     <span v-else v-cloak> 暂无 </span>
-										<!-- <el-input size="small" style="width:180px" class="w180"  placeholder="请输入" v-model.trim="form.patUser.portraitId"></el-input> -->
 									</el-form-item>
 								</el-col>
  
               </el-row>
+
+               <el-row>
+                 <el-form-item label="客户地址:" prop="addressArrt"  :rules="rules.input">
+                   <template v-if="isAddView">
+                    <el-input size="small" v-model.trim="form.addressArrt" style="width:180px;display: none;"></el-input>
+										<AddressSelect width="130px" :ids="idsArr" @change="selectAddress"/>
+                   </template>
+                   <template v-else>
+                     <span v-cloak> {{ form.shopAddressEntity.address }} </span>
+                   </template>
+									</el-form-item>
+               </el-row>
 						</div>
 				</div>
 
@@ -129,8 +131,8 @@
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label=" 账号状态设置:">
                     <span v-if="!isAddView"> 
-                      <span v-if="form.patUser.status===1"> 启用 </span>
-                      <span v-else> 禁用 </span>
+                      <el-tag v-cloak size="mini" v-if="form.patUser.status ===1"> 启用 </el-tag>
+                      <el-tag size="mini" type="danger" v-else> 禁用 </el-tag>
                     </span>
 										<el-radio v-else v-model="form.patUser.status" :label="item.label" v-for="item in accountOption" :key="item.label">
 											<span v-cloak> {{item.text}} </span>
@@ -147,7 +149,9 @@
 
 <script>
 import rules from '@/public/rules.js'
-import { fetchOptions, fecthDetail } from '@/api/customer/customerClass.js'
+import { fetchOptions } from '@/api/customer/customerClass.js'
+import { AddressSelect } from '@/components/base.js'
+
 export default {
   mixins: [rules],
   props: {
@@ -158,9 +162,14 @@ export default {
       type: Boolean
     }
   },
+  components: {
+    AddressSelect
+  },
   data() {
     return {
+      managerDTO: null,
       form: {
+        addressArrt: null,
         patUser: {
           status: 1,
           alipay: null,
@@ -169,9 +178,16 @@ export default {
           weibo: null,
           portraitId: null
         },
-        dto: {
-          contacts: null
+        shopAddressEntity: {
+          addessIds: null,
+          address: null,
+          contacts: null,
+          mobile: null,
+          phone: null,
+          status: 0,
+          type: 1
         },
+        contacts: null,
         regionId: null,
         title: null,
         mobile: null,
@@ -179,15 +195,16 @@ export default {
         driverId: null,
         managerPhone: null,
         categoryId: null,
-        orderResource: 3,
-        status: 1
+        orderResource: 3
+        // status: 1
       },
       options: {
         managerOption: [],
         driverOption: [],
         categoryOption: [],
         areaOption: []
-      }
+      },
+      idsArr: []
     }
   },
   created() {
@@ -205,26 +222,16 @@ export default {
         this.options.managerOption = data.staff
         this.options.categoryOption = data.category
         this.options.areaOption = data.relation
-        if (this.data.type === 'view') {
-          this.fecthDetail()
-        }
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
     },
-    fecthDetail() {
-      if (!this.data.obj.id) return
-      fecthDetail({ id: this.data.obj.id }).then(({ data }) => {
-        this.form = Object.assign(this.form, data)
-      }).catch(e => {
-        this.$message({ type: 'error', message: '详情加载失败' })
-      })
-    },
-    selectManager(val) {
-      if (val) {
-        const obj = this.$arrayAttrGetObj(this.options.managerOption, 'staffId', val)
-        this.form.managerPhone = obj.phone
+    selectManager(item) {
+      if (item) {
+        this.form.staffId = item.staffId
+        this.form.managerPhone = item.phone
       } else {
+        this.form.staffId = null
         this.form.managerPhone = null
       }
     },
@@ -232,73 +239,65 @@ export default {
       this.$refs['form'].validate((valid) => {
         if (valid) {
           this.$emit('update:isPass', true)
-          if (this.data.type === 'add') this.$emit('callBack', this.form)
+          const data = JSON.parse(JSON.stringify(this.form))
+          delete data.addressArrt
+          this.$emit('callBack', data)
         } else {
           this.$message({ type: 'warning', message: '请核实表单' })
           this.$emit('update:isPass', false)
           return
         }
       })
+    },
+    selectAddress(item) {
+      if (item) {
+        if (item.province && item.city && item.area && item.address) {
+          this.form.addressArrt = `验证通过`
+          this.form.shopAddressEntity.addessIds = `${item.province.id},${item.city.id},${item.area.id}`
+          this.form.shopAddressEntity.address = `${item.province.title},${item.city.title},${item.area.title},${item.address}`
+        }
+      } else {
+        this.form.addressArrt = null
+      }
     }
   },
   watch: {
-    'form.regionId': {
-      handler(val, old) {
-        if (val && old) {
-          this.form.driverId = null
-          this.options.driverOption = []
+    data: {
+      handler(item) {
+        console.log(item, '注意基本信息改变了')
+        if (item) {
+          if (item.id) item.contacts = item.dto.contacts
+          this.managerDTO = {
+            staffId: item.staffId,
+            staffName: item.managerName
+          }
+          const { shopAddressEntity } = item
+          if (shopAddressEntity) {
+            const SSQ = shopAddressEntity.addessIds.split(',')
+            const address = shopAddressEntity.address.split(',')
+            this.idsArr = [
+              { id: SSQ[0], title: '省份' },
+              { id: SSQ[1], title: '城市' },
+              { id: SSQ[2], title: '区' },
+              address[address.length - 1]
+            ]
+            this.form.addressArrt = shopAddressEntity.address
+          } else {
+            item.shopAddressEntity = Object.assign({}, this.form.shopAddressEntity)
+          }
+          this.form = Object.assign(this.form, item)
         }
-        if (val) {
-          const obj = this.$arrayAttrGetObj(this.options.areaOption, 'id', val)
-          if (obj) this.options.driverOption = obj.scmDriver
-        } else {
-          this.form.driverId = null
-          this.options.driverOption = []
-        }
-      },
-      deep: true
+      }
     },
-    form: {
-      handler(val) {
-        if (val) {
-          this.$emit('input', val)
-        }
-      },
-      deep: true
+    isAddView: {
+      handler(item) {
+        console.log(item)
+      }
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
-.basicInfo,
-.table {
-    .el-form-item {
-        margin-bottom: 18px;
-    }
-}
-.AddTableList {
-    margin-bottom: 10px;
-}
-.pages {
-    text-align: center;
-    padding: 20px;
-}
-.msg {
-    margin-top: 10px;
-}
-.portraitId{
-  display: flex;
-  align-items: center;
-  justify-items: center;
-  width: 90px;
-  height: 90px;
-  // border-radius: 50%;
-  overflow: hidden;
-  img{
-    display: inline-block;
-    width: 100%;
-    // height: 100%;
-  }
-}
+ 
 </style>

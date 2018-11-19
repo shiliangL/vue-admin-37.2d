@@ -36,7 +36,7 @@
             <template slot-scope="scope">
               <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">编辑</el-button>
               <el-button type="text" size="mini" @click.stop="clickToView(scope.$index,scope.row)">详情</el-button>
-              <el-button type="text" size="mini" style="color:red" @click.stop="clickToEditor(scope.$index,scope.row)">重置密码</el-button>
+              <el-button type="text" size="mini" style="color:red" @click.stop="clickToReset(scope.$index,scope.row)">重置密码</el-button>
             </template>
           </el-table-column>
 
@@ -65,6 +65,7 @@ import Add from './add'
 import model from '@/public/listModel.js'
 import { Tabs, SearchBar } from '@/components/base.js'
 import { fetchList } from '@/api/buy/supplier.js'
+import { resetPassword } from '@/api/distribution/deliveryer.js'
 
 export default {
   name: 'supplier',
@@ -153,6 +154,26 @@ export default {
     },
     refrehList() {
       if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
+    },
+    clickToReset(index, item) {
+      this.$confirm('是否确定重置密码为123456?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        if (!item.operatorId) return
+        const data = {
+          operatorId: item.operatorId,
+          password: 123456
+        }
+        resetPassword(data).then(res => {
+          this.$message({ type: 'success', message: `${res.msg}!` })
+          this.fetchList()
+        }).catch((e) => {
+          this.$message({ type: 'error', message: e.msg
+          })
+        })
+      }).catch(() => {})
     }
   }
 }

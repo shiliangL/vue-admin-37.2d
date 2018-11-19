@@ -22,6 +22,26 @@ export default {
           }
           callback()
         },
+        validPhone: (rule, value, callback) => {
+          if (!value) {
+            return callback(new Error('请输入'))
+          }
+          var reg = /^[1][3,4,5,7,8][0-9]{9}$/
+          if (!reg.test(value)) {
+            return callback(new Error('请输入正确的手机号'))
+          }
+          callback()
+        },
+        validNumberR8: (rule, value, callback) => {
+          if (!value && value !== 0) {
+            return callback(new Error('请输入'))
+          }
+          var reg = /^([0-9][\d]{0,8})(\.[\d]{1,2})?$/
+          if (!reg.test(value)) {
+            return callback(new Error('请输入有效数字'))
+          }
+          callback()
+        },
         validNumberR2N0: (rule, value, callback) => {
           if (!value) {
             return callback(new Error('请输入'))

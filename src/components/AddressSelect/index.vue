@@ -21,6 +21,14 @@
             :value="sub">
           </el-option>
 			</el-select>
+      <div class="address">
+          <el-input
+            type="textarea"
+            :autosize="{ minRows: 2, maxRows: 4}" 
+            placeholder="详细地址不能超30位" maxlength="30"
+            size="small" style="width:400px" v-model.trim="form.address" @input="selectChange($event,3)">
+          </el-input>
+      </div>
   </div>
 </template>
 
@@ -47,9 +55,11 @@ export default {
   data() {
     return {
       form: {
+        type: null,
         province: null,
         city: null,
-        area: null
+        area: null,
+        address: null
       },
       options: {
         province: [],
@@ -60,6 +70,13 @@ export default {
   },
   mounted() {
     this.fetchProvinces()
+    if (this.ids.length) {
+      const n = JSON.parse(JSON.stringify(this.ids))
+      this.form.province = n[0]
+      this.form.city = n[1]
+      this.form.area = n[2]
+      this.form.address = n[3]
+    }
   },
   methods: {
     fetchProvinces() {
@@ -70,18 +87,33 @@ export default {
       })
     },
     selectChange(e, t) {
-      const data = JSON.parse(JSON.stringify(this.form))
-      data.type = t
-      this.$emit('change', data)
+      // 地址需要全部填完才回调参数
+      this.form.type = t
+      if (this.form.province && this.form.city && this.form.area && this.form.address) {
+        this.$emit('change', this.form)
+      } else {
+        this.$emit('change', null)
+      }
     }
   },
   watch: {
     ids: {
       handler(n, o) {
-        if (n) {
+        if (n.length) {
           this.form.province = n[0]
           this.form.city = n[1]
           this.form.area = n[2]
+          this.form.address = n[3]
+        }
+      }
+    },
+    value: {
+      handler(n, o) {
+        if (n.length) {
+          this.form.province = n[0]
+          this.form.city = n[1]
+          this.form.area = n[2]
+          this.form.address = n[3]
         }
       }
     },
