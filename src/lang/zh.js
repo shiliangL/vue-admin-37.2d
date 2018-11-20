@@ -72,6 +72,7 @@ export default {
 
     buyPlan: '采购计划',
     buyOrders: '采购订单',
+    buyReturn: '采购退换',
     audit: '采购审核',
     clearing: '采购结算',
     supplier: '供应商',
@@ -83,6 +84,8 @@ export default {
 
     setting: '仓库设置',
     inventory: '库存明细',
+    sortInventory: '库存盘点',
+    auditInventory: '库存核查',
     goodsIn: '商品入库',
     goodsOut: '商品出库',
     workbench: '工作台管理',

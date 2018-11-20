@@ -1,3 +1,4 @@
+<!-- 采购退换货 -->
 <template>
     <div class="buyReturn">
 
@@ -14,18 +15,19 @@
             </template>
           </el-table-column>
  
-          <el-table-column prop="categoryName" label="采购计划单号" align="center"></el-table-column>
-          <el-table-column prop="categoryName" label="采购计划来源" align="center"></el-table-column>
-          <el-table-column prop="categoryName" label="采购计划创建时间" align="center"></el-table-column>
-          <el-table-column prop="categoryName" label="采购申请时间" align="center"></el-table-column>
-          <el-table-column prop="categoryName" label="采购申请状态" align="center">
+          <el-table-column prop="categoryName" :label="curIndex===0? '采购退货单号': '采购换货单号'" align="center"></el-table-column>
+          <el-table-column prop="categoryName" :label="curIndex===0? '退货操作时间': '换货操作时间'" align="center"></el-table-column>
+          <el-table-column prop="categoryName" label="采购订单编号" align="center"></el-table-column>
+          <el-table-column prop="categoryName" label="采购订单生成时间" align="center"></el-table-column>
+          <el-table-column prop="categoryName" label="采购员" align="center"></el-table-column>
+          <el-table-column prop="categoryName" :label="curIndex===0? '退货金额': '换货金额'" align="center"></el-table-column>
+
+          <el-table-column prop="categoryName" label="处理状态" align="center">
             <template slot-scope="scope" align="center">
                <el-tag size="small" v-if="scope.row.goodsStatus ===0">上架</el-tag>
                <el-tag size="small" type="warning" v-if="scope.row.goodsStatus ===1">下架</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="categoryName" label="创建人" align="center"></el-table-column>
-          <el-table-column prop="categoryName" label="申请人" align="center"></el-table-column>
  
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
@@ -65,6 +67,7 @@ export default {
   },
   data() {
     return {
+      curIndex: 0,
       searchBarData: [
         [
           { type: 'date', value: null, key: 'orderTime', width: '200px', placeholder: '创建时间' },
@@ -82,15 +85,13 @@ export default {
   },
   created() {
     this.tabTitles = [
-      { title: '全部', value: 0 },
-      { title: '待采购', value: 1 },
-      { title: '采购中', value: 2 },
-      { title: '待收货', value: 3 },
-      { title: '已收货', value: 4 }
+      { title: '采购退货', value: 0 },
+      { title: '采购换货', value: 1 }
     ]
   },
   methods: {
     tabsCallBack(item) {
+      this.curIndex = item.value
       this.$nextTick().then(() => {
         this.$refs['searchBar'].sendSearchParams()
       })

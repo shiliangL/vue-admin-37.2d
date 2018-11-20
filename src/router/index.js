@@ -146,6 +146,8 @@ export const constantRouterMap = [
       { path: 'goodsIn', component: _import('warehouse/goodsIn/index'), name: 'goodsIn', meta: { noCache: true, title: 'goodsIn' }},
       { path: 'goodsOut', component: _import('warehouse/goodsOut/index'), name: 'goodsOut', meta: { noCache: true, title: 'goodsOut' }},
       { path: 'inventory', component: _import('warehouse/inventory/index'), name: 'inventory', meta: { noCache: true, title: 'inventory' }},
+      { path: 'sortInventory', component: _import('warehouse/sortInventory/index'), name: 'sortInventory', meta: { noCache: true, title: 'sortInventory' }},
+      { path: 'auditInventory', component: _import('warehouse/auditInventory/index'), name: 'auditInventory', meta: { noCache: true, title: 'auditInventory' }},
       { path: 'workbench', component: _import('warehouse/workbench/index'), name: 'workbench', meta: { noCache: true, title: 'workbench' }},
       { path: 'equipment', component: _import('warehouse/equipment/index'), name: 'equipment', meta: { noCache: true, title: 'equipment' }},
       { path: 'ckOperator', component: _import('warehouse/ckOperator/index'), name: 'ckOperator', meta: { noCache: true, title: 'ckOperator' }},

@@ -19,7 +19,7 @@
           </el-select>
         </template>
         <template v-else-if="item.type === 'input'">
-          <el-input :style="item.width? item.width : 'width:180px'" clearable v-model="item.value" size="small" @keyup.enter.native="sendSearchParams" :placeholder="item.placeholder"></el-input>
+          <el-input :style="item.width? item.width : 'width:180px'" clearable v-model.trim="item.value" size="small" @keyup.enter.native="sendSearchParams" :placeholder="item.placeholder"></el-input>
         </template>
         <template v-if="item.type === 'multiple-date'">
           <el-date-picker v-model="item.value" value-format="yyyy-MM-dd" type="daterange" size="small" range-separator="至" :start-placeholder="item.placeholder1" :end-placeholder="item.placeholder2"></el-date-picker>

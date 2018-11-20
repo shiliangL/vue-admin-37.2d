@@ -1,26 +1,25 @@
-<!-- 商品入库 -->
+<!-- 库存盘点 -->
 <template>
-    <div class="goodsInRe">
+    <div class="sortInventory">
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
-			<storageIn v-if="curIndex===0"></storageIn>
-			<storageRe v-if="curIndex===1"></storageRe>
+			<listView v-if="curIndex===0"></listView>
+			<recordLists v-if="curIndex===1"></recordLists>
     </div>
 </template>
 
 <script>
 import model from '@/public/listModel.js'
-import { Tabs, SearchBar } from '@/components/base.js'
-import storageIn from './storageIn'
-import storageRe from './storageRe'
+import { Tabs } from '@/components/base.js'
+import listView from './listView'
+import recordLists from './recordLists'
 
 export default {
-  name: 'goodsInRe',
+  name: 'sortInventory',
   mixins: [model],
   components: {
     Tabs,
-    SearchBar,
-    storageIn,
-    storageRe
+    listView,
+    recordLists
   },
   data() {
     return {
@@ -29,8 +28,8 @@ export default {
   },
   created() {
     this.tabTitles = [
-      { title: '入库单', value: 0 },
-      { title: '入库记录', value: 1 }
+      { title: '盘点', value: 0 },
+      { title: '盘点记录', value: 1 }
     ]
   },
   methods: {

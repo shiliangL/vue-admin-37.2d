@@ -15,7 +15,8 @@
 				<div class="footer-block">
 					<span class="page" v-cloak> 共 {{tableOne.length}} 条</span>
 				</div>
-
+					
+        <el-table-column prop="remark" width="200" show-overflow-tooltip label="备注" align="center"></el-table-column>
 			<!-- 搜索 -->
 			 <div class="search">
 					<el-input size="small" style="width:190px" class="w180"  placeholder="请输入商品名称检索" v-model.trim="viewSearch"></el-input>
