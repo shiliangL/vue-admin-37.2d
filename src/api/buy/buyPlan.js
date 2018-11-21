@@ -80,3 +80,12 @@ export function undateTableRow(data) {
     data
   })
 }
+
+// 销售换货汇总
+export function fetchExchangeAll(params) {
+  return request({
+    url: 'cmm/scmSalesOrder/getExchange',
+    method: 'get',
+    params
+  })
+}

@@ -6,7 +6,7 @@
 
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
 
-      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction"  @add="showAdd"  @reset="resetSearchBar"></search-bar>
+      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction"  @add="showAdd"  @clickBtn="addExchangeAll" @reset="resetSearchBar"></search-bar>
 
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
@@ -93,6 +93,7 @@ export default {
           { type: 'reset', name: '重置' }
         ],
         [
+          { type: 'button', name: '销售换货汇总' },
           { type: 'add', name: '新增' }
           // { type: 'more', labels: ['导入', '上传图片'] }
         ]
@@ -207,6 +208,9 @@ export default {
     },
     TipsBarCallBack(value) {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'check', obj: value, title: '销售订单采购计划' }})
+    },
+    addExchangeAll() {
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'exchange', obj: { }, title: '销售换货商品汇总' }})
     },
     refrehList() {
       if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()

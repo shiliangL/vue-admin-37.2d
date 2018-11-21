@@ -1,8 +1,9 @@
+
 <template>
-    <div class="addcheck">
+    <div class="buyexchange">
       <!-- 搜索 
         :clearable="false"
-        销售订单采购计划
+        销售换货商品汇总
       -->
       <div class="search-bar">
         <div class="left" style="line-height: 44px;">
@@ -80,8 +81,7 @@
 				<el-table-column prop="categoryName" label="商品分类" align="center"></el-table-column>
 				<el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
 				<el-table-column prop="baseUnitName" label="基本单位" align="center"></el-table-column>
-				<el-table-column prop="orderQuantity" label="有效下单总量" align="center"></el-table-column>
-				<el-table-column prop="orderCancelQuantity" label="取消订单总量" align="center"></el-table-column>
+				<el-table-column prop="orderQuantity" label="原下单数量" align="center"></el-table-column>
 				<el-table-column prop="goodsPrchase" label="已生成数量" align="center"></el-table-column>
 				<el-table-column prop="goodsNotPrchase" label="未生成数量" align="center"></el-table-column>
 				<el-table-column label="采购员" align="center">
@@ -100,11 +100,11 @@
 
 <script>
 import { CascaderBox } from '@/components/base.js'
-import { purchaseList, saveList } from '@/api/buy/buyPlan.js'
+import { fetchExchangeAll, saveList } from '@/api/buy/buyPlan.js'
 import { fecthGoodsClass } from '@/api/goodsList.js'
 
 export default {
-  name: 'addcheck',
+  name: 'buyexchange',
   components: {
     CascaderBox
   },
@@ -147,7 +147,12 @@ export default {
     }
   },
   mounted() {
-    if (this.$attrs.data) this.searchBarData.sendTime = this.$attrs.data
+    const date = new Date()
+    const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)
+    const day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate()
+    const ymd = date.getFullYear() + '-' + month + '-' + day
+    this.searchBarData.sendTime = ymd
+
     this.fecthList()
     this.fecthGoodsClass()
   },
@@ -179,7 +184,7 @@ export default {
       const params = {
         ...this.searchBarData
       }
-      purchaseList(params).then(({ data }) => {
+      fetchExchangeAll(params).then(({ data }) => {
         if (Array.isArray(data)) {
           for (const item of data) {
             if (item.orderCancelQuantity == null) item.orderCancelQuantity = 0

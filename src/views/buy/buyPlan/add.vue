@@ -27,6 +27,10 @@
               <addcheck :data="data.obj.date" @close="addCheckClose"></addcheck>
             </template>
 
+            <template v-if="this.data.type === 'exchange'">
+              <exchange  @close="addCheckClose"></exchange>
+            </template>
+
             <template v-if="this.data.type === 'view'">
               <toView ref="toView" :loadID="loadID"  @callBack="callBackToPass"></toView>
             </template>
@@ -44,11 +48,13 @@ import addModel from '@/public/addModel.js'
 import addview from './addview'
 import addcheck from './addcheck'
 import toView from './toView'
+import exchange from './exchange'
 import { save, applyCreate } from '@/api/buy/buyPlan.js'
 export default {
   mixins: [addModel],
   components: {
     addview,
+    exchange,
     addcheck,
     toView
   },
