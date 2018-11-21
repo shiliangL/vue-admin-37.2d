@@ -11,12 +11,12 @@
         <div class="header-bar" slot="title">
            <div class="left"> {{currentTitle}} </div>
            <div class="right">
-              <template v-if="isShowView">
-                <el-button v-if="data.type === 'add'" type="text" size="mini" @click.stop="validateAddForm">保存</el-button>
+              <template>
+                <el-button  v-if="data.type === 'add'" type="text" size="mini" @click.stop="validateAddForm">保存</el-button>
               </template>
-              <template v-else>
+              <!-- <template v-else>
                 <el-button type="text" v-if="this.data.type === 'add'" size="mini" @click.stop="validateForm">保存</el-button>
-             </template>
+             </template> -->
               <el-button v-if="data.type === 'view'" type="text" size="mini" @click.stop="onRefresh">刷新</el-button>
               <el-button type="text" size="mini" @click.stop="closeDialog">返回</el-button>
             </div>
@@ -25,47 +25,40 @@
 
             <template v-if="this.data.type === 'add'">
               <div class="search">
+
                   <el-select size="small" v-model="stockId" filterable placeholder="选择仓库">
                     <el-option v-for="sub in options.stockOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                   </el-select>
-                  <el-select v-model="storageType" placeholder="请选择类型" size="small" style="width:120px" filterable  @change="stockChange">
+                  <el-select v-model="storageType" placeholder="请选择类型" size="small" style="width:120px" filterable  @change="stockChange" disabled>
                     <el-option v-for="item in options.storageType" :key="item.value" :label="item.label" :value="item.value"> </el-option> 
                   </el-select>
-                  <el-button  type="primary" size="small" @click.stop="fecthList" v-if="storageType !==4" > 加载数据 </el-button>
 
                   <template v-if="storageType ===4">
-                    
-                    <div class="flex-box"> 
-                        <div>
-                          <el-select class="w110" size="small" v-model="levelFirst" clearable filterable placeholder="一级分类">
-                            <el-option v-for="sub in searchBarOptons.categoryOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
-                          </el-select>
-                        </div>
+                    <el-select class="w110" size="small" v-model="levelFirst" clearable filterable placeholder="一级分类">
+                      <el-option v-for="sub in searchBarOptons.categoryOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
+                    </el-select>
 
-                        <div v-if="searchBarOptons.levelTowOption.length"> 
-                          <el-select class="w110" size="small" v-model="levelFecond" clearable filterable placeholder="二级分类">
-                            <el-option v-for="sub in searchBarOptons.levelTowOption" :key="sub.id" :label="sub.title" :value="sub.id"></el-option>
-                          </el-select>
-                        </div>
+                    <el-select class="w110" size="small" v-model="levelFecond" clearable filterable placeholder="二级分类" v-if="searchBarOptons.levelTowOption.length"> 
+                      <el-option v-for="sub in searchBarOptons.levelTowOption" :key="sub.id" :label="sub.title" :value="sub.id"></el-option>
+                    </el-select>
 
-                        <div>
-                          <SearchBox style="width:180px" keyName="title"  
-                            :updateKey="updateKey" 
-                            tableName="productName"
-                            tableCode="categoryName" 
-                            nameLabel="商品" 
-                            codeLabel="类别" 
-                            PutInStorage
-                            requestUrl="purchaseAcceptInfo/queryOtherStockInProductList" 
-                            v-model="addDoodsDTO">
-                          </SearchBox>
-                        </div>
-                        <div>
-                            <el-button  type="primary" size="small" @click.stop="clickToAddOther"> 添加 </el-button>
-                        </div>
+                    <SearchBox style="width:180px; display: inline-block;position: relative;top: 10px;" keyName="title"  
+                      :updateKey="updateKey" 
+                      tableName="productName"
+                      tableCode="categoryName" 
+                      nameLabel="商品" 
+                      codeLabel="类别" 
+                      PutInStorage
+                      requestUrl="purchaseAcceptInfo/queryOtherStockInProductList" 
+                      v-model="addDoodsDTO">
+                    </SearchBox>
 
-                    </div>
+                    <el-button style="display: inline-block;position: relative;top: -2px;" type="primary" size="small" @click.stop="clickToAddOther"> 添加 </el-button>
+
                   </template>
+
+                  <el-button  type="primary" size="small" @click.stop="fecthList" v-if="storageType !==4" > 加载数据 </el-button>
+
               </div>
 
               <div v-if="storageType ===4">
@@ -90,13 +83,13 @@
                         </div>
                       </template>
                     </el-table-column>
-                    <el-table-column prop="planQuantity" label="数量" align="center">
+                    <!-- <el-table-column prop="planQuantity" label="数量" align="center">
                        <template slot-scope="scope">
                         <el-form-item label="" label-width="0px" :prop="'stockInDetailList.'+scope.$index+'.planQuantity'" :rules="[{trigger: 'change', validator: rules.validNumberR2N0}]">
                           <el-input style="width:110px" placeholder="请输入" size="small" v-model.trim="scope.row.planQuantity"></el-input> 
                         </el-form-item>
                       </template>
-                    </el-table-column>
+                    </el-table-column> -->
                     <el-table-column prop="makePlace" label="产地" align="center" width="100">
                       <template slot-scope="scope">
                         <el-form-item label="" label-width="0">
@@ -306,7 +299,7 @@ export default {
         stockInDetailList: []
       },
       stockId: null,
-      storageType: null,
+      storageType: 4,
       isShowView: false,
       addDoodsDTO: null,
       cwOption: null,
@@ -362,6 +355,8 @@ export default {
           this.storageTypeTitle = '申请退货量'
         } else if (this.form.storageType === 3) {
           this.storageTypeTitle = '申请换货量'
+        } else if (this.form.storageType === 4) {
+          this.storageTypeTitle = '货量'
         }
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
@@ -486,7 +481,7 @@ export default {
           }
           this.options.stockOption = data
           if (data.length > 0) {
-            this.storageType = 1
+            // this.storageType = 1
             this.stockId = data[0].id
             this.updateKey = {
               stockId: data[0].id
@@ -534,6 +529,7 @@ export default {
         this.$message({ type: 'warning', message: '请勿重复添加' })
         return
       } else {
+        data.planQuantity = 0
         this.Addform.stockInDetailList.push(data)
         this.addDoodsDTO = null
       }

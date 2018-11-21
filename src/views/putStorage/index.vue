@@ -157,6 +157,7 @@ export default {
           break
         case 4:
           t = '其他入库详情'
+          row.type = 4
           break
         default:
           break
