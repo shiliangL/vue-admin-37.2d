@@ -19,7 +19,7 @@
         </div>
 
         <div class="left">
-          <el-input style="width:180px" v-model="searchBarData.orderNo" size="small" @keyup.enter.native="fecthList" placeholder="输入商品名称检索"></el-input>
+          <el-input style="width:180px" v-model="searchBarData.orderNo" size="small" @keyup.enter.native="fecthList" placeholder="采购订单检索"></el-input>
         </div>
 
          <div class="left">

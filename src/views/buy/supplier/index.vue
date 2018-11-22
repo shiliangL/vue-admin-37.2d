@@ -17,8 +17,8 @@
 					<el-table-column prop="staffName" label="供应商名称" align="center"></el-table-column>
 					<el-table-column prop="contacts" label="联系人" align="center"></el-table-column>
 					<el-table-column prop="mobile" label="联系电话" align="center"></el-table-column>
-					<el-table-column prop="mustGather" label="应付供应商金额" align="center"></el-table-column>
-					<el-table-column prop="payGather" label="应收供应商金额" align="center"></el-table-column>
+					<el-table-column prop="mustGather" label="应付金额合计" align="center"></el-table-column>
+					<el-table-column prop="payGather" label="应收金额合计" align="center"></el-table-column>
 					<el-table-column label="采购订单" align="center">
 						<template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="clickToCheck(scope.$index,scope.row)">查看</el-button>

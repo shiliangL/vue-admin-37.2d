@@ -336,9 +336,13 @@ export default {
       }).then(() => {
         if (!this.form.id) return
         const data = {
-          'description': null,
+          'customerId': this.form.customerId,
+          'description': this.form.description,
           'id': this.form.id,
-          'passFlag': type // 是否同意 0 代表同意 1 代表拒绝
+          'orderNo': this.form.orderNo,
+          'passFlag': type,
+          'payMentType': this.form.paymentType, // 付款方式 只有线上支付 退货才会产生流水 0代表货到付款 1代表线上支付 ,
+          'returnPrice': this.form.returnPrice
         }
         orderDetailUpdatePass(data).then(res => {
           this.$message({ type: 'success', message: res.msg })
@@ -348,24 +352,6 @@ export default {
           this.$message({ type: 'error', message: '更新失败' })
         })
       }).catch(() => {})
-
-      // this.$prompt('', title, {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消'
-      // }).then(({ value }) => {
-      //   const data = {
-      //     'description': value,
-      //     'id': this.form.id,
-      //     'passFlag': type // 是否同意 0 代表同意 1 代表拒绝
-      //   }
-      //   orderDetailUpdatePass(data).then(res => {
-      //     this.$message({ type: 'success', message: res.msg })
-      //     this.dialog.visiable = false
-      //     this.$emit('add')
-      //   }).catch(e => {
-      //     this.$message({ type: 'error', message: '更新失败' })
-      //   })
-      // }).catch(() => {})
     }
   }
 }
