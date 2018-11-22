@@ -7,7 +7,7 @@
 				<el-form-item label="用户名称:">
 					<el-input style="width:180px;" readonly size="small" v-model="userObj.staffName" auto-complete="off"></el-input>
 				</el-form-item>
-				<el-form-item label="岗位角色:">
+				<el-form-item label="系统职位:">
 					<el-input style="width:180px;" readonly size="small" v-model="userObj.position" auto-complete="off"></el-input>
 				</el-form-item>
 				<el-form-item label="旧登录密码" prop="oldPassword" :rules="rules.input">

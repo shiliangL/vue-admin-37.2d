@@ -31,8 +31,9 @@
             </template>
           </el-table-column>
  
-          <el-table-column label="操作" align="center" width="120">
+          <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
+              <el-button type="text" @click.stop="clickToMap(scope.$index,scope.row)"> 线路 </el-button>
               <el-button type="text" v-if="scope.row.isPackage===0 && curIndex==0" size="mini" @click.stop="clickToPrint(scope.$index,scope.row)">打印</el-button>
               <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">查看</el-button>
             </template>
@@ -376,6 +377,10 @@ export default {
         }
       })
     },
+    clickToMap(index, row) {
+      row.flag = this.curIndex
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'map', obj: row, title: '配送路线地图' }})
+    },
     showAdd() {
       this.$setKeyValue(this.add, {
         visiable: true,
@@ -384,7 +389,7 @@ export default {
     },
     clickToPrint(index, row) {
       if (!row.id) return
-      this.$message({ type: 'info', message: '请耐心等待,获取打印数据中....', showClose: true })
+      // this.$message({ type: 'info', message: '请耐心等待,获取打印数据中....', showClose: true })
       fecthPrint({ id: row.id, type: 0 }).then(({ data }) => {
         this.PrintData = Object.assign(this.PrintData, data)
         if (data.isPackage === 0) {

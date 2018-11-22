@@ -89,3 +89,11 @@ export function fecthPrint(params) {
     params
   })
 }
+
+export function getMapPos(params) {
+  return request({
+    url: 'cmm/departureRecord/queryCoordinateByShipId',
+    method: 'get',
+    params
+  })
+}

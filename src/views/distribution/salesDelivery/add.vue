@@ -8,133 +8,173 @@
            <div class="left"> {{currentTitle}} </div>
            <div class="right">
               <el-button type="text" size="mini" v-if="data.type==='add' && isBlank && TabsTitle.length" @click.stop="createOrder">生成配送单</el-button>
+              <el-button type="text" size="mini" v-if="data.type==='map'" @click.stop="refreshMap">地图刷新</el-button>
               <el-button type="text" size="mini" @click.stop="dialog.visiable = false">返回</el-button>
             </div>
         </div>
         <div class="content-bar">
-          <template v-if="data.type==='view'">
+          <template v-if="data.type==='view'||data.type==='map' ">
             <el-form :model="form" ref="form" class="viewForm" label-width="130px" :inline="true">
-              <div class="row-item">
-                <div class="row-title">基本信息</div>
-                <div class="row-content">
-                  <el-row>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item :label="data.obj.flag === 0?'销售订单编号:':'销售换货单号:'">
-                        <span v-cloak>{{form.orderNo}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item :label="data.obj.flag === 0?'下单时间:':'申请换货时间:'">
-                        <span v-cloak>{{form.orderDate}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="客户名称:">
-                        <span v-cloak>{{form.customerTitle}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="客户账号:">
-                        <span v-cloak>{{form.loginName}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="订单来源:">
-                        <span v-if="form.orderSource===0"> App </span>
-                        <span v-if="form.orderSource===1"> 微信公众号  </span>
-                        <span v-if="form.orderSource===2"> 微信小程序 </span>
-                        <span v-if="form.orderSource===3"> 后台 </span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="支付类型:">
-                        <span v-if="form.paymentType===0"> 货到付款 </span>
-                        <span v-if="form.paymentType===1"> 线上支付 </span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="要求送达日期:">
-                          <span v-cloak>{{form.sendDate}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="要求送达时间:">
-                          <span v-cloak>{{form.beginTime}} - {{form.endTime}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="配送方式:">
-                          <span v-cloak> 厨满满专供 </span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="销售配送单号:">
-                          <span v-cloak>{{form.serialNumber}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="仓库:">
-                          <span v-cloak>{{form.stockName}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item :label="data.obj.flag === 0?'配送员:':'换货配送员:'">
-                        <span v-cloak>{{form.driverName}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item  :label="data.obj.flag === 0?'实际送达时间:':'换货实际送达时间:'"> 
-                        <span v-cloak>{{form.factTime}}</span>
-                      </el-form-item>
-                    </el-col>
-                    
-                  </el-row>
-                </div>
-              </div>
 
-              <div class="row-item">
-                <div class="row-title">收货信息</div>
-                <div class="row-content">
-                  <el-row>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="收货人:">
-                        <span v-cloak>{{form.contactsName}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="手机号:">
-                        <span v-cloak>{{form.mobile}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="签收方式:" label-width="130px">
-                        <span v-if="form.receiverFlag===0"> 当面签收 </span>
-                        <span v-if="form.receiverFlag===1"> 拍照签收 </span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="form.receiverFlag===1">
-                      <el-form-item label="照片:">
-                        <div class="car" v-if="form.photos">
-                          <img :src="form.photos" alt="">
-                        </div>
-                        <!-- <span v-cloak>{{form.photos}}</span> -->
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="客户确认收货时间:" label-width="130px">
-                        <span v-cloak>{{form.receiverDate}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col>
-                      <el-form-item label="收货地址:">
-                         <span v-cloak>{{form.address}}</span>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                </div>
-              </div>
+              <el-collapse v-model="activeName" accordion>
+                <el-collapse-item :title="activeName? '收起更多信息': '展开更多信息'" name="1">
 
-              <div class="row-item">
+                  <div class="row-item">
+                    <div class="row-title">基本信息</div>
+                    <div class="row-content">
+                      <el-row>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <el-form-item :label="data.obj.flag === 0?'销售订单编号:':'销售换货单号:'">
+                            <span v-cloak>{{form.orderNo}}</span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <el-form-item :label="data.obj.flag === 0?'下单时间:':'申请换货时间:'">
+                            <span v-cloak>{{form.orderDate}}</span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <el-form-item label="客户名称:">
+                            <span v-cloak>{{form.customerTitle}}</span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <el-form-item label="客户账号:">
+                            <span v-cloak>{{form.loginName}}</span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <el-form-item label="订单来源:">
+                            <span v-if="form.orderSource===0"> App </span>
+                            <span v-if="form.orderSource===1"> 微信公众号  </span>
+                            <span v-if="form.orderSource===2"> 微信小程序 </span>
+                            <span v-if="form.orderSource===3"> 后台 </span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <el-form-item label="支付类型:">
+                            <span v-if="form.paymentType===0"> 货到付款 </span>
+                            <span v-if="form.paymentType===1"> 线上支付 </span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <el-form-item label="要求送达日期:">
+                              <span v-cloak>{{form.sendDate}}</span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <el-form-item label="要求送达时间:">
+                              <span v-cloak>{{form.beginTime}} - {{form.endTime}}</span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <el-form-item label="配送方式:">
+                              <span v-cloak> 厨满满专供 </span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <el-form-item label="销售配送单号:">
+                              <span v-cloak>{{form.serialNumber}}</span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <el-form-item label="仓库:">
+                              <span v-cloak>{{form.stockName}}</span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <el-form-item :label="data.obj.flag === 0?'配送员:':'换货配送员:'">
+                            <span v-cloak>{{form.driverName}}</span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <el-form-item  :label="data.obj.flag === 0?'实际送达时间:':'换货实际送达时间:'"> 
+                            <span v-cloak>{{form.factTime}}</span>
+                          </el-form-item>
+                        </el-col>
+                        
+                      </el-row>
+                    </div>
+                  </div>
+
+                  <div class="row-item">
+                    <div class="row-title">收货信息</div>
+                    <div class="row-content">
+                      <el-row>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <el-form-item label="收货人:">
+                            <span v-cloak>{{form.contactsName}}</span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <el-form-item label="手机号:">
+                            <span v-cloak>{{form.mobile}}</span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <el-form-item label="签收方式:" label-width="130px">
+                            <span v-if="form.receiverFlag===0"> 当面签收 </span>
+                            <span v-if="form.receiverFlag===1"> 拍照签收 </span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="form.receiverFlag===1">
+                          <el-form-item label="照片:">
+                            <div class="car" v-if="form.photos">
+                              <img :src="form.photos" alt="">
+                            </div>
+                            <!-- <span v-cloak>{{form.photos}}</span> -->
+                          </el-form-item>
+                        </el-col>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <el-form-item label="客户确认收货时间:" label-width="130px">
+                            <span v-cloak>{{form.receiverDate}}</span>
+                          </el-form-item>
+                        </el-col>
+                        <el-col>
+                          <el-form-item label="收货地址:">
+                            <span v-cloak>{{form.address}}</span>
+                          </el-form-item>
+                        </el-col>
+                      </el-row>
+                    </div>
+                  </div>
+
+                </el-collapse-item>
+              </el-collapse>
+ 
+
+              <template v-if="data.type==='map'">
+
+                <baidu-map 
+                  ref="map"
+                  class="bm-view" 
+                  ak="vUHITq2fmXpfwoeezVGNh2VCfbT02tY7"
+                  anchor="BMAP_ANCHOR_TOP_RIGHT"
+                  @ready="mapReadyCallBack"
+                  :center="map.center" 
+                  :zoom="map.zoom" 
+                  :showAddressBar="true" 
+                  :autoLocation="true" > 
+                  <!-- :scroll-wheel-zoom="true" -->
+                    <!-- 缩放 -->
+                    <template v-if="map.isReady">
+                      <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
+                      <!-- 定位 -->
+                      <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :showAddressBar="true" :autoLocation="true"></bm-geolocation>
+
+                      <bm-driving 
+                        :start="map.startPos" 
+                        :end="map.endPos" 
+                        :speed="10"
+                        @searchcomplete="handleSearchComplete" 
+                        :panel="false" 
+                        :autoViewport="true"></bm-driving>
+                      <bml-lushu @stop="reset" :path="map.path" :icon="icon" :play="true" content="来不及解释了,赶紧上车" :rotation="true"> </bml-lushu>
+                    </template>
+                </baidu-map>
+              </template>
+
+              <div v-else class="row-item" style="margin-top: 20px;">
                 <div class="row-title">商品信息</div>
                 <div class="row-content">
                   <!-- 表格 -->
@@ -272,6 +312,7 @@
 
             </el-form>
           </template>
+
         </div>
       </div>
 
@@ -287,14 +328,46 @@ import addModel from '@/public/addModel.js'
 import { SelectTabs } from '@/components/base.js'
 import { fecthStockList } from '@/api/warehouse/goodsIn.js'
 import { fetchAllList } from '@/api/distribution/areaDelivery.js'
-import { fetchDetail, shipOrderAddList, createRow } from '@/api/distribution/salesDelivery.js'
+import { fetchDetail, shipOrderAddList, createRow, getMapPos } from '@/api/distribution/salesDelivery.js'
+import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
+import { BmNavigation, BmPointCollection, BmGeolocation, BmlLushu, BmDriving } from 'vue-baidu-map'
+
 export default {
   mixins: [addModel, model],
   components: {
-    SelectTabs
+    SelectTabs,
+    BaiduMap,
+    BmNavigation,
+    BmPointCollection,
+    BmGeolocation,
+    BmlLushu,
+    BmDriving
   },
   data() {
     return {
+      activeName: 0,
+      map: {
+        isReady: false,
+        zoom: 14,
+        startPos: '南京',
+        endPos: '南京',
+        path: [],
+        center: '南京'
+      },
+      icon: {
+        url: 'http://api.map.baidu.com/library/LuShu/1.2/examples/car.png',
+        size: {
+          width: 52,
+          height: 26
+        },
+        opts: {
+          anchor: {
+            width: 27,
+            height: 13
+          }
+        }
+      },
+      // 上为地图
       form: {
         'id': null,
         'orderId': null,
@@ -351,13 +424,15 @@ export default {
     }
   },
   created() {
-    const title = this.data.type === 'view' ? '查看' : '跟踪'
-    this.$setKeyValue(this.dialog, { title: title, visiable: true })
+    this.$setKeyValue(this.dialog, { visiable: true })
   },
   mounted() {
     this.currentTitle = this.data.title || ''
     if (this.data.type === 'view') {
       this.fetchDetail()
+    } if (this.data.type === 'map') {
+      this.fetchDetail()
+      this.fetchMapPos()
     } else {
       this.fecthStockList()
       this.fecthRegionList()
@@ -369,6 +444,40 @@ export default {
     }
   },
   methods: {
+    mapReadyCallBack({ BMap, map }) {
+      this.map.isReady = true
+    },
+    fetchMapPos() {
+      if (!this.data.obj.id) return
+      getMapPos({ shipId: this.data.obj.id }).then(({ data }) => {
+        const result = []
+        if (data && Array.isArray(data)) {
+          for (const item of data) {
+            result.push({
+              lng: item.lng,
+              lat: item.lat
+            })
+          }
+          if (result.length && this.map.isReady) {
+            this.map.path = result
+            this.map.endPos = result[result.length - 1]
+            this.map.startPos = result[0]
+            // this.map.center = result[0]
+          }
+        }
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
+    refreshMap() {
+      this.fetchMapPos()
+    },
+    reset() {
+      this.play = false
+    },
+    handleSearchComplete(res) {
+    //   this.path = res.getPlan(0).getRoute(0).getPath()
+    },
     tabsCallBack(index) {
       this.curIndex = index
     },
@@ -385,7 +494,7 @@ export default {
           }
         }
       }).catch(e => {
-        console.log(e)
+        this.$message({ type: 'error', message: e.msg })
       })
     },
     fecthRegionList() {
@@ -399,7 +508,7 @@ export default {
           this.options.regionOption = data.relation
         }
       }).catch(e => {
-        console.log(e)
+        this.$message({ type: 'error', message: e.msg })
       })
     },
     fetchDetail() {
@@ -627,12 +736,16 @@ export default {
       margin: 5px 0;
     }
   }
-// .Loading{
-//     position: fixed;
-//     top: 0;
-//     left: 0;
-//     bottom: 0;
-//     right: 0;
-//     z-index: 10;
-//   }
+ .bm-view {
+  width: 100%;
+  height: 520px;
+}
+
+.row-item {
+  padding-top: 0px;
+  .row-content {
+    padding: 0px;
+  }
+}
+ 
 </style>
