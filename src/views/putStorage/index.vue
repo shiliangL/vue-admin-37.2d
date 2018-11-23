@@ -2,7 +2,7 @@
 <template>
     <div class="putStorage">
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
-      <search-bar :data="searchBarData" @search="searchAction" @reset="resetSearchBar" @add="showAdd"></search-bar>
+      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction" @reset="resetSearchBar" @add="showAdd"></search-bar>
       <!-- 表格 -->
       <table-contain :height.sync="table.maxHeight">
         <el-table :data="table.data" v-loading="tableLoading" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -68,7 +68,7 @@ export default {
           { type: 'reset', name: '重置' }
         ],
         [
-          { type: 'add', name: '新增入库' }
+          { type: 'add', name: '新增入库单' }
           // { type: 'more', labels: ['导入', '上传图片'] }
         ]
       ]
@@ -98,25 +98,11 @@ export default {
     },
     // 数据请求
     fecthList() {
-      this.tableLoading = true
-      const { index, size } = this.pagination
-      const data = {
-        index,
-        size,
-        createdTime: this.searchBarData[0][0].value,
-        storageType: this.curIndex
-      }
-      fecthList(data).then(({ data }) => {
-        this.table.data = data.rows
-        this.pagination.total = data.total
-        this.tableLoading = false
-      }).catch(e => {
-        this.tableLoading = false
-        this.$message({ type: 'error', message: e.msg })
-      })
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     searchAction(item) {
       this.tableLoading = true
+      if (!this.tableLoading) return
       const { index, size } = this.pagination
       const data = {
         index,
