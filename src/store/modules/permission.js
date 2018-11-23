@@ -1,33 +1,5 @@
-import { asyncRouterMap, constantRouterMap } from '@/router'
-/**
- * 通过meta.role判断是否与当前用户权限匹配
- * @param roles
- * @param route
- */
-function hasPermission(roles, route) {
-  if (route.meta && route.meta.roles) {
-    return roles.some(role => route.meta.roles.indexOf(role) >= 0)
-  } else {
-    return true
-  }
-}
-/**
- * 递归过滤异步路由表，返回符合用户角色权限的路由表
- * @param asyncRouterMap
- * @param roles
- */
-function filterAsyncRouter(asyncRouterMap, roles) {
-  const accessedRouters = asyncRouterMap.filter(route => {
-    if (hasPermission(roles, route)) {
-      if (route.children && route.children.length) {
-        route.children = filterAsyncRouter(route.children, roles)
-      }
-      return true
-    }
-    return false
-  })
-  return accessedRouters
-}
+import { constantRouterMap } from '@/router'
+let navigation = null
 
 const permission = {
   state: {
@@ -35,28 +7,29 @@ const permission = {
     addRouters: []
   },
   mutations: {
-    SET_ROUTERS: (state, routers) => {
-      state.addRouters = routers
-      state.routers = constantRouterMap.concat(routers)
+    SET_ROUTERS: (state, workType) => {
+      for (const item of constantRouterMap) {
+        // 判断谁是首页
+        if (item.isLayOut) {
+          item.children[workType].hidden = false
+          if (navigation) {
+            setTimeout(() => {
+              navigation({ path: `/${item.children[workType].path}`, replace: true })
+            }, 200)
+          }
+        }
+      }
+      // state.addRouters = routers
+      state.routers = constantRouterMap
     }
   },
   actions: {
+    // 过滤需要显示的菜单
     GenerateRoutes({ commit }, data) {
       return new Promise(resolve => {
-        const { roles } = data
-        const { workType } = data
-        let accessedRouters
-        if (roles.indexOf('admin') >= 0) {
-          for (const item of asyncRouterMap) {
-            item.hidden = true
-            // item.hidden = false
-          }
-          asyncRouterMap[workType - 1].hidden = false
-          accessedRouters = asyncRouterMap
-        } else {
-          accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
-        }
-        commit('SET_ROUTERS', accessedRouters)
+        const { workType, next } = data
+        navigation = next
+        commit('SET_ROUTERS', workType - 1)
         resolve()
       })
     }

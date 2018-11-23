@@ -4,7 +4,7 @@
 		<div class="main-container">
 			<StickyBar>
 				<topNavBar></topNavBar>
-				<tags-view></tags-view>
+				<!-- <tags-view></tags-view> -->
 			</StickyBar>
 			<app-main></app-main>
 		</div>

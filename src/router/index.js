@@ -13,16 +13,19 @@ export const constantRouterMap = [
   {
     path: '',
     component: Layout,
-    // redirect: 'dashboard',
-    hidden: true,
-    children: [{
-      path: 'dashboard',
-      component: _import('dashboard/index'),
-      name: 'dashboard',
-      meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
-    }]
+    isLayOut: true,
+    redirect: null,
+    hidden: false,
+    children: [
+      // { path: 'dashboard', component: _import('dashboard/index'), name: 'dashboard', meta: { title: 'dashboard', icon: 'dashboard', noCache: true, hidden: true }},
+      { path: 'putStorage', component: _import('putStorage/index'), meta: { icon: 'component', title: 'putStorageIndex' }, noCache: true, hidden: true },
+      { path: 'outStorage', component: _import('outStorage/index'), meta: { icon: 'component', title: 'outStorageIndex' }, noCache: true, hidden: true },
+      { path: 'sorting', component: _import('sorting/index'), meta: { icon: 'component', title: 'sortingIndex' }, noCache: true, hidden: true },
+      { path: 'packaging', component: _import('packaging/index'), meta: { icon: 'component', title: 'packagingIndex' }, noCache: true, hidden: true }
+    ]
   }
 ]
+
 export const asyncRouterMap = [
   // {
   //   path: '/acceptance',
