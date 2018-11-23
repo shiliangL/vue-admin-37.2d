@@ -36,7 +36,7 @@ export default {
 
   },
   mounted() {
-    this.fetchMenu()
+    // this.fetchMenu()
   },
   methods: {
     ...mapActions([

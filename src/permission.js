@@ -4,7 +4,8 @@ import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css'// progress bar style
 import { getToken } from '@/utils/auth' // getToken from cookie
-
+// 外部定义一个变量的方式来解决刷新就重新加载
+let registerRouteFresh = true
 NProgress.configure({ showSpinner: false })// NProgress Configuration
 
 // 权限判断
@@ -32,12 +33,17 @@ router.beforeEach((to, from, next) => {
             next({ path: '/login' })
           })
         })
-        const roles = ['editor', 'develop', 'admin'] // note: roles must be a array! such as: ['editor','develop']
-        const workType = key.type
-        store.dispatch('GenerateRoutes', { roles, workType, next }).then(() => { // 根据roles权限生成可访问的路由表
-          router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-          next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
-        })
+
+        if (registerRouteFresh) {
+          const roles = ['editor', 'develop', 'admin'] // note: roles must be a array! such as: ['editor','develop']
+          const workType = key.type
+          store.dispatch('GenerateRoutes', { roles, workType, next }).then(() => { // 根据roles权限生成可访问的路由表
+            router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+            next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
+          })
+          registerRouteFresh = false
+        }
+
         next()
       } else {
         // 没有动态改变权限的需求可直接next() 删除下方权限判断 ↓

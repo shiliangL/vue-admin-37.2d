@@ -1,9 +1,10 @@
+// asyncRouterMapTx
 import { constantRouterMap } from '@/router'
 let navigation = null
 
 const permission = {
   state: {
-    routers: constantRouterMap,
+    routers: [],
     addRouters: []
   },
   mutations: {
