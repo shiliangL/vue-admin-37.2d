@@ -135,8 +135,8 @@ export default {
           'contacts': basicObj.contacts,
           'mobile': basicObj.mobile,
           'phone': null,
-          'status': 0,
-          'type': 1
+          'status': 1,
+          'type': 0
         },
         'dto': {
           'address': null,

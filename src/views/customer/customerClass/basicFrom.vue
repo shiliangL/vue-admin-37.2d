@@ -193,6 +193,7 @@ export default {
         mobile: null,
         managerId: null,
         driverId: null,
+        staffId: null,
         managerPhone: null,
         categoryId: null,
         orderResource: 3
@@ -227,6 +228,7 @@ export default {
       })
     },
     selectManager(item) {
+      console.log(item)
       if (item) {
         this.form.staffId = item.staffId
         this.form.managerPhone = item.phone

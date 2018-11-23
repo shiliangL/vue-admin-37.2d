@@ -153,7 +153,8 @@
                   @ready="mapReadyCallBack"
                   :center="map.center" 
                   :zoom="map.zoom" 
-                  :showAddressBar="true" 
+                  :showAddressBar="true"
+                  :scroll-wheel-zoom="true"
                   :autoLocation="true" > 
                   <!-- :scroll-wheel-zoom="true" -->
                     <!-- 缩放 -->
@@ -165,11 +166,16 @@
                       <bm-driving 
                         :start="map.startPos" 
                         :end="map.endPos" 
-                        :speed="10"
+                        :speed="100"
                         @searchcomplete="handleSearchComplete" 
                         :panel="false" 
                         :autoViewport="true"></bm-driving>
                       <bml-lushu @stop="reset" :path="map.path" :icon="icon" :play="true" content="来不及解释了,赶紧上车" :rotation="true"> </bml-lushu>
+                      <!-- 实时轨迹 -->
+                      <bm-point-collection :points="map.path" color="red" size="BMAP_POINT_SIZE_SMALL"></bm-point-collection>
+
+                      <bm-polyline :path="map.path" stroke-color="blue" :stroke-opacity="0.5" :stroke-weight="2"></bm-polyline>
+
                     </template>
                 </baidu-map>
               </template>
@@ -330,7 +336,7 @@ import { fecthStockList } from '@/api/warehouse/goodsIn.js'
 import { fetchAllList } from '@/api/distribution/areaDelivery.js'
 import { fetchDetail, shipOrderAddList, createRow, getMapPos } from '@/api/distribution/salesDelivery.js'
 import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
-import { BmNavigation, BmPointCollection, BmGeolocation, BmlLushu, BmDriving } from 'vue-baidu-map'
+import { BmNavigation, BmPointCollection, BmGeolocation, BmlLushu, BmDriving, BmPolyline } from 'vue-baidu-map'
 
 export default {
   mixins: [addModel, model],
@@ -341,11 +347,11 @@ export default {
     BmPointCollection,
     BmGeolocation,
     BmlLushu,
-    BmDriving
+    BmDriving, BmPolyline
   },
   data() {
     return {
-      activeName: 0,
+      activeName: null,
       map: {
         isReady: false,
         zoom: 14,
@@ -429,6 +435,7 @@ export default {
   mounted() {
     this.currentTitle = this.data.title || ''
     if (this.data.type === 'view') {
+      this.activeName = ['1']
       this.fetchDetail()
     } if (this.data.type === 'map') {
       this.fetchDetail()
@@ -476,7 +483,7 @@ export default {
       this.play = false
     },
     handleSearchComplete(res) {
-    //   this.path = res.getPlan(0).getRoute(0).getPath()
+      // this.path = res.getPlan(0).getRoute(0).getPath()
     },
     tabsCallBack(index) {
       this.curIndex = index
