@@ -60,7 +60,7 @@
                         <span v-cloak>{{form.sorterName}}</span>
                       </el-form-item>
                     </el-col> -->
-    
+
                   </el-row>
                 </div>
             </div>
@@ -106,7 +106,7 @@
                       </template>
                     </el-table-column>
                       <!-- 加 -->
-                    <el-table-column prop="operator" label="分拣操作人" align="center"></el-table-column> 
+                    <el-table-column prop="operator" label="分拣操作人" align="center"></el-table-column>
                     <el-table-column prop="sum" label="操作" align="center">
                       <template slot-scope="scope">
                           <el-button type="text" size="mini" v-if="!scope.row.barCode" @click.stop="clickToUpdate(scope.$index,scope.row)">保存</el-button>

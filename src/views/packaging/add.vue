@@ -78,7 +78,7 @@
                         <span v-else v-cloak> / </span>
                       </el-form-item>
                     </el-col>
-    
+
                   </el-row>
                 </div>
             </div>
@@ -177,7 +177,6 @@ export default {
   },
   methods: {
     onkeydown(e) {
-      console.log('xxx0000000000')
       if (!e.which) {
         this.$message({ type: 'error', message: '浏览器不支持该扫描枪，请使用谷歌浏览器,QQ浏览器' })
         return

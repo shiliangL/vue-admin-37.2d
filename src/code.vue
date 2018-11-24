@@ -30,8 +30,8 @@
 export default {
   methods: {
     cp() {
-	  const data = JSON.parse(JSON.stringify())
-	  console.log(data)
+      const data = JSON.parse(JSON.stringify())
+      console.log(data)
     }
   }
 }

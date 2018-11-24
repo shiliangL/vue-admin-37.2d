@@ -16,19 +16,19 @@
           <el-table-column prop="createdTime" label="出库单创建时间" align="center"></el-table-column>
           <el-table-column prop="completionTime" label="打包完成时间" align="center"></el-table-column>
           <el-table-column prop="finishStatus" label="扫描状态" align="center">
-              <template slot-scope="scope"> 
+              <template slot-scope="scope">
                 <!-- 订单明细是否完全被扫描完成 -->
                 <el-tag size="mini" type="success" v-if="scope.row.finishStatus===1">完成</el-tag>
                 <el-tag size="mini" type="danger" v-if="scope.row.finishStatus===0">未完成</el-tag>
               </template>
           </el-table-column>
           <el-table-column prop="finishStatus" label="打印状态" align="center">
-              <template slot-scope="scope"> 
+              <template slot-scope="scope">
                 <!-- 订单生成条码之后完成状态 -->
                 <el-tag size="mini" type="success" v-if="scope.row.barCodeStatus===1">已打印</el-tag>
                 <el-tag size="mini" type="warning" v-if="scope.row.barCodeStatus===0">未打印</el-tag>
               </template>
-          </el-table-column> 
+          </el-table-column>
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
               <template v-if="scope.row.finishStatus===1">
@@ -39,7 +39,7 @@
             </template>
           </el-table-column>
         </el-table>
-        
+
         <el-pagination
           slot="footer"
           @size-change="handleSizeChange"
@@ -55,7 +55,7 @@
 
       <!-- 弹层 -->
       <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add>
-      
+
     </div>
 </template>
 
@@ -213,7 +213,7 @@ export default {
           // LODOP.PREVIEW()
           // LODOP.PRINT_DESIGN()
           // LODOP.SET_PREVIEW_WINDOW(0, 0, 0, 0, 0, '')
-          LODOP.PRINT()// 直接打印
+          LODOP.PRINT()// 直接打印xxx
         }, 400)
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
@@ -281,5 +281,5 @@ export default {
 </script>
 
 <style scoped>
- 
+
 </style>
