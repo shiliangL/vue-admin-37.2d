@@ -19,14 +19,14 @@
               </el-input>
             </el-form-item>
 
-            <el-button type="primary" style="width:100%;margin-bottom:30px;" 
+            <el-button type="primary" style="width:100%;margin-bottom:30px;"
               class="button-login" :loading="loading" @click="handleLogin">{{$t('login.logIn')}}</el-button>
 
           </el-form>
 
         </el-card>
         <div class="copyright">
-          <p> Copyright © www.chumanduo.com, All Rights Reserved 20181123</p>
+          <p> Copyright © www.chumanduo.com, All Rights Reserved 20181126</p>
         </div>
       </div>
     </div>
@@ -127,7 +127,7 @@ export default {
   background-color: #1cbc9c;
   height: 100%;
   width: 100%;
-  
+
   .container{
     z-index: 10;
     height: 100%;
@@ -135,7 +135,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-  } 
+  }
 
   .form-group {
     margin-top: -150px;
