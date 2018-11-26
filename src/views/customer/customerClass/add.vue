@@ -13,8 +13,8 @@
               <template v-if="this.data.type === 'view' && this.data.obj.status ===1">
                 <el-button v-if="!isAudit" type="text" size="mini" @click.stop="clickToAudit">审核</el-button>
                 <template v-if="isAudit">
-                  <el-button type="text" size="mini" @click.stop="validateNoPassForm">拒绝</el-button>
-                  <el-button type="text" size="mini" @click.stop="validatePassForm">同意</el-button>
+                  <el-button type="text" size="mini" @click.stop="validateNoPassForm">拒绝-未对接APP数据参数</el-button>
+                  <el-button type="text" size="mini" @click.stop="validatePassForm">同意-未对接APP数据参数</el-button>
                 </template>
              </template>
 
@@ -34,11 +34,11 @@
            <div v-show="curIndex===0">
              <basicFrom ref="basicFrom" :isPass.sync="isPassBasic" :isAddView="isAddView" :data="basicObj" @callBack="basicFromCallBack"></basicFrom>
            </div>
-          
+
           <div v-show="curIndex===1">
             <moneyPlan ref="moneyPlan" :isPass.sync="isPassMoneyPlan" :isAddView="isAddView" :data="moneyObj" @callBack="moneyPlanCallBack"></moneyPlan>
           </div>
-          
+
            <div v-show="curIndex===2">
              <addressForm ref="addressForm" :isPass.sync="isPassAddress" :isAddView="isAddView" :data="addressArrt" @callBack="addressCallBack"></addressForm>
            </div>
@@ -359,7 +359,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
- 
+
 .content-box {
     width: 100%;
     position: relative;
@@ -379,5 +379,5 @@ export default {
       box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.23);
     }
 }
- 
+
 </style>

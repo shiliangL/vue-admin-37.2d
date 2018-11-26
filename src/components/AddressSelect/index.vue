@@ -1,30 +1,30 @@
 <template>
   <div class="clearfix AddressSelect">
     	<el-select size="small" :style="{width}" filterable v-model="form.province" value-key="id" @change="selectChange($event,0)">
-					<el-option v-for="sub in options.province" 
-            :key="sub.id" 
-            :label="sub.title" 
+					<el-option v-for="sub in options.province"
+            :key="sub.id"
+            :label="sub.title"
             :value="sub">
           </el-option>
 			</el-select>
     	<el-select size="small" :style="{width}" filterable v-model="form.city" value-key="id" @change="selectChange($event,1)">
-					<el-option v-for="sub in options.city" 
-            :key="sub.id" 
-            :label="sub.title" 
+					<el-option v-for="sub in options.city"
+            :key="sub.id"
+            :label="sub.title"
             :value="sub">
           </el-option>
 			</el-select>
     	<el-select size="small" :style="{width}" filterable v-model="form.area" value-key="id" @change="selectChange($event,2)">
-					<el-option v-for="sub in options.area" 
-            :key="sub.id" 
-            :label="sub.title" 
+					<el-option v-for="sub in options.area"
+            :key="sub.id"
+            :label="sub.title"
             :value="sub">
           </el-option>
 			</el-select>
       <div class="address">
           <el-input
             type="textarea"
-            :autosize="{ minRows: 2, maxRows: 4}" 
+            :autosize="{ minRows: 2, maxRows: 4}"
             placeholder="详细地址不能超30位" maxlength="30"
             size="small" style="width:400px" v-model.trim="form.address" @input="selectChange($event,3)">
           </el-input>
@@ -125,6 +125,7 @@ export default {
 
           this.options.city = []
           this.options.area = []
+          this.form.address = null
           this.$emit('change', null)
         }
         if (n) {
@@ -146,6 +147,7 @@ export default {
         if (n && o && n.id !== o.id) {
           this.form.area = null
           this.options.area = []
+          this.form.address = null
           this.$emit('change', null)
         }
         if (n) {
@@ -159,6 +161,14 @@ export default {
           }).catch(e => {
             this.$message({ type: 'error', message: e.msg })
           })
+        }
+      }
+    },
+    'form.area': {
+      handler(n, o) {
+        if (n && o && n.id !== o.id) {
+          this.form.address = null
+          this.$emit('change', null)
         }
       }
     }

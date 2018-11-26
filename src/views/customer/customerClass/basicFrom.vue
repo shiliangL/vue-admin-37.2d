@@ -30,7 +30,7 @@
 
 										<el-select  v-if="isAddView" size="small" style="width:180px" v-model="managerDTO" placeholder="请选择" @change="selectManager" filterable value-key="staffId">
 											<el-option size="small" style="width:180px" v-for="item in options.managerOption" :key="item.staffId" :label="item.staffName" :value="item"> </el-option>
-										</el-select> 
+										</el-select>
 										<el-input v-if="isAddView" size="small" style="width:180px;display: none;" placeholder="验证使用" v-model.trim="form.staffId"></el-input>
 
 										<span v-else v-cloak> {{ form.managerName }} </span>
@@ -52,7 +52,7 @@
 									<!-- regionId (string, optional): 区域Id , regionName (string, optional), -->
 										<el-select v-if="isAddView" size="small" style="width:180px" v-model="form.regionId" placeholder="请选择" clearable filterable>
 											<el-option size="small" v-for="item in options.areaOption" :key="item.id" :label="item.title" :value="item.id"> </el-option>
-										</el-select> 
+										</el-select>
 										<span v-else v-cloak> {{ form.regionName }} </span>
 									</el-form-item>
 								</el-col>
@@ -63,12 +63,12 @@
 										<!-- "categoryId": "string", "categoryName": "string", -->
 										<el-select v-if="isAddView" size="small" style="width:180px" v-model="form.categoryId" placeholder="请选择">
 											<el-option size="small" style="width:180px" v-for="item in options.categoryOption" :key="item.pk" :label="item.title" :value="item.pk"> </el-option>
-										</el-select> 
+										</el-select>
 										<span v-else v-cloak> {{ form.categoryName }} </span>
 
 									</el-form-item>
 								</el-col>
- 
+
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="客户头像:" prop="portraitId">
                     <div class="portraitId el-upload el-upload--picture-card" v-if="form.patUser.portraitId">
@@ -77,7 +77,7 @@
                     <span v-else v-cloak> 暂无 </span>
 									</el-form-item>
 								</el-col>
- 
+
               </el-row>
 
                <el-row>
@@ -130,7 +130,7 @@
 					     <el-row>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label=" 账号状态设置:">
-                    <span v-if="!isAddView"> 
+                    <span v-if="!isAddView">
                       <el-tag v-cloak size="mini" v-if="form.patUser.status ===1"> 启用 </el-tag>
                       <el-tag size="mini" type="danger" v-else> 禁用 </el-tag>
                     </span>
@@ -266,7 +266,6 @@ export default {
   watch: {
     data: {
       handler(item) {
-        console.log(item, '注意基本信息改变了')
         if (item) {
           if (item.id) item.contacts = item.dto.contacts
           this.managerDTO = {
@@ -277,12 +276,15 @@ export default {
           if (shopAddressEntity) {
             const SSQ = shopAddressEntity.addessIds.split(',')
             const address = shopAddressEntity.address.split(',')
-            this.idsArr = [
-              { id: SSQ[0], title: '省份' },
-              { id: SSQ[1], title: '城市' },
-              { id: SSQ[2], title: '区' },
-              address[address.length - 1]
-            ]
+
+            if (SSQ.length && address.length) {
+              this.idsArr = [
+                { id: SSQ[0], title: address[0] },
+                { id: SSQ[1], title: address[1] },
+                { id: SSQ[2], title: address[2] },
+                address[address.length - 1]
+              ]
+            }
             this.form.addressArrt = shopAddressEntity.address
           } else {
             item.shopAddressEntity = Object.assign({}, this.form.shopAddressEntity)
@@ -301,5 +303,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
- 
+
 </style>

@@ -46,7 +46,7 @@
           </div>
             <el-form-item label="地址:" label-width="67px" prop="addressArrt" :rules="rules.input">
               <el-input size="small" v-model.trim="addressForm.addressArrt" style="width:180px;display: none;"></el-input>
-              <AddressSelect width="130px" @change="selectAddress"/>
+              <AddressSelect width="130px" :ids="idsArr" @change="selectAddress"/>
             </el-form-item>
         </el-form>
         <div class="footer-block">
@@ -81,6 +81,7 @@ export default {
     return {
       dialogVisible: false,
       tableData: [],
+      idsArr: [],
       addressForm: {
         addressArrt: null,
         contacts: null,
@@ -110,10 +111,27 @@ export default {
       this.dialogVisible = true
       this.isUpdate = true
       this.isUpdateIndex = index
-      debugger
+      // 定位点击
+      item.isClick = 1
       this.addressForm = Object.assign(this.addressForm, item)
+
+      this.addressForm.addressArrt = item.address
+      const SSQ = this.addressForm.addessIds.split(',') || []
+      const address = this.addressForm.address.split(',') || []
+      if (SSQ.length && address.length) {
+        this.idsArr = [
+          { id: SSQ[0], title: address[0] },
+          { id: SSQ[1], title: address[1] },
+          { id: SSQ[2], title: address[2] },
+          address[address.length - 1]
+        ]
+      }
     },
     clickToDelete(index, item) {
+      if (this.tableData.length === 1) {
+        this.$message({ type: 'warning', message: '收货地址不能为空' })
+        return
+      }
       this.tableData.splice(index, 1)
       if (this.tableData.length === 1) {
         this.tableData[0].status = 1
@@ -122,9 +140,11 @@ export default {
     selectAddress(item) {
       if (item) {
         if (item.province && item.city && item.area && item.address) {
-          this.addressForm.addressArrt = `验证通过`
           this.addressForm.addessIds = `${item.province.id},${item.city.id},${item.area.id}`
           this.addressForm.address = `${item.province.title},${item.city.title},${item.area.title},${item.address}`
+          this.addressForm.addressArrt = `验证通过`
+        } else {
+          this.addressForm.addressArrt = null
         }
       } else {
         this.addressForm.addressArrt = null
@@ -133,14 +153,32 @@ export default {
     clickToConfirm() {
       this.$refs['addressForm'].validate((valid) => {
         if (valid) {
-          const data = JSON.parse(JSON.stringify(this.addressForm))
+          const { tableData } = this
+          const addressFormcp = JSON.parse(JSON.stringify(this.addressForm))
           if (this.isUpdate) {
-            this.tableData[this.isUpdateIndex].contacts = data.contacts
-            this.tableData[this.isUpdateIndex].mobile = data.mobile
-            this.tableData[this.isUpdateIndex].address = data.address
+            if (Array.isArray(tableData) && tableData.length > 0) {
+              for (const item of tableData) {
+                if (item.isClick) {
+                  item.contacts = addressFormcp.contacts
+                  item.mobile = addressFormcp.mobile
+                  item.address = addressFormcp.address
+                  item.addessIds = addressFormcp.addessIds
+
+                  delete item.isClick
+                }
+              }
+            }
           } else {
-            if (this.tableData.length === 0) { data.status = 1 }
-            this.tableData.push(data)
+            if (this.tableData.length === 0) { addressFormcp.status = 1 }
+            this.tableData.push({
+              addressArrt: null,
+              contacts: addressFormcp.contacts,
+              mobile: addressFormcp.mobile,
+              addessIds: addressFormcp.addessIds,
+              address: addressFormcp.addessIds,
+              status: addressFormcp.status,
+              type: 0
+            })
           }
           this.dialogVisible = false
         } else {
@@ -150,21 +188,24 @@ export default {
       })
     },
     reset() {
+      this.idsArr = []
       this.isUpdate = false
       this.isUpdateIndex = null
-      this.$setKeyValue(this.addressForm, {
+      this.addressForm = {
         addressArrt: null,
         contacts: null,
         mobile: null,
         addessIds: null,
         address: null,
         status: 0,
-        type: 0 })
+        type: 0 }
     },
     validateForm() {
       const data = JSON.parse(JSON.stringify(this.tableData))
       for (const item of data) {
-        delete item.addressArrt
+        if (item.hasOwnProperty('addressArrt')) {
+          delete item.addressArrt
+        }
       }
       this.$emit('update:isPass', true)
       this.$emit('callBack', data)

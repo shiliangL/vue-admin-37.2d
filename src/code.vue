@@ -15,7 +15,7 @@
 				<div class="footer-block">
 					<span class="page" v-cloak> 共 {{tableOne.length}} 条</span>
 				</div>
-					
+
         <el-table-column prop="remark" width="200" show-overflow-tooltip label="备注" align="center"></el-table-column>
 			<!-- 搜索 -->
 			 <div class="search">
