@@ -13,7 +13,7 @@
         </div>
         <div class="content-bar">
 	        <el-form :model="form" ref="form" :inline="true">
-            
+
             <!--基本信息-->
             <div class="row-item">
                 <div class="row-title">基本信息</div>
@@ -63,7 +63,7 @@
                         <span v-cloak>{{form.personnelName}}</span>
                       </el-form-item>
                     </el-col>
-    
+
                   </el-row>
                 </div>
             </div>
@@ -115,7 +115,7 @@
                         <span v-cloak>{{form.personnelName}}</span>
                       </el-form-item>
                     </el-col> -->
-    
+
                   </el-row>
                 </div>
             </div>
@@ -131,7 +131,7 @@
                     </el-select>
                   </div>
 
-                  <div class="left" v-if="searchBarOptons.levelTowOption.length"> 
+                  <div class="left" v-if="searchBarOptons.levelTowOption.length">
                     <el-select class="w110" size="small" v-model="levelFecond" clearable filterable placeholder="二级分类">
                       <el-option v-for="sub in searchBarOptons.levelTowOption" :key="sub.id" :label="sub.title" :value="sub.id"></el-option>
                     </el-select>
@@ -169,14 +169,31 @@
                     <el-table-column prop="warehouseTime" label="入库时间" align="center"></el-table-column>
                     <el-table-column prop="quantity" label="实际入库量" align="center"></el-table-column>
                     <el-table-column prop="operator" label="入库操作人" align="center"></el-table-column>
-                    <el-table-column prop="auditStatus" label="采购退/换货状态" align="center">
+                    <el-table-column prop="" label="采购退/换货状态" align="center">
                       <template slot-scope="scope" align="center">
-                        <span v-cloak> {{scope.row.returnState | filterStatus }} </span>
+                            <template v-if="scope.row.returnType === 1">
+                              <!-- 退货 -->
+                              <el-tag size="small" type="warning" v-if="scope.row.returnStatus ===0">退货进行中</el-tag>
+                              <el-tag size="small" v-if="scope.row.returnStatus ===1">退货已完成</el-tag>
+                            </template>
+                            <template v-if="scope.row.returnType === 2">
+                              <!-- 换货 -->
+                              <el-tag size="small" type="warning" v-if="scope.row.returnStatus ===0">换货进行中</el-tag>
+                              <el-tag size="small" v-if="scope.row.returnStatus ===1">换货已完成</el-tag>
+                            </template>
                       </template>
                     </el-table-column>
- 
+                    <el-table-column prop="" width="120" label="操作" align="center">
+                      <template slot-scope="scope" align="center">
+                        <template v-if="scope.row.noClick">
+                          <el-button type="text" style="color:red" size="mini" @click.stop="handlerClick(scope.$index,scope.row,1)">退货</el-button>
+                          <el-button type="text" size="mini" @click.stop="handlerClick(scope.$index,scope.row,2)">换货</el-button>
+                        </template>
+                      </template>
+                    </el-table-column>
+
                   </el-table>
-                  
+
                   <el-pagination
                     slot="footer"
                     @size-change="handleSizeChange"
@@ -190,11 +207,18 @@
 
                 </table-contain>
 
- 
+
               </div>
             </div>
 	        </el-form>
         </div>
+
+
+        <!-- 弹层区域 -->
+        <el-dialog :title="dialogTitle"  width="390px" :visible.sync="dialogVisible" append-to-body center @close="onRefresh">
+          <AddDetail v-if="dialogVisible" @close="dialogVisible=false" :propsSonData="propsParentData"> </AddDetail>
+        </el-dialog>
+
       </div>
 
       <!-- <Loading v-if="loading" @loadingRefresh="onRefresh" :loadingText="loadingText" class="Loading"></Loading> -->
@@ -206,12 +230,15 @@
 <script>
 import addModel from '@/public/addModel.js'
 import model from '@/public/listModel.js'
-
-import { Detail, tableDetail } from '@/api/buy/buyOrders.js'
+import { Detail, tableDetail, fetchAvailableQuantity } from '@/api/buy/buyOrders.js'
 import { fecthGoodsClass } from '@/api/goodsList.js'
+import AddDetail from './AddDetail'
 
 export default {
   mixins: [addModel, model],
+  components: {
+    AddDetail
+  },
   data() {
     return {
       searchBarOptons: {
@@ -256,24 +283,6 @@ export default {
     this.fecthDetailById()
     this.fecthGoodsClass()
   },
-  filters: {
-    filterStatus(status) {
-      switch (status) {
-        case 0:
-          return '全部'
-        case 1:
-          return '待采购'
-        case 2:
-          return '采购中'
-        case 3:
-          return '待收货'
-        case 4:
-          return '已收货'
-        default:
-          return ''
-      }
-    }
-  },
   methods: {
     fecthGoodsClass() {
       fecthGoodsClass().then(({ data }) => {
@@ -310,7 +319,17 @@ export default {
         orderId: this.data.obj.id
       }
       tableDetail(data).then(({ data }) => {
-        this.table.data = data.rows
+        if (Array.isArray(data.rows)) {
+          for (const item of data.rows) {
+            // whetherCreateStockOrder 1标识已经生成入库单
+            if (item.whetherCreateStockOrder === 0 && item.returnStatus !== 0) {
+              item.noClick = true
+            } else {
+              item.noClick = false
+            }
+          }
+          this.table.data = data.rows
+        }
         this.pagination.total = data.total
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
@@ -334,6 +353,7 @@ export default {
     },
     onRefresh() {
       this.fecthDetailById()
+      this.propsParentData = null
     },
     fecthDetailById() {
       if (!this.data.obj.id) return
@@ -353,7 +373,17 @@ export default {
         orderId: this.data.obj.id
       }
       tableDetail(data).then(({ data }) => {
-        this.table.data = data.rows
+        if (Array.isArray(data.rows)) {
+          for (const item of data.rows) {
+            // whetherCreateStockOrder 1标识已经生成入库单
+            if (item.whetherCreateStockOrder === 0 && item.returnStatus !== 0) {
+              item.noClick = true
+            } else {
+              item.noClick = false
+            }
+          }
+          this.table.data = data.rows
+        }
         this.pagination.total = data.total
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
@@ -367,6 +397,27 @@ export default {
     handleCurrentChange(value) {
       this.pagination.index = value
       this.tableDetail()
+    },
+    handlerClick(index, item, type) {
+      if (!item.id) return
+      fetchAvailableQuantity(item.id).then(({ data }) => {
+        if (data) {
+          this.dialogTitle = type === 1 ? '采购退货申请' : '采购换货申请'
+          this.dialogVisible = true
+          this.propsParentData = item
+          this.propsParentData.type = type
+          this.propsParentData.canReturnsQuantity = data
+        } else {
+          this.$message({ type: 'warning', message: '无可退换数量' })
+        }
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+      // this.dialogTitle = type === 1 ? '采购换货申请' : '采购换货申请'
+      // this.dialogVisible = true
+      // this.propsParentData = item
+      // this.propsParentData.type = type
+      // this.propsParentData.canReturnsQuantity = 1000
     },
     validateForm() {
       if (this.$refs['addview']) {

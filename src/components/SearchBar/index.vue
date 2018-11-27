@@ -37,7 +37,7 @@
         <div class="right" v-show="rightVisible">
           <div class="left" v-for="(item, index) in data[1]" :key="index">
             <template v-if="item.type === 'add'">
-              <el-button size="small" @click="clickAdd">{{item.name}}</el-button>
+              <el-button type="primary" size="small" @click="clickAdd">{{item.name}}</el-button>
             </template>
             <template v-if="item.type === 'button'">
               <el-button size="small" @click="clickBtn(item)">{{item.name}}</el-button>

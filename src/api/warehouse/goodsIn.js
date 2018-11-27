@@ -43,6 +43,16 @@ export function findMore(params) {
     params
   })
 }
+
+// 采购退换货数据-新增商品入库
+export function purchaseReturn(params) {
+  return request({
+    url: 'cmm/purchaseReturnsGoods/queryPurchaseReturnStockInList',
+    method: 'get',
+    params
+  })
+}
+
 // 销售/退货入库
 export function returnChangeList(params) {
   return request({

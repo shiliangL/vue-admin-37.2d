@@ -24,3 +24,19 @@ export function tableDetail(params) {
   })
 }
 
+// 采购退换申请
+export function fetchApply(data) {
+  return request({
+    url: 'cmm/purchaseReturnsGoods/apply',
+    method: 'POST',
+    data
+  })
+}
+
+export function fetchAvailableQuantity(id) {
+  return request({
+    url: `cmm/purchaseReturnsGoodsDetails/queryExchangeableQuantity?purchaseOrderDetailsId=${id}`,
+    method: 'get'
+  })
+}
+

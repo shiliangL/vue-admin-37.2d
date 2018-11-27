@@ -27,34 +27,34 @@
                   </el-select>
 
                   <el-select v-model="storageType" placeholder="请选择类型" size="small" style="width:120px" filterable  @change="stockChange">
-                    <el-option v-for="item in options.storageType" :key="item.value" :label="item.label" :value="item.value"> </el-option> 
+                    <el-option v-for="item in options.storageType" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                   </el-select>
                   <el-button  type="primary" size="small" @click.stop="fecthList" v-if="storageType !==4" > 加载数据 </el-button>
 
                   <template v-if="storageType ===4">
-                    
-                    <div class="flex-box"> 
+
+                    <div class="flex-box">
                         <div>
                           <el-select class="w110" size="small" v-model="levelFirst" clearable filterable placeholder="一级分类">
                             <el-option v-for="sub in searchBarOptons.categoryOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                           </el-select>
                         </div>
 
-                        <div v-if="searchBarOptons.levelTowOption.length"> 
+                        <div v-if="searchBarOptons.levelTowOption.length">
                           <el-select class="w110" size="small" v-model="levelFecond" clearable filterable placeholder="二级分类">
                             <el-option v-for="sub in searchBarOptons.levelTowOption" :key="sub.id" :label="sub.title" :value="sub.id"></el-option>
                           </el-select>
                         </div>
 
                         <div>
-                          <SearchBox style="width:180px" keyName="title"  
-                            :updateKey="updateKey" 
+                          <SearchBox style="width:180px" keyName="title"
+                            :updateKey="updateKey"
                             tableName="productName"
-                            tableCode="categoryName" 
-                            nameLabel="商品" 
-                            codeLabel="类别" 
+                            tableCode="categoryName"
+                            nameLabel="商品"
+                            codeLabel="类别"
                             PutInStorage
-                            requestUrl="purchaseAcceptInfo/queryOtherStockInProductList" 
+                            requestUrl="purchaseAcceptInfo/queryOtherStockInProductList"
                             v-model="addDoodsDTO">
                           </SearchBox>
                         </div>
@@ -92,7 +92,7 @@
                     <el-table-column prop="planQuantity" label="数量" align="center">
                        <template slot-scope="scope">
                         <el-form-item label="" label-width="0px" :prop="'stockInDetailList.'+scope.$index+'.planQuantity'" :rules="[{trigger: 'change', validator: rules.validNumberR2N0}]">
-                          <el-input style="width:110px" placeholder="请输入" size="small" v-model.trim="scope.row.planQuantity"></el-input> 
+                          <el-input style="width:110px" placeholder="请输入" size="small" v-model.trim="scope.row.planQuantity"></el-input>
                         </el-form-item>
                       </template>
                     </el-table-column>
@@ -140,6 +140,8 @@
                     <el-table-column v-if="storageType===1"  prop="orderNo" label="关联采购订单编号" align="center"></el-table-column>
                     <el-table-column v-if="storageType===2"  prop="orderNo" label="关联销售退货单号" align="center"></el-table-column>
                     <el-table-column v-if="storageType===3"  prop="orderNo" label="关联销售换货单号" align="center"></el-table-column>
+                    <el-table-column v-if="storageType===5"  prop="orderNo" label="采购退/换货单号" align="center"></el-table-column>
+
                     <el-table-column prop="createdTime" label="仓位" align="center" width="220">
                       <template slot-scope="scope">
                         <div class="item-box">
@@ -176,7 +178,7 @@
 
             <template v-if="this.data.type === 'view'">
 
-              <div class="viewPage"> 
+              <div class="viewPage">
                 <!--基本信息-->
                 <div class="row-item">
                   <div class="row-title">基本信息</div>
@@ -196,6 +198,7 @@
                         <span v-cloak v-if="viewData.storageType==2">销售退货</span>
                         <span v-cloak v-if="viewData.storageType==3">销售换货</span>
                         <span v-cloak v-if="viewData.storageType==4">其他</span>
+                        <span v-cloak v-if="viewData.storageType==5">采购退换货</span>
                       </el-col>
                       <el-col :xs="24" :sm="10" :md="8" :lg="6">
                         <span class="title-label">创建人:</span>
@@ -208,11 +211,11 @@
                     </el-row>
                   </div>
                 </div>
-                  
+
                 <div class="row-item">
                   <div class="row-title">商品信息</div>
                   <div class="row-content">
-                    
+
                     <div class="search">
                         <el-input size="small" style="width:190px" class="w180"  placeholder="请输入商品名称检索" v-model.trim="viewSearch"></el-input>
                         <el-button  type="primary" size="small" @click.stop="clickToSearch" > 搜索 </el-button>
@@ -239,6 +242,7 @@
                           <span v-if="scope.row.storageType === 2"> 销售退货 </span>
                           <span v-if="scope.row.storageType === 3"> 销售换货 </span>
                           <span v-if="scope.row.storageType === 4"> 其他 </span>
+                          <span v-if="viewData.storageType === 5">采购退换货</span>
                         </template>
                       </el-table-column>
                       <el-table-column prop="quantity" label="入库数量" align="center"></el-table-column>
@@ -256,7 +260,7 @@
               </div>
 
             </template>
-            
+
         </div>
       </div>
 
@@ -269,7 +273,7 @@
 <script>
 import rules from '@/public/rules.js'
 import addModel from '@/public/addModel.js'
-import { findMore, createRk, detailRk, fecthBodyDetail, returnChangeList, fecthStockList } from '@/api/warehouse/goodsIn.js'
+import { findMore, createRk, detailRk, fecthBodyDetail, returnChangeList, fecthStockList, purchaseReturn } from '@/api/warehouse/goodsIn.js'
 import { fecthGoodsClass } from '@/api/goodsList.js'
 import { fecthAllCW } from '@/api/warehouse/setting.js'
 import { SearchBox } from '@/components/base.js'
@@ -326,6 +330,7 @@ export default {
           { label: '采购入库', value: 1 },
           { label: '销售退货', value: 2 },
           { label: '销售换货', value: 3 },
+          { label: '采购退换货', value: 5 },
           { label: '其他', value: 4 }
         ]
       },
@@ -442,6 +447,23 @@ export default {
           method: this.storageType === 2 ? 1 : 2
         }
         returnChangeList(data).then(({ data }) => {
+          if (!this.cwOption) return
+          for (const item of data) {
+            if (this.cwOption[item.stockId]) {
+              item.storageIdsOption = JSON.parse(
+                JSON.stringify(this.cwOption[item.stockId])
+              )
+            } else {
+              item.storageIdsOption = []
+            }
+          }
+          this.form.stockInDetailList = data
+        }).catch(e => {
+          this.$message({ type: 'error', message: e.msg })
+        })
+      } else if (this.storageType === 5) {
+        console.log('采购退换货')
+        purchaseReturn({ stockId: this.stockId }).then(({ data }) => {
           if (!this.cwOption) return
           for (const item of data) {
             if (this.cwOption[item.stockId]) {

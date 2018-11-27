@@ -83,12 +83,12 @@ export default {
           { type: 'option', value: null, key: 'buyerId', class: 'w150', placeholder: '采购员', options: [
 
           ] },
-          { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '输入采购的订单编号' },
+          { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '输入订单编号检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
         [
-          { type: 'button', name: '新增' }
+          // { type: 'button', name: '新增' }
           // { type: 'more', labels: ['导入', '上传图片'] }
         ]
       ]

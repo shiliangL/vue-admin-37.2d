@@ -12,7 +12,7 @@
               <span>{{scope.$index + 1}}</span>
             </template>
           </el-table-column>
- 
+
 					<el-table-column prop="orderNo" label="入库单号" align="center"></el-table-column>
 					<el-table-column prop="stockInfoName" label="仓库" align="center"></el-table-column>
 					<el-table-column prop="storageType" label="入库类型" align="center">
@@ -21,6 +21,7 @@
               <span v-if="scope.row.storageType === 2"> 销售退货 </span>
               <span v-if="scope.row.storageType === 3"> 销售换货 </span>
               <span v-if="scope.row.storageType === 4"> 其他 </span>
+              <span v-if="scope.row.storageType === 5"> 采购退换货 </span>
             </template>
           </el-table-column>
 					<el-table-column prop="createdName" label="创建人" align="center"></el-table-column>
@@ -31,7 +32,7 @@
                 <el-tag size="mini" type="danger" v-if="scope.row.finishStatus===0">未完成</el-tag>
             </template>
           </el-table-column>
- 
+
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">查看</el-button>
@@ -40,7 +41,7 @@
           </el-table-column>
 
         </el-table>
-        
+
         <el-pagination
           slot="footer"
           @size-change="handleSizeChange"
@@ -56,7 +57,7 @@
 
       <!-- 弹层 -->
       <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add>
-      
+
     </div>
 </template>
 
@@ -182,5 +183,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
- 
+
 </style>

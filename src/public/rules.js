@@ -71,6 +71,20 @@ export default {
             return callback(new Error('请输入正整数'))
           }
           callback()
+        },
+        // 关联限制
+        validNumberRe: (rule, value, callback) => {
+          if (!value) {
+            return callback(new Error('请输入'))
+          }
+          var reg = /^([0-9][\d]{0,5})(\.[\d]{1,2})?$/
+          if (!reg.test(value)) {
+            return callback(new Error('请输入有效数字'))
+          }
+          if ((value) * 1 > (rule.RE) * 1) {
+            return callback(new Error(rule.meg))
+          }
+          callback()
         }
       }
     }

@@ -61,7 +61,8 @@ export const constantRouterMap = [
     },
     children: [
       { path: 'banner', component: _import('frontShop/banner/index'), name: 'banner', meta: { title: 'banner', noCache: true }},
-      { path: 'feedback', component: _import('frontShop/feedback/index'), name: 'feedback', meta: { title: 'feedback', noCache: true }}
+      { path: 'feedback', component: _import('frontShop/feedback/index'), name: 'feedback', meta: { title: 'feedback', noCache: true }},
+      { path: 'coupons', component: _import('frontShop/coupons/index'), name: 'coupons', meta: { title: 'coupons', noCache: true }}
     ]
   },
   {
