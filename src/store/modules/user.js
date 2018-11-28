@@ -16,6 +16,7 @@ const user = {
     menuList: [],
     curMenuIndex: 0,
     qNtoken: null,
+    userObj: null,
     loginKey: null,
     setting: {
       articlePlatform: []
@@ -25,6 +26,9 @@ const user = {
   mutations: {
     SET_CODE: (state, code) => {
       state.code = code
+    },
+    SET_USEROBJ: (state, userObj) => {
+      state.userObj = userObj
     },
     SET_LOGINKEY: (state, loginKey) => {
       state.loginKey = loginKey
@@ -84,6 +88,7 @@ const user = {
           const data = response.data
           // commit('SET_ROLES', data.roles)
           commit('SET_ROLES', ['admin'])
+          commit('SET_USEROBJ', data)
           commit('SET_NAME', data.staffName)
           // commit('SET_NAME', data.loginName)
           commit('SET_AVATAR', data.staffId)

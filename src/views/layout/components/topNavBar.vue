@@ -3,7 +3,14 @@
 			<el-row>
 				<el-col :span="24">
           <div class="topBar">
+
 					  <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
+            <div class="nav">
+              <ScrollPane class="nav-scroll-bar">
+                <span class="nav-item" v-for="(item,index) in menuList" :key="index" v-cloak :class="curIndex==index?'active' : ''"  @click="clickTabTitle(item,index)">{{item.title}}</span>
+              </ScrollPane>
+            </div>
+
             <div class="userInfo">
               <el-dropdown class="avatar-container right-menu-item" trigger="hover">
               <div class="avatar-wrapper">
@@ -18,7 +25,10 @@
                   </el-dropdown-item>
                 </router-link>
                 <el-dropdown-item divided>
-                  <span @click.stop="logout" style="display:block;">{{$t('navbar.logOut')}}</span>
+                  <span @click="changeKey" style="display:block;">修改密码</span>
+                </el-dropdown-item>
+                <el-dropdown-item divided>
+                  <span @click="logout" style="display:block;">{{$t('navbar.logOut')}}</span>
                 </el-dropdown-item>
               </el-dropdown-menu>
               </el-dropdown>
@@ -31,25 +41,32 @@
 				</el-col>
 			</el-row>
 
+    <!-- 弹层区域 -->
+    <el-dialog title="修改密码" width="520px" :visible.sync="dialogVisible" append-to-body center @close="closeForm">
+      <div v-if="dialogVisible"> <dialogKey @close="closeForm" @logout="logout"></dialogKey> </div>
+    </el-dialog>
+
     </div>
 </template>
 
 <script>
+import dialogKey from './dialogKey.vue'
 import ScrollPane from '@/components/ScrollPane'
-import { mapGetters } from 'vuex'
 import { Hamburger, Breadcrumb } from '@/components/base.js'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'topNavBar',
   components: {
     Hamburger,
     ScrollPane,
-    Breadcrumb
+    Breadcrumb,
+    dialogKey
   },
   data() {
     return {
-      curIndex: 0
+      curIndex: 0,
+      dialogVisible: false
     }
   },
   computed: {
@@ -71,7 +88,12 @@ export default {
       this.$store.dispatch('LogOut').then(() => {
         location.reload() // In order to re-instantiate the vue-router object to avoid bugs
       })
-      if (window.sessionStorage) window.sessionStorage.setItem('loginKey', null)
+    },
+    changeKey() {
+      this.dialogVisible = true
+    },
+    closeForm() {
+      this.dialogVisible = false
     }
   }
 }

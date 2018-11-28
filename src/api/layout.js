@@ -21,6 +21,14 @@ export function logout() {
   })
 }
 
+export function changePassword(data) {
+  return request({
+    url: 'operator/alterPassword',
+    method: 'post',
+    data
+  })
+}
+
 // 获取权限菜单列表
 export function fetchMenuList(params) {
   return request({

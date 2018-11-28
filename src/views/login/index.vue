@@ -51,9 +51,9 @@ export default {
     return {
       loginForm: {
         'imageCode': 'string',
-        'password': '123456',
+        'password': null,
         'rememberMe': false,
-        'username': ''
+        'username': null
       },
       loginRules: {},
       passwordType: 'password',

@@ -16,6 +16,7 @@ const getters = {
   menuList: state => state.user.menuList,
   curMenuIndex: state => state.user.curMenuIndex,
   qNtoken: state => state.user.qNtoken,
+  userObj: state => state.user.userObj,
   loginKey: state => state.user.loginKey
 }
 export default getters
