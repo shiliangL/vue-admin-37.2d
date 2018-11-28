@@ -137,6 +137,12 @@
                     <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
                     <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
                     <!-- <el-table-column prop="batchesBarCode" label="商品批次条码" align="center"></el-table-column> -->
+                    <el-table-column v-if="storageType===5"  prop="orderNo" label="采购退/换货" align="center">
+                      <template slot-scope="scope">
+                        <span v-if="scope.row.type===1">退货</span>
+                        <span v-if="scope.row.type===2">换货</span>
+                      </template>
+                    </el-table-column>
                     <el-table-column v-if="storageType===1"  prop="orderNo" label="关联采购订单编号" align="center"></el-table-column>
                     <el-table-column v-if="storageType===2"  prop="orderNo" label="关联销售退货单号" align="center"></el-table-column>
                     <el-table-column v-if="storageType===3"  prop="orderNo" label="关联销售换货单号" align="center"></el-table-column>
@@ -513,7 +519,6 @@ export default {
       } else {
         this.Addform.stockInDetailList.push(data)
         this.addDoodsDTO = null
-        console.log(this.rules)
       }
     },
     clickToDelete(index, row) {
@@ -558,6 +563,9 @@ export default {
     buyIn() {
       const arr = JSON.parse(JSON.stringify(this.form.stockInDetailList))
       for (const item of arr) {
+        if (item.hasOwnProperty('type')) {
+          delete item.type
+        }
         const isCheckArr = []
         if (item.makeDate) {
           item.makeDate = item.makeDate + ' 00:00:00'

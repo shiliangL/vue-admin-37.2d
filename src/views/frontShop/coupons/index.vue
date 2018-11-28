@@ -5,7 +5,7 @@
 
       <cupCars :data="TipsBarData" @callBack="TipsBarCallBack"></cupCars>
 
-      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction"  @add="showAdd"  @clickBtn="addExchangeAll" @reset="resetSearchBar"></search-bar>
+      <search-bar ref="searchBar" :data="searchBarData" @search="searchAction"  @add="showAdd"  @clickBtn="showDes" @reset="resetSearchBar"></search-bar>
 
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
@@ -54,34 +54,46 @@
       </table-contain>
 
       <!-- 弹层 -->
+      <el-dialog title="优惠券使用说明" :visible.sync="dialogVisible" :width="dialogVisibleType? '': '420px'" append-to-body center @close="closeDialog"  :fullscreen="dialogVisibleType? true: false" :modal-append-to-body="false"  :close-on-press-escape="true">
+        <div v-if="dialogVisible">
+          <Add v-if="dialogVisibleType" @close="dialogVisible=false" :propsSonData="propsParentData"></Add>
+          <instructions v-if="!dialogVisibleType" @close="dialogVisible=false"></instructions>
+        </div> 
+      </el-dialog>
+
+
 
     </div>
 </template>
 
 <script>
 import cupCars from './cupCars'
-// import Add from './add'
+import Add from './add'
+import instructions from './instructions'
 import model from '@/public/listModel.js'
 import { Tabs } from '@/components/base.js'
-import { fecthList, fecthTipsBar } from '@/api/buy/buyPlan.js'
+import { fecthList } from '@/api/buy/buyPlan.js'
 
 export default {
   name: 'coupons',
   mixins: [model],
   components: {
+    instructions,
     cupCars,
-    Tabs
+    Tabs,
+    Add
   },
   data() {
     return {
       curIndex: 0,
+      dialogVisibleType: 1,
       TipsBarData: [
-        { title: '共发放', number: 10, unit: '张' },
-        { title: '已获取未使用', number: 2042, unit: '张' },
-        { title: '已获取已使用', number: 2042, unit: '张' },
-        { title: '已获取已过期', number: 2042, unit: '张' },
-        { title: '未获取还有效', number: 2042, unit: '张' },
-        { title: '未获取已过期', number: 2042, unit: '张' }
+        { title: '共发放优惠券', number: 1024, unit: '张' },
+        { title: '已获取未使用', number: 1024, unit: '张' },
+        { title: '已获取已使用', number: 1024, unit: '张' },
+        { title: '已获取已过期', number: 1024, unit: '张' },
+        { title: '未获取还有效', number: 1024, unit: '张' },
+        { title: '未获取已过期', number: 1024, unit: '张' }
       ],
       searchBarData: [
         [
@@ -209,21 +221,21 @@ export default {
       this.pagination.index = value
       if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
-    // 弹层操作
-    click2view(index, row) {
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'view', obj: row, title: '采购计划详情' }})
+    closeDialog() {
+      this.dialogVisibleType = 1
+      this.propsParentData = null
+      this.fecthList()
     },
-    click2follow(index, row) {
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'follow', obj: row }})
+    showDes() {
+      this.dialogVisible = true
+      this.dialogVisibleType = 0
     },
     showAdd() {
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, title: '新增采购计划（后台新增可预采购商品）' }})
+      this.dialogVisible = true
+      this.dialogVisibleType = 1
     },
     TipsBarCallBack(value) {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'check', obj: value, title: '销售订单采购计划' }})
-    },
-    addExchangeAll() {
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'exchange', obj: { }, title: '销售换货商品汇总' }})
     },
     refrehList() {
       if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
