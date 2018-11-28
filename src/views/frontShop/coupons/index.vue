@@ -58,7 +58,7 @@
         <div v-if="dialogVisible">
           <Add v-if="dialogVisibleType" @close="dialogVisible=false" :propsSonData="propsParentData"></Add>
           <instructions v-if="!dialogVisibleType" @close="dialogVisible=false"></instructions>
-        </div> 
+        </div>
       </el-dialog>
 
 

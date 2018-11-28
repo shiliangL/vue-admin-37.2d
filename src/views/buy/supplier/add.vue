@@ -51,11 +51,18 @@
                     </el-form-item>
                   </el-col>
                   <el-col :sm="10" :md="8" :lg="8">
-                    <el-form-item label="联系人电话:" prop="mobile" :rules="rules.input">
+                    <el-form-item label="联系人电话:" prop="mobile" :rules="[{trigger: 'change', required:true, validator: rules.validPhone}]">
                       <el-input v-if="isUpdate" size="small" style="width:160px" maxlength="11"  v-model.trim="form.mobile" placeholder=""></el-input>
                       <span v-else v-cloak>{{form.mobile}}</span>
                     </el-form-item>
-                  </el-col>                   
+                  </el-col>
+
+                  <el-col :sm="10" :md="8" :lg="8">
+                    <el-form-item label="座机:" prop="telphone" :rules="[{trigger: 'change', validator: rules.validTelphone}]">
+                      <el-input v-if="isUpdate" size="small" style="width:160px" v-model.trim="form.telphone" placeholder=""></el-input>
+                      <span v-else v-cloak>{{form.telphone}}</span>
+                    </el-form-item>
+                  </el-col>
                 </el-row>
                   <el-row>
                     <el-col :span="24">
@@ -63,25 +70,25 @@
                       <AddressSelect width="130px" :ids="idsArr" v-if="isUpdate" @change="selectAddress"/>
                       <el-input v-if="isUpdate" size="small" style="width:160px;display:none"  v-model.trim="form.addressArrt" placeholder=""></el-input>
 
-                      <!-- <el-input  v-if="isUpdate" 
+                      <!-- <el-input  v-if="isUpdate"
                         type="textarea"
-                        :autosize="{ minRows: 2, maxRows: 4}" 
+                        :autosize="{ minRows: 2, maxRows: 4}"
                         placeholder="不能超30位数" maxlength="30"
                         size="small" style="width:400px" v-model.trim="form.address"></el-input> -->
 
                       <span v-else v-cloak> {{form.provinceName}} {{form.cityName}}  {{form.areaName}} {{form.address}}</span>
                     </el-form-item>
-                    
+
                     </el-col>
                   </el-row>
 
                   <el-row>
                     <el-col :span="24">
                       <el-form-item label="简要说明:">
-                      <el-input size="small" v-if="isUpdate" 
+                      <el-input size="small" v-if="isUpdate"
                       type="textarea"
-                      :autosize="{ minRows: 2, maxRows: 3}" 
-                      v-model.trim="form.summary" 
+                      :autosize="{ minRows: 2, maxRows: 3}"
+                      v-model.trim="form.summary"
                       style="width:400px" placeholder="不能超30位数" maxlength="30"></el-input>
                       <span v-else v-cloak>{{form.summary}}</span>
                     </el-form-item>
@@ -95,13 +102,13 @@
               <div class="row-content">
                 <el-row>
                   <el-col :sm="10" :md="8" :lg="8">
-                    <el-form-item label="开户银行:" prop="companyBank" :rules="rules.input">
+                    <el-form-item label="开户银行:" prop="companyBank" :rules="[{trigger: 'change', validator: rules.validNumberZh}]">
                       <el-input v-if="isUpdate" size="small" style="width:160px"  v-model.trim="form.companyBank" placeholder=""></el-input>
                       <span v-else v-cloak>{{form.companyBank}}</span>
                     </el-form-item>
                   </el-col>
                   <el-col :sm="10" :md="8" :lg="8">
-                    <el-form-item label="银行卡号:" prop="bankNo" :rules="rules.input">
+                    <el-form-item label="银行卡号:" prop="bankNo" :rules="[{trigger: 'change', validator: rules.validNumberCar}]">
                       <el-input v-if="isUpdate" size="small" style="width:160px"  v-model.trim="form.bankNo" placeholder=""></el-input>
                       <span v-else v-cloak>{{form.bankNo}}</span>
                     </el-form-item>
@@ -171,7 +178,7 @@
                   <el-col :sm="10" :md="8" :lg="8">
                     <el-form-item label="账号状态:">
 
-                      <span v-if="!isUpdate"> 
+                      <span v-if="!isUpdate">
                         <el-tag v-cloak size="mini" v-if="form.status ===1"> 启用 </el-tag>
                         <el-tag size="mini" type="danger" v-cloak v-if="form.status===0"> 禁用 </el-tag>
                       </span>
@@ -194,10 +201,10 @@
 
               <div class="search-bar">
                 <div class="left">
-                  <el-date-picker :style="{width:'140px'}" 
+                  <el-date-picker :style="{width:'140px'}"
                     size="small"
-                    v-model="searchBarData.createTime" 
-                    value-format="yyyy-MM-dd" 
+                    v-model="searchBarData.createTime"
+                    value-format="yyyy-MM-dd"
                     type="date" placeholder="订单创建时间">
                     </el-date-picker>
                 </div>
@@ -234,7 +241,7 @@
                       <span>{{scope.$index + 1}}</span>
                     </template>
                   </el-table-column>
-        
+
                   <el-table-column prop="orderNo" label="采购订单编号" align="center"></el-table-column>
                   <el-table-column prop="createdOn" label="采购订单创建时间" align="center"></el-table-column>
                   <el-table-column prop="personnelName" label="采购员" align="center"></el-table-column>
@@ -243,14 +250,14 @@
                       <span v-cloak> {{scope.row.procurementStatus | filterStatus }} </span>
                     </template>
                   </el-table-column>
-        
+
                   <el-table-column label="操作" align="center" width="180">
                     <template slot-scope="scope" align="center">
                       <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">查看</el-button>
                     </template>
                   </el-table-column>
                 </el-table>
-                
+
                 <el-pagination
                   slot="footer"
                   @size-change="handleSizeChange"
@@ -265,11 +272,11 @@
               </table-contain>
 
               <!-- 弹层 -->
-              <el-dialog title="供应商相关采购订单详情" 
-                :visible.sync="dialogVisible" 
-                append-to-body center  
-                :fullscreen="true" 
-                :modal-append-to-body="false"  
+              <el-dialog title="供应商相关采购订单详情"
+                :visible.sync="dialogVisible"
+                append-to-body center
+                :fullscreen="true"
+                :modal-append-to-body="false"
                 :close-on-press-escape="true">
                 <AddDetail v-if="dialogVisible" :propsSonData="propsParentData"> </AddDetail>
               </el-dialog>
@@ -589,5 +596,6 @@ export default {
   .el-form-item{
     margin-bottom: 18px;
   }
- 
+
 </style>
+

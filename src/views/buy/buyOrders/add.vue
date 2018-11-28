@@ -163,6 +163,11 @@
                     <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
                     <el-table-column prop="basicUnitName" label="基本单位" align="center"></el-table-column>
                     <el-table-column prop="orderQuantity" label="待采购量" align="center"></el-table-column>
+
+                    <el-table-column prop="supplierPrice" label="供应单价" align="center"></el-table-column>
+                    <el-table-column prop="supplierQuantity" label="供应数量" align="center"></el-table-column>
+                    <el-table-column prop="supplierSum" label="供应金额" align="center"></el-table-column>
+
                     <el-table-column prop="purchasePrice" label="实际采购单价" align="center"></el-table-column>
                     <el-table-column prop="realQuantity" label="实际采购量" align="center"></el-table-column>
                     <el-table-column prop="sum" label="实际采购金额" align="center"></el-table-column>

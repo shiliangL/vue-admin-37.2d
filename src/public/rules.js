@@ -32,6 +32,17 @@ export default {
           }
           callback()
         },
+        // 座机
+        validTelphone: (rule, value, callback) => {
+          if (!value) {
+            callback()
+          }
+          var reg = /0\d{2,3}-\d{7,8}/
+          if (!reg.test(value)) {
+            return callback(new Error('请输入正确的座机'))
+          }
+          callback()
+        },
         validNumberR8: (rule, value, callback) => {
           if (!value && value !== 0) {
             return callback(new Error('请输入'))
@@ -83,6 +94,20 @@ export default {
           }
           if ((value) * 1 > (rule.RE) * 1) {
             return callback(new Error(rule.meg))
+          }
+          callback()
+        },
+        validNumberCar: (rule, value, callback) => {
+          var reg = /^([0-9]{1})(\d{14}|\d{16}|\d{18})$/
+          if (!reg.test(value)) {
+            return callback(new Error('请输入正确的卡号'))
+          }
+          callback()
+        },
+        validNumberZh: (rule, value, callback) => {
+          var reg = /[^\u4E00-\u9FA5]/
+          if (reg.test(value)) {
+            return callback(new Error('请输入汉子'))
           }
           callback()
         }

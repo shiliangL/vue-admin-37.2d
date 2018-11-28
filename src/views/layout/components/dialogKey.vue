@@ -11,18 +11,18 @@
 					<el-input style="width:180px;" readonly size="small" v-model="userObj.position" auto-complete="off"></el-input>
 				</el-form-item>
 				<el-form-item label="旧登录密码" prop="oldPassword" :rules="rules.input">
-					<el-input style="width:180px;" size="small" type="password" v-model="form.oldPassword" auto-complete="off"></el-input>
+					<el-input style="width:180px;" size="small" type="password" v-model.trim="form.oldPassword" auto-complete="off"></el-input>
 				</el-form-item>
 				<el-form-item label="新登录密码" prop="newPassword" :rules="rules.input">
-					<el-input style="width:180px;" size="small" type="password" v-model="form.newPassword" auto-complete="off"></el-input>
+					<el-input style="width:180px;" size="small" type="password" v-model.trim="form.newPassword" auto-complete="off"></el-input>
 				</el-form-item>
 				<el-form-item label="确认新密码" prop="confirmKey" :rules="rules.input">
-					<el-input style="width:180px;" size="small" type="password" v-model="form.confirmKey" auto-complete="off"></el-input>
+					<el-input style="width:180px;" size="small" type="password" v-model.trim="form.confirmKey" auto-complete="off"></el-input>
 				</el-form-item>
 			</div>
 			<div style="text-align: center;padding-top: 10px;">
 				<el-button size="small" @click.stop="closeForm">取消</el-button>
-				<el-button size="small" type="primary" @click.stop="submitForm">确定</el-button>
+				<el-button size="small" :loading="saveLoading"  type="primary" @click.stop="submitForm">确定</el-button>
 			</div>
 	</el-form>
 </template>
@@ -37,6 +37,7 @@ export default {
   mixins: [rules],
   data() {
     return {
+      saveLoading: false,
       form: {
         'newPassword': null,
         'oldPassword': null,
@@ -58,8 +59,11 @@ export default {
             this.$message({ type: 'warning', message: '两次输入的新登录密码不一致' })
             return
           }
+          if (this.saveLoading) return
+          this.saveLoading = true
           const { oldPassword, newPassword } = this.form
           changePassword({ oldPassword, newPassword }).then(res => {
+            this.saveLoading = false
             if (res.code === '0') {
               this.$message({ type: 'success', message: '修改成功，请重新登录' })
               setTimeout(() => {
@@ -67,8 +71,11 @@ export default {
               }, 1000)
             }
           }).catch(e => {
+            this.saveLoading = false
             if (e.data && Array.isArray(e.data)) {
               this.$message({ type: 'error', message: e.data[0].message })
+            } else {
+              this.$message({ type: 'error', message: e.msg })
             }
           })
         } else {

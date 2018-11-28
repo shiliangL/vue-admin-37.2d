@@ -2,7 +2,7 @@
 <template>
   <div class="cupCars">
     <el-row :gutter="12">
-      <el-col :xs="24" :sm="12" :md="4" :lg="4" v-for="(item,index) in data" :key="index">
+      <el-col :xs="12" :sm="12" :md="4" :lg="4" v-for="(item,index) in data" :key="index">
         <el-card shadow="hover">
           <div class="car-item">
             <div class="card-panel-icon" :class="item.class"></div>
