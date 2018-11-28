@@ -9,7 +9,7 @@
 
       <el-form-item prop="canReturnsQuantity" :label="form.type===1? '可退数量:':'可换数量:'" style="margin-bottom: 0px;">
         <!-- <el-input size="small" style="width:180px" v-model="form.canReturnsQuantity"></el-input> -->
-        <span v-cloak> {{form.canReturnsQuantity}} </span>
+        <span v-cloak> {{form.canReturnsQuantity}} /  {{form.basicUnitName}} </span>
       </el-form-item>
 
       <el-form-item prop="returnsQuantity" :label="form.type===1? '退货申请数量:':'换货申请数量:'" :rules="[{trigger: 'change', required:true, validator: rules.validNumberRe, RE: form.canReturnsQuantity,meg:'输入数量不能大于可换数量'}]">
@@ -41,6 +41,7 @@ export default {
     return {
       form: {
         'productName': null,
+        'basicUnitName': null,
         'number': null,
         'purchaseOrderDetailsId': null,
         'remark': null,
