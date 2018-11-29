@@ -51,7 +51,7 @@
                     </el-form-item>
                   </el-col>
                   <el-col :sm="10" :md="8" :lg="8">
-                    <el-form-item label="联系人电话:" prop="mobile" :rules="[{trigger: 'change', required:true, validator: rules.validPhone}]">
+                    <el-form-item label="手机号:" prop="mobile" :rules="[{trigger: 'change', required:true, validator: rules.validPhone}]">
                       <el-input v-if="isUpdate" size="small" style="width:160px" maxlength="11"  v-model.trim="form.mobile" placeholder=""></el-input>
                       <span v-else v-cloak>{{form.mobile}}</span>
                     </el-form-item>
@@ -161,12 +161,12 @@
                       <span v-else v-cloak>{{form.licenseNumber}}</span>
                     </el-form-item>
                   </el-col>
-                  <el-col :sm="10" :md="8" :lg="8">
+                  <!-- <el-col :sm="10" :md="8" :lg="8">
                     <el-form-item label="营业执照图:">
                       <el-input v-if="isUpdate" size="small" style="width:160px"  v-model.trim="form.businessLicensePicUrl" placeholder=""></el-input>
                       <span v-else v-cloak>{{form.businessLicensePicUrl}}</span>
                     </el-form-item>
-                  </el-col>
+                  </el-col> -->
                 </el-row>
               </div>
             </div>
@@ -427,7 +427,8 @@ export default {
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
-        if (valid && !this.saveLoading) {
+        if (valid) {
+          if (!this.saveLoading) return
           this.saveLoading = true
           const data = JSON.parse(JSON.stringify(this.form))
           delete data.addressArrt
@@ -450,7 +451,8 @@ export default {
     },
     submitUpdateForm(formName) {
       this.$refs[formName].validate((valid) => {
-        if (valid && !this.saveLoading) {
+        if (valid) {
+          if (!this.saveLoading) return
           this.saveLoading = true
           const data = JSON.parse(JSON.stringify(this.form))
           delete data.addressArrt

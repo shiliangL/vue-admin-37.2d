@@ -17,22 +17,20 @@
             </template>
           </el-table-column>
 
-          <el-table-column prop="orderNo" label="采购计划单号" align="center"></el-table-column>
-          <el-table-column prop="sourceType" label="采购计划来源" align="center">
+          <el-table-column prop="orderNo" label="优惠券发放批次号" align="center"></el-table-column>
+          <el-table-column prop="sourceType" label="优惠券类别" align="center">
             <template slot-scope="scope" align="center">
               <span v-cloak v-if="scope.row.sourceType ===1"> 销售订单 </span>
               <span v-cloak v-if="scope.row.sourceType ===2"> 后台新增 </span>
             </template>
           </el-table-column>
-          <el-table-column prop="createdOn" label="采购计划创建时间" align="center"></el-table-column>
-          <el-table-column prop="createdName" label="创建人" align="center"></el-table-column>
-          <el-table-column prop="applicationDate" label="采购申请时间" align="center"></el-table-column>
-          <el-table-column prop="purchaserName" label="申请人" align="center"></el-table-column>
-          <el-table-column prop="auditStatus" label="采购申请状态" align="center">
-             <template slot-scope="scope" align="center">
-              <span v-cloak> {{scope.row.auditStatus | filterStatus }} </span>
-            </template>
-          </el-table-column>
+          <el-table-column prop="createdOn" label="优惠券使用范围" align="center"></el-table-column>
+          <el-table-column prop="createdName" label="优惠券获取方式" align="center"></el-table-column>
+          <el-table-column prop="applicationDate" label="优惠券面值" align="center"></el-table-column>
+          <el-table-column prop="purchaserName" label="发放数量(张)" align="center"></el-table-column>
+          <el-table-column prop="purchaserName" label="有效期限" align="center"></el-table-column>
+          <el-table-column prop="purchaserName" label="发放时间" align="center"></el-table-column>
+          <el-table-column prop="purchaserName" label="发放人" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">查看</el-button>
@@ -72,7 +70,7 @@ import Add from './add'
 import instructions from './instructions'
 import model from '@/public/listModel.js'
 import { Tabs } from '@/components/base.js'
-import { fecthList } from '@/api/buy/buyPlan.js'
+import { fetchList } from '@/api/frontShop/coupons.js'
 
 export default {
   name: 'coupons',
@@ -97,23 +95,30 @@ export default {
       ],
       searchBarData: [
         [
-          { type: 'date', value: null, key: 'generationTime', width: '200px', placeholder: '发放时间' },
-          { type: 'option', value: null, key: 'sourceType', class: 'w110', placeholder: '优惠券类别', options: [
-            { label: '全部', value: 0 },
-            { label: '销售订单', value: 1 },
-            { label: '后台新增', value: 2 }]
+          { type: 'date', value: null, key: 'createOn', width: '200px', placeholder: '发放时间' },
+          { type: 'option', value: null, key: 'type', class: 'w110', placeholder: '优惠券类别', options: [
+            { label: '满减', value: 1 },
+            { label: '折扣', value: 2 },
+            { label: '立减', value: 3 },
+            { label: '无限制', value: 4 }
+          ]
           },
-          { type: 'option', value: null, key: 'sourceType', class: 'w110', placeholder: '使用范围', options: [
-            { label: '全部', value: 0 },
-            { label: '销售订单', value: 1 },
-            { label: '后台新增', value: 2 }]
+          { type: 'option', value: null, key: 'rangeFlag', class: 'w110', placeholder: '使用范围', options: [
+            { label: '全品类', value: 1 },
+            { label: '部份品类', value: 2 },
+            { label: '单个商品', value: 3 }
+          ]
           },
-          { type: 'option', value: null, key: 'sourceType', class: 'w110', placeholder: '获取方式', options: [
-            { label: '全部', value: 0 },
-            { label: '销售订单', value: 1 },
-            { label: '后台新增', value: 2 }]
+          { type: 'option', value: null, key: 'payMentMethod', class: 'w110', placeholder: '获取方式', options: [
+            { label: '直接获赠', value: 0 },
+            { label: '手动领取', value: 1 },
+            { label: '手动兑换', value: 2 },
+            { label: '分享赠送', value: 3 },
+            { label: '订单支付后赠送', value: 4 }
+          ]
           },
-          { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '优惠券批次号检索' },
+          { type: 'input', value: null, key: 'batchCode', class: 'w180', placeholder: '优惠券批次号检索' },
+          { type: 'input', value: null, key: 'code', class: 'w180', placeholder: '优惠券编号、销售订单号' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
@@ -143,23 +148,14 @@ export default {
       }
     }
   },
-  created() {
-    this.tabTitles = [
-      { title: '全部', value: 0 },
-      { title: '待申请', value: 1 },
-      { title: '待审核', value: 2 },
-      { title: '已通过', value: 3 },
-      { title: '已拒绝', value: 4 }
-    ]
-  },
   mounted() {
-    // this.fecthList()
+    // this.fetchList()
     if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
   },
   methods: {
     tabsCallBack(item) {
       this.curIndex = item.value
-      // this.fecthList()
+      // this.fetchList()
       if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     searchAction(params) {
@@ -170,7 +166,7 @@ export default {
         ...params,
         auditStatus: this.curIndex
       }
-      fecthList(data).then(({ data }) => {
+      fetchList(data).then(({ data }) => {
         this.table.data = data.rows
         this.pagination.total = data.total
       }).catch(e => {
@@ -197,7 +193,7 @@ export default {
       // })
     },
     // 数据请求
-    fecthList() {
+    fetchList() {
       this.fecthTipsBar()
       const { index, size } = this.pagination
       const data = {
@@ -205,7 +201,7 @@ export default {
         size,
         auditStatus: this.curIndex
       }
-      fecthList(data).then(({ data }) => {
+      fetchList(data).then(({ data }) => {
         this.table.data = data.rows
         this.pagination.total = data.total
       }).catch(e => {
@@ -224,7 +220,7 @@ export default {
     closeDialog() {
       this.dialogVisibleType = 1
       this.propsParentData = null
-      this.fecthList()
+      this.fetchList()
     },
     showDes() {
       this.dialogVisible = true

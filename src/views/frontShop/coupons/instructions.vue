@@ -16,12 +16,5 @@
 </script>
 
 <style scoped lang="scss">
-.instructions{
-  margin-top: -20px;
-  ol {
-    li {
-      padding-bottom: 6px;
-    }
-  }
-}
+
 </style>

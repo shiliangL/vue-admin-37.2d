@@ -17,6 +17,12 @@
 				</div>
 
 
+
+      <el-select  v-if="isAddView" size="small"
+        style="width:180px" v-model="managerDTO" placeholder="请选择" @change="selectManager" filterable value-key="staffId">
+        <el-option size="small" style="width:180px" v-for="item in options.managerOption" :key="item.staffId" :label="item.staffName" :value="item"> </el-option>
+      </el-select>
+
         <!-- :rules="[{trigger: 'change', required:true, validator: rules.validNumberCar}]"> -->
 
         <el-table-column prop="remark" width="200" show-overflow-tooltip label="备注" align="center"></el-table-column>

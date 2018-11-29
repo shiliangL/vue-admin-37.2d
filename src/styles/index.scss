@@ -292,7 +292,7 @@ code {
     visibility: hidden;
 }
 
-// view-page 
+// view-page
 .row-item {
     padding-top: 10px;
     .row-title {
@@ -342,3 +342,8 @@ code {
     }
 }
 
+ol {
+  li {
+    padding-bottom: 6px;
+  }
+}

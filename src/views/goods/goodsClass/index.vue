@@ -1,9 +1,9 @@
- 
+
 <!-- 商品分类 - 大类-->
- 
+
 <template>
 	<div>
-		
+
       <search-bar ref="searchBar" :data="searchBarData" @add="showAdd" @clickBtn="refreshPage"></search-bar>
 
 			<div class="goodsClass">
@@ -14,7 +14,7 @@
               <template slot="title">
                 <div class="flexBox title">
                   <div> <i class="el-icon-rank"></i>  {{item.title}}  </div>
-                  <div> 
+                  <div>
                     <el-button type="text" size="mini" @click.stop="() => adddChild(item,index)"> 添加子类 </el-button>
                     <el-button type="text" size="mini" @click.stop="() => editorParent(item,index)"> 编辑 </el-button>
                     <el-button type="text" style="color:red" size="mini" @click.stop="() => deleteParent(item,index)"> 删除 </el-button>
@@ -216,6 +216,7 @@ export default {
   }
 
   .title{
+    width: 100%;
     &:hover{
       color: #1cbc9c;
     }

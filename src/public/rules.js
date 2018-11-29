@@ -2,16 +2,20 @@ export default {
   data() {
     return {
       rules: {
-        input: [{
-          required: true,
-          message: '请输入',
-          trigger: 'change'
-        }],
-        select: [{
-          required: true,
-          message: '请选择',
-          trigger: 'change'
-        }],
+        input: [
+          {
+            required: true,
+            message: '请输入',
+            trigger: 'change'
+          }
+        ],
+        select: [
+          {
+            required: true,
+            message: '请选择',
+            trigger: 'change'
+          }
+        ],
         validNumberR2: (rule, value, callback) => {
           if (!value) {
             return callback(new Error('请输入'))
@@ -92,12 +96,15 @@ export default {
           if (!reg.test(value)) {
             return callback(new Error('请输入有效数字'))
           }
-          if ((value) * 1 > (rule.RE) * 1) {
+          if (value * 1 > rule.RE * 1) {
             return callback(new Error(rule.meg))
           }
           callback()
         },
         validNumberCar: (rule, value, callback) => {
+          if (!value) {
+            callback()
+          }
           var reg = /^([0-9]{1})(\d{14}|\d{16}|\d{18})$/
           if (!reg.test(value)) {
             return callback(new Error('请输入正确的卡号'))
@@ -107,7 +114,43 @@ export default {
         validNumberZh: (rule, value, callback) => {
           var reg = /[^\u4E00-\u9FA5]/
           if (reg.test(value)) {
-            return callback(new Error('请输入汉子'))
+            return callback(new Error('请输入汉字'))
+          }
+          callback()
+        },
+        // 验证折扣 0.01 - 9.99
+        validNumberDiscount: (rule, value, callback) => {
+          if (!value) {
+            return callback(new Error('请输入'))
+          }
+          var reg = /^([0-9][\d]{0,5})(\.[\d]{1,2})?$/
+          if (!reg.test(value)) {
+            return callback(new Error('请输入有效数字'))
+          }
+          if (value * 1 > 0 && value * 1 < 9.99) {
+            callback()
+          } else {
+            return callback(new Error('请输正确范围'))
+          }
+        },
+        // 关联限制-正整数
+        validNumberReLimit: (rule, value, callback) => {
+          if (!value) {
+            return callback(new Error('请输入'))
+          }
+          const reg = /^[1-9]\d*$/
+          if (!reg.test(value)) {
+            return callback(new Error('请输入正整数'))
+          }
+          if (rule.hasOwnProperty('limitL') && rule.limitL) {
+            if (value * 1 >= rule.limitL * 1) {
+              return callback(new Error(rule.meg))
+            }
+          }
+          if (rule.hasOwnProperty('limitR') && rule.limitR) {
+            if (value * 1 <= rule.limitR * 1) {
+              return callback(new Error(rule.meg))
+            }
           }
           callback()
         }
