@@ -8,9 +8,16 @@ export function fetchList(params) {
   })
 }
 
-export function fetchDetail(params) {
+export function fetchHeader(params) {
   return request({
     url: 'cmm/patMarketingCouponInfo/detail',
+    method: 'get',
+    params
+  })
+}
+export function fetchTable(params) {
+  return request({
+    url: 'cmm/patMarketingCouponInfo/listDeatils',
     method: 'get',
     params
   })

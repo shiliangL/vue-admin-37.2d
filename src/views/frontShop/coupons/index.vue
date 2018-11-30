@@ -72,14 +72,14 @@
       </table-contain>
 
       <!-- 弹层 -->
-      <el-dialog title="优惠券使用说明" :visible.sync="dialogVisible" :width="dialogVisibleType? '': '420px'" append-to-body center @close="closeDialog"  :fullscreen="dialogVisibleType? true: false" :modal-append-to-body="false"  :close-on-press-escape="true">
+      <el-dialog title="优惠券使用说明" :visible.sync="dialogVisible" :width="dialogAdd|| dialogviewPage? '': '420px'"
+        append-to-body center @close="closeDialog"  :fullscreen="dialogAdd|| dialogviewPage? true: false" :modal-append-to-body="false"  :close-on-press-escape="true">
         <div v-if="dialogVisible">
-          <Add v-if="dialogVisibleType" @close="dialogVisible=false" :propsSonData="propsParentData"></Add>
-          <instructions v-if="!dialogVisibleType" @close="dialogVisible=false"></instructions>
+          <Add v-if="dialogAdd" @close="dialogVisible=false" :propsSonData="propsParentData"></Add>
+          <instructions v-if="dialogInstructions" @close="dialogVisible=false"></instructions>
+          <viewPage v-if="dialogviewPage" @close="dialogVisible=false" :propsSonData="propsParentData"></viewPage>
         </div>
       </el-dialog>
-
-
 
     </div>
 </template>
@@ -88,6 +88,7 @@
 import cupCars from './cupCars'
 import Add from './add'
 import instructions from './instructions'
+import viewPage from './view'
 import model from '@/public/listModel.js'
 import { Tabs } from '@/components/base.js'
 import { fetchList } from '@/api/frontShop/coupons.js'
@@ -98,13 +99,17 @@ export default {
   components: {
     instructions,
     cupCars,
+    viewPage,
     Tabs,
     Add
   },
   data() {
     return {
       curIndex: 0,
-      dialogVisibleType: 1,
+      dialogviewPage: false,
+      dialogAdd: false,
+      dialogInstructions: false,
+
       TipsBarData: [
         { title: '共发放优惠券', number: 1024, unit: '张' },
         { title: '已获取未使用', number: 1024, unit: '张' },
@@ -150,41 +155,16 @@ export default {
       ]
     }
   },
-  filters: {
-    filterStatus(status) {
-      switch (status) {
-        case 0:
-          return '全部'
-        case 1:
-          return '待申请'
-        case 2:
-          return '待审核'
-        case 3:
-          return '已通过'
-        case 4:
-          return '已拒绝'
-        default:
-          return ''
-      }
-    }
-  },
   mounted() {
-    // this.fetchList()
-    if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
+    this.fetchList()
   },
   methods: {
-    tabsCallBack(item) {
-      this.curIndex = item.value
-      // this.fetchList()
-      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
-    },
     searchAction(params) {
       const { index, size } = this.pagination
       const data = {
         index,
         size,
-        ...params,
-        auditStatus: this.curIndex
+        ...params
       }
       fetchList(data).then(({ data }) => {
         if (Array.isArray(data.rows)) {
@@ -206,38 +186,11 @@ export default {
       this.fecthTipsBar()
     },
     fecthTipsBar() {
-      // fecthTipsBar().then(({ data }) => {
-      //   const type = Object.prototype.toString.call(data)
-      //   if (data && type === '[object Object]') {
-      //     const arr = []
-      //     for (const key in data) {
-      //       if (data.hasOwnProperty(key)) {
-      //         const element = data[key]
-      //         const title = key === 'yesterday' ? '昨日' : key === 'today' ? '今日' : '明日'
-      //         arr.push({ title, ...element })
-      //       }
-      //     }
-      //     this.TipsBarData = arr
-      //   }
-      // }).catch(e => {
-      //   this.$message({ type: 'error', message: e })
-      // })
+
     },
     // 数据请求
     fetchList() {
-      this.fecthTipsBar()
-      const { index, size } = this.pagination
-      const data = {
-        index,
-        size,
-        auditStatus: this.curIndex
-      }
-      fetchList(data).then(({ data }) => {
-        this.table.data = data.rows
-        this.pagination.total = data.total
-      }).catch(e => {
-        this.$message({ type: 'error', message: e })
-      })
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     // 分页操作区域
     handleSizeChange(value) {
@@ -249,23 +202,33 @@ export default {
       if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     closeDialog() {
-      this.dialogVisibleType = 1
-      this.propsParentData = null
       this.fetchList()
+      this.propsParentData = null
+      this.dialogviewPage = false
+      this.dialogAdd = false
+      this.dialogInstructions = false
     },
     showDes() {
       this.dialogVisible = true
-      this.dialogVisibleType = 0
+      this.dialogviewPage = false
+      this.dialogAdd = false
+      this.dialogInstructions = true
     },
     showAdd() {
       this.dialogVisible = true
-      this.dialogVisibleType = 1
+      this.dialogviewPage = false
+      this.dialogAdd = true
+      this.dialogInstructions = false
+    },
+    click2view(index, item) {
+      this.dialogVisible = true
+      this.dialogviewPage = true
+      this.dialogAdd = false
+      this.dialogInstructions = false
+      this.propsParentData = item
     },
     TipsBarCallBack(value) {
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'check', obj: value, title: '销售订单采购计划' }})
-    },
-    refrehList() {
-      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
+
     },
     resetSearchBar() {
       if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()

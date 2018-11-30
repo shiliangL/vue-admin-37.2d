@@ -1,4 +1,3 @@
-
 // 列表页面公共数据模型公用
 import { SearchBar, TableContain } from '@/components/base.js'
 export default {
@@ -14,7 +13,7 @@ export default {
       },
       table: {
         data: [], // 列表表格数据
-        size: 'mini', // 列表表格大小
+        size: 'mini', // 列表表格大小mini
         maxHeight: 0 // 列表表格最大高度
       },
       add: {

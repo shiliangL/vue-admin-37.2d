@@ -401,8 +401,8 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          // if (!this.saveLoading) return
-          // this.saveLoading = true
+          if (!this.saveLoading) return
+          this.saveLoading = true
           const cpdata = JSON.parse(JSON.stringify(this.form))
           if (cpdata.payMentMethod === 0 && !this.customerForm.userCouponDto.length) {
             this.$message({ type: 'warning', message: '请核选择客户' })
