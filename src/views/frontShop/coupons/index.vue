@@ -17,20 +17,40 @@
             </template>
           </el-table-column>
 
-          <el-table-column prop="orderNo" label="优惠券发放批次号" align="center"></el-table-column>
-          <el-table-column prop="sourceType" label="优惠券类别" align="center">
+          <el-table-column prop="batchCode" label="发放批次号" align="center"></el-table-column>
+          <el-table-column prop="rangeFlag" label="优惠券类别" align="center">
             <template slot-scope="scope" align="center">
-              <span v-cloak v-if="scope.row.sourceType ===1"> 销售订单 </span>
-              <span v-cloak v-if="scope.row.sourceType ===2"> 后台新增 </span>
+              <span v-cloak v-if="scope.row.type ===1"> 满减 </span>
+              <span v-cloak v-if="scope.row.type ===2"> 折扣 </span>
+              <span v-cloak v-if="scope.row.type ===3"> 立减 </span>
+              <span v-cloak v-if="scope.row.type ===4"> 无限制 </span>
             </template>
           </el-table-column>
-          <el-table-column prop="createdOn" label="优惠券使用范围" align="center"></el-table-column>
-          <el-table-column prop="createdName" label="优惠券获取方式" align="center"></el-table-column>
-          <el-table-column prop="applicationDate" label="优惠券面值" align="center"></el-table-column>
-          <el-table-column prop="purchaserName" label="发放数量(张)" align="center"></el-table-column>
-          <el-table-column prop="purchaserName" label="有效期限" align="center"></el-table-column>
-          <el-table-column prop="purchaserName" label="发放时间" align="center"></el-table-column>
-          <el-table-column prop="purchaserName" label="发放人" align="center"></el-table-column>
+          <el-table-column  label="使用范围" align="center">
+            <template slot-scope="scope" align="center">
+              <span v-cloak v-if="scope.row.rangeFlag ===1"> 全品类 </span>
+              <span v-cloak v-if="scope.row.rangeFlag ===2"> 部份品类 </span>
+              <span v-cloak v-if="scope.row.rangeFlag ===3"> 单个商品 </span>
+            </template>
+          </el-table-column>
+          <el-table-column label="获取方式" align="center">
+            <template slot-scope="scope" align="center">
+              <span v-cloak v-if="scope.row.payMentMethod ===0"> 直接获赠 </span>
+              <span v-cloak v-if="scope.row.payMentMethod ===1"> 手动领取 </span>
+              <span v-cloak v-if="scope.row.payMentMethod ===2"> 手动兑换 </span>
+              <span v-cloak v-if="scope.row.payMentMethod ===3"> 分享赠送 </span>
+              <span v-cloak v-if="scope.row.payMentMethod ===4"> 订单支付后赠送 </span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="showTitle" label="优惠券面值" align="center"></el-table-column>
+          <el-table-column prop="number" label="发放数量(张)" align="center"></el-table-column>
+          <el-table-column prop="purchaserName" width="160" label="有效期限" align="center">
+            <template slot-scope="scope" align="center">
+              <span v-cloak>  {{  scope.row.fixationTime? `获取后${scope.row.fixationTime}天内` : `${scope.row.effectiveBegin} ${scope.row.effectiveEnd}` }} </span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="createOn" width="90" label="发放时间" align="center"></el-table-column>
+          <el-table-column prop="createBy" label="发放人" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">查看</el-button>

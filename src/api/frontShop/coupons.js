@@ -16,10 +16,10 @@ export function fetchDetail(params) {
   })
 }
 
-export function createCouPon(params) {
+export function createCouPon(data) {
   return request({
     url: 'cmm/patMarketingCouponInfo/createCouPon',
-    method: 'get',
-    params
+    method: 'POST',
+    data
   })
 }

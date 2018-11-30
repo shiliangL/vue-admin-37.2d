@@ -133,6 +133,7 @@
                         <el-form-item label="" label-width="35px" prop="datetimerange"  :rules="rules.select">
                           <el-date-picker
                             size="small"
+                            style="width:350px"
                             v-model="form.datetimerange"
                             type="datetimerange"
                             value-format="yyyy-MM-dd HH:mm:ss"
@@ -153,16 +154,14 @@
 
 
                     </div>
-
+                    <div class="carItems">
+                      <el-form-item label="发放数量:" prop="number" :rules="rules.input">
+                        <el-input size="small" style="width:180px" class="w180"  placeholder="正整数" v-model.trim="form.number"></el-input>
+                      </el-form-item>
+                    </div>
                     <div class="carItems">
                       <el-form-item label="获取方式:" prop="payMentMethod" :rules="rules.input">
-                        <!-- 领取方式
-                          0 直接获赠
-                          1 手动领取
-                          2 手动兑换
-                          3 分享赠送
-                          4 订单支付后赠送
-                        -->
+                        <!-- 领取方式 0 直接获赠 1 手动领取 2 手动兑换 3 分享赠送 4 订单支付后赠送 -->
                         <el-select size="small" v-model="form.payMentMethod" filterable placeholder="请选择" style="width:180px">
                           <el-option v-for="sub in options.getType" :disabled="sub.disabled" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                         </el-select>
@@ -170,13 +169,7 @@
                       </el-form-item>
                     </div>
 
-                    <div class="carItems">
-                      <el-form-item label="发放数量:" prop="number" :rules="rules.input">
-                        <el-input size="small" style="width:180px" class="w180"  placeholder="正整数" v-model.trim="form.number"></el-input>
-                      </el-form-item>
-                    </div>
-
-                    <div class="carItems" v-if="form.payMentMethod===1">
+                    <div class="carItems flex-box" v-if="form.payMentMethod===1">
 
                       <el-form-item label="领取次数:" prop="numberTime" :rules="rules.input">
                         <el-select size="small" v-model="form.numberTime" filterable placeholder="请选择" style="width:180px">
@@ -184,23 +177,16 @@
                         </el-select>
                       </el-form-item>
 
-                      <el-form-item label="" prop="numberTimeInput" :rules="rules.input" v-if="form.numberTime===1">
-                        <el-input size="small" style="width:180px" class="w180"  placeholder="正整数" v-model.trim="form.numberTimeInput"></el-input>次
+                      <el-form-item label="" style="margin-left:10px" prop="numberTimeInput" :rules="rules.input" v-if="form.numberTime===1">
+                        <el-input size="small" style="width:180px" class="w180"  placeholder="正整数" v-model.trim="form.numberTimeInput"></el-input> 次
                       </el-form-item>
 
                     </div>
-
 
                     <div class="row-item" v-if="form.payMentMethod===0">
                       <div class="row-title">发放对象(客户):</div>
                       <div class="row-content">
 
-                          <!-- <el-form-item label="商品:" label-width="50px">
-                            <SearchBox style="width:180px" keyName="title" isGoods
-                            nameLabel="商品" codeLabel="类别" tableCode="categoryName"
-                            :isRelativeUp="{ type: true, key: form.scmOrder?form.scmOrder.categoryId: null, keyName:'groupId' }"
-                            requestUrl="productInfo/listProductInfo" v-model="addGood.goodsDTO"></SearchBox>
-                          </el-form-item> -->
                         <el-form :model="customerForm" ref="customerForm" :inline="true" label-width="120px">
                           <div class="add-bar">
 
@@ -216,21 +202,46 @@
                                 </SearchBox>
                               </el-form-item>
 
-                              <el-form-item label=""  prop="number" :rules="rules.input">
+                              <el-form-item label=""  prop="number" :rules="[{trigger: 'change', validator: rules.validNumberZZS}]">
                                 <el-input
                                   size="small"
                                   placeholder="获取数量(正整数)"
-                                  style="width:12`0px"
+                                  style="width:120px"
                                   v-model.trim="customerForm.number"></el-input>
                               </el-form-item>
 
                               <el-button type="primary" size="small" @click.stop="addCustomerForm('customerForm')"> 添加 </el-button>
+                              <el-button size="small" @click.stop="resetCustomerForm"> 清空选择 </el-button>
 
                             </div>
+
+                            <div class="tableBox">
+                              <el-table :data="customerForm.userCouponDto" size="mini" style="width: 100%;" highlight-current-row>
+                                <el-table-column label="序号" width="50" align="center">
+                                  <template slot-scope="scope"> <span>{{scope.$index + 1}}</span> </template>
+                                </el-table-column>
+                                <el-table-column prop="loginName" label="客户账号" align="center"></el-table-column>
+                                <el-table-column prop="title" label="客户名称" align="center"></el-table-column>
+                                <el-table-column prop="categoryName" label="客户类别" align="center"></el-table-column>
+                                <el-table-column prop="contacts" label="联系人" align="center"></el-table-column>
+                                <el-table-column prop="number" label="获取数量(张)" align="center">
+                                  <template slot-scope="scope">
+                                      <el-form-item label="" style=" margin-top: 0;" label-width="0px" :prop="`userCouponDto.${scope.$index}.number`" :rules="[{trigger: 'change', validator: rules.validNumberZZS}]">
+                                        <el-input size="small" class="w110" placeholder="正整数" v-model.trim="scope.row.number"></el-input>
+                                      </el-form-item>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column align="center" label="操作">
+                                  <template slot-scope="scope" align="center">
+                                    <el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index, scope.row)">删除</el-button>
+                                  </template>
+                                </el-table-column>
+                              </el-table>
+                              <div class="footer-block">
+                                <span class="page" v-cloak> 共 {{customerForm.userCouponDto.length}} 条</span>
+                              </div>
+                            </div>
                           </el-form>
-
-
-
                       </div>
                     </div>
 
@@ -266,8 +277,7 @@ import addModel from '@/public/addModel.js'
 import rules from '@/public/rules.js'
 import { SearchBox } from '@/components/base.js'
 import { fecthGoodsClass } from '@/api/goodsList.js'
-
-// import { fetchDetail, fetchTable } from '@/api/buy/buyReturn.js'
+import { createCouPon } from '@/api/frontShop/coupons.js'
 
 export default {
   mixins: [addModel, rules],
@@ -327,57 +337,15 @@ export default {
         fixationTime: null,
         leveFDTO: null,
         leveltDTO: null,
-        number: null
-      },
-      formCp: {
-        'amount': 0, // 面额，折扣
-        'batchCode': null, // 批次号
-        'effectiveBegin': null, // 开始时间
-        'effectiveEnd': null, // 结束时间
-        'fixationTime': 0,
-        'id': null,
-        'number': 0,
-        'rangeFlag': 0,
-        'remark': null,
-        'status': 0,
-        'title': null,
-        'type': 1,
-        // 定义劵的领取规则
-        'limitDto': {
-          'minimumLimit': 0,
-          'ruleId': null,
-          'type': 0
-        },
-        // 规则 选择满减 折扣类型
-        'ruleDto': {
-          'couponId': null,
-          'id': null,
-          'minimumLimit': 0,
-          'payMentMethod': 0,
-          'type': 0
-        },
-        // 优惠券的使用范围
-        'ruleOptionDto': {
-          'content': {
-            id: 222,
-            title: '22',
-            code: 2
-          },
-          'ruleId': null
-        },
-        // 用户TX
-        'userCouponDto': [
-          {
-            'number': 0,
-            'userId': null
-          }
-        ]
+        number: null,
+        userCouponDto: []
       },
       customerDTO: null,
       goodsDTO: null,
       customerForm: {
         number: null,
-        customerId: null
+        customerId: null,
+        userCouponDto: []
       }
     }
   },
@@ -433,32 +401,115 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (!this.saveLoading) return
-          this.saveLoading = true
-          // createRow(data).then(res => {
-          //   this.$message({ type: 'success', message: `${res.msg}!` })
-          // }).catch(e => {
-          //   this.saveLoading = false
-          //   this.$message({ type: 'error', message: e.msg })
-          // })
-        } else {
-          this.saveLoading = false
-          this.$message({ type: 'warning', message: '请核实表单' })
-          return
-        }
-      })
-    },
-    addCustomerForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          if (!this.saveLoading) return
-          this.saveLoading = true
-          // createRow(data).then(res => {
-          //   this.$message({ type: 'success', message: `${res.msg}!` })
-          // }).catch(e => {
-          //   this.saveLoading = false
-          //   this.$message({ type: 'error', message: e.msg })
-          // })
+          // if (!this.saveLoading) return
+          // this.saveLoading = true
+          const cpdata = JSON.parse(JSON.stringify(this.form))
+          if (cpdata.payMentMethod === 0 && !this.customerForm.userCouponDto.length) {
+            this.$message({ type: 'warning', message: '请核选择客户' })
+            return
+          }
+          const result = {
+            'amount': null, // 面额，折扣
+            'batchCode': null, // 批次号
+            'effectiveBegin': null, // 开始时间
+            'effectiveEnd': null, // 结束时间
+            'fixationTime': null, // 固定时间内 和开始时间 结束时间 二选一
+            'id': null,
+            'number': null, // 优惠券的数量
+            'rangeFlag': null, // 1：全品类 2：部份品类 3：单个商品 ,
+            'remark': null, // 备注
+            'status': null, // 暂时不定义
+            'title': null, // 劵名称
+            'type': 2, // 1：平台券，全平台适用 2：机构券，适用于发券机构，不可以跨店此处暂定默认为机构券
+            // 定义劵的领取规则
+            'limitDto': {
+              'minimumLimit': null,
+              'type': null // 0：自定义领取,1：不限制领取 领完为止
+            },
+            // 规则 选择满减 折扣类型
+            'ruleDto': {
+              'minimumLimit': null, // 仅仅满减的时候使用
+              'payMentMethod': null, // 领取方式 0 直接获赠 1 手动领取 2 手动兑换 3 分享赠送 4 订单支付后赠送
+              'type': null // 1：满减 2：折扣 3、立减 4 无限制
+            },
+            // 优惠券的使用范围
+            'ruleOptionDto': {
+              'content': []
+            },
+            // 用户TX
+            'userCouponDto': [
+              // {
+              //   'number': 0,
+              //   'userId': null
+              // }
+            ]
+          }
+
+          result.number = cpdata.number
+          // 满减----类别 1：满减 2：折扣 3、立减 4 无限制
+          if (cpdata.type === 1) {
+            result.ruleDto.minimumLimit = cpdata.typeValue11
+            result.amount = cpdata.typeValue12
+          } else if (cpdata.type === 2) {
+          // 立减
+            result.amount = cpdata.typeValue2
+          } else {
+            result.amount = cpdata.typeValue3
+          }
+          result.ruleDto.type = cpdata.type
+          // 满减----使用范围 1：全品类 2：部份品类 3：单个商品
+          result.rangeFlag = cpdata.rangeFlag
+          // 部份品类
+          let arr = []
+          if (result.rangeFlag === 2) {
+            if (cpdata.leveFDTO) {
+              arr.push({
+                id: cpdata.leveFDTO.id,
+                title: cpdata.leveFDTO.title,
+                code: null
+              })
+            }
+            if (cpdata.leveltDTO) {
+              arr.push({
+                id: cpdata.leveltDTO.id,
+                title: cpdata.leveltDTO.title,
+                code: null
+              })
+            }
+          } else if (result.rangeFlag === 3) {
+            // 单个
+            arr = [cpdata.singleGood]
+          }
+          result.ruleOptionDto.content = JSON.stringify(arr)
+          // 有效期限---1时间段 2具体时间 cpdata.timeType
+          if (cpdata.timeType === 1 && cpdata.datetimerange) {
+            result.effectiveBegin = cpdata.datetimerange[0]
+            result.effectiveEnd = cpdata.datetimerange[1]
+          } else {
+            result.fixationTime = cpdata.fixationTime
+          }
+          // 获取方式--- 0 直接获赠; 1 手动领取; 2 手动兑换 ; 3 分享赠送; 4 订单支付后赠送
+          result.ruleDto.payMentMethod = cpdata.payMentMethod
+          if (cpdata.payMentMethod === 0) {
+            const uses = JSON.parse(JSON.stringify(this.customerForm.userCouponDto))
+            const ids = uses.map((item) => {
+              return { 'number': item.number, 'userId': item.userId }
+            })
+            result.userCouponDto = ids
+          } else if (cpdata.payMentMethod === 1) {
+            result.limitDto.type = cpdata.numberTime
+            if (cpdata.numberTime === 1) {
+              result.limitDto.minimumLimit = cpdata.numberTimeInput
+            }
+          }
+
+          createCouPon(result).then(res => {
+            this.$emit('close', false)
+            this.$message({ type: 'success', message: `${res.msg}!` })
+          }).catch(e => {
+            this.saveLoading = false
+            this.$message({ type: 'error', message: e.msg })
+          })
         } else {
           this.saveLoading = false
           this.$message({ type: 'warning', message: '请核实表单' })
@@ -467,7 +518,40 @@ export default {
       })
     },
     resetCustomerForm() {
+      this.customerDTO = null
+      this.number = null
       if (this.$refs['customerForm']) this.$refs['customerForm'].resetFields()
+    },
+    addCustomerForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          const userIds = this.customerForm.userCouponDto.map(item => { return item.userId })
+          if (userIds.indexOf(this.customerForm.customerId) !== -1) {
+            this.$message({ type: 'warning', message: '请勿重复添加' })
+            return
+          } else {
+            const { customerDTO, customerForm } = this
+            this.customerForm.userCouponDto.push({
+              userId: customerForm.customerId,
+              number: customerForm.number,
+              title: customerDTO.title,
+              categoryName: customerDTO.categoryName,
+              loginName: customerDTO.loginName,
+              contacts: customerDTO.contacts
+            })
+            this.resetCustomerForm()
+          }
+        } else {
+          this.$message({ type: 'warning', message: '请核实表单' })
+          return
+        }
+      })
+    },
+    clickToDelete(index, item) {
+      const { userCouponDto } = this.customerForm
+      if (userCouponDto.length > 1) {
+        userCouponDto.splice(index, 1)
+      }
     }
   },
   watch: {
@@ -523,15 +607,20 @@ export default {
     }
   }
 
-.add-bar{
-  display: flex;
-  align-items: center;
-  .el-button{
-    margin-top: -23px;
+  .add-bar{
+    display: flex;
+    align-items: center;
+    .el-button{
+      margin-top: -23px;
+    }
   }
-}
-.tips{
-  padding-top: 10px;
-}
+  .tips{
+    padding-top: 10px;
+  }
+  .tableBox{
+    .el-form-item{
+      margin: 0;
+    }
+  }
 }
 </style>

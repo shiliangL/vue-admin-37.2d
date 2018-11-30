@@ -8,11 +8,11 @@
       @change="onEditorChange($event)">
     </quill-editor>
 
-    <el-upload class="upload-demo" 
+    <el-upload class="upload-demo"
       :action="qnLocation"
-      :before-upload='el_beforeUpload' 
-      :data="el_uploadData" 
-      :on-success='el_upScuccess' 
+      :before-upload='el_beforeUpload'
+      :data="el_uploadData"
+      :on-success='el_upScuccess'
       ref="el_upload" style="display: none;">
       <el-button size="small" type="primary" id="btnUp" element-loading-text="插入中,请稍候">点击上传</el-button>
     </el-upload>
@@ -109,7 +109,6 @@ export default {
     },
     el_beforeUpload() {},
     el_upScuccess(e, file, fileList) {
-      console.log(e, file, fileList)
       if (e.code === '0') {
         const url = e.data.key
         if (url) {
