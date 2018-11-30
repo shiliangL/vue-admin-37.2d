@@ -44,14 +44,14 @@
           </el-table-column>
           <el-table-column prop="showTitle" label="优惠券面值" align="center"></el-table-column>
           <el-table-column prop="number" label="发放数量(张)" align="center"></el-table-column>
-          <el-table-column prop="purchaserName" width="160" label="有效期限" align="center">
+          <el-table-column prop="purchaserName" width="150" label="有效期限" align="center">
             <template slot-scope="scope" align="center">
               <span v-cloak>  {{  scope.row.fixationTime? `获取后${scope.row.fixationTime}天内` : `${scope.row.effectiveBegin} ${scope.row.effectiveEnd}` }} </span>
             </template>
           </el-table-column>
           <el-table-column prop="createOn" width="90" label="发放时间" align="center"></el-table-column>
           <el-table-column prop="createBy" label="发放人" align="center"></el-table-column>
-          <el-table-column label="操作" align="center" width="180">
+          <el-table-column label="操作" align="center">
             <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">查看</el-button>
             </template>
@@ -187,8 +187,19 @@ export default {
         auditStatus: this.curIndex
       }
       fetchList(data).then(({ data }) => {
-        this.table.data = data.rows
-        this.pagination.total = data.total
+        if (Array.isArray(data.rows)) {
+          for (const item of data.rows) {
+            if (item.type === 1) {
+              item.showTitle = `满${item.minimumLimit}减${item.amount}元`
+            } else if (item.type === 2) {
+              item.showTitle = `${item.amount}折`
+            } else if (item.type === 3) {
+              item.showTitle = `立减${item.amount}元`
+            }
+          }
+          this.table.data = data.rows
+        }
+        this.pagination.total = data.total || 0
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })
       })
