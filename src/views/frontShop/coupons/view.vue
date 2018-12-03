@@ -70,7 +70,16 @@
                   </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                  <el-form-item label="商品名称/商品编码:">无返回</el-form-item>
+                  <el-form-item label="商品名称/商品编码:" v-if="form.rangeFlag=== 3">
+                    <!-- 单个商品 -->
+                      <span v-cloak v-if="form.content && form.content[0]">  {{ `${form.content[0].title} / ${form.content[0].code}`}} </span>
+                  </el-form-item>
+                  <el-form-item label="商品分类:" v-if="form.rangeFlag=== 2">
+                    <!-- 部分商品 -->
+                      <span v-cloak v-if="form.content && form.content[0]">  {{ `${form.content[0].title}`}} </span>
+                      <span v-cloak v-if="form.content && form.content[1]">  {{ `${form.content[1].title}`}} </span>
+                  </el-form-item>
+
                 </el-col>
                 <el-col :xs="24" :sm="10" :md="8" :lg="6">
                   <el-form-item label="有效期限:">
@@ -229,6 +238,7 @@ export default {
         title: null,
         batchCode: null,
         number: null,
+        fullScaleminimumLimit: null,
         notAcquiredEffectivelyNumber: null,
         notAcquiredNotEffectivelyNumber: null,
         acquiredNotUsedNumber: null,
@@ -251,7 +261,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.propsSonData)
     this.fetchHeader()
     this.fetchTable()
   },
@@ -269,7 +278,7 @@ export default {
         data.content = data.content ? JSON.parse(data.content) : []
         this.form = Object.assign(this.form, data)
         if (this.form.type === 1) {
-          this.form.showTitle = `满${this.form.minimumLimit}减${this.form.amount}元`
+          this.form.showTitle = `满${this.form.fullScaleminimumLimit}减${this.form.amount}元`
         } else if (this.form.type === 2) {
           this.form.showTitle = `${this.form.amount}折`
         } else if (this.form.type === 3) {

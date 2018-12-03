@@ -94,7 +94,7 @@
                       <!-- 部份品类 -->
                       <template v-if="form.rangeFlag===2">
 
-                        <el-form-item>
+                        <el-form-item prop="leveFDTO" :rules="rules.select">
                           <el-select class="w160"
                             value-key="id"
                             @change="leveFDTOchange"
@@ -492,9 +492,16 @@ export default {
           result.ruleDto.payMentMethod = cpdata.payMentMethod
           if (cpdata.payMentMethod === 0) {
             const uses = JSON.parse(JSON.stringify(this.customerForm.userCouponDto))
+            let total = 0
             const ids = uses.map((item) => {
+              total += (item.number) * 1
               return { 'number': item.number, 'userId': item.userId }
             })
+            if (total !== result.number) {
+              this.saveLoading = false
+              this.$message({ type: 'warning', message: '分配数量之和应该等于发放数量' })
+              return
+            }
             result.userCouponDto = ids
           } else if (cpdata.payMentMethod === 1) {
             result.limitDto.type = cpdata.numberTime

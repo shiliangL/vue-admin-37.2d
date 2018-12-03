@@ -91,7 +91,7 @@ import instructions from './instructions'
 import viewPage from './view'
 import model from '@/public/listModel.js'
 import { Tabs } from '@/components/base.js'
-import { fetchList } from '@/api/frontShop/coupons.js'
+import { fetchList, fetchCardList } from '@/api/frontShop/coupons.js'
 
 export default {
   name: 'coupons',
@@ -186,7 +186,23 @@ export default {
       this.fecthTipsBar()
     },
     fecthTipsBar() {
-
+      fetchCardList().then(({ data }) => {
+        if (!data) return
+        // number (integer, optional): 共发放(张) 0
+        // acquiredNotUsedNumber (integer, optional): 已获取未使用(张)  1,
+        // acquiredUsedNumber (integer, optional): 已获取已使用(张)(张) 2,
+        // acquiredNotEffectivelyNumberNumber (integer, optional): 已获取已过期(张) 3,
+        // notAcquiredEffectivelyNumber (integer, optional): 未获取还有效 4,
+        // notAcquiredNotEffectivelyNumber (integer, optional): 未获取已过期 5,
+        this.TipsBarData[0].number = data.number
+        this.TipsBarData[1].number = data.acquiredNotUsedNumber
+        this.TipsBarData[2].number = data.acquiredUsedNumber
+        this.TipsBarData[3].number = data.acquiredNotEffectivelyNumberNumber
+        this.TipsBarData[4].number = data.notAcquiredEffectivelyNumber
+        this.TipsBarData[5].number = data.notAcquiredNotEffectivelyNumber
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
     },
     // 数据请求
     fetchList() {

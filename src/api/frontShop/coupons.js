@@ -8,6 +8,14 @@ export function fetchList(params) {
   })
 }
 
+export function fetchCardList(params) {
+  return request({
+    url: 'cmm/patMarketingCouponInfo/countCoupon',
+    method: 'get',
+    params
+  })
+}
+
 export function fetchHeader(params) {
   return request({
     url: 'cmm/patMarketingCouponInfo/detail',
