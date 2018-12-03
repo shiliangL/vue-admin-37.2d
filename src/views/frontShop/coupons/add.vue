@@ -133,14 +133,14 @@
                         <el-form-item label="" label-width="35px" prop="datetimerange"  :rules="rules.select">
                           <el-date-picker
                             size="small"
-                            style="width:350px"
+                            style="width:370px"
                             v-model="form.datetimerange"
                             type="datetimerange"
                             value-format="yyyy-MM-dd HH:mm:ss"
                             range-separator="-"
                             start-placeholder="下单开始时间"
                             end-placeholder="下单结束时间"
-                            :default-time="['23:00:00', '22:59:59']">
+                            :default-time="['00:00:00', '23:59:59']">
                           </el-date-picker>
                         </el-form-item>
                       </template>
@@ -401,7 +401,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (!this.saveLoading) return
+          if (this.saveLoading) return
           this.saveLoading = true
           const cpdata = JSON.parse(JSON.stringify(this.form))
           if (cpdata.payMentMethod === 0 && !this.customerForm.userCouponDto.length) {
@@ -502,7 +502,7 @@ export default {
               result.limitDto.minimumLimit = cpdata.numberTimeInput
             }
           }
-
+          console.log('xxxx')
           createCouPon(result).then(res => {
             this.$emit('close', false)
             this.$message({ type: 'success', message: `${res.msg}!` })

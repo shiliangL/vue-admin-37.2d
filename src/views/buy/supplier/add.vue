@@ -428,7 +428,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (!this.saveLoading) return
+          if (this.saveLoading) return
           this.saveLoading = true
           const data = JSON.parse(JSON.stringify(this.form))
           delete data.addressArrt
@@ -452,7 +452,7 @@ export default {
     submitUpdateForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (!this.saveLoading) return
+          if (this.saveLoading) return
           this.saveLoading = true
           const data = JSON.parse(JSON.stringify(this.form))
           delete data.addressArrt

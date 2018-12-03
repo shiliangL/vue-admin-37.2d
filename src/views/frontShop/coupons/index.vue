@@ -46,7 +46,7 @@
           <el-table-column prop="number" label="发放数量(张)" align="center"></el-table-column>
           <el-table-column prop="purchaserName" width="150" label="有效期限" align="center">
             <template slot-scope="scope" align="center">
-              <span v-cloak>  {{  scope.row.fixationTime? `获取后${scope.row.fixationTime}天内` : `${scope.row.effectiveBegin} ${scope.row.effectiveEnd}` }} </span>
+              <span v-cloak>  {{  scope.row.fixationTime? `获取后${scope.row.fixationTime}天内` : scope.row.effectiveBegin ? `${scope.row.effectiveBegin} ${scope.row.effectiveEnd}`: '' }} </span>
             </template>
           </el-table-column>
           <el-table-column prop="createOn" width="90" label="发放时间" align="center"></el-table-column>
