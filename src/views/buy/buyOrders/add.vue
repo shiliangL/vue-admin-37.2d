@@ -51,15 +51,15 @@
                       </el-form-item>
                     </el-col>
 
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="采购类型:">
                         <span v-if="form.purchaseType===2"> 供应商直供 </span>
                         <span v-if="form.purchaseType===1"> 市场自采 </span>
                       </el-form-item>
-                    </el-col>
+                    </el-col> -->
 
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="采购员/供应商:">
+                      <el-form-item label="采购员:">
                         <span v-cloak>{{form.personnelName}}</span>
                       </el-form-item>
                     </el-col>
@@ -93,6 +93,13 @@
                         <span v-cloak>{{form.amountlSum}}</span>
                       </el-form-item>
                     </el-col>
+
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="采购退款:">
+                        <!-- <span v-cloak>{{form.待后台提供}}</span> -->
+                      </el-form-item>
+                    </el-col>
+
                     <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="未支付采购金额:">
                         <span v-cloak>{{form.orderNo}}</span>
@@ -163,6 +170,7 @@
                     <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
                     <el-table-column prop="basicUnitName" label="基本单位" align="center"></el-table-column>
                     <el-table-column prop="orderQuantity" label="待采购量" align="center"></el-table-column>
+                    <el-table-column prop="supplierInfoName" label="分发供应商" align="center"></el-table-column>
 
                     <el-table-column prop="supplierPrice" label="供应单价" align="center"></el-table-column>
                     <el-table-column prop="supplierQuantity" label="供应数量" align="center"></el-table-column>

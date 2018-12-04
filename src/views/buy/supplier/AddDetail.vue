@@ -39,7 +39,7 @@
               </el-col>
 
               <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                <el-form-item label="采购员:">
+                <el-form-item label="负责采购员:">
                   <span v-cloak>{{form.personnelName}}</span>
                 </el-form-item>
               </el-col>
@@ -71,6 +71,14 @@
               <el-col :xs="24" :sm="10" :md="8" :lg="6">
                 <el-form-item label="应付采购款金额:">
                   <span v-cloak>{{form.amountlSum}}</span>
+                </el-form-item>
+              </el-col>
+
+              <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                <el-form-item label="采购退款:">
+                  <span v-cloak>
+                    <!-- 暂时没有 -->
+                  </span>
                 </el-form-item>
               </el-col>
               <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
@@ -111,7 +119,7 @@
               </el-select>
             </div>
 
-            <div class="left" v-if="searchBarOptons.levelTowOption.length"> 
+            <div class="left" v-if="searchBarOptons.levelTowOption.length">
               <el-select class="w110" size="small" v-model="levelFecond" clearable filterable placeholder="二级分类">
                 <el-option v-for="sub in searchBarOptons.levelTowOption" :key="sub.id" :label="sub.title" :value="sub.id"></el-option>
               </el-select>
@@ -143,6 +151,7 @@
               <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
               <el-table-column prop="basicUnitName" label="基本单位" align="center"></el-table-column>
               <el-table-column prop="orderQuantity" label="待采购量" align="center"></el-table-column>
+              <el-table-column prop="supplierInfoName" label="分发供应商" align="center"></el-table-column>
 
               <el-table-column prop="supplierPrice" label="供应单价" align="center"></el-table-column>
               <el-table-column prop="supplierQuantity" label="供应数量" align="center"></el-table-column>
@@ -161,7 +170,7 @@
               </el-table-column>
 
             </el-table>
-            
+
             <el-pagination
               slot="footer"
               @size-change="handleSizeChange"
@@ -356,5 +365,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
- 
+
 </style>

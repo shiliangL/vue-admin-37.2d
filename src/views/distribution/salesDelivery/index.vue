@@ -13,7 +13,7 @@
               <span>{{scope.$index + 1}}</span>
             </template>
           </el-table-column>
- 
+
 					<el-table-column prop="serialNumber" label="销售配送单号" align="center"></el-table-column>
 					<el-table-column prop="driverName" label="配送员" align="center"></el-table-column>
 					<el-table-column prop="orderNo" :label="curIndex===0?'销售订单编号':'销售换货单号'" align="center"></el-table-column>
@@ -30,7 +30,7 @@
                <span v-if="scope.row.status===4"> 已收货 </span>
             </template>
           </el-table-column>
- 
+
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
               <el-button type="text" @click.stop="clickToMap(scope.$index,scope.row)"> 线路 </el-button>
@@ -40,7 +40,7 @@
           </el-table-column>
 
         </el-table>
-        
+
         <el-pagination
           slot="footer"
           @size-change="handleSizeChange"
@@ -60,7 +60,7 @@
 
         <table id="table1" style="width:100%;margin-bottom: 6px;">
            <thead>
-              <tr> 
+              <tr>
                 <th width="10%" style="font-weight: 400;font-size: 14px"> 厨满满商城销售订单商品清单 </th>
               </tr>
            </thead>
@@ -68,12 +68,12 @@
 
         <table id="table2" style="width:100%">
           <tbody>
-              <tr> 
+              <tr>
               <td align="left" style="font-weight: normal;">客户名称: <span style="font-weight: 400;"> {{PrintData.customerTitle}} </span></td>
               <td align="left" style="font-weight: normal;">销售订单编号:{{PrintData.orderNo}} </td>
               <td align="left" style="font-weight: normal;">下单时间:{{PrintData.orderDate}}</td>
               </tr>
-              <tr> 
+              <tr>
               <td align="left" style="font-weight: normal;">要求送达日期: {{PrintData.sendDate}} </td>
               <td align="left" style="font-weight: normal;">要求送达时间:{{PrintData.beginTime}} - {{PrintData.endTime}} </td>
               <td align="left" style="font-weight: normal;">配送员:{{PrintData.driverName}}</td>
@@ -87,7 +87,7 @@
               <td align="left" style="font-weight: normal;">地址: {{PrintData.address}}</td>
               </tr>
            </tbody>
-            
+
         </table>
 
         <table id="table3" style="width:100%">
@@ -122,11 +122,15 @@
 
         <table id="table4" style="width:100%">
            <tbody>
-              <tr> 
+              <tr>
                 <th width="25%" align="left" style="font-weight: normal;">下单总额:{{PrintData.totalOrderQuantityPrice}}</th>
-                <th width="25%" align="left" style="font-weight: normal;">实际总额:{{PrintData.totalSumPric}}</th>
-                <th width="25%" align="left" style="font-weight: normal;">优惠金额:{{PrintData.activityPreferences}}</th>
-                <th width="25%" align="left" style="font-weight: normal;">应付金额(不含退/换货):{{PrintData.amountPay}}</th>
+                <th width="25%" align="left" style="font-weight: normal;">实际总额(不含退/货):{{PrintData.totalSumPric}}</th>
+                <th width="25%" align="left" style="font-weight: normal;">
+                  <!-- 优惠金额:{{PrintData.activityPreferences}} -->
+                </th>
+                <th width="25%" align="left" style="font-weight: normal;">
+                  <!-- 应付金额(不含退/换货):{{PrintData.amountPay}} -->
+                </th>
               </tr>
               <tr>
                 <th width="25%" align="left" style="font-weight: normal;height: 26px;">备注说明:</th>
@@ -166,27 +170,6 @@ import {
 } from '@/api/distribution/salesDelivery.js'
 import Util from '@/utils'
 
-var beforePrint = function() {
-  console.log('Functionality to run before printing.小星星')
-}
-
-var afterPrint = function() {
-  console.log('Functionality to run after printing小学生')
-}
-
-if (window.matchMedia) {
-  var mediaQueryList = window.matchMedia('print')
-  mediaQueryList.addListener(function(mql) {
-    if (mql.matches) {
-      beforePrint()
-    } else {
-      afterPrint()
-    }
-  })
-}
-
-window.onbeforeprint = beforePrint
-window.onafterprint = afterPrint
 // import printOrder from '../component/print.js'
 
 export default {
@@ -288,7 +271,24 @@ export default {
   methods: {
     tabsCallBack(item) {
       this.curIndex = item.value
+      this.searchBarDate[0][3].value = null
       if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
+      if (item.value) {
+        this.searchBarDate[0][3].options = [
+          { label: '待配送', value: 0 },
+          { label: '配送中', value: 1 },
+          { label: '已送达', value: 2 },
+          { label: '已收货', value: 4 }
+        ]
+      } else {
+        this.searchBarDate[0][3].options = [
+          { label: '待配送', value: 0 },
+          { label: '配送中', value: 1 },
+          { label: '已送达', value: 2 },
+          { label: '退换货', value: 3 },
+          { label: '已收货', value: 4 }
+        ]
+      }
     },
     // 数据请求
     fetchList() {

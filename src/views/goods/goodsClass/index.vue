@@ -12,9 +12,9 @@
           <draggable element="el-collapse" :list="tableData" :options="{animation:200,dragClass:'dragClass'}" @update="update">
             <el-collapse-item v-for="(item,index) in tableData" :name="index" :key="index">
               <template slot="title">
-                <div class="flexBox title">
-                  <div> <i class="el-icon-rank"></i>  {{item.title}}  </div>
-                  <div>
+                <div class="title clearfix">
+                  <div class="left"> <i class="el-icon-rank"></i>  {{item.title}}  </div>
+                  <div class="right">
                     <el-button type="text" size="mini" @click.stop="() => adddChild(item,index)"> 添加子类 </el-button>
                     <el-button type="text" size="mini" @click.stop="() => editorParent(item,index)"> 编辑 </el-button>
                     <el-button type="text" style="color:red" size="mini" @click.stop="() => deleteParent(item,index)"> 删除 </el-button>
@@ -22,11 +22,11 @@
                 </div>
               </template>
               <div class="content">
-                <div class="content-item flexBox" v-if="item.children && item.children.length>0" v-for="(itemSub,indexUsb) in item.children" :key="indexUsb">
-                  <div>
+                <div class="content-item clearfix" v-if="item.children && item.children.length>0" v-for="(itemSub,indexUsb) in item.children" :key="indexUsb">
+                  <div class="left">
                     {{itemSub.title}}
                   </div>
-                  <div>
+                  <div class="right">
                     <el-button type="text" size="mini" @click.stop="() => editorChild(itemSub,indexUsb)"> 编辑 </el-button>
                     <el-button type="text" style="color:red" size="mini" @click.stop="() => deleteChild(itemSub,indexUsb)"> 删除 </el-button>
                   </div>
@@ -148,10 +148,11 @@ export default {
       }).catch(() => {})
     },
     editorParent(item, index) {
+      // item.isFather = item.title
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'editorParent', obj: item, title: '编辑大类' }})
     },
     adddChild(item, index) {
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'adddChild', obj: item, title: '添加子类' }})
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'adddChild', obj: item, isFather: item.title, title: '添加子类' }})
     },
     deleteChild(item, index) {
       this.$confirm('是否确定删除数据?', '提示', {
@@ -169,6 +170,7 @@ export default {
       }).catch(() => {})
     },
     editorChild(item, index) {
+      console.log(item)
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'editorChild', obj: item, title: '编辑子类' }})
     },
     refrehList() {

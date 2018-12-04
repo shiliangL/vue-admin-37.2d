@@ -111,12 +111,12 @@ export default {
       dialogInstructions: false,
 
       TipsBarData: [
-        { title: '共发放优惠券', number: 1024, unit: '张' },
-        { title: '已获取未使用', number: 1024, unit: '张' },
-        { title: '已获取已使用', number: 1024, unit: '张' },
-        { title: '已获取已过期', number: 1024, unit: '张' },
-        { title: '未获取还有效', number: 1024, unit: '张' },
-        { title: '未获取已过期', number: 1024, unit: '张' }
+        { title: '共发放优惠券', number: 0, unit: '张' },
+        { title: '已获取未使用', number: 0, unit: '张' },
+        { title: '已获取已使用', number: 0, unit: '张' },
+        { title: '已获取已过期', number: 0, unit: '张' },
+        { title: '未获取还有效', number: 0, unit: '张' },
+        { title: '未获取已过期', number: 0, unit: '张' }
       ],
       searchBarData: [
         [

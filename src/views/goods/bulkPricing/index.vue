@@ -13,7 +13,7 @@
               </el-select>
             </div>
 
-            <div class="left" v-if="searchBarOptons.levelTowOption.length"> 
+            <div class="left" v-if="searchBarOptons.levelTowOption.length">
               <el-select class="w110" size="small" v-model="levelFecond" clearable filterable placeholder="二级分类">
                 <el-option v-for="sub in searchBarOptons.levelTowOption" :key="sub.id" :label="sub.title" :value="sub.id"></el-option>
               </el-select>
@@ -41,7 +41,7 @@
                   <span>{{scope.$index + 1}}</span>
                 </template>
               </el-table-column>
-    
+
               <el-table-column prop="categoryName" label="商品分类" align="center"></el-table-column>
               <el-table-column prop="title" label="商品名称" align="center"></el-table-column>
               <el-table-column prop="baseUnitName" label="基本单位" align="center"></el-table-column>
@@ -50,7 +50,7 @@
               <el-table-column prop="createdOn" label="最近调价时间" align="center"></el-table-column>
 
             </el-table>
-            
+
             <el-pagination
               slot="footer"
               @size-change="handleSizeChange"
@@ -83,7 +83,7 @@
                     <el-select size="small" v-model="form.changeMethod" filterable placeholder="请选择" style="width:160px">
                       <el-option v-for="sub in option.changeMethod" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                     </el-select>
-                  </el-form-item>  
+                  </el-form-item>
                   <el-form-item label="数值:" label-width="100px" prop="value" :rules="[{trigger: 'change', required: true, validator: rules.validNumberR2}]">
                     <el-input size="small" clearable style="width:160px" v-model.trim="form.value" placeholder="请输入"></el-input> <span v-if="form.changeMethod===1"> % </span>
                   </el-form-item>
@@ -99,7 +99,7 @@
                         <el-option v-for="sub in option.changeDirection" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                       </el-select>
                       <el-input size="small" style="width:86px" clearable v-model.trim="item.value" placeholder="请输入"></el-input> %
-                    </el-form-item> 
+                    </el-form-item>
                   </span>
                 </div>
             </el-form>
@@ -118,7 +118,7 @@
             v-if="dialogImport"
             actionUrl="cmm/productPurchasePriceHistory/importPurchasePriceHistoryExcel"
             tplHref="http://pde00nn7n.bkt.clouddn.com/%E9%87%87%E8%B4%AD%E5%8E%86%E5%8F%B2%E4%B8%8A%E4%BC%A0%E6%A8%A1%E7%89%88.xlsx"
-            @close="closeImportdigo" 
+            @close="closeImportdigo"
             @success="importSuccess">
           </TableImport>
       </el-dialog>
@@ -362,6 +362,9 @@ export default {
  }
   .form{
     // text-align: center;
+    .el-form-item{
+      margin-bottom: 6px;
+    }
     .input{
       padding-left: 60px;
     }

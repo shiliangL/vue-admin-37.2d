@@ -28,8 +28,8 @@
 
 
                       <!-- 立减 -->
-                      <el-form-item label="优惠券面值:" prop="typeValue3" v-if="form.type===3" :rules="[{trigger: 'change', validator: rules.validNumberZZS}]">
-                          <el-input size="small" style="width:180px" placeholder="正整数" v-model.trim="form.typeValue3"></el-input> 元
+                      <el-form-item label="优惠券面值:" prop="typeValue3" v-if="form.type===3" :rules="[{trigger: 'change',required: true, validator: rules.validNumberR2}]">
+                          <el-input size="small" style="width:180px" placeholder="整数" v-model.trim="form.typeValue3"></el-input> 元
                       </el-form-item>
 
                       <!-- 满减 -->
@@ -57,7 +57,7 @@
                       </div>
 
                       <!-- 折扣 -->
-                      <el-form-item label="优惠券面值:" prop="typeValue2" v-if="form.type===2" :rules="[{trigger: 'change', validator: rules.validNumberDiscount}]">
+                      <el-form-item label="优惠券面值:" prop="typeValue2" v-if="form.type===2" :rules="[{trigger: 'change', required: true, validator: rules.validNumberDiscount}]">
                           <el-input size="small" style="width:180px" placeholder="0.01~9.99" v-model.trim="form.typeValue2"></el-input> 折
                       </el-form-item>
 
@@ -115,6 +115,12 @@
                               <el-option v-for="sub in options.levelTowOption" :key="sub.id" :label="sub.title" :value="sub"> </el-option>
                           </el-select>
                         </el-form-item>
+
+                        <el-tooltip placement="top" effect="light">
+                          <span slot="content">可以只选一级分类</span>
+                          <i class="el-icon-warning tips"></i>
+                        </el-tooltip>
+
                       </template>
 
 
@@ -156,7 +162,7 @@
                     </div>
                     <div class="carItems">
                       <el-form-item label="发放数量:" prop="number" :rules="rules.input">
-                        <el-input size="small" style="width:180px" class="w180"  placeholder="正整数" v-model.trim="form.number"></el-input>
+                        <el-input size="small" style="width:180px" class="w180" maxlength="4" placeholder="正整数" v-model.trim="form.number"></el-input>
                       </el-form-item>
                     </div>
                     <div class="carItems">
@@ -250,16 +256,16 @@
                   <el-col :span="8">
                     <ol>
                       <li>
-                        每天最多发放优惠券999个批次；
+                        每天发放优惠券批次不限；
                       </li>
                       <li>
-                        每一批次最多发放100万张；
+                        每一批次最多发放9999张；
                       </li>
                       <li>
                         每一批次直接获赠的方式，需要在发放时选择获取的对象：客户;并根据发放数量合理分配给客户。
                       </li>
                       <li>
-                        每一批次手动领取的方式，才有设置其领取的次数，一次只能领取一张；根据条件领完为止。
+                        每一批次手动领取的方式，才有设置其领取的次数；根据条件领完为止。
                       </li>
                     </ol>
                   </el-col>

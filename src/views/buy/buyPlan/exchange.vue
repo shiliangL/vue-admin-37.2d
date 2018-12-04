@@ -1,20 +1,20 @@
 
 <template>
     <div class="buyexchange">
-      <!-- 搜索 
+      <!-- 搜索
         :clearable="false"
         销售换货商品汇总
       -->
       <div class="search-bar">
         <div class="left" style="line-height: 44px;">
-          送货日期:
+          换货审核通过时间:
         </div>
         <div class="left">
           <el-date-picker :style="{width:'140px'}"
             :clearable="false"
             size="small"
-            v-model="searchBarData.sendTime" 
-            value-format="yyyy-MM-dd" 
+            v-model="searchBarData.aduitTime"
+            value-format="yyyy-MM-dd"
             type="date" placeholder="送货时间">
             </el-date-picker>
         </div>
@@ -32,7 +32,7 @@
           </el-select>
         </div>
 
-        <div class="left" v-if="searchBarOptons.levelTowOption.length"> 
+        <div class="left" v-if="searchBarOptons.levelTowOption.length">
           <el-select class="w110" size="small" v-model="levelFecond" clearable filterable placeholder="二级分类">
             <el-option v-for="sub in searchBarOptons.levelTowOption" :key="sub.id" :label="sub.title" :value="sub.id"></el-option>
           </el-select>
@@ -67,7 +67,7 @@
         <span class="Num-itemr" v-cloak>未生成采购计划商品: <span style="color:red">{{unfinishedTotal}}</span>  </span>
 			</div>
 			<!-- 表格 -->
-			<el-table :data="tableData" size="small" ref="multipleTable" max-height="450" style="width: 100%;" 
+			<el-table :data="tableData" size="small" ref="multipleTable" max-height="450" style="width: 100%;"
         highlight-current-row
         @selection-change="selectionChange">
 
@@ -113,7 +113,7 @@ export default {
       tableData: [],
       CascaderBoxDTO: null,
       searchBarData: {
-        sendTime: null,
+        aduitTime: null,
         categoryId: null,
         purchaseStatus: null,
         buyerOrSupplyId: null,
@@ -151,7 +151,7 @@ export default {
     const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)
     const day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate()
     const ymd = date.getFullYear() + '-' + month + '-' + day
-    this.searchBarData.sendTime = ymd
+    this.searchBarData.aduitTime = ymd
 
     this.fecthList()
     this.fecthGoodsClass()
@@ -214,7 +214,7 @@ export default {
       this.levelFirst = null
       this.levelFecond = null
 
-      this.searchBarData.sendTime = ymd
+      this.searchBarData.aduitTime = ymd
       this.CascaderBoxDTO = null
       this.searchBarData.purchaseStatus = null
       this.searchBarData.buyerOrSupplyId = null
@@ -248,7 +248,7 @@ export default {
             productId: item.productId,
             supplierInfoList: [
               {
-                purchaseType: item.purchaseType,
+                purchaseType: 3,
                 quantity: item.orderQuantity,
                 personnelId: item.personnelId,
                 personnelName: item.personnelName

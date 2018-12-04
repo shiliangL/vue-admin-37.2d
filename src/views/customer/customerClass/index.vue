@@ -79,6 +79,14 @@
           <el-table-column prop="title" label="客户名称" align="center"></el-table-column>
           <el-table-column prop="contacts" label="联系人" align="center"></el-table-column>
           <el-table-column prop="categoryName" label="客户类别" align="center"></el-table-column>
+          <el-table-column prop="" label="客户账期" align="center">
+            <template slot-scope="scope" align="center">
+              <!-- <span v-cloak v-if="scope.row.orderResource ===0"> App </span>
+              <span v-cloak v-if="scope.row.orderResource ===1"> 公众号 </span>
+              <span v-cloak v-if="scope.row.orderResource ===2"> 小程序 </span>
+              <span v-cloak v-if="scope.row.orderResource ===3"> 后台 </span> -->
+            </template>
+          </el-table-column>
           <el-table-column prop="managerName" label="客户经理" align="center"></el-table-column>
           <el-table-column prop="regionTitle" label="配送区域" align="center"></el-table-column>
           <!-- <el-table-column prop="driverName" label="配送员" align="center"></el-table-column> -->
@@ -112,7 +120,7 @@
             </template>
           </el-table-column>
         </el-table>
-        
+
         <el-pagination
           slot="footer"
           @size-change="handleSizeChange"
@@ -128,7 +136,7 @@
 
       <!-- 弹层 -->
       <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add>
-      
+
     </div>
 </template>
 

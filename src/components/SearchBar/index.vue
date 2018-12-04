@@ -4,7 +4,9 @@
     <template v-if="data && data.length > 0">
       <div class="left" v-for="(item, index) in data[0]" :key="index">
         <template v-if="item.type === 'date'">
-          <el-date-picker :clearable="isDateClear" :style="{width:'140px'}" size="small" v-model="item.value" value-format="yyyy-MM-dd" type="date" :placeholder="item.placeholder"></el-date-picker>
+          <el-date-picker :clearable="isDateClear"
+            :style="{width: item.width ? item.width :'140px'}" size="small"
+            v-model="item.value" value-format="yyyy-MM-dd" type="date" :placeholder="item.placeholder"></el-date-picker>
         </template>
         <template v-if="item.type === 'datetimerange'">
           <el-date-picker v-model="item.value" size="small" value-format="yyyy-MM-dd HH:mm:ss" type="datetimerange" range-separator="-" start-placeholder="下单开始时间" end-placeholder="下单结束时间" :default-time="['23:00:00', '22:59:59']" :placeholder="item.placeholder"> </el-date-picker>
@@ -40,7 +42,7 @@
               <el-button type="primary" size="small" @click="clickAdd">{{item.name}}</el-button>
             </template>
             <template v-if="item.type === 'button'">
-              <el-button size="small" @click="clickBtn(item)">{{item.name}}</el-button>
+              <el-button :style="item.style ? item.style : null" size="small" @click="clickBtn(item)">{{item.name}}</el-button>
             </template>
             <template v-else-if="item.type === 'more'">
               <el-dropdown trigger="click" @command="clickCommand">

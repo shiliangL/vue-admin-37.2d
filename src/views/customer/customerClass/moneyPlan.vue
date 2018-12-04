@@ -8,15 +8,15 @@
 						<div class="row-content">
 					     <el-row>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="8">
-									<el-form-item label="可欠日期:" prop="limitTime" :rules="rules.input">
+									<el-form-item label="可欠日期:" prop="limitTime">
                     <div v-if="isAddView">
-                      <el-input-number size="small" style="width:160px" v-model="form.limitTime" :min="1" :max="10000"></el-input-number>
+                      <el-input-number size="small" style="width:160px" v-model="form.limitTime" :min="0" :max="10000"></el-input-number>
                       <el-select size="small" style="width:60px" v-model="form.limitType">
                         <el-option v-for="sub in options.dateTime" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                       </el-select>
                     </div>
-										<span v-else v-cloak> 
-                      {{ form.limitTime }} 
+										<span v-else v-cloak>
+                      {{ form.limitTime }}
                       <span v-if="form.limitType===0">天</span>
                       <span v-if="form.limitType===1">周</span>
                       <span v-if="form.limitType===2">月</span>
@@ -24,9 +24,9 @@
 									</el-form-item>
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="8">
-									<el-form-item label="可欠总金额:" prop="amount" :rules="[{trigger: 'change', required:true, validator: rules.validNumberR8}]">
+									<el-form-item label="可欠总金额:" prop="amount" :rules="[{trigger: 'change', validator: rules.validNumberR8}]">
                     <div v-if="isAddView">
-										  <el-input size="small" style="width:160px" placeholder="大于等于0" maxlength="7" v-model.trim="form.amount"></el-input>
+										  <el-input size="small" style="width:160px" placeholder="" maxlength="7" v-model.trim="form.amount"></el-input>
                       <span>元(人民币)</span>
                     </div>
 										<span v-else v-cloak> {{ form.amount }} 元(人民币)</span>
@@ -108,12 +108,12 @@ export default {
       form: {
         balance: 0,
         credence: 0,
-        amount: 0,
+        amount: null,
         mustGather: 0,
         payGather: 0,
         companyBank: null,
         bankNo: null,
-        limitTime: 3,
+        limitTime: 0,
         limitType: 0
       },
       options: {

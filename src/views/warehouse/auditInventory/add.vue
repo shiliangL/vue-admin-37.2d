@@ -10,17 +10,18 @@
 				<el-form-item style="margin-bottom:0" label="盘点库存:">
           <span v-cloak> {{ form.inventoryQuantity }} </span>
 				</el-form-item>
-				<el-form-item label="盘点状态:" prop="checkState" :rules="[{trigger: 'change', required:true, validator: rules.validNumberR2}]">
-          <el-select size="small" v-model="form.checkState" filterable placeholder="请选择" style="width:180px">
+				<el-form-item label="盘点状态:" prop="checkState" :rules="rules.select">
+          <el-select size="small" v-model="form.checkState" filterable placeholder="请选择" style="width:180px" @change="selectChange">
             <el-option v-for="sub in optonsType" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
           </el-select>
 				</el-form-item>
-				<el-form-item label="核查库存:" prop="checkQuantity" :rules="rules.input">
+				<el-form-item label="核查库存:" prop="checkQuantity"
+          :rules="[{trigger: 'change', required: true, validator: rules.validNumberPd, RE: form.stockQuantity, type: form.checkState,v:2}]">
 					<el-input size="small" style="width:180px" v-model.trim="form.checkQuantity"  placeholder="请输入"></el-input>
 				</el-form-item>
 			</el-form>
 			<!-- 说明 -->
-              
+
 			<div class="footer-block" style="margin-top: 10px;">
 				<el-button size="small" @click.stop="close">取 消</el-button>
 				<el-button :loading="saveLoading" size="small" type="primary" @click.stop="clickSaveOrUpdate('form')"> 确定 </el-button>
@@ -61,6 +62,9 @@ export default {
   methods: {
     close() {
       this.$emit('close')
+    },
+    selectChange() {
+      this.form.checkQuantity = null
     },
     clickSaveOrUpdate(formName) {
       this.$refs[formName].validate(valid => {

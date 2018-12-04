@@ -16,7 +16,7 @@
         <el-input size="small" style="width:180px" v-model="form.returnsQuantity"></el-input>
       </el-form-item>
 
-      <el-form-item prop="remark" :label="form.type===1? '退货原因:':'换货原因:'">
+      <el-form-item prop="remark" :label="form.type===1? '退货原因:':'换货原因:'" :rules="rules.input">
 				<el-input size="small" :autosize="{ minRows: 2, maxRows: 4}" v-model.trim="form.remark" style="width:180px" type="textarea" placeholder="不能超30位数" maxlength="30"></el-input>
       </el-form-item>
 

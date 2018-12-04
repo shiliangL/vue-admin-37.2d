@@ -6,10 +6,10 @@
 
       <div class="search-bar">
         <div class="left">
-          <el-date-picker :style="{width:'140px'}" 
+          <el-date-picker :style="{width:'140px'}"
             size="small"
-            v-model="searchBarData.createTime" 
-            value-format="yyyy-MM-dd" 
+            v-model="searchBarData.createTime"
+            value-format="yyyy-MM-dd"
             type="date" placeholder="订单创建时间">
             </el-date-picker>
         </div>
@@ -46,31 +46,32 @@
               <span>{{scope.$index + 1}}</span>
             </template>
           </el-table-column>
- 
+
           <el-table-column prop="orderNo" label="采购订单编号" align="center"></el-table-column>
           <el-table-column prop="createdOn" label="采购订单创建时间" align="center"></el-table-column>
 
-          <el-table-column prop="sourceType" label="采购类型" align="center">
+          <!-- <el-table-column prop="sourceType" label="采购类型" align="center">
             <template slot-scope="scope" align="center">
               <span v-cloak v-if="scope.row.purchaseType ===2"> 供应商直供 </span>
               <span v-cloak v-if="scope.row.purchaseType ===1"> 市场自采 </span>
             </template>
-          </el-table-column>
-          <el-table-column prop="personnelName" label="采购员/供应商" align="center"></el-table-column>
+          </el-table-column> -->
+
+          <el-table-column prop="personnelName" label="采购员" align="center"></el-table-column>
 
           <el-table-column prop="auditStatus" label="采购订单状态" align="center">
              <template slot-scope="scope" align="center">
               <span v-cloak> {{scope.row.procurementStatus | filterStatus }} </span>
             </template>
           </el-table-column>
- 
+
           <el-table-column label="操作" align="center" width="180">
             <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="click2view(scope.$index,scope.row)">查看</el-button>
             </template>
           </el-table-column>
         </el-table>
-        
+
         <el-pagination
           slot="footer"
           @size-change="handleSizeChange"
@@ -86,7 +87,7 @@
 
       <!-- 弹层 -->
       <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add>
-      
+
     </div>
 </template>
 

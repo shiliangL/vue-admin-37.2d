@@ -7,14 +7,15 @@
 				<el-form-item style="margin-bottom:0" label="实际库存:">
           <span v-cloak> {{ form.stockQuantity }} </span>
 				</el-form-item>
-				<el-form-item label="盘点库存:" prop="inventoryQuantity" :rules="rules.input">
+				<el-form-item label="盘点库存:" prop="inventoryQuantity" :rules="[{trigger: 'change',required: true,
+          validator: rules.validNumberPd,RE: form.stockQuantity, type: form.type, v:1}]">
 					<el-input size="small" style="width:180px" v-model.trim="form.inventoryQuantity"  placeholder="请输入"></el-input>
 				</el-form-item>
 				<el-form-item label="备注:">
-  				<el-input size="small" 
-            :autosize="{ minRows: 2, maxRows: 4}" 
-            v-model.trim="form.remark" style="width:180px" 
-            type="textarea" 
+  				<el-input size="small"
+            :autosize="{ minRows: 2, maxRows: 4}"
+            v-model.trim="form.remark" style="width:180px"
+            type="textarea"
             placeholder="不能超30位数" maxlength="30">
           </el-input>
 				</el-form-item>
@@ -40,6 +41,7 @@ export default {
     return {
       form: {
         'title': null,
+        'type': null,
         'stockQuantity': null,
         'inventoryQuantity': null,
         'remark': null
@@ -89,6 +91,6 @@ export default {
 
 <style scoped lang="scss">
 .el-form-item {
-  margin-bottom: 4px;
+  // margin-bottom: 4px;
 }
 </style>

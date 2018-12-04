@@ -67,205 +67,214 @@
 
               </div>
 
-              <div v-if="storageType ===4">
+              <el-row v-if="storageType ===4"  key="AddformTable">
+                <el-col :span="24">
+                  <div>
+                    <el-form :model="Addform" :rules="rules" ref="AddInDetailList" label-width="120px" :inline="true">
 
-                 <el-form :model="Addform" :rules="rules" ref="AddInDetailList" label-width="120px" :inline="true">
+                      <el-table :data="Addform.stockInDetailList" size="small" class="stockInDetailList" max-height="420" style="width: 100%;" highlight-current-row>
+                        <el-table-column label="序号" width="50" align="center">
+                          <template slot-scope="scope">
+                            <span>{{scope.$index + 1}}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column prop="categoryName" label="商品分类" align="center"></el-table-column>
+                        <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
+                        <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
+                        <el-table-column prop="createdTime" label="仓位" align="center" width="220">
+                          <template slot-scope="scope">
+                            <div class="item-box">
+                              <span v-for="item in scope.row.storageIdsOption" :key="item.pk">
+                                <el-checkbox class="item-checkbox" v-model="item.isCheck" :label="item.number"></el-checkbox>
+                              </span>
+                            </div>
+                          </template>
+                        </el-table-column>
+                        <el-table-column prop="planQuantity" label="数量" align="center">
+                          <template slot-scope="scope">
+                            <el-form-item label="" label-width="0px" :prop="'stockInDetailList.'+scope.$index+'.planQuantity'" :rules="[{trigger: 'change', validator: rules.validNumberR2N0}]">
+                              <el-input style="width:110px" placeholder="请输入" size="small" v-model.trim="scope.row.planQuantity"></el-input>
+                            </el-form-item>
+                          </template>
+                        </el-table-column>
+                        <el-table-column prop="makePlace" label="产地" align="center" width="100">
+                          <template slot-scope="scope">
+                            <el-form-item label="" label-width="0">
+                              <el-input size="small" style="width:90px" class="w180"  placeholder="请输入" v-model.trim="scope.row.makePlace"></el-input>
+                            </el-form-item>
+                          </template>
+                        </el-table-column>
+                        <el-table-column prop="makeDate" label="生产日期" align="center" width="180">
+                          <template slot-scope="scope">
+                            <el-form-item label="" label-width="0">
+                              <el-date-picker :style="{width:'136px'}" size="small" v-model="scope.row.makeDate" value-format="yyyy-MM-dd" type="date"></el-date-picker>
+                            </el-form-item>
+                          </template>
+                        </el-table-column>
+                        <el-table-column  label="操作" align="center" width="180">
+                          <template slot-scope="scope">
+                            <el-button type="text" style="color:red" @click.stop="clickToDelete(scope.$index, scope.row)" size="mini">删除</el-button>
+                          </template>
+                        </el-table-column>
+                      </el-table>
 
-                  <el-table :data="Addform.stockInDetailList" size="small" class="stockInDetailList" max-height="420" style="width: 100%;" highlight-current-row>
-                    <el-table-column label="序号" width="50" align="center">
-                      <template slot-scope="scope">
-                        <span>{{scope.$index + 1}}</span>
-                      </template>
-                    </el-table-column>
-                    <el-table-column prop="categoryName" label="商品分类" align="center"></el-table-column>
-                    <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
-                    <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
-                    <el-table-column prop="createdTime" label="仓位" align="center" width="220">
-                      <template slot-scope="scope">
-                        <div class="item-box">
-                          <span v-for="item in scope.row.storageIdsOption" :key="item.pk">
-                            <el-checkbox class="item-checkbox" v-model="item.isCheck" :label="item.number"></el-checkbox>
-                          </span>
-                        </div>
-                      </template>
-                    </el-table-column>
-                    <el-table-column prop="planQuantity" label="数量" align="center">
-                       <template slot-scope="scope">
-                        <el-form-item label="" label-width="0px" :prop="'stockInDetailList.'+scope.$index+'.planQuantity'" :rules="[{trigger: 'change', validator: rules.validNumberR2N0}]">
-                          <el-input style="width:110px" placeholder="请输入" size="small" v-model.trim="scope.row.planQuantity"></el-input>
-                        </el-form-item>
-                      </template>
-                    </el-table-column>
-                    <el-table-column prop="makePlace" label="产地" align="center" width="100">
-                      <template slot-scope="scope">
-                        <el-form-item label="" label-width="0">
-                          <el-input size="small" style="width:90px" class="w180"  placeholder="请输入" v-model.trim="scope.row.makePlace"></el-input>
-                        </el-form-item>
-                      </template>
-                    </el-table-column>
-                    <el-table-column prop="makeDate" label="生产日期" align="center" width="180">
-                      <template slot-scope="scope">
-                        <el-form-item label="" label-width="0">
-                          <el-date-picker :style="{width:'136px'}" size="small" v-model="scope.row.makeDate" value-format="yyyy-MM-dd" type="date"></el-date-picker>
-                        </el-form-item>
-                      </template>
-                    </el-table-column>
-                    <el-table-column  label="操作" align="center" width="180">
-                      <template slot-scope="scope">
-                        <el-button type="text" style="color:red" @click.stop="clickToDelete(scope.$index, scope.row)" size="mini">删除</el-button>
-                      </template>
-                    </el-table-column>
-                  </el-table>
-
-                </el-form>
-                <div class="footer-block">
-                  <span class="page" v-cloak> 共 {{Addform.stockInDetailList.length}} 条</span>
-                </div>
-              </div>
-
-
-              <div class="table" v-else>
-                <!-- {{form.stockInDetailList}} -->
-                <el-form :model="form" :rules="rules" ref="stockInDetailList" label-width="120px" :inline="true">
-
-                  <el-table :data="form.stockInDetailList" size="small" class="stockInDetailList" max-height="420" style="width: 100%;" highlight-current-row>
-                    <el-table-column label="序号" width="50" align="center">
-                      <template slot-scope="scope">
-                        <span>{{scope.$index + 1}}</span>
-                      </template>
-                    </el-table-column>
-                    <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
-                    <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
-                    <!-- <el-table-column prop="batchesBarCode" label="商品批次条码" align="center"></el-table-column> -->
-                    <el-table-column v-if="storageType===5"  prop="orderNo" label="采购退/换货" align="center">
-                      <template slot-scope="scope">
-                        <span v-if="scope.row.type===1">退货</span>
-                        <span v-if="scope.row.type===2">换货</span>
-                      </template>
-                    </el-table-column>
-                    <el-table-column v-if="storageType===1"  prop="orderNo" label="关联采购订单编号" align="center"></el-table-column>
-                    <el-table-column v-if="storageType===2"  prop="orderNo" label="关联销售退货单号" align="center"></el-table-column>
-                    <el-table-column v-if="storageType===3"  prop="orderNo" label="关联销售换货单号" align="center"></el-table-column>
-                    <el-table-column v-if="storageType===5"  prop="orderNo" label="采购退/换货单号" align="center"></el-table-column>
-
-                    <el-table-column prop="createdTime" label="仓位" align="center" width="220">
-                      <template slot-scope="scope">
-                        <div class="item-box">
-                          <span v-for="item in scope.row.storageIdsOption" :key="item.pk">
-                            <el-checkbox class="item-checkbox" v-model="item.isCheck" :label="item.number"></el-checkbox>
-                          </span>
-                        </div>
-                      </template>
-                    </el-table-column>
-                    <el-table-column prop="planQuantity" label="数量" align="center"></el-table-column>
-                    <el-table-column prop="makePlace" label="产地" align="center" width="100">
-                      <template slot-scope="scope">
-                        <el-form-item label="" label-width="0">
-                          <el-input size="small" style="width:90px" class="w180"  placeholder="请输入" v-model.trim="scope.row.makePlace"></el-input>
-                        </el-form-item>
-                      </template>
-                    </el-table-column>
-                    <el-table-column prop="makeDate" label="生产日期" align="center" width="180">
-                      <template slot-scope="scope">
-                        <el-form-item label="" label-width="0">
-                          <el-date-picker :style="{width:'136px'}" size="small" v-model="scope.row.makeDate" value-format="yyyy-MM-dd" type="date"></el-date-picker>
-                        </el-form-item>
-                      </template>
-                    </el-table-column>
-                  </el-table>
-
-                </el-form>
-                <div class="footer-block">
-                  <span class="page" v-cloak> 共 {{form.stockInDetailList.length}} 条</span>
-                </div>
-              </div>
-
-            </template>
-
-            <template v-if="this.data.type === 'view'">
-
-              <div class="viewPage">
-                <!--基本信息-->
-                <div class="row-item">
-                  <div class="row-title">基本信息</div>
-                  <div class="row-content">
-                    <el-row>
-                      <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                        <span class="title-label">入库单号:</span>
-                        <span v-cloak>{{ viewData.orderNo }} </span>
-                      </el-col>
-                      <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                        <span class="title-label">仓库:</span>
-                        <span v-cloak>{{ viewData.stockName }} </span>
-                      </el-col>
-                      <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                        <span class="title-label">入库类型:</span>
-                        <span v-cloak v-if="viewData.storageType==1">采购入库</span>
-                        <span v-cloak v-if="viewData.storageType==2">销售退货</span>
-                        <span v-cloak v-if="viewData.storageType==3">销售换货</span>
-                        <span v-cloak v-if="viewData.storageType==4">其他</span>
-                        <span v-cloak v-if="viewData.storageType==5">采购退换货</span>
-                      </el-col>
-                      <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                        <span class="title-label">创建人:</span>
-                        <span v-cloak>{{ viewData.createdName }} </span>
-                      </el-col>
-                      <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                        <span class="title-label">创建时间:</span>
-                        <span v-cloak>{{ viewData.createdTime }} </span>
-                      </el-col>
-                    </el-row>
-                  </div>
-                </div>
-
-                <div class="row-item">
-                  <div class="row-title">商品信息</div>
-                  <div class="row-content">
-
-                    <div class="search">
-                        <el-input size="small" style="width:190px" class="w180"  placeholder="请输入商品名称检索" v-model.trim="viewSearch"></el-input>
-                        <el-button  type="primary" size="small" @click.stop="clickToSearch" > 搜索 </el-button>
-                        <el-button style="margin-left: 0px;" size="small" @click.stop="resetSearch" > 重置 </el-button>
-                    </div>
-
-                    <el-table :data="viewData.tableView" size="small" max-height="420" style="width: 100%;margin-top: 10px;" highlight-current-row>
-
-                      <el-table-column label="序号" width="50" align="center">
-                        <template slot-scope="scope">
-                          <span>{{scope.$index + 1}}</span>
-                        </template>
-                      </el-table-column>
-
-                      <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
-                      <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
-                      <!-- <el-table-column prop="batchesBarCode" label="商品批次条码" align="center"></el-table-column> -->
-                      <el-table-column prop="inOrderNo" label="关联入库单号" align="center"></el-table-column>
-                      <el-table-column prop="stockInfoName" label="仓库" align="center"></el-table-column>
-                      <el-table-column prop="stockStorageInfoNumbers" label="仓位" align="center"></el-table-column>
-                      <el-table-column prop="storageType" label="入库类型" align="center">
-                         <template slot-scope="scope">
-                          <span v-if="scope.row.storageType === 1"> 采购入库 </span>
-                          <span v-if="scope.row.storageType === 2"> 销售退货 </span>
-                          <span v-if="scope.row.storageType === 3"> 销售换货 </span>
-                          <span v-if="scope.row.storageType === 4"> 其他 </span>
-                          <span v-if="viewData.storageType === 5">采购退换货</span>
-                        </template>
-                      </el-table-column>
-                      <el-table-column prop="quantity" label="入库数量" align="center"></el-table-column>
-                      <el-table-column prop="warehouseTime" label="入库时间" width="90" align="center"></el-table-column>
-                      <el-table-column prop="makePlace" label="产地" align="center"></el-table-column>
-                      <el-table-column prop="makeDateStr" label="生产日期" width="90" align="center"></el-table-column>
-                      <el-table-column prop="operator" label="操作人"  align="center"></el-table-column>
-                    </el-table>
+                    </el-form>
                     <div class="footer-block">
-                      <span class="page" v-cloak> 共 {{viewData.tableView.length}} 条</span>
+                      <span class="page" v-cloak> 共 {{Addform.stockInDetailList.length}} 条</span>
                     </div>
                   </div>
-                </div>
+                </el-col>
+              </el-row>
 
-              </div>
+              <el-row v-else key="stockInDetailList">
+                  <el-col :span="24">
+                    <div class="table">
+                      <el-form :model="form"  :rules="rules" ref="stockInDetailList" label-width="120px" :inline="true">
+
+                        <el-table :data="form.stockInDetailList" size="small" class="stockInDetailList" max-height="420" style="width: 100%;" highlight-current-row>
+                          <el-table-column label="序号" width="50" align="center">
+                            <template slot-scope="scope">
+                              <span>{{scope.$index + 1}}</span>
+                            </template>
+                          </el-table-column>
+                          <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
+                          <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
+                          <!-- <el-table-column prop="batchesBarCode" label="商品批次条码" align="center"></el-table-column> -->
+                          <el-table-column v-if="storageType===5"  prop="orderNo" label="采购退/换货" align="center">
+                            <template slot-scope="scope">
+                              <span v-if="scope.row.type===1">退货</span>
+                              <span v-if="scope.row.type===2">换货</span>
+                            </template>
+                          </el-table-column>
+                          <!-- <el-table-column v-if="storageType===1"  prop="orderNo" label="关联采购订单编号" align="center"></el-table-column>
+                          <el-table-column v-if="storageType===2"  prop="orderNo" label="关联销售退货单号" align="center"></el-table-column>
+                          <el-table-column v-if="storageType===3"  prop="orderNo" label="关联销售换货单号" align="center"></el-table-column>
+                          <el-table-column v-if="storageType===5"  prop="orderNo" label="采购退/换货单号" align="center"></el-table-column> -->
+
+                          <el-table-column prop="orderNo" :label="orderNoTitle" align="center"></el-table-column>
+
+
+                          <el-table-column prop="createdTime" label="仓位" align="center" width="220">
+                            <template slot-scope="scope">
+                              <div class="item-box">
+                                <span v-for="item in scope.row.storageIdsOption" :key="item.pk">
+                                  <el-checkbox class="item-checkbox" v-model="item.isCheck" :label="item.number"></el-checkbox>
+                                </span>
+                              </div>
+                            </template>
+                          </el-table-column>
+                          <el-table-column prop="planQuantity" label="数量" align="center"></el-table-column>
+                          <el-table-column prop="makePlace" label="产地" align="center" width="100">
+                            <template slot-scope="scope">
+                              <el-form-item label="" label-width="0">
+                                <el-input size="small" style="width:90px" class="w180"  placeholder="请输入" v-model.trim="scope.row.makePlace"></el-input>
+                              </el-form-item>
+                            </template>
+                          </el-table-column>
+                          <el-table-column prop="makeDate" label="生产日期" align="center" width="180">
+                            <template slot-scope="scope">
+                              <el-form-item label="" label-width="0">
+                                <el-date-picker :style="{width:'136px'}" size="small" v-model="scope.row.makeDate" value-format="yyyy-MM-dd" type="date"></el-date-picker>
+                              </el-form-item>
+                            </template>
+                          </el-table-column>
+                        </el-table>
+
+                      </el-form>
+                      <div class="footer-block">
+                        <span class="page" v-cloak> 共 {{form.stockInDetailList.length}} 条</span>
+                      </div>
+                    </div>
+                </el-col>
+              </el-row>
 
             </template>
+
+
+            <el-row v-if="this.data.type === 'view'">
+              <el-col :span="24">
+                <div class="viewPage">
+                  <!--基本信息-->
+                  <div class="row-item">
+                    <div class="row-title">基本信息</div>
+                    <div class="row-content">
+                      <el-row>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <span class="title-label">入库单号:</span>
+                          <span v-cloak>{{ viewData.orderNo }} </span>
+                        </el-col>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <span class="title-label">仓库:</span>
+                          <span v-cloak>{{ viewData.stockName }} </span>
+                        </el-col>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <span class="title-label">入库类型:</span>
+                          <span v-cloak v-if="viewData.storageType==1">采购入库</span>
+                          <span v-cloak v-if="viewData.storageType==2">销售退货</span>
+                          <span v-cloak v-if="viewData.storageType==3">销售换货</span>
+                          <span v-cloak v-if="viewData.storageType==4">其他</span>
+                          <span v-cloak v-if="viewData.storageType==5">采购退换货</span>
+                        </el-col>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <span class="title-label">创建人:</span>
+                          <span v-cloak>{{ viewData.createdName }} </span>
+                        </el-col>
+                        <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                          <span class="title-label">创建时间:</span>
+                          <span v-cloak>{{ viewData.createdTime }} </span>
+                        </el-col>
+                      </el-row>
+                    </div>
+                  </div>
+
+                  <div class="row-item">
+                    <div class="row-title">商品信息</div>
+                    <div class="row-content">
+
+                      <div class="search">
+                          <el-input size="small" style="width:190px" class="w180"  placeholder="请输入商品名称检索" v-model.trim="viewSearch"></el-input>
+                          <el-button  type="primary" size="small" @click.stop="clickToSearch" > 搜索 </el-button>
+                          <el-button style="margin-left: 0px;" size="small" @click.stop="resetSearch" > 重置 </el-button>
+                      </div>
+
+                      <el-table :data="viewData.tableView" size="small" max-height="420" style="width: 100%;margin-top: 10px;" highlight-current-row>
+
+                        <el-table-column label="序号" width="50" align="center">
+                          <template slot-scope="scope">
+                            <span>{{scope.$index + 1}}</span>
+                          </template>
+                        </el-table-column>
+
+                        <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
+                        <el-table-column prop="basicUnit" label="基本单位" align="center"></el-table-column>
+                        <!-- <el-table-column prop="batchesBarCode" label="商品批次条码" align="center"></el-table-column> -->
+                        <el-table-column prop="inOrderNo" label="关联入库单号" align="center"></el-table-column>
+                        <el-table-column prop="stockInfoName" label="仓库" align="center"></el-table-column>
+                        <el-table-column prop="stockStorageInfoNumbers" label="仓位" align="center"></el-table-column>
+                        <el-table-column prop="storageType" label="入库类型" align="center">
+                          <template slot-scope="scope">
+                            <span v-if="scope.row.storageType === 1"> 采购入库 </span>
+                            <span v-if="scope.row.storageType === 2"> 销售退货 </span>
+                            <span v-if="scope.row.storageType === 3"> 销售换货 </span>
+                            <span v-if="scope.row.storageType === 4"> 其他 </span>
+                            <span v-if="viewData.storageType === 5">采购退换货</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column prop="quantity" label="入库数量" align="center"></el-table-column>
+                        <el-table-column prop="warehouseTime" label="入库时间" width="90" align="center"></el-table-column>
+                        <el-table-column prop="makePlace" label="产地" align="center"></el-table-column>
+                        <el-table-column prop="makeDateStr" label="生产日期" width="90" align="center"></el-table-column>
+                        <el-table-column prop="operator" label="操作人"  align="center"></el-table-column>
+                      </el-table>
+                      <div class="footer-block">
+                        <span class="page" v-cloak> 共 {{viewData.tableView.length}} 条</span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </el-col>
+            </el-row>
 
         </div>
       </div>
@@ -291,6 +300,7 @@ export default {
   },
   data() {
     return {
+      orderNoTitle: '关联采购订单编号',
       dialogVisible: false,
       stockId: null,
       propType: {
@@ -399,7 +409,7 @@ export default {
             }
           }
         }
-        this.viewData.tableView = data
+        this.viewData.tableView = data || []
       }).catch(e => {
         console.log(e)
       })
@@ -439,12 +449,12 @@ export default {
           if (!this.cwOption) return
           for (const item of data) {
             if (this.cwOption && this.cwOption[item.stockId]) {
-              item.storageIdsOption = JSON.parse(JSON.stringify(this.cwOption[item.stockId]))
+              item.storageIdsOption = JSON.parse(JSON.stringify(this.cwOption[item.stockId])) || []
             } else {
               item.storageIdsOption = []
             }
           }
-          this.form.stockInDetailList = data
+          this.form.stockInDetailList = data || []
         }).catch(e => {
           this.$message({ type: 'error', message: e.msg })
         })
@@ -456,31 +466,26 @@ export default {
           if (!this.cwOption) return
           for (const item of data) {
             if (this.cwOption[item.stockId]) {
-              item.storageIdsOption = JSON.parse(
-                JSON.stringify(this.cwOption[item.stockId])
-              )
+              item.storageIdsOption = JSON.parse(JSON.stringify(this.cwOption[item.stockId])) || []
             } else {
               item.storageIdsOption = []
             }
           }
-          this.form.stockInDetailList = data
+          this.form.stockInDetailList = data || []
         }).catch(e => {
           this.$message({ type: 'error', message: e.msg })
         })
       } else if (this.storageType === 5) {
-        console.log('采购退换货')
         purchaseReturn({ stockId: this.stockId }).then(({ data }) => {
           if (!this.cwOption) return
           for (const item of data) {
             if (this.cwOption[item.stockId]) {
-              item.storageIdsOption = JSON.parse(
-                JSON.stringify(this.cwOption[item.stockId])
-              )
+              item.storageIdsOption = JSON.parse(JSON.stringify(this.cwOption[item.stockId])) || []
             } else {
               item.storageIdsOption = []
             }
           }
-          this.form.stockInDetailList = data
+          this.form.stockInDetailList = data || []
         }).catch(e => {
           this.$message({ type: 'error', message: e.msg })
         })
@@ -547,7 +552,13 @@ export default {
       }
       this.$refs['stockInDetailList'].validate(valid => {
         if (valid) {
-          this.$confirm('是否确保存？', '提示', {
+          let msg = null
+          if (this.storageType === 1 || 5) {
+            msg = '请先确定有没有【采购退/换货】的商品！新增入库单的商品，将无法进行 采购退换货操作！！！'
+          } else {
+            msg = '是否确认保存'
+          }
+          this.$confirm(msg, '提醒', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
@@ -597,8 +608,36 @@ export default {
       })
     },
     stockChange(value) {
-      value === 4 ? this.isShowView = true : this.isShowView = false
       this.form.stockInDetailList = []
+      value === 4 ? this.isShowView = true : this.isShowView = false
+      // <el-table-column v-if="storageType===1"  prop="orderNo" label="关联采购订单编号" align="center"></el-table-column>
+      // <el-table-column v-if="storageType===2"  prop="orderNo" label="关联销售退货单号" align="center"></el-table-column>
+      // <el-table-column v-if="storageType===3"  prop="orderNo" label="关联销售换货单号" align="center"></el-table-column>
+      // <el-table-column v-if="storageType===5"  prop="orderNo" label="采购退/换货单号" align="center"></el-table-column> -->
+      switch (value) {
+        case 1:
+        {
+          this.orderNoTitle = '关联采购订单编号'
+          break
+        }
+        case 2:
+        {
+          this.orderNoTitle = '关联销售退货单号'
+          break
+        }
+        case 3:
+        {
+          this.orderNoTitle = '关联销售换货单号'
+          break
+        }
+        case 5:
+        {
+          this.orderNoTitle = '采购退/换货单号'
+          break
+        }
+        default:
+          break
+      }
     },
     validatePass() {
       if (this.$refs['toView']) {

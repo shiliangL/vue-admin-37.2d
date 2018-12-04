@@ -17,7 +17,7 @@
 					<el-table-column prop="stockInfoName" label="仓库" align="center"></el-table-column>
 					<el-table-column prop="storageType" label="入库类型" align="center">
              <template slot-scope="scope">
-              <span v-if="scope.row.storageType === 1"> 采购入库 </span>
+              <span v-if="scope.row.storageType === 1"> 采购订单 </span>
               <span v-if="scope.row.storageType === 2"> 销售退货 </span>
               <span v-if="scope.row.storageType === 3"> 销售换货 </span>
               <span v-if="scope.row.storageType === 4"> 其他 </span>
@@ -88,9 +88,10 @@ export default {
           { type: 'date', value: null, key: 'createdTime', width: '200px', placeholder: '创建日期' },
           { type: 'option', value: null, key: 'stockId', class: 'w150', placeholder: '仓库', options: [] },
           { type: 'option', value: null, key: 'storageType', class: 'w150', placeholder: '入库类别', options: [
-            { label: '采购入库', value: 1 },
+            { label: '采购订单', value: 1 },
             { label: '销售退货', value: 2 },
             { label: '销售换货', value: 3 },
+            { label: '采购退换货', value: 5 },
             { label: '其他', value: 4 }
           ] },
           { type: 'input', value: null, key: 'orderNo', class: 'w180', placeholder: '输入单号检索' },

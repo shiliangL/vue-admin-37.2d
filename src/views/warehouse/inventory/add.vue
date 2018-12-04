@@ -26,7 +26,7 @@
                         <span v-if="propsSonData.basicUnit" v-cloak>{{propsSonData.basicUnit}}</span>
                       </el-form-item>
                     </el-col>
-                    
+
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="仓库:">
                         <span v-if="propsSonData.stockInfoName" v-cloak>{{propsSonData.stockInfoName}}</span>
@@ -40,7 +40,7 @@
             <div class="row-item" style="margin-top: -30px;">
               <div class="row-content">
                 <el-row :gutter="30" style="margin:0">
-                
+
                   <el-col :span="12">
                       <div class="row-title">出库明细</div>
                       <search-bar :data="searchBarData" ref="searchBarLeft" @search="searchAction" @reset="reset"></search-bar>
@@ -62,7 +62,7 @@
                           </el-table-column>
                           <el-table-column prop="outOrderNo" label="关联出库单号" align="center"></el-table-column>
                         </el-table>
-                        
+
                         <el-pagination
                           slot="footer"
                           @size-change="handleSizeChange"
@@ -93,15 +93,16 @@
                           <el-table-column prop="quantity" label="入库数量(基本单位)" align="center"></el-table-column>
                           <el-table-column label="入库类型" align="center">
                              <template slot-scope="scope">
-                                <span v-if="scope.row.storageType === 1"> 采购入库 </span>
+                                <span v-if="scope.row.storageType === 1"> 采购订单 </span>
                                 <span v-if="scope.row.storageType === 2"> 销售退货 </span>
                                 <span v-if="scope.row.storageType === 3"> 销售换货 </span>
                                 <span v-if="scope.row.storageType === 4"> 其他 </span>
+                                <span v-if="scope.row.storageType === 5"> 采购退换货 </span>
                               </template>
                           </el-table-column>
                           <el-table-column prop="inOrderNo" label="关联入库单号" align="center"></el-table-column>
                         </el-table>
-                        
+
                         <el-pagination
                           slot="footer"
                           @size-change="handleSizeChangeH"
@@ -172,9 +173,10 @@ export default {
             placeholder: '入库日期'
           },
           { type: 'option', value: null, key: 'storageType', class: 'w150', placeholder: '入库类别', options: [
-            { label: '采购入库', value: 1 },
+            { label: '采购订单', value: 1 },
             { label: '销售退货', value: 2 },
             { label: '销售换货', value: 3 },
+            { label: '采购退换货', value: 5 },
             { label: '其他', value: 4 }
           ] },
           {

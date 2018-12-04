@@ -3,6 +3,9 @@
     <el-dialog :title="dialog.title" width="370px" :visible.sync="dialog.visiable" @close="closeDialog" append-to-body center>
 
       <el-form :model="form" ref="form"  :inline="true" :rules="rules">
+	      <el-form-item label="父级名称:" label-width="100px" v-if="isFather">
+					<span> {{isFather}}</span>
+				</el-form-item>
 				<el-form-item label="名称" label-width="100px" prop="title" :rules="rules.input">
 					<el-input size="small" style="width:180px"  v-model.trim="form.title" placeholder="不能超过6位数" maxlength="8"></el-input>
 				</el-form-item>
@@ -28,6 +31,7 @@ export default {
   mixins: [addModel, rules],
   data() {
     return {
+      isFather: null,
       form: {
         title: null
       },
@@ -43,6 +47,10 @@ export default {
     this.$setKeyValue(this.dialog, { title: this.data.title, visiable: true })
   },
   mounted() {
+    const { isFather } = this.data
+    if (isFather) {
+      this.isFather = isFather
+    }
     if (this.data.type === 'editorParent' || this.data.type === 'editorChild') {
       this.fetchDetails()
     }
@@ -113,5 +121,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  .el-form-item {
+    margin-bottom: 6px;
+  }
+</style>
 
 

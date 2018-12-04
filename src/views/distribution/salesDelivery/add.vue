@@ -88,11 +88,11 @@
                           </el-form-item>
                         </el-col>
                         <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                          <el-form-item  :label="data.obj.flag === 0?'实际送达时间:':'换货实际送达时间:'"> 
+                          <el-form-item  :label="data.obj.flag === 0?'实际送达时间:':'换货实际送达时间:'">
                             <span v-cloak>{{form.factTime}}</span>
                           </el-form-item>
                         </el-col>
-                        
+
                       </el-row>
                     </div>
                   </div>
@@ -141,21 +141,21 @@
 
                 </el-collapse-item>
               </el-collapse>
- 
+
 
               <template v-if="data.type==='map'">
 
-                <baidu-map 
+                <baidu-map
                   ref="map"
-                  class="bm-view" 
+                  class="bm-view"
                   ak="vUHITq2fmXpfwoeezVGNh2VCfbT02tY7"
                   anchor="BMAP_ANCHOR_TOP_RIGHT"
                   @ready="mapReadyCallBack"
-                  :center="map.center" 
-                  :zoom="map.zoom" 
+                  :center="map.center"
+                  :zoom="map.zoom"
                   :showAddressBar="true"
                   :scroll-wheel-zoom="true"
-                  :autoLocation="true" > 
+                  :autoLocation="true" >
                   <!-- :scroll-wheel-zoom="true" -->
                     <!-- 缩放 -->
                     <template v-if="map.isReady">
@@ -163,14 +163,14 @@
                       <!-- 定位 -->
                       <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :showAddressBar="true" :autoLocation="true"></bm-geolocation>
 
-                      <bm-driving 
-                        :start="map.startPos" 
-                        :end="map.endPos" 
+                      <bm-driving
+                        :start="map.startPos"
+                        :end="map.endPos"
                         :speed="100"
-                        @searchcomplete="handleSearchComplete" 
-                        :panel="false" 
+                        @searchcomplete="handleSearchComplete"
+                        :panel="false"
                         :autoViewport="true"></bm-driving>
-                      <bml-lushu @stop="reset" :path="map.path" :icon="icon" :play="true" content="来不及解释了,赶紧上车" :rotation="true"> </bml-lushu>
+                      <bml-lushu @stop="reset" :path="map.path" :icon="icon" :play="true" :content="form.driverName" :rotation="true"> </bml-lushu>
                       <!-- 实时轨迹 -->
                       <bm-point-collection :points="map.path" color="red" size="BMAP_POINT_SIZE_SMALL"></bm-point-collection>
 
@@ -218,7 +218,7 @@
                             <span v-cloak v-if="scope.row.exchanage ===2"> 换货已完成 </span>
                             <span v-cloak v-if="scope.row.exchanage ===3"> 换货已拒绝 </span>
                           </template>
- 
+
                         </template>
                       </el-table-column>
                     </el-table>
@@ -244,7 +244,7 @@
                     <el-option v-for="sub in options.stockOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                   </el-select>
                   <el-select v-model="AddForm.type" placeholder="请选择类型" size="small" style="width:120px" filterable>
-                    <el-option v-for="item in options.storageType" :key="item.value" :label="item.label" :value="item.value"> </el-option> 
+                    <el-option v-for="item in options.storageType" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                   </el-select>
                   <el-button  type="primary" size="small" @click.stop="confirmType" > 加载数据 </el-button>
               </div>
@@ -298,7 +298,7 @@
                           @selection-change="handleTable_R_Change">
                           <el-table-column type="selection" width="40"> </el-table-column>
                           <el-table-column label="序号" width="50" align="center">
-                            <template slot-scope="scope"> 
+                            <template slot-scope="scope">
                               <span>{{scope.$index + 1}}</span>
                             </template>
                           </el-table-column>
@@ -754,5 +754,5 @@ export default {
     padding: 0px;
   }
 }
- 
+
 </style>

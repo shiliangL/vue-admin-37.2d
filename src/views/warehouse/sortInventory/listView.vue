@@ -11,13 +11,13 @@
 					<el-tree ref="tree"
 						class="mc-tree"
 						accordion
-						:highlight-current="true" 
+						:highlight-current="true"
 						:data="treeData"
-						:filter-node-method="filterNode" 
+						:filter-node-method="filterNode"
 						:props="defaultProps"
             :default-expanded-keys="[0]"
 						@node-click="clickLoadDetails"
-            node-key="value" 
+            node-key="value"
 						@check-change="currentChange">
 					</el-tree>
 				</div>
@@ -58,7 +58,7 @@
                 <el-table-column prop="stockQuantity" label="实际库存" align="center"></el-table-column>
                 <!-- <el-table-column prop="inventoryQuantity" label="盘点库存" align="center"></el-table-column>
                 <el-table-column prop="remark" label="备注" align="center"></el-table-column> -->
-                <el-table-column prop="lastInventoryTime" label="盘点时间" width="90" align="center"></el-table-column>
+                <el-table-column prop="lastInventoryTime" label="上次盘点时间" align="center"></el-table-column>
                 <el-table-column label="操作" align="center" width="180">
                   <template slot-scope="scope" align="center">
                     <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row,1)">正常</el-button>

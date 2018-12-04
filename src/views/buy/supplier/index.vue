@@ -12,11 +12,11 @@
               <span>{{scope.$index + 1}}</span>
             </template>
           </el-table-column>
- 
+
 					<el-table-column prop="loginName" label="供应商账号" align="center"></el-table-column>
 					<el-table-column prop="staffName" label="供应商名称" align="center"></el-table-column>
 					<el-table-column prop="contacts" label="联系人" align="center"></el-table-column>
-					<el-table-column prop="mobile" label="联系电话" align="center"></el-table-column>
+					<el-table-column prop="mobile" label="手机" align="center"></el-table-column>
 					<el-table-column prop="mustGather" label="应付金额合计" align="center"></el-table-column>
 					<el-table-column prop="payGather" label="应收金额合计" align="center"></el-table-column>
 					<el-table-column label="采购订单" align="center">
@@ -31,7 +31,7 @@
               <el-tag size="mini" type="danger" v-cloak v-if="scope.row.status===0"> 禁用 </el-tag>
             </template>
 					</el-table-column>
- 
+
           <el-table-column label="操作" align="center" width="210">
             <template slot-scope="scope">
               <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">编辑</el-button>
@@ -41,7 +41,7 @@
           </el-table-column>
 
         </el-table>
-        
+
         <el-pagination
           slot="footer"
           @size-change="handleSizeChange"
@@ -56,7 +56,7 @@
       </table-contain>
       <!-- 弹层 -->
       <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add>
-     
+
     </div>
 </template>
 
@@ -147,7 +147,7 @@ export default {
     },
     clickToCheck(index, row) {
       // 点击查看
-      this.$setKeyValue(this.add, { visiable: true, data: { type: 'check', obj: row, title: '查看供应商关联采购订单' }})
+      this.$setKeyValue(this.add, { visiable: true, data: { type: 'check', obj: row, name: row.staffName, title: '查看供应商关联采购订单' }})
     },
     showAdd() {
       this.$setKeyValue(this.add, { visiable: true, data: { type: 'add', obj: {}, title: '新增供应商' }})
@@ -180,5 +180,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
- 
+
 </style>

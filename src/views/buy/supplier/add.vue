@@ -194,6 +194,7 @@
             </div>
 
           </el-form>
+
           <div v-else>
             <div class="buyOrders">
 
@@ -214,7 +215,7 @@
                 </div>
 
                 <div class="left">
-                  <el-input style="width:180px" v-model="searchBarData.orderNo" size="small" @keyup.enter.native="fecthList" placeholder="输入商品名称检索"></el-input>
+                  <el-input style="width:180px" v-model="searchBarData.orderNo" size="small" @keyup.enter.native="fecthList" placeholder="采购订单编号"></el-input>
                 </div>
 
                 <div class="left">
@@ -227,7 +228,7 @@
 
                 <div class="right">
                   <div class="left">
-                    <!-- <el-button size="small"> 导出Excel </el-button> -->
+                    <el-button v-if="supplierName" type="primary" size="small"> 供应商名称:  {{ supplierName }} </el-button>
                   </div>
                 </div>
               </div>
@@ -244,7 +245,7 @@
 
                   <el-table-column prop="orderNo" label="采购订单编号" align="center"></el-table-column>
                   <el-table-column prop="createdOn" label="采购订单创建时间" align="center"></el-table-column>
-                  <el-table-column prop="personnelName" label="采购员" align="center"></el-table-column>
+                  <el-table-column prop="personnelName" label="负责采购员" align="center"></el-table-column>
                   <el-table-column prop="auditStatus" label="采购订单状态" align="center">
                     <template slot-scope="scope" align="center">
                       <span v-cloak> {{scope.row.procurementStatus | filterStatus }} </span>
@@ -329,6 +330,7 @@ export default {
         'payGather': 0,
         'mustGather': 0
       },
+      supplierName: null,
       idsArr: [],
       curIndex: 0,
       CascaderBoxDTO: null,
@@ -359,6 +361,7 @@ export default {
   },
   mounted() {
     this.currentTitle = this.data.title || ''
+    this.supplierName = this.data.name || ''
     this.isUpdate = this.data.type === 'add' || this.data.type === 'editor'
     if (this.data.type === 'view' || this.data.type === 'editor') {
       this.fetchDetail()

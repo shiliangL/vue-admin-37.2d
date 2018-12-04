@@ -2,12 +2,12 @@
 <template>
     <div class="CascaderBox">
 
-      <el-select class="w110" size="small" v-model="form.searchParams.purchaseType" placeholder="采购类型">
+      <el-select class="w110" size="small" v-model="form.searchParams.purchaseType" placeholder="采购类型" style="display: none;">
         <el-option v-for="sub in form.searchBarOptons.type" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
       </el-select>
 
       <template v-if="form.searchParams.purchaseType===1">
-        <el-select style="180px" size="small" v-model="form.searchParams.buyerId" clearable filterable placeholder="请选择">
+        <el-select style="180px" size="small" v-model="form.searchParams.buyerId" clearable filterable placeholder="请选择采购员">
           <el-option v-for="sub in form.searchBarOptons.salerList" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
         </el-select>
       </template>
@@ -35,7 +35,7 @@ export default {
       timer: null,
       form: {
         searchParams: {
-          purchaseType: null,
+          purchaseType: 1,
           buyerId: null,
           supplyId: null,
           supplyDto: []
@@ -203,5 +203,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
- 
+
 </style>

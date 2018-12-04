@@ -78,7 +78,7 @@ export default {
             { label: '进行中', value: 0 },
             { label: '已完成', value: 1 }
           ] },
-          { type: 'date', value: null, key: 'purchaseOrderCreatedTime', width: '200px', placeholder: '采购订单生成时间' },
+          { type: 'date', value: null, key: 'purchaseOrderCreatedTime', width: '180px', placeholder: '采购订单生成时间' },
           { type: 'date', value: null, key: 'purchaseReturnsCreatedTime', width: '200px', placeholder: '操作时间' },
           { type: 'option', value: null, key: 'buyerId', class: 'w150', placeholder: '采购员', options: [
 

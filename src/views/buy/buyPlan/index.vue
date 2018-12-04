@@ -17,12 +17,13 @@
               <span>{{scope.$index + 1}}</span>
             </template>
           </el-table-column>
- 
+
           <el-table-column prop="orderNo" label="采购计划单号" align="center"></el-table-column>
           <el-table-column prop="sourceType" label="采购计划来源" align="center">
             <template slot-scope="scope" align="center">
               <span v-cloak v-if="scope.row.sourceType ===1"> 销售订单 </span>
               <span v-cloak v-if="scope.row.sourceType ===2"> 后台新增 </span>
+              <span v-cloak v-if="scope.row.sourceType ===3"> 销售换货 </span>
             </template>
           </el-table-column>
           <el-table-column prop="createdOn" label="采购计划创建时间" align="center"></el-table-column>
@@ -40,7 +41,7 @@
             </template>
           </el-table-column>
         </el-table>
-        
+
         <el-pagination
           slot="footer"
           @size-change="handleSizeChange"
@@ -56,7 +57,7 @@
 
       <!-- 弹层 -->
       <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add>
-      
+
     </div>
 </template>
 
@@ -84,7 +85,9 @@ export default {
           { type: 'option', value: null, key: 'sourceType', class: 'w110', placeholder: '计划来源', options: [
             { label: '全部', value: 0 },
             { label: '销售订单', value: 1 },
-            { label: '后台新增', value: 2 }]
+            { label: '后台新增', value: 2 },
+            { label: '销售换货', value: 3 }
+          ]
           },
           { type: 'date', value: null, key: 'generationTime', width: '200px', placeholder: '创建时间' },
           { type: 'date', value: null, key: 'applicationDate', width: '200px', placeholder: '申请时间' },
@@ -93,7 +96,7 @@ export default {
           { type: 'reset', name: '重置' }
         ],
         [
-          { type: 'button', name: '销售换货汇总' },
+          { type: 'button', name: '销售换货汇总', style: { background: '#FF9901', color: '#fff', borderColor: '#FF9901' }},
           { type: 'add', name: '新增' }
           // { type: 'more', labels: ['导入', '上传图片'] }
         ]

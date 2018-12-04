@@ -153,6 +153,30 @@ export default {
             }
           }
           callback()
+        },
+        // 盘点相关联的相互校验
+        validNumberPd: (rule, value, callback) => {
+          if (!value) {
+            return callback(new Error('请输入'))
+          }
+          var reg = /^([0-9][\d]{0,5})(\.[\d]{1,2})?$/
+          if (!reg.test(value)) {
+            return callback(new Error('请输入有效数字'))
+          }
+          let msg = null
+          if (rule.type === 1 && value * 1 !== rule.RE * 1) {
+            msg = rule.v === 1 ? '盘点库存与实际库存不相等' : '核查库存与当时库存不相等'
+            return callback(new Error(msg))
+          }
+          if (rule.type === 3 && value * 1 < rule.RE * 1) {
+            msg = rule.v === 1 ? '盘点库存应大于实际库存' : '核查库存应大于当时库存'
+            return callback(new Error(msg))
+          }
+          if (rule.type === 2 && value * 1 > rule.RE * 1) {
+            msg = rule.v === 1 ? '盘点库存应小于实际库存' : '核查库存应小于当时库存'
+            return callback(new Error(msg))
+          }
+          callback()
         }
       }
     }
