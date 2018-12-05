@@ -7,6 +7,7 @@
             <div class="title-container">
               <span class="title">{{ loginTitle }}</span>
             </div>
+
             <el-form-item prop="username" :rules="rules.input">
               <el-input name="username" type="text" v-model.trim="loginForm.username" autoComplete="on" placeholder="userName">
                <i slot="prefix" class="el-input__icon el-icon-menu"></i>
@@ -26,7 +27,7 @@
 
         </el-card>
         <div class="copyright">
-          <p> Copyright © www.chumanduo.com, All Rights Reserved 20181201</p>
+          <p> Copyright © www.chumanduo.com, All Rights Reserved 20181205</p>
         </div>
       </div>
     </div>
