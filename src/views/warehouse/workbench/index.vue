@@ -21,7 +21,7 @@
           <el-table-column label="操作" align="center" width="290">
             <template slot-scope="scope" align="center">
               <el-button type="text" size="mini" @click.stop="clickToEditor(scope.$index,scope.row)">编辑</el-button>
-							<el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index,scope.row)">删除</el-button>
+							<!-- <el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index,scope.row)">删除</el-button> -->
               <!-- <el-popover placement="top-start" width="200" trigger="hover" :content="scope.row.workbenchUrl">
                 <el-button type="text" size="mini" slot="reference"> 复制工作台登录网址 </el-button>
               </el-popover> -->
@@ -30,7 +30,7 @@
           </el-table-column>
 
         </el-table>
-        
+
         <el-pagination
           slot="footer"
           @size-change="handleSizeChange"
@@ -78,7 +78,7 @@
           </div>
         </div>
       </el-dialog>
-      
+
     </div>
 </template>
 

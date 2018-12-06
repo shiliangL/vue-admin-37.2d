@@ -40,7 +40,7 @@
             <el-form-item label="收货人:" prop="contacts" :rules="rules.input">
               <el-input size="small" style="width:160px"  v-model.trim="addressForm.contacts" placeholder="不能超10位数" maxlength="10"></el-input>
             </el-form-item>
-            <el-form-item label="手机号:" prop="mobile" :rules="rules.input">
+            <el-form-item label="手机号:" prop="mobile" :rules="[{trigger: 'change', required:true, validator: rules.validPhone}]">
               <el-input size="small" style="width:160px"  v-model.trim="addressForm.mobile" placeholder="不能超11位数" maxlength="11"></el-input>
             </el-form-item>
           </div>
@@ -175,7 +175,7 @@ export default {
               contacts: addressFormcp.contacts,
               mobile: addressFormcp.mobile,
               addessIds: addressFormcp.addessIds,
-              address: addressFormcp.addessIds,
+              address: addressFormcp.address,
               status: addressFormcp.status,
               type: 0
             })

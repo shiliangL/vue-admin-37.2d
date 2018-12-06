@@ -12,7 +12,7 @@
               <span>{{scope.$index + 1}}</span>
             </template>
           </el-table-column>
- 
+
 					<el-table-column prop="orderNo" label="出库单号" align="center"></el-table-column>
 					<el-table-column prop="stockInfoName" label="仓库" align="center"></el-table-column>
 					<el-table-column prop="storehouseType" label="出库类型" align="center">
@@ -37,7 +37,7 @@
           </el-table-column>
 
         </el-table>
-        
+
         <el-pagination
           slot="footer"
           @size-change="handleSizeChange"
@@ -53,7 +53,7 @@
 
       <!-- 弹层 -->
       <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add>
-      
+
     </div>
 </template>
 
@@ -83,7 +83,7 @@ export default {
         [
           { type: 'date', value: null, key: 'createdTime', width: '200px', placeholder: '创建日期' },
           { type: 'option', value: null, key: 'stockId', class: 'w150', placeholder: '仓库', options: [] },
-          { type: 'option', value: null, key: 'storehouseType', class: 'w150', placeholder: '入库类别', options: [
+          { type: 'option', value: null, key: 'storehouseType', class: 'w150', placeholder: '出库类别', options: [
             { label: '销售订单', value: 1 },
             { label: '销售换货', value: 2 }
           ] },
@@ -176,5 +176,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
- 
+
 </style>

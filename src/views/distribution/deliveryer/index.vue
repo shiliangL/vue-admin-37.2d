@@ -11,7 +11,7 @@
               <span>{{scope.$index + 1}}</span>
             </template>
           </el-table-column>
- 
+
  					<el-table-column prop="mobile" label="用户账号" align="center"></el-table-column>
 					<el-table-column prop="name" label="用户名称" align="center"></el-table-column>
 					<el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
@@ -25,7 +25,7 @@
           </el-table-column>
 					<el-table-column prop="status" label="账号状态" align="center">
             <template slot-scope="scope" align="center">
-               <span v-if="scope.row.status===0"> 禁用 </span>
+               <span v-if="scope.row.status===2"> 禁用 </span>
                <span v-if="scope.row.status===1"> 启用 </span>
             </template>
           </el-table-column>
@@ -39,7 +39,7 @@
           </el-table-column>
 
         </el-table>
-        
+
         <el-pagination
           slot="footer"
           @size-change="handleSizeChange"
@@ -58,7 +58,7 @@
       <el-dialog :title="dialogTitle" class="dialogTitle" width="960px" :visible.sync="dialogVisible" append-to-body center @close="resetForm">
         <Add v-if="dialogVisible" @close="resetForm" :propsSonData="propsParentData" @add="fetchList"> </Add>
       </el-dialog>
-      
+
     </div>
 </template>
 
@@ -207,5 +207,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
- 
+
 </style>

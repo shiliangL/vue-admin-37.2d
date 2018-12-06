@@ -28,7 +28,7 @@
 					<el-table-column label="账号状态" align="center">
 						<template slot-scope="scope" align="center">
               <el-tag v-cloak size="mini" v-if="scope.row.status ===1"> 启用 </el-tag>
-              <el-tag size="mini" type="danger" v-cloak v-if="scope.row.status===0"> 禁用 </el-tag>
+              <el-tag size="mini" type="danger" v-cloak v-if="scope.row.status===2"> 禁用 </el-tag>
             </template>
 					</el-table-column>
 
@@ -86,7 +86,7 @@ export default {
             class: 'w150',
             placeholder: '账号状态',
             options: [
-              { label: '禁用', value: 0 },
+              { label: '禁用', value: 2 },
               { label: '启用', value: 1 }
             ]
           },

@@ -3,7 +3,7 @@
     <div class="orderPick">
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
 
-			<search-bar :data="searchBarDate" @search="searchAction" @reset="resetFetchList" ref="searchBar" :isDateClear="false"></search-bar>
+			<search-bar :data="searchBarDate" @search="searchAction" @reset="resetFetchList" ref="searchBar"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight" :key="curIndex">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -32,7 +32,7 @@
           </el-table-column>
 
         </el-table>
-        
+
         <el-pagination
           slot="footer"
           @size-change="handleSizeChange"
@@ -48,7 +48,7 @@
 
       <!-- 弹层 -->
       <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add>
-      
+
     </div>
 </template>
 
@@ -77,7 +77,7 @@ export default {
           { type: 'date', value: null, key: 'createdTime', width: '200px', placeholder: '创建日期' },
           { type: 'option', value: null, key: 'stockId', class: 'w150', placeholder: '仓库', options: [] },
           { type: 'option', value: null, key: 'tableId', class: 'w150', placeholder: '打包台', options: [] },
-          { type: 'option', value: null, key: 'packerId', class: 'w150', placeholder: '打包员', options: [] },
+          // { type: 'option', value: null, key: 'packerId', class: 'w150', placeholder: '打包员', options: [] },
           { type: 'input', value: null, key: 'inputContent', class: 'w180', placeholder: '输入订单编号/客户名称检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
@@ -194,5 +194,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
- 
+
 </style>

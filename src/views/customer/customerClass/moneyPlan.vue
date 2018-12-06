@@ -15,12 +15,12 @@
                         <el-option v-for="sub in options.dateTime" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                       </el-select>
                     </div>
-										<span v-else v-cloak>
+										<div v-else v-cloak>
                       {{ form.limitTime }}
                       <span v-if="form.limitType===0">天</span>
                       <span v-if="form.limitType===1">周</span>
                       <span v-if="form.limitType===2">月</span>
-                    </span>
+                    </div>
 									</el-form-item>
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="8">
@@ -29,14 +29,16 @@
 										  <el-input size="small" style="width:160px" placeholder="" maxlength="7" v-model.trim="form.amount"></el-input>
                       <span>元(人民币)</span>
                     </div>
-										<span v-else v-cloak> {{ form.amount }} 元(人民币)</span>
+                    <div v-else>
+										  <span v-if="form.amount"> {{ form.amount }} 元(人民币)</span>
+                    </div>
 									</el-form-item>
 								</el-col>
               </el-row>
 						</div>
 				</div>
 
-		    <div class="row-item">
+		    <!-- <div class="row-item">
 						<div class="row-title"> 账户信息</div>
 						<div class="row-content">
 					     <el-row>
@@ -62,7 +64,7 @@
 								</el-col>
               </el-row>
 						</div>
-				</div>
+				</div> -->
 
 		    <!-- <div class="row-item">
 						<div class="row-title">银行储蓄卡信息</div>

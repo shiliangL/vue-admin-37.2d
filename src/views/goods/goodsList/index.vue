@@ -10,7 +10,7 @@
           </el-select>
         </div>
 
-        <div class="left" v-if="searchBarOptons.levelTowOption.length"> 
+        <div class="left" v-if="searchBarOptons.levelTowOption.length">
           <el-select class="w110" size="small" v-model="levelFecond" clearable filterable placeholder="二级分类">
             <el-option v-for="sub in searchBarOptons.levelTowOption" :key="sub.id" :label="sub.title" :value="sub.id"></el-option>
           </el-select>
@@ -48,7 +48,7 @@
             </el-dropdown>
         </div>
       </div>
- 
+
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row
@@ -80,7 +80,7 @@
                <span v-if="scope.row.purchaseType ===1">市场自采</span>
             </template>
           </el-table-column>
-          <el-table-column prop="titleName" label="采购员/供应商" align="center"></el-table-column>
+          <el-table-column prop="titleName" label="采购员" align="center"></el-table-column>
           <el-table-column prop="upperGoodsTime" :label=" curIndex===0? '上架时间' : '下架时间' " width="90" align="center">
              <template slot-scope="scope" align="center">
                <span v-if="curIndex ===0">{{scope.row.upperGoodsTime}}</span>
@@ -107,7 +107,7 @@
             </template>
           </el-table-column>
         </el-table>
-        
+
         <el-pagination
           slot="footer"
           @size-change="handleSizeChange"

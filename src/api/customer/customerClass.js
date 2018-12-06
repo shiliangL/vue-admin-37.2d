@@ -32,6 +32,14 @@ export function update(data) {
     data
   })
 }
+// 拒绝
+export function updateCustomerStatus(params) {
+  return request({
+    url: 'cmm/customer/updateCustomerStatus',
+    method: 'get',
+    params
+  })
+}
 
 // 加载下拉选项
 export function fetchOptions(params) {

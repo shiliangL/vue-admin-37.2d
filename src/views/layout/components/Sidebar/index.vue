@@ -2,16 +2,16 @@
   <scroll-bar id="sider-scroll-bar">
     <div class="logo-layout">
       <a href="#/" class="logo">
-        <span>厨满满</span>
+        <span>厨满满v1.0</span>
       </a>
     </div>
 
-    <el-menu mode="vertical" 
-      :default-active="$route.path" 
-      :collapse="isCollapse" 
-      background-color="#f9f9f9" 
-      text-color="#606266" 
-      active-text-color="#1cbc9c" 
+    <el-menu mode="vertical"
+      :default-active="$route.path"
+      :collapse="isCollapse"
+      background-color="#f9f9f9"
+      text-color="#606266"
+      active-text-color="#1cbc9c"
       :unique-opened="true">
       <!-- <sidebar-item :routes="permission_routers"></sidebar-item> -->
       <sidebar-item :routes="siderBarMenu"></sidebar-item>

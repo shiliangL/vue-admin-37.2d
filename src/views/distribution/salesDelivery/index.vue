@@ -3,7 +3,7 @@
     <div class="salesDeliveryA">
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
 
-			<search-bar :data="searchBarDate" @search="searchAction" @add="showAdd" ref="searchBar" @reset="resetFetchList" :isDateClear="false"></search-bar>
+			<search-bar :data="searchBarDate" @search="searchAction" @add="showAdd" ref="searchBar" @reset="resetFetchList"></search-bar>
 
       <table-contain  :height.sync="table.maxHeight" :key="curIndex">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>

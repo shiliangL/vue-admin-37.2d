@@ -180,7 +180,7 @@
 
                       <span v-if="!isUpdate">
                         <el-tag v-cloak size="mini" v-if="form.status ===1"> 启用 </el-tag>
-                        <el-tag size="mini" type="danger" v-cloak v-if="form.status===0"> 禁用 </el-tag>
+                        <el-tag size="mini" type="danger" v-cloak v-if="form.status===2"> 禁用 </el-tag>
                       </span>
 
                       <el-radio v-else v-model="form.status" :label="item.label" v-for="item in statusOption" :key="item.label">
@@ -347,7 +347,7 @@ export default {
     this.$setKeyValue(this.dialog, { visiable: true })
     this.statusOption = [
       { label: 1, text: '启用' },
-      { label: 0, text: '禁用' }
+      { label: 2, text: '禁用' }
     ]
     if (this.data.type === 'check') {
       this.tabTitles = [

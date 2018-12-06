@@ -13,8 +13,8 @@
               <template v-if="this.data.type === 'view' && this.data.obj.status ===1">
                 <el-button v-if="!isAudit" type="text" size="mini" @click.stop="clickToAudit">审核</el-button>
                 <template v-if="isAudit">
-                  <el-button type="text" size="mini" @click.stop="validateNoPassForm">拒绝-未对接APP数据参数</el-button>
-                  <el-button type="text" size="mini" @click.stop="validatePassForm">同意-未对接APP数据参数</el-button>
+                  <el-button type="text" size="mini" style="color:red" @click.stop="validateNoPassForm">拒绝</el-button>
+                  <el-button type="text" size="mini" @click.stop="validatePassForm">同意</el-button>
                 </template>
              </template>
 
@@ -52,7 +52,7 @@
 <script>
 import addModel from '@/public/addModel.js'
 import { Tabs } from '@/components/base.js'
-import { create, update, fecthDetail } from '@/api/customer/customerClass.js'
+import { create, update, fecthDetail, updateCustomerStatus } from '@/api/customer/customerClass.js'
 import basicFrom from './basicFrom'
 import moneyPlan from './moneyPlan'
 import addressForm from './addressForm'
@@ -79,7 +79,8 @@ export default {
       curIndex: 0,
       isPassBasic: false, // 验证是否通过
       isPassMoneyPlan: false, // 验证是否通过
-      isPassAddress: false // 验证是否通过
+      isPassAddress: false, // 验证是否通过,
+      customerId: null
     }
   },
   created() {
@@ -213,6 +214,7 @@ export default {
     fecthDetail() {
       if (!this.data.obj.id) return
       fecthDetail({ id: this.data.obj.id }).then(({ data }) => {
+        this.customerId = data.id
         this.addressArrt = data.address || []
 
         this.moneyObj = data.scmCustomerPaymentPeriodInfoDto
@@ -277,17 +279,14 @@ export default {
     tabsCallBack(index) {
       this.curIndex = index
     },
+    // 同意不通过
     validateNoPassForm() {
-      if (this.$refs['basicFrom']) this.$refs['basicFrom'].validateForm()
-      if (!this.isPass) return
       this.$confirm('确定要拒绝该客户提交的资料信息吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        if (!this.basicObj) return
-        this.basicObj.status = 2
-        update(this.basicObj).then(res => {
+        updateCustomerStatus({ id: this.customerId, status: 2 }).then(res => {
           this.$message({ type: 'success', message: `${res.msg}!` })
           this.dialog.visiable = false
           this.$emit('add')
@@ -296,17 +295,44 @@ export default {
         })
       }).catch(() => {})
     },
+    // 同意审核通过
     validatePassForm() {
-      if (this.$refs['basicFrom']) this.$refs['basicFrom'].validateForm()
-      if (!this.isPass) return
+      if (this.$refs['basicFrom']) { this.$refs['basicFrom'].validateForm() }
+      if (this.$refs['addressForm']) { this.$refs['addressForm'].validateForm() }
+      if (this.$refs['moneyPlan']) { this.$refs['moneyPlan'].validateForm() }
+      const { isPassBasic, isPassMoneyPlan, isPassAddress, basicObj, moneyObj, addressArrt } = this
+      if (!isPassBasic || !isPassMoneyPlan || !isPassAddress) return
+
       this.$confirm('是否确定通过审核?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        if (!this.basicObj) return
-        this.basicObj.status = 3
-        update(this.basicObj).then(res => {
+        const cpbasicObj = JSON.parse(JSON.stringify(basicObj))
+        delete cpbasicObj.contacts
+        debugger
+
+        cpbasicObj.balance = moneyObj.balance || 0
+        cpbasicObj.credence = moneyObj.credence || 0
+        cpbasicObj.mustGather = moneyObj.mustGather || 0
+        cpbasicObj.payGather = moneyObj.payGather || 0
+        cpbasicObj.companyBank = moneyObj.companyBank
+        cpbasicObj.bankNo = moneyObj.bankNo
+
+        const item = JSON.parse(JSON.stringify(moneyObj))
+        delete item.balance
+        delete item.credence
+        delete item.mustGather
+        delete item.payGather
+        delete item.companyBank
+        delete item.bankNo
+
+        cpbasicObj.scmCustomerPaymentPeriodInfoDto = {
+          ...item
+        }
+        cpbasicObj.address = addressArrt
+        cpbasicObj.status = 3 // 通过
+        update(cpbasicObj).then(res => {
           this.$message({ type: 'success', message: `${res.msg}!` })
           this.dialog.visiable = false
           this.$emit('add')

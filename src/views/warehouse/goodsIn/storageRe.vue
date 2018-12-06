@@ -24,6 +24,7 @@
               <span v-if="scope.row.storageType === 2"> 销售退货 </span>
               <span v-if="scope.row.storageType === 3"> 销售换货 </span>
               <span v-if="scope.row.storageType === 4"> 其他 </span>
+              <span v-if="scope.row.storageType === 5"> 采购退换货 </span>
             </template>
           </el-table-column>
 					<el-table-column prop="quantity" label="入库数量" align="center"></el-table-column>
@@ -33,7 +34,7 @@
 					<el-table-column prop="makeDateStr" label="生产日期" align="center"></el-table-column>
 
         </el-table>
-        
+
         <el-pagination
           slot="footer"
           @size-change="handleSizeChange"
@@ -68,6 +69,7 @@ export default {
             { label: '采购入库', value: 1 },
             { label: '销售退货', value: 2 },
             { label: '销售换货', value: 3 },
+            { label: '采购退换货', value: 5 },
             { label: '其他', value: 4 }
           ] },
           { type: 'input', value: null, key: 'inputContent', class: 'w180', placeholder: '输入单号/商品名称检索' },
@@ -167,5 +169,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
- 
+
 </style>

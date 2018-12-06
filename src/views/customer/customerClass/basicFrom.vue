@@ -228,7 +228,6 @@ export default {
       })
     },
     selectManager(item) {
-      console.log(item)
       if (item) {
         this.form.staffId = item.staffId
         this.form.managerPhone = item.phone
@@ -242,6 +241,9 @@ export default {
         if (valid) {
           this.$emit('update:isPass', true)
           const data = JSON.parse(JSON.stringify(this.form))
+          data.shopAddressEntity.contacts = data.contacts
+          data.shopAddressEntity.mobile = data.mobile
+
           delete data.addressArrt
           this.$emit('callBack', data)
         } else {

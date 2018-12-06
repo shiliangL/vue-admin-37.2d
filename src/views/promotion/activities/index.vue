@@ -16,18 +16,19 @@
                <div class="picBox" v-if="scope.row.url"> <img :src="scope.row.url"> </div>
             </template>
 					 </el-table-column>
-					<el-table-column prop="skuName" label="商品分类" align="center"></el-table-column>
+					<el-table-column prop="categoryName" label="商品分类" align="center"></el-table-column>
 					<el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
+					<el-table-column prop="skuName" label="规格" align="center"></el-table-column>
 					<el-table-column prop="skuPrice" label="市场价格(全国)" align="center"></el-table-column>
-					<el-table-column prop="upperGoodsTime" label="商品上架时间" align="center"></el-table-column>
+					<el-table-column prop="upperGoodsTime" label="添加时间" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="140">
             <template slot-scope="scope" align="center">
-							<el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index,scope.row)">删除</el-button>
+							<el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index,scope.row)">移除</el-button>
             </template>
           </el-table-column>
 
         </el-table>
-        
+
         <el-pagination
           slot="footer"
           @size-change="handleSizeChange"
@@ -45,7 +46,7 @@
       <el-dialog :title="dialogTitle" class="dialogTitle" width="420px" :visible.sync="dialogVisible" append-to-body center @close="resetForm">
           <Add v-if="dialogVisible" @close="resetForm" @add="fecthList" :propsSonData="propsParentData"></Add>
       </el-dialog>
-      
+
     </div>
 </template>
 
@@ -71,7 +72,7 @@ export default {
           // { type: 'reset', name: '重置' }
         ],
         [
-          { type: 'add', name: '新增' },
+          { type: 'add', name: '添加' },
           { type: 'button', name: '刷新' }
         ]
       ],

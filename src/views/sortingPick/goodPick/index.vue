@@ -2,7 +2,7 @@
 <template>
     <div class="goodPick">
 
-			<search-bar :data="searchBarDate" ref="searchBar" @search="searchAction" @reset="resetFetchList" :isDateClear="false"></search-bar>
+			<search-bar :data="searchBarDate" ref="searchBar" @search="searchAction" @reset="resetFetchList"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight" :key="curIndex">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -38,7 +38,7 @@
           </el-table-column>
 
         </el-table>
-        
+
         <el-pagination
           slot="footer"
           @size-change="handleSizeChange"
@@ -54,7 +54,7 @@
 
       <!-- 弹层 -->
       <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add>
-      
+
     </div>
 </template>
 
@@ -85,8 +85,8 @@ export default {
             { label: '销售换货', value: 2 }
           ] },
           { type: 'option', value: null, key: 'tableId', class: 'w150', placeholder: '分拣台', options: [] },
-          { type: 'option', value: null, key: 'sorterId', class: 'w150', placeholder: '分拣员', options: [] },
-          { type: 'input', value: null, key: 'stockOutOrderNo', class: 'w180', placeholder: '输入商品名称/出库单号检索' },
+          // { type: 'option', value: null, key: 'sorterId', class: 'w150', placeholder: '分拣员', options: [] },
+          { type: 'input', value: null, key: 'stockOutOrderNo', class: 'w180', placeholder: '商品名称/出库单号检索' },
           { type: 'search', name: '查询' },
           { type: 'reset', name: '重置' }
         ],
@@ -201,5 +201,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
- 
+
 </style>

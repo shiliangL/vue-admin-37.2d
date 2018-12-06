@@ -29,7 +29,7 @@
 					<el-table-column prop="sorterName" label="分拣员" align="center"></el-table-column>
 
         </el-table>
-        
+
         <el-pagination
           slot="footer"
           @size-change="handleSizeChange"
@@ -60,7 +60,7 @@ export default {
         [
           { type: 'date', value: null, key: 'outageTime', width: '200px', placeholder: '出库日期' },
           { type: 'option', value: null, key: 'stockId', class: 'w150', placeholder: '仓库', options: [] },
-          { type: 'option', value: null, key: 'storehouseType', class: 'w150', placeholder: '入库类别', options: [
+          { type: 'option', value: null, key: 'storehouseType', class: 'w150', placeholder: '出库类别', options: [
             { label: '销售订单', value: 1 },
             { label: '销售换货', value: 2 }
           ] },
@@ -139,5 +139,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
- 
+
 </style>

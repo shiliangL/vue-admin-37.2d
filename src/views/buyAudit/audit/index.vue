@@ -21,6 +21,7 @@
             <template slot-scope="scope" align="center">
               <span v-cloak v-if="scope.row.sourceType ===1"> 销售订单 </span>
               <span v-cloak v-if="scope.row.sourceType ===2"> 后台新增 </span>
+              <span v-cloak v-if="scope.row.sourceType ===3"> 销售换货 </span>
             </template>
           </el-table-column>
           <el-table-column prop="applicationDate" label="采购申请时间" align="center"></el-table-column>
@@ -90,7 +91,9 @@ export default {
           { type: 'option', value: null, key: 'sourceType', class: 'w110', placeholder: '计划来源', options: [
             { label: '全部', value: 0 },
             { label: '销售订单', value: 1 },
-            { label: '后台新增', value: 2 }]
+            { label: '后台新增', value: 2 },
+            { label: '销售换货', value: 3 }
+          ]
           },
           { type: 'date', value: null, key: 'applicationDate', width: '200px', placeholder: '申请时间' },
           { type: 'date', value: null, key: 'auditDate', width: '200px', placeholder: '审核时间' },

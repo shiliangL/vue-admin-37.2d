@@ -30,7 +30,7 @@ export default {
           if (!value) {
             return callback(new Error('请输入'))
           }
-          var reg = /^[1][3,4,5,7,8][0-9]{9}$/
+          var reg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/
           if (!reg.test(value)) {
             return callback(new Error('请输入正确的手机号'))
           }
@@ -48,8 +48,8 @@ export default {
           callback()
         },
         validNumberR8: (rule, value, callback) => {
-          if (!value && value !== 0) {
-            return callback(new Error('请输入'))
+          if (!value) {
+            callback()
           }
           var reg = /^([0-9][\d]{0,8})(\.[\d]{1,2})?$/
           if (!reg.test(value)) {
@@ -112,6 +112,9 @@ export default {
           callback()
         },
         validNumberZh: (rule, value, callback) => {
+          if (!value) {
+            callback()
+          }
           var reg = /[^\u4E00-\u9FA5]/
           if (reg.test(value)) {
             return callback(new Error('请输入汉字'))
@@ -168,11 +171,11 @@ export default {
             msg = rule.v === 1 ? '盘点库存与实际库存不相等' : '核查库存与当时库存不相等'
             return callback(new Error(msg))
           }
-          if (rule.type === 3 && value * 1 < rule.RE * 1) {
+          if (rule.type === 3 && value * 1 <= rule.RE * 1) {
             msg = rule.v === 1 ? '盘点库存应大于实际库存' : '核查库存应大于当时库存'
             return callback(new Error(msg))
           }
-          if (rule.type === 2 && value * 1 > rule.RE * 1) {
+          if (rule.type === 2 && value * 1 >= rule.RE * 1) {
             msg = rule.v === 1 ? '盘点库存应小于实际库存' : '核查库存应小于当时库存'
             return callback(new Error(msg))
           }

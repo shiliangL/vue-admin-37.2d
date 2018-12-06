@@ -209,7 +209,7 @@
                         </el-col>
                         <el-col :xs="24" :sm="10" :md="8" :lg="6">
                           <span class="title-label">入库类型:</span>
-                          <span v-cloak v-if="viewData.storageType==1">采购入库</span>
+                          <span v-cloak v-if="viewData.storageType==1">采购订单</span>
                           <span v-cloak v-if="viewData.storageType==2">销售退货</span>
                           <span v-cloak v-if="viewData.storageType==3">销售换货</span>
                           <span v-cloak v-if="viewData.storageType==4">其他</span>
@@ -253,7 +253,7 @@
                         <el-table-column prop="stockStorageInfoNumbers" label="仓位" align="center"></el-table-column>
                         <el-table-column prop="storageType" label="入库类型" align="center">
                           <template slot-scope="scope">
-                            <span v-if="scope.row.storageType === 1"> 采购入库 </span>
+                            <span v-if="scope.row.storageType === 1"> 采购订单 </span>
                             <span v-if="scope.row.storageType === 2"> 销售退货 </span>
                             <span v-if="scope.row.storageType === 3"> 销售换货 </span>
                             <span v-if="scope.row.storageType === 4"> 其他 </span>
@@ -343,7 +343,7 @@ export default {
         stockOption: [],
         stock: [],
         storageType: [
-          { label: '采购入库', value: 1 },
+          { label: '采购订单', value: 1 },
           { label: '销售退货', value: 2 },
           { label: '销售换货', value: 3 },
           { label: '采购退换货', value: 5 },
@@ -444,7 +444,7 @@ export default {
         return
       }
       if (this.storageType === 1) {
-        // 选中采购入库
+        // 选中采购订单
         findMore({ stockId: this.stockId }).then(({ data }) => {
           if (!this.cwOption) return
           for (const item of data) {

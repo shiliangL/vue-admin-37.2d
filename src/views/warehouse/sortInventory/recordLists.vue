@@ -27,8 +27,8 @@
           </el-table-column>
 					<el-table-column prop="createdName" label="盘点人" align="center"></el-table-column>
 					<el-table-column prop="remark" width="200" show-overflow-tooltip label="备注" align="center"></el-table-column>
-					<el-table-column prop="checkQuantity" width="90" label="核查时间" align="center"></el-table-column>
-					<el-table-column prop="stockInfoName" label="核查库存量" align="center"></el-table-column>
+					<el-table-column prop="updateTime" width="90" label="核查时间" align="center"></el-table-column>
+					<el-table-column prop="checkQuantity" label="核查库存量" align="center"></el-table-column>
 					<el-table-column prop="checkState" label="核查状态" align="center">
              <template slot-scope="scope">
               <el-tag  size="small" v-if="scope.row.checkState === 1"> 正常 </el-tag>
@@ -39,7 +39,7 @@
 					<el-table-column prop="updateName" label="核查人" align="center"></el-table-column>
 
         </el-table>
-        
+
         <el-pagination
           slot="footer"
           @size-change="handleSizeChange"
@@ -139,5 +139,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
- 
+
 </style>
