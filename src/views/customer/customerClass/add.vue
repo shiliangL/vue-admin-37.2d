@@ -310,7 +310,6 @@ export default {
       }).then(() => {
         const cpbasicObj = JSON.parse(JSON.stringify(basicObj))
         delete cpbasicObj.contacts
-        debugger
 
         cpbasicObj.balance = moneyObj.balance || 0
         cpbasicObj.credence = moneyObj.credence || 0

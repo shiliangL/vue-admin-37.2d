@@ -1,25 +1,26 @@
-<!-- 库存盘点 -->
+
+<!-- 运营设置 -->
 <template>
-    <div class="sortInventory">
+    <div class="operatSetting">
       <Tabs :data="tabTitles" @callBack="tabsCallBack"></Tabs>
-			<listView v-if="curIndex===0"></listView>
-			<recordLists v-if="curIndex===1"></recordLists>
+			<settng v-if="curIndex===0"></settng>
+			<other v-if="curIndex===1"></other>
     </div>
 </template>
 
 <script>
 import model from '@/public/listModel.js'
 import { Tabs } from '@/components/base.js'
-import listView from './listView'
-import recordLists from './recordLists'
+import settng from './settngView'
+import other from './otherView'
 
 export default {
-  name: 'sortInventory',
+  name: 'operatSetting',
   mixins: [model],
   components: {
     Tabs,
-    listView,
-    recordLists
+    settng,
+    other
   },
   data() {
     return {
@@ -28,8 +29,8 @@ export default {
   },
   created() {
     this.tabTitles = [
-      { title: '盘点', value: 0 },
-      { title: '盘点记录', value: 1 }
+      { title: '业务设置', value: 0 }
+      // { title: '其他', value: 1 }
     ]
   },
   methods: {

@@ -67,6 +67,7 @@ export default {
 
     kFservice: '客服人员',
     operating: '运营人员',
+    operatSetting: '运营设置',
 
     orderList: '销售订单',
     returnChange: '销售退/换货',
