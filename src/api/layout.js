@@ -46,3 +46,11 @@ export function fetchToken(params) {
     params
   })
 }
+
+export function fetchWorkbench(params) {
+  return request({
+    url: 'workbench/getDetail',
+    method: 'get',
+    params
+  })
+}

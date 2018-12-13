@@ -13,7 +13,7 @@
           <el-table-column prop="createdName" label="创建人" align="center"></el-table-column>
           <el-table-column prop="createdTime" label="入库单创建时间" align="center"></el-table-column>
           <el-table-column prop="finishStatus" label="状态" align="center">
-              <template slot-scope="scope"> 
+              <template slot-scope="scope">
                 <el-tag size="mini" type="success" v-if="scope.row.finishStatus===1">完成</el-tag>
                 <el-tag size="mini" type="danger" v-if="scope.row.finishStatus===0">未完成</el-tag>
               </template>
@@ -24,7 +24,7 @@
             </template>
           </el-table-column>
         </el-table>
-        
+
         <el-pagination
           slot="footer"
           @size-change="handleSizeChange"
@@ -40,7 +40,7 @@
 
       <!-- 弹层 -->
       <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add>
-      
+
     </div>
 </template>
 
@@ -76,9 +76,10 @@ export default {
   },
   created() {
     this.tabTitles = [
-      { title: '采购入库', value: 1 },
+      { title: '采购订单', value: 1 },
       { title: '销售退货', value: 2 },
       { title: '销售换货', value: 3 },
+      { title: '采购退换', value: 5 },
       { title: '其他', value: 4 }
     ]
   },
@@ -165,5 +166,5 @@ export default {
 </script>
 
 <style scoped>
- 
+
 </style>

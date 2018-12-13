@@ -6,6 +6,7 @@
 
 					  <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
             <div class="nav">
+              <span class="topName">{{ topName }}</span>
               <ScrollPane class="nav-scroll-bar">
                 <span class="nav-item" v-for="(item,index) in menuList" :key="index" v-cloak :class="curIndex==index?'active' : ''"  @click="clickTabTitle(item,index)">{{item.title}}</span>
               </ScrollPane>
@@ -57,6 +58,14 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'topNavBar',
+  props: {
+    topName: {
+      type: String,
+      default: () => {
+        return ''
+      }
+    }
+  },
   components: {
     Hamburger,
     ScrollPane,
@@ -107,9 +116,17 @@ export default {
   .topBar {
     display: flex;
     .hamburger-container {
-      padding: 0 6px;
+      // padding: 0 6px;
+      padding: 4px 6px;
     }
     .nav {
+      .topName{
+        color: #787a7d;
+        font-size: 18px;
+        padding: 0 4px;
+        font-family:'微软雅黑';
+        font-weight: 600;
+      }
       color: #77787b;
       width: 100%;
       .nav-scroll-bar{
