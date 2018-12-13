@@ -120,7 +120,7 @@
                         <el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="form.receiverFlag===1">
                           <el-form-item label="照片:">
                             <div class="car" v-if="form.photos">
-                              <img :src="form.photos" alt="">
+                              <img :src="item" v-for="(item,index) in form.photos" :key="index" alt="">
                             </div>
                             <!-- <span v-cloak>{{form.photos}}</span> -->
                           </el-form-item>
@@ -253,7 +253,10 @@
                 <el-col :span="12">
                   <el-card class="box-card">
                     <div class="search">
-                      <span v-if="AddForm.type===0">发货日期: {{today}}</span>
+                      <span v-if="AddForm.type===0">发货日期:
+                        <!-- {{today}} -->
+                        	<el-date-picker :style="{width:'140px'}" :clearable="false" size="small" v-model="today" value-format="yyyy-MM-dd" type="date"></el-date-picker>
+                        </span>
                       <!-- <el-select size="small" v-model="form.regionId" filterable clearable placeholder="选择地区"  style="width:120px">
                         <el-option v-for="sub in options.regionOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                       </el-select>
@@ -530,6 +533,7 @@ export default {
       fetchDetail(data).then(({ data }) => {
         if (!data) return
         this.form = Object.assign(this.form, data)
+        this.form.photos = this.form.photos.join(',')
         this.table.data = data.saleDtails.rows
         this.pagination.total = data.saleDtails.total
       }).catch(e => {
@@ -558,7 +562,7 @@ export default {
     },
     shipOrderAddList() {
       this.isShowSaleType = this.AddForm.type === 0
-      shipOrderAddList({ type: this.AddForm.type }).then(({ data }) => {
+      shipOrderAddList({ type: this.AddForm.type, sendTime: this.today }).then(({ data }) => {
         if (!data) return
         this.isShowCar = true
         if (Array.isArray(data.orderList)) {

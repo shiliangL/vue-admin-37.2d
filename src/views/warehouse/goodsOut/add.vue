@@ -95,7 +95,7 @@
                     <el-option v-for="sub in options.stockOption" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                   </el-select>
                   <el-select v-model="AddForm.type" placeholder="请选择类型" size="small" style="width:120px" filterable>
-                    <el-option v-for="item in options.storageType" :key="item.value" :label="item.label" :value="item.value"> </el-option> 
+                    <el-option v-for="item in options.storageType" :key="item.value" :label="item.label" :value="item.value"> </el-option>
                   </el-select>
                   <el-button  type="primary" size="small" @click.stop="confirmType" > 加载数据 </el-button>
               </div>
@@ -104,8 +104,12 @@
                 <el-col :span="12">
                   <el-card class="box-card" style="position: relative;">
                     <div class="search flex-box" v-if="AddForm.type===1">
-                      <div class="today">发货日期: {{today}}</div>
-					            <el-input size="mini" style="width:190px" class="w180" clearable placeholder="请输入商品名称检索" v-model.trim="search.value"></el-input>
+                      <div class="today">
+                        发货日期:
+                        <!-- {{today}} -->
+                        <el-date-picker :style="{width:'140px'}" :clearable="false" size="small" v-model="today" value-format="yyyy-MM-dd" type="date"></el-date-picker>
+                      </div>
+					            <el-input size="small" style="width:190px" class="w180" clearable placeholder="请输入商品名称检索" v-model.trim="search.value"></el-input>
                     </div>
                     <div class="table">
                       <el-table :data="tableLeftData" size="small" max-height="300"  style="width: 100%;" highlight-current-row
@@ -143,7 +147,7 @@
                           @selection-change="handleTable_R_Change">
                           <el-table-column type="selection" width="40"> </el-table-column>
                           <el-table-column label="序号" width="50" align="center">
-                            <template slot-scope="scope"> 
+                            <template slot-scope="scope">
                               <span>{{scope.$index + 1}}</span>
                             </template>
                           </el-table-column>

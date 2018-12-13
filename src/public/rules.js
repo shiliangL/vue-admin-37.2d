@@ -157,6 +157,19 @@ export default {
           }
           callback()
         },
+        validNumberZZS0: (rule, value, callback) => {
+          if (value === 0) {
+            callback()
+          }
+          if (!value && value !== 0) {
+            return callback(new Error('请填写'))
+          }
+          const reg = /^[0-9]\d*$/
+          if (!reg.test(value)) {
+            return callback(new Error('请输入正整数'))
+          }
+          callback()
+        },
         // 盘点相关联的相互校验
         validNumberPd: (rule, value, callback) => {
           if (!value) {

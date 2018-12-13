@@ -8,7 +8,7 @@
 					     <el-row>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="客户账号:" prop="mobile" :rules="[{trigger: 'change', required:true, validator: rules.validPhone}]">
-										<el-input v-if="isAddView" size="small" style="width:180px" class="w180"  placeholder="仅限中国大陆手机号" v-model.trim="form.mobile" maxlength="11"></el-input>
+										<el-input v-if="isAddView" :disabled="!!data" size="small" style="width:180px" class="w180"  placeholder="仅限中国大陆手机号" v-model.trim="form.mobile" maxlength="11"></el-input>
 										<span v-else v-cloak> {{ form.mobile }} </span>
 									</el-form-item>
 								</el-col>

@@ -8,13 +8,17 @@
 						<div class="row-content">
 					     <el-row>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="8">
-									<el-form-item label="可欠日期:" prop="limitTime">
+									<el-form-item label="可欠日期:" prop="limitTime" :rules="[{trigger: 'change', validator: rules.validNumberZZS0}]">
                     <div v-if="isAddView">
-                      <el-input-number size="small" style="width:160px" v-model="form.limitTime" :min="0" :max="10000"></el-input-number>
+
+                      <el-input size="small" style="width:160px" placeholder="整数" maxlength="7" v-model.trim="form.limitTime"></el-input>
+                      <!-- <el-input-number size="small" style="width:160px" v-model="form.limitTime" :min="0" :max="10000"></el-input-number> -->
+
                       <el-select size="small" style="width:60px" v-model="form.limitType">
                         <el-option v-for="sub in options.dateTime" :key="sub.value" :label="sub.label" :value="sub.value"></el-option>
                       </el-select>
                     </div>
+
 										<div v-else v-cloak>
                       {{ form.limitTime }}
                       <span v-if="form.limitType===0">天</span>
