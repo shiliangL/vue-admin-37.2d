@@ -12,10 +12,10 @@
 </template>
 
 <script>
-const loginKey = JSON.parse(sessionStorage.getItem('loginKey'))
+
 import { Navbar, Sidebar, AppMain, TagsView, topNavBar } from './components'
 import { StickyBar } from '@/components/base.js'
-import { fetchMenuList, fetchWorkbench } from '@/api/layout.js'
+import { fetchMenuList } from '@/api/layout.js'
 import { mapActions } from 'vuex'
 
 export default {
@@ -42,7 +42,7 @@ export default {
 
   },
   mounted() {
-    this.fetchWorkbench()
+
   },
   methods: {
     ...mapActions([
@@ -121,15 +121,6 @@ export default {
       // 设置所有菜单列表
       // this.menuList = result
       return result
-    },
-    fetchWorkbench() {
-      if (!loginKey) return
-      fetchWorkbench({ id: loginKey.id }).then(({ data }) => {
-        if (!data) return
-        this.topName = data.title || null
-      }).catch(e => {
-        this.$message({ type: 'error', message: e.msg })
-      })
     }
   }
 }

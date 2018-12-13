@@ -79,7 +79,7 @@ export default {
       { title: '采购订单', value: 1 },
       { title: '销售退货', value: 2 },
       { title: '销售换货', value: 3 },
-      { title: '采购退换', value: 5 },
+      { title: '采购退换货', value: 5 },
       { title: '其他', value: 4 }
     ]
   },
@@ -145,6 +145,10 @@ export default {
         case 4:
           t = '其他入库详情'
           row.type = 4
+          break
+        case 5:
+          t = '采购退换货详情'
+          row.type = 5
           break
         default:
           break

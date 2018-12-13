@@ -58,14 +58,6 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'topNavBar',
-  props: {
-    topName: {
-      type: String,
-      default: () => {
-        return ''
-      }
-    }
-  },
   components: {
     Hamburger,
     ScrollPane,
@@ -79,7 +71,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['sidebar', 'menuList', 'name', 'avatar', 'curMenuIndex'])
+    ...mapGetters(['sidebar', 'menuList', 'name', 'avatar', 'curMenuIndex', 'topName'])
   },
   methods: {
     ...mapActions([

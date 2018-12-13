@@ -1,11 +1,14 @@
 import { loginByUsername, logout, getUserInfo } from '@/api/login'
+import { fetchWorkbench } from '@/api/layout.js'
 import { fetchToken } from '@/api/layout'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { Message } from 'element-ui'
+const loginKey = JSON.parse(sessionStorage.getItem('loginKey'))
 
 const user = {
   state: {
     user: '',
+    topName: '',
     status: '',
     code: '',
     token: getToken(),
@@ -26,6 +29,9 @@ const user = {
   mutations: {
     SET_CODE: (state, code) => {
       state.code = code
+    },
+    SET_TOPNAME: (state, topName) => {
+      state.topName = topName
     },
     SET_USEROBJ: (state, userObj) => {
       state.userObj = userObj
@@ -69,35 +75,47 @@ const user = {
     // 用户名登录
     LoginByUsername({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
-        loginByUsername({ ...userInfo }).then(response => {
-          const token = response.data.result
-          commit('SET_TOKEN', token)
-          setToken(token)
-          resolve()
-        }).catch(error => {
-          Message.error(error.msg)
-          reject(error)
-        })
+        loginByUsername({ ...userInfo })
+          .then(response => {
+            const token = response.data.result
+            commit('SET_TOKEN', token)
+            setToken(token)
+            resolve()
+          })
+          .catch(error => {
+            Message.error(error.msg)
+            reject(error)
+          })
       })
     },
 
     // 获取用户信息
     GetUserInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getUserInfo(state.token).then(response => {
-          const data = response.data
-          // commit('SET_ROLES', data.roles)
-          commit('SET_ROLES', ['admin'])
-          commit('SET_USEROBJ', data)
-          commit('SET_NAME', data.staffName)
-          // commit('SET_NAME', data.loginName)
-          commit('SET_AVATAR', data.staffId)
-          commit('SET_INTRODUCTION', data.departmentNames)
-          resolve(response)
-        }).catch(error => {
-          Message.error(error.msg)
-          reject(error)
+        if (!loginKey) return
+        fetchWorkbench({ id: loginKey.id }).then(({ data }) => {
+          if (!data) return
+          commit('SET_TOPNAME', data.title || null)
+        }).catch(e => {
+          console.log(e.msg)
         })
+
+        getUserInfo(state.token)
+          .then(response => {
+            const data = response.data
+            // commit('SET_ROLES', data.roles)
+            commit('SET_ROLES', ['admin'])
+            commit('SET_USEROBJ', data)
+            commit('SET_NAME', data.staffName)
+            // commit('SET_NAME', data.loginName)
+            commit('SET_AVATAR', data.staffId)
+            commit('SET_INTRODUCTION', data.departmentNames)
+            resolve(response)
+          })
+          .catch(error => {
+            Message.error(error.msg)
+            reject(error)
+          })
       })
     },
 
@@ -118,14 +136,16 @@ const user = {
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
-          removeToken()
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
+        logout(state.token)
+          .then(() => {
+            commit('SET_TOKEN', '')
+            commit('SET_ROLES', [])
+            removeToken()
+            resolve()
+          })
+          .catch(error => {
+            reject(error)
+          })
       })
     },
 
@@ -165,12 +185,14 @@ const user = {
     // 设置七牛 token
     VX_SET_QNTOKEN({ commit }) {
       return new Promise((resolve, reject) => {
-        fetchToken().then(({ data }) => {
-          commit('SET_QNTOKEN', data.token)
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
+        fetchToken()
+          .then(({ data }) => {
+            commit('SET_QNTOKEN', data.token)
+            resolve()
+          })
+          .catch(error => {
+            reject(error)
+          })
       })
     },
     // 设置Token
