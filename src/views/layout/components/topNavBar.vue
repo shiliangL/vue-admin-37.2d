@@ -7,9 +7,9 @@
 					  <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
             <div class="nav">
               <span class="topName">{{ topName }}</span>
-              <ScrollPane class="nav-scroll-bar">
+              <!-- <ScrollPane class="nav-scroll-bar">
                 <span class="nav-item" v-for="(item,index) in menuList" :key="index" v-cloak :class="curIndex==index?'active' : ''"  @click="clickTabTitle(item,index)">{{item.title}}</span>
-              </ScrollPane>
+              </ScrollPane> -->
             </div>
 
             <div class="userInfo">
