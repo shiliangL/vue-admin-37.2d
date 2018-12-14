@@ -238,6 +238,7 @@ export default {
             return
           }
           const data = {
+            'storehouseType': this.form.storehouseType,
             'sortingDetailsId': item.id,
             'tableId': loginKey.id,
             'weight': item.sortingQuantity

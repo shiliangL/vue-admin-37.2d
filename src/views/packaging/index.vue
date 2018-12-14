@@ -9,7 +9,7 @@
           <el-table-column label="序号" width="50" align="center">
             <template slot-scope="scope"> <span>{{scope.$index + 1}}</span> </template>
           </el-table-column>
-          <el-table-column prop="orderNo" label="销售订单编号" align="center"></el-table-column>
+          <el-table-column prop="orderNo" :label="curIndex===1 ? '销售订单编号' : '销售换货单号' " align="center"></el-table-column>
           <el-table-column prop="customerName" label="客户名称" align="center"></el-table-column>
           <el-table-column prop="distributionArea" label="配送区域" align="center"></el-table-column>
           <el-table-column prop="stockName" label="仓库" align="center"></el-table-column>
