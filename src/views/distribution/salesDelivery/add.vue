@@ -533,7 +533,7 @@ export default {
       fetchDetail(data).then(({ data }) => {
         if (!data) return
         this.form = Object.assign(this.form, data)
-        this.form.photos = this.form.photos.join(',')
+        this.form.photos = this.form.photos ? this.form.photos.join(',') : []
         this.table.data = data.saleDtails.rows
         this.pagination.total = data.saleDtails.total
       }).catch(e => {

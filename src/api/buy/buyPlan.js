@@ -65,9 +65,23 @@ export function purchaseList(params) {
 }
 
 // 采购退货
-export function saveList(data) {
+export function saveList3(data) {
   return request({
     url: 'cmm/purchaseOrderRequest/save?sourceType=3',
+    method: 'post',
+    data
+  })
+}
+export function saveList2(data) {
+  return request({
+    url: 'cmm/purchaseOrderRequest/save?sourceType=2',
+    method: 'post',
+    data
+  })
+}
+export function saveList1(data) {
+  return request({
+    url: 'cmm/purchaseOrderRequest/save?sourceType=1',
     method: 'post',
     data
   })

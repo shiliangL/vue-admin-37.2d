@@ -1,6 +1,6 @@
 <template>
     <div class="addcheck">
-      <!-- 搜索 
+      <!-- 搜索
         :clearable="false"
         销售订单采购计划
       -->
@@ -12,8 +12,8 @@
           <el-date-picker :style="{width:'140px'}"
             :clearable="false"
             size="small"
-            v-model="searchBarData.sendTime" 
-            value-format="yyyy-MM-dd" 
+            v-model="searchBarData.sendTime"
+            value-format="yyyy-MM-dd"
             type="date" placeholder="送货时间">
             </el-date-picker>
         </div>
@@ -31,7 +31,7 @@
           </el-select>
         </div>
 
-        <div class="left" v-if="searchBarOptons.levelTowOption.length"> 
+        <div class="left" v-if="searchBarOptons.levelTowOption.length">
           <el-select class="w110" size="small" v-model="levelFecond" clearable filterable placeholder="二级分类">
             <el-option v-for="sub in searchBarOptons.levelTowOption" :key="sub.id" :label="sub.title" :value="sub.id"></el-option>
           </el-select>
@@ -66,7 +66,7 @@
         <span class="Num-itemr" v-cloak>未生成采购计划商品: <span style="color:red">{{unfinishedTotal}}</span>  </span>
 			</div>
 			<!-- 表格 -->
-			<el-table :data="tableData" size="small" ref="multipleTable" max-height="450" style="width: 100%;" 
+			<el-table :data="tableData" size="small" ref="multipleTable" max-height="450" style="width: 100%;"
         highlight-current-row
         @selection-change="selectionChange">
 
@@ -100,7 +100,7 @@
 
 <script>
 import { CascaderBox } from '@/components/base.js'
-import { purchaseList, saveList } from '@/api/buy/buyPlan.js'
+import { purchaseList, saveList1 } from '@/api/buy/buyPlan.js'
 import { fecthGoodsClass } from '@/api/goodsList.js'
 
 export default {
@@ -262,7 +262,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        saveList(arr).then(res => {
+        saveList1(arr).then(res => {
           this.$message({ type: 'success', message: `${res.msg}!` })
           this.$emit('close')
         }).catch((e) => {

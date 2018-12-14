@@ -21,6 +21,7 @@
 					<el-table-column prop="title" label="配送区域" align="center"></el-table-column>
 					<el-table-column prop="createOn" :label="curIndex===0?'下单时间':'申请换货时间'" align="center"></el-table-column>
 					<el-table-column prop="stockName" label="仓库" align="center"></el-table-column>
+					<el-table-column prop="createOn" label="创建时间" align="center"></el-table-column>
 					<el-table-column prop="status" label="配送状态" align="center">
             <template slot-scope="scope" align="center">
                <span v-if="scope.row.status===0"> 待配送 </span>

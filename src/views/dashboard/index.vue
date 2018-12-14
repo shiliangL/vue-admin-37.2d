@@ -34,7 +34,7 @@
               <el-row style="width: 100%;">
                 <el-col :span="6" v-for="(item,index) in todo.returnChange" :key="index">
                     <span class="desc"> {{item.title}} </span>
-                    <span class="num"> {{item.number}} </span>
+                    <span class="num" @click.stop="goTo(item.path)"> {{item.number}} </span>
                     <span> {{item.unit}} </span>
                 </el-col>
               </el-row>
@@ -45,7 +45,7 @@
               <el-row style="width: 100%;">
                 <el-col :span="6" v-for="(item,index) in todo.purchaseOrderPlan" :key="index">
                     <span class="desc"> {{item.title}} </span>
-                    <span class="num"> {{item.number}} </span>
+                    <span class="num" @click.stop="goTo(item.path)"> {{item.number}} </span>
                     <span> {{item.unit}} </span>
                 </el-col>
               </el-row>
@@ -53,11 +53,11 @@
 
             <!-- 采购订单 -->
 	          <div class="row-item">
-              <div class="title"> 采购计划: </div>
+              <div class="title"> 采购订单: </div>
               <el-row style="width: 100%;">
                 <el-col :span="6" v-for="(item,index) in todo.purchaseOrder" :key="index">
                     <span class="desc"> {{item.title}} </span>
-                    <span class="num"> {{item.number}} </span>
+                    <span class="num" @click.stop="goTo(item.path)"> {{item.number}} </span>
                     <span> {{item.unit}} </span>
                 </el-col>
               </el-row>
@@ -65,11 +65,11 @@
 
             <!-- 仓库盘点 -->
             <div class="row-item">
-              <div class="title"> 采购计划: </div>
+              <div class="title">仓库盘点: </div>
               <el-row style="width: 100%;">
                 <el-col :span="6" v-for="(item,index) in todo.inventory" :key="index">
                     <span class="desc"> {{item.title}} </span>
-                    <span class="num"> {{item.number}} </span>
+                    <span class="num" @click.stop="goTo(item.path)"> {{item.number}} </span>
                     <span> {{item.unit}} </span>
                 </el-col>
               </el-row>
@@ -80,7 +80,7 @@
               <el-row style="width: 100%;">
                 <el-col :span="6" v-for="(item,index) in todo.distribution" :key="index">
                     <span class="desc"> {{item.title}} </span>
-                    <span class="num"> {{item.number}} </span>
+                    <span class="num" @click.stop="goTo(item.path)"> {{item.number}} </span>
                     <span> {{item.unit}} </span>
                 </el-col>
               </el-row>
@@ -92,7 +92,7 @@
               <el-row style="width: 100%;">
                 <el-col :span="6" v-for="(item,index) in todo.salesOrders" :key="index">
                     <span class="desc"> {{item.title}} </span>
-                    <span class="num"> {{item.number}} </span>
+                    <span class="num" @click.stop="goTo(item.path)"> {{item.number}} </span>
                     <span> {{item.unit}} </span>
                 </el-col>
               </el-row>
@@ -105,7 +105,7 @@
               <el-row style="width: 100%;">
                 <el-col :span="6" v-for="(item,index) in todo.salesOrdersChange" :key="index">
                     <span class="desc"> {{item.title}} </span>
-                    <span class="num"> {{item.number}} </span>
+                    <span class="num" @click.stop="goTo(item.path)"> {{item.number}} </span>
                     <span> {{item.unit}} </span>
                 </el-col>
               </el-row>
@@ -227,34 +227,34 @@ export default {
       ],
       todo: {
         returnChange: [
-          { title: '退货商品', unit: '个', number: 0 },
-          { title: '换货商品', unit: '个', number: 0 }
+          { title: '退货商品', unit: '个', number: 0, path: '/orders/returnChange' },
+          { title: '换货商品', unit: '个', number: 0, path: '/orders/returnChange' }
         ],
         purchaseOrderPlan: [
-          { title: '销售订单未生成', unit: '个商品', number: 0 },
-          { title: '销售换货未生成', unit: '个商品', number: 0 },
-          { title: '待申请', unit: '单', number: 0 },
-          { title: '待审核', unit: '单', number: 0 }
+          { title: '销售订单未生成', unit: '个商品', number: 0, path: '/buy/buyPlan' },
+          { title: '销售换货未生成', unit: '个商品', number: 0, path: '/buy/buyPlan' },
+          { title: '待申请', unit: '单', number: 0, path: '/buy/buyPlan' },
+          { title: '待审核', unit: '单', number: 0, path: '/buy/buyPlan' }
         ],
         purchaseOrder: [
-          { title: '待采购', unit: '个', number: 0 },
-          { title: '采购中', unit: '个', number: 0 }
+          { title: '待采购', unit: '个', number: 0, path: '/buy/buyOrders' },
+          { title: '采购中', unit: '个', number: 0, path: '/buy/buyOrders' }
         ],
         inventory: [
-          { title: '待核查', unit: '个', number: 0 }
+          { title: '待核查', unit: '个', number: 0, path: '/warehouse/auditInventory' }
         ],
         distribution: [
-          { title: '销售订单', unit: '个', number: 0 },
-          { title: '销售换货', unit: '个', number: 0 }
+          { title: '销售订单', unit: '个', number: 0, path: '/distribution/salesDelivery' },
+          { title: '销售换货', unit: '个', number: 0, path: '/distribution/salesDelivery' }
         ],
         salesOrders: [
-          { title: '待配送', unit: '个', number: 0 },
-          { title: '配送中', unit: '个', number: 0 },
-          { title: '退/换换', unit: '个', number: 0 }
+          { title: '待配送', unit: '个', number: 0, path: '/distribution/salesDelivery' },
+          { title: '配送中', unit: '个', number: 0, path: '/distribution/salesDelivery' },
+          { title: '退/换换', unit: '个', number: 0, path: '/distribution/salesDelivery' }
         ],
         salesOrdersChange: [
-          { title: '待配送', unit: '个', number: 0 },
-          { title: '配送中', unit: '个', number: 0 }
+          { title: '待配送', unit: '个', number: 0, path: '/distribution/salesDelivery' },
+          { title: '配送中', unit: '个', number: 0, path: '/distribution/salesDelivery' }
         ]
       },
       chartSettings: {},
@@ -283,6 +283,9 @@ export default {
     this.countPurchaseOrderRequestByStatus()
   },
   methods: {
+    goTo(path) {
+      this.$router.push(path)
+    },
     fetchCountHome() {
       fetchCountHome().then(({ data }) => {
         if (!data) return

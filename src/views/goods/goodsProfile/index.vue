@@ -1,9 +1,9 @@
- 
+
 <!-- 辅助材料 -->
- 
+
 <template>
 	<div class="goodsProfile">
-        
+
     <search-bar ref="searchBar" :data="searchBarData" @add="showAdd" @search="searchAction" @reset="reset"></search-bar>
 
     <!-- 表格 -->

@@ -100,7 +100,7 @@
 
 <script>
 import { CascaderBox } from '@/components/base.js'
-import { fetchExchangeAll, saveList } from '@/api/buy/buyPlan.js'
+import { fetchExchangeAll, saveList3 } from '@/api/buy/buyPlan.js'
 import { fecthGoodsClass } from '@/api/goodsList.js'
 
 export default {
@@ -267,7 +267,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        saveList(arr).then(res => {
+        saveList3(arr).then(res => {
           this.$message({ type: 'success', message: `${res.msg}!` })
           this.$emit('close')
         }).catch((e) => {
