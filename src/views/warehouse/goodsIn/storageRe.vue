@@ -123,6 +123,7 @@ export default {
       const data = {
         index,
         size,
+        whetherOnlyQueryWarehousing: 1,
         ...item
       }
       fecthListInfo(data).then(({ data }) => {

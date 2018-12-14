@@ -15,6 +15,7 @@
 									<el-form-item label="采购计划来源:">
 										<span v-cloak v-if="form.header.sourceType ===1">销售订单</span>
 										<span v-cloak v-if="form.header.sourceType ===2">后台新增</span>
+										<span v-cloak v-if="form.header.sourceType ===3">销售换货</span>
 									</el-form-item>
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
@@ -39,13 +40,13 @@
                       <span v-cloak>{{form.header.purchaserName}}</span>
 									</el-form-item>
 								</el-col>
- 
+
 								<el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="form.header.auditStatus!==1">
 									<el-form-item label="采购审核时间:" v-if="form.header.auditStatus!==2">
                       <span v-cloak>{{form.header.auditDate}}</span>
 									</el-form-item>
 								</el-col>
- 
+
 								<el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="form.header.auditStatus!==1">
 									<el-form-item label="审核人:" v-if="form.header.auditStatus!==2">
                       <span v-cloak>{{form.header.auditStaffName}}</span>
@@ -75,7 +76,7 @@
 						</div>
 
 						<el-table :data="tableSearch" class="table" size="small" :max-height="500" style="width: 100%;" highlight-current-row>
- 
+
 							<el-table-column label="序号" width="50" align="center">
 								<template slot-scope="scope">
 									<span>{{scope.$index + 1}}</span>
@@ -89,7 +90,7 @@
 							<el-table-column prop="planQuantity" label="计划采购量" align="center"></el-table-column>
 							<el-table-column prop="applyQuantity" label="申请采购量" align="center">
                 <template slot-scope="scope">
-                  <div class="w110 el-input el-input--small" @click.stop="clickToChange(scope.$index, scope.row)" style="width:110px" v-if="scope.row.auditStatus ===1">
+                  <div class="w110 el-input el-input--small" @click.stop="clickToChange(scope.$index, scope.row)" style="width:110px" v-if="scope.row.auditStatus ===1||scope.row.auditStatus ===4">
                     <div class="el-input__inner" v-cloak> {{scope.row.applyQuantity}} </div>
                   </div>
                   <span v-else v-cloak> {{scope.row.applyQuantity}} </span>
@@ -103,7 +104,7 @@
                     </div>
                     <span slot="reference" v-cloak> {{scope.row.personnelNamesStr}} </span>
                   </el-popover>
-                  <el-button v-if="scope.row.auditStatus ===1" type="text" size="mini" @click.stop="clickToChange(scope.$index, scope.row)">更改</el-button>
+                  <el-button v-if="scope.row.auditStatus ===1||scope.row.auditStatus ===4" type="text" size="mini" @click.stop="clickToChange(scope.$index, scope.row)">更改</el-button>
                 </template>
               </el-table-column>
 
@@ -112,7 +113,7 @@
 						<div class="pages">
 							<span v-cloak> 共 {{this.form.table.length}} 条</span>
 						</div>
- 
+
 					</div>
 				</div>
 

@@ -214,7 +214,7 @@ export default {
     },
     searchAction(item) {
       if (!this.propsSonData.id) return
-      fecthOutReList({ productId: this.propsSonData.id, ...item }).then(({ data }) => {
+      fecthOutReList({ productId: this.propsSonData.id, ...item, whetherOnlyQueryWarehousing: 1 }).then(({ data }) => {
         this.table.data = data.rows
         this.pagination.total = data.total
       }).catch(e => {
@@ -232,7 +232,7 @@ export default {
 
     searchActionH(item) {
       if (!this.propsSonData.id) return
-      fecthListInfo({ productId: this.propsSonData.id, ...item }).then(({ data }) => {
+      fecthListInfo({ productId: this.propsSonData.id, ...item, whetherOnlyQueryWarehousing: 1 }).then(({ data }) => {
         this.form.rightTable = data.rows
         this.paginationH.total = data.total
       }).catch(e => {

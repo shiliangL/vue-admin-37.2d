@@ -248,7 +248,7 @@ export default {
             productId: item.productId,
             supplierInfoList: [
               {
-                purchaseType: 3,
+                purchaseType: item.purchaseType,
                 quantity: item.orderQuantity,
                 personnelId: item.personnelId,
                 personnelName: item.personnelName

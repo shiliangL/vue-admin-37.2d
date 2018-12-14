@@ -13,7 +13,7 @@
               <template v-else>
                 <el-button type="text" v-if="this.data.type === 'add'" size="mini" @click.stop="validateForm">保存</el-button>
              </template>
-              <el-button v-if="this.data.type === 'view' && this.data.obj.auditStatus ===1" type="text" size="mini" @click.stop="validatePass">申请</el-button>
+              <el-button v-if="this.data.type === 'view' && this.data.obj.auditStatus ===1 || this.data.obj.auditStatus ===4" type="text" size="mini" @click.stop="validatePass">申请</el-button>
               <el-button type="text" size="mini" @click.stop="dialog.visiable = false">返回</el-button>
             </div>
         </div>
@@ -167,7 +167,7 @@ export default {
     callBackToPass(data) {
       // console.log(JSON.stringify(data))
       if (!data) return
-      if (this.data.obj.auditStatus !== 1) return
+      // if (this.data.obj.auditStatus !== 1) return
       const params = {
         remark: null,
         requestId: this.data.obj.pk,

@@ -15,6 +15,7 @@
 									<el-form-item label="采购计划来源:">
 										<span v-cloak v-if="form.header.sourceType ===1">销售订单</span>
 										<span v-cloak v-if="form.header.sourceType ===2">后台新增</span>
+										<span v-cloak v-if="form.header.sourceType ===3">销售换货</span>
 									</el-form-item>
 								</el-col>
 								 <el-col :xs="24" :sm="10" :md="8" :lg="6">
@@ -27,7 +28,7 @@
                       <span v-cloak>{{form.header.createdName}}</span>
 									</el-form-item>
 								</el-col>
-                
+
                   <el-col :xs="24" :sm="10" :md="8" :lg="6">
                     <el-form-item label="采购申请时间:">
                         <span v-cloak>{{form.header.applicationDate}}</span>
@@ -39,25 +40,25 @@
                         <span v-cloak>{{form.header.purchaserName}}</span>
                     </el-form-item>
                   </el-col>
-  
-                  <el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="form.header.auditStatus!==2"> 
+
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="form.header.auditStatus!==2">
                     <el-form-item label="采购审核时间:">
                         <span v-cloak>{{form.header.auditDate}}</span>
                     </el-form-item>
                   </el-col>
-  
-                  <el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="form.header.auditStatus!==2"> 
+
+                  <el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="form.header.auditStatus!==2">
                     <el-form-item label="审核人:">
                         <span v-cloak>{{form.header.auditStaffName}}</span>
                     </el-form-item>
                   </el-col>
-                  
+
                   <el-col :xs="24" :sm="10" :md="8" :lg="6"  v-if="form.header.auditStatus===4">
                     <el-form-item label="拒绝原因:">
                         <span v-cloak>{{form.header.remark}}</span>
                     </el-form-item>
                   </el-col>
- 
+
               </el-row>
 						</div>
 				</div>
@@ -77,7 +78,7 @@
 						</div>
 
 						<el-table :data="tableSearch" class="table" size="small" :max-height="500" style="width: 100%;" highlight-current-row>
- 
+
 							<el-table-column label="序号" width="50" align="center">
 								<template slot-scope="scope">
 									<span>{{scope.$index + 1}}</span>
@@ -117,14 +118,14 @@
 							<span v-cloak> 共 {{form.table.length}} 条</span>
 						</div>
 
- 
+
 					</div>
 				</div>
 
   			<el-dialog width="700px" title="更改采购员" :visible.sync="innerVisible" append-to-body center>
           <toViewDialog v-model="dialogData" @edit="refrehList" @callBack="toViewDialogCallBack" v-if="innerVisible" @close="innerVisible = false"></toViewDialog>
         </el-dialog>
-        
+
   			<el-dialog width="344px" title="批量设置采购员" :visible.sync="volumeVisible" append-to-body center>
           <volumeSet v-model="form.table" @callBack="volumeSetCallBack" v-if="volumeVisible" @close="volumeVisible = false"></volumeSet>
         </el-dialog>

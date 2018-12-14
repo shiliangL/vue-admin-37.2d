@@ -31,9 +31,9 @@
 						</template>
 					</el-table-column>
 
-          <el-table-column prop="goodsImage" label="采购员/供应商" align="center">
+          <el-table-column prop="goodsImage" label="采购员" align="center">
              <template slot-scope="scope">
-               
+
               <el-form-item label="" style="display: inline-block" label-width="0" :prop="'table.'+scope.$index+'.purchaseType'"  :rules="rules.select">
                 <el-select class="w110" size="small" v-model="scope.row.purchaseType" placeholder="采购类型">
                   <el-option v-for="sub in searchBarOptons.type" :key="sub.value" :label="sub.label" :value="sub.value" :disabled="sub.disabled"></el-option>
@@ -52,9 +52,9 @@
 
             </template>
           </el-table-column>
- 
+
         </el-table>
- 
+
 
 			</el-form>
 
@@ -126,6 +126,7 @@ export default {
     if (this.value) {
       const data = JSON.parse(JSON.stringify(this.value))
       for (const item of data.supplierInfoList) {
+        item.purchaseType = item.purchaseType ? item.purchaseType : 1
         if (item.purchaseType === 1) {
           //  采购员
           item.buyerId = item.buyerId ? item.buyerId : item.personnelId
@@ -271,4 +272,4 @@ export default {
 		}
 	}
 }
-</style>         
+</style>

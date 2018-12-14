@@ -1,7 +1,7 @@
 <!-- 出库记录 -->
 <template>
     <div class="storageRe">
-			<search-bar :data="searchBarDate" @search="searchAction" @reset="fecthList"></search-bar>
+			<search-bar ref="searchBar" :data="searchBarDate" @search="searchAction" @reset="fecthList"></search-bar>
       <!-- 表格 -->
       <table-contain  :height.sync="table.maxHeight" :key="curIndex">
         <el-table :data="table.data" slot="table" :size="table.size" :max-height="table.maxHeight" style="width: 100%;" highlight-current-row>
@@ -87,17 +87,7 @@ export default {
   methods: {
     // 数据请求
     fecthList() {
-      const { index, size } = this.pagination
-      const data = {
-        index,
-        size
-      }
-      fecthOutReList(data).then(({ data }) => {
-        this.table.data = data.rows
-        this.pagination.total = data.total
-      }).catch(e => {
-        this.$message({ type: 'error', message: e.msg })
-      })
+      if (this.$refs['searchBar']) this.$refs['searchBar'].sendSearchParams()
     },
     searchAction(item) {
       if (!item) return
@@ -105,6 +95,7 @@ export default {
       const data = {
         index,
         size,
+        whetherOnlyQueryWarehousing: 1,
         ...item
       }
       fecthOutReList(data).then(({ data }) => {

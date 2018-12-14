@@ -64,10 +64,10 @@ export function purchaseList(params) {
   })
 }
 
-// 采购审核
+// 采购退货
 export function saveList(data) {
   return request({
-    url: 'cmm/purchaseOrderRequest/save?sourceType=1',
+    url: 'cmm/purchaseOrderRequest/save?sourceType=3',
     method: 'post',
     data
   })
