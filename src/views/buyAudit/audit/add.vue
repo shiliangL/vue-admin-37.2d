@@ -41,6 +41,8 @@
 import addModel from '@/public/addModel.js'
 import toView from './toView'
 import { applyCreate } from '@/api/buy/buyPlan.js'
+import { fecthMemberSelect } from '@/api/members.js'
+
 export default {
   mixins: [addModel],
   components: {
@@ -144,44 +146,111 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        // 点击同意的时候校验有效采购员
         if (!this.toViewObj) return
         const arr = JSON.parse(JSON.stringify(this.toViewObj))
-        for (const item of arr) {
-          // 差值 可用 - 申请
-          const tem = ((item.availableQuantity * 1) - (item.applyQuantity * 1))
-          tem !== 0 ? item.availableQuantity = tem.toFixed(2) : item.availableQuantity = 0
 
-          const arrItem = item.supplierInfoList
-          for (const key of arrItem) {
-            if (key.buyerId || key.supplierId) {
-              if (key.purchaseType === 2) {
-                key.personnelId = key.supplyDto[1]
-                key.personnelName = key.supplierName
-              } else if (key.purchaseType === 1) {
-                key.personnelId = key.buyerId
-                key.personnelName = key.buyerName
+        fecthMemberSelect({ staffType: 2 }).then(({ data }) => {
+          const errorArr = []
+          const arrData = data || []
+          const arrDataIds = arrData.map(item => item.value)
+
+          for (const item of arr) {
+            // 差值 可用 - 申请
+            const tem = ((item.availableQuantity * 1) - (item.applyQuantity * 1))
+            tem !== 0 ? item.availableQuantity = tem.toFixed(2) : item.availableQuantity = 0
+
+            const arrItem = item.supplierInfoList
+            for (const key of arrItem) {
+              if (key.buyerId || key.supplierId) {
+                if (key.purchaseType === 2) {
+                  key.personnelId = key.supplyDto[1]
+                  key.personnelName = key.supplierName
+                } else if (key.purchaseType === 1) {
+                  key.personnelId = key.buyerId
+                  key.personnelName = key.buyerName
+                }
+                delete key.supplyDto
+                delete key.supplierName
+                delete key.supplierId
+                delete key.buyerId
+                delete key.buyerName
               }
-              delete key.supplyDto
-              delete key.supplierName
-              delete key.supplierId
-              delete key.buyerId
-              delete key.buyerName
+            }
+
+            for (const itemKey of arrItem) {
+              // 不符合
+              if (!arrDataIds.includes(itemKey.personnelId)) {
+                errorArr.push(itemKey)
+              }
             }
           }
-        }
-        const data = {
-          remark: this.ruleForm.remark,
-          status: 3,
-          requestId: this.data.obj.pk,
-          requestDetailsList: arr
-        }
-        applyCreate(data).then(res => {
-          this.$message({ type: 'success', message: `${res.msg}!` })
-          this.dialog.visiable = false
-          this.$emit('add')
-        }).catch(() => {
-          this.$message({ type: 'error', message: '操作失败' })
+          if (errorArr.length) {
+            const msg = errorArr.map(item => item.personnelName).toString()
+            this.$notify({
+              title: '警告',
+              message: `无效采购员:${msg},请重新选择`,
+              duration: 0
+            })
+          } else {
+            const postData = {
+              remark: this.ruleForm.remark,
+              status: 3,
+              requestId: this.data.obj.pk,
+              requestDetailsList: arr
+            }
+            applyCreate(postData).then(res => {
+              this.$message({ type: 'success', message: `${res.msg}!` })
+              this.dialog.visiable = false
+              this.$emit('add')
+            }).catch(() => {
+              this.$message({ type: 'error', message: '操作失败' })
+            })
+          }
+        }).catch((e) => {
+          this.$message({ type: 'error', message: e.msg })
         })
+
+        // if (!this.toViewObj) return
+        // const arr = JSON.parse(JSON.stringify(this.toViewObj))
+        // console.log(arr, 'bb')
+        // for (const item of arr) {
+        //   // 差值 可用 - 申请
+        //   const tem = ((item.availableQuantity * 1) - (item.applyQuantity * 1))
+        //   tem !== 0 ? item.availableQuantity = tem.toFixed(2) : item.availableQuantity = 0
+
+        //   const arrItem = item.supplierInfoList
+        //   for (const key of arrItem) {
+        //     if (key.buyerId || key.supplierId) {
+        //       if (key.purchaseType === 2) {
+        //         key.personnelId = key.supplyDto[1]
+        //         key.personnelName = key.supplierName
+        //       } else if (key.purchaseType === 1) {
+        //         key.personnelId = key.buyerId
+        //         key.personnelName = key.buyerName
+        //       }
+        //       delete key.supplyDto
+        //       delete key.supplierName
+        //       delete key.supplierId
+        //       delete key.buyerId
+        //       delete key.buyerName
+        //     }
+        //   }
+        // }
+        // const data = {
+        //   remark: this.ruleForm.remark,
+        //   status: 3,
+        //   requestId: this.data.obj.pk,
+        //   requestDetailsList: arr
+        // }
+        // console.log(data)
+        // applyCreate(data).then(res => {
+        //   this.$message({ type: 'success', message: `${res.msg}!` })
+        //   this.dialog.visiable = false
+        //   this.$emit('add')
+        // }).catch(() => {
+        //   this.$message({ type: 'error', message: '操作失败' })
+        // })
       }).catch(() => {})
     },
     formClose() {
