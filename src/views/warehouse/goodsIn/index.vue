@@ -9,7 +9,7 @@
 
 <script>
 import model from '@/public/listModel.js'
-import { Tabs, SearchBar } from '@/components/base.js'
+import { Tabs } from '@/components/base.js'
 import storageIn from './storageIn'
 import storageRe from './storageRe'
 
@@ -18,7 +18,6 @@ export default {
   mixins: [model],
   components: {
     Tabs,
-    SearchBar,
     storageIn,
     storageRe
   },
@@ -42,5 +41,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
- 
+
 </style>

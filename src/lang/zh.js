@@ -65,6 +65,9 @@ export default {
     feedback: '问题反馈',
     coupons: '优惠券',
 
+    salesStatistics: '销售统计',
+    ProcurementTotal: '采购统计',
+
     kFservice: '客服人员',
     operating: '运营人员',
     operatSetting: '运营设置',

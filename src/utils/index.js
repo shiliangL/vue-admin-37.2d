@@ -69,6 +69,13 @@ export default class Util {
     return ymd
   }
 
+  getMonthOne() {
+    const date = new Date()
+    const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)
+    const ymd = date.getFullYear() + '-' + month + '-' + 1
+    return ymd
+  }
+
   isIp(ip) {
     const reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
     return reg.test(ip)

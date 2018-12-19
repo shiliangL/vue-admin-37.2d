@@ -1,6 +1,8 @@
 <template>
   <div id="SearchBar" class="search-bar">
-    <slot></slot>
+    <div class="left" style="line-height: 40px;">
+      <slot name="title"></slot>
+    </div>
     <template v-if="data && data.length > 0">
       <div class="left" v-for="(item, index) in data[0]" :key="index">
         <template v-if="item.type === 'date'">
@@ -11,6 +13,14 @@
         <template v-if="item.type === 'datetimerange'">
           <el-date-picker v-model="item.value" size="small" value-format="yyyy-MM-dd HH:mm:ss" type="datetimerange" range-separator="-" start-placeholder="下单开始时间" end-placeholder="下单结束时间" :default-time="['23:00:00', '22:59:59']" :placeholder="item.placeholder"> </el-date-picker>
           <!-- <el-date-picker :style="{width:'140px'}" size="small" v-model="item.value" value-format="yyyy-MM-dd" type="date" :placeholder="item.placeholder"></el-date-picker> -->
+        </template>
+        <template v-if="item.type === 'goodsCategory'">
+          <el-select :class="item.class?item.class:'w110'" size="small" v-model="categoryIdA" clearable filterable placeholder="一级分类" @change="selectChange" value-key="id">
+            <el-option v-for="sub in options.goodsCategoryA" :key="sub.id" :label="sub.title" :value="sub" :class="item.class"></el-option>
+          </el-select>
+          <el-select :class="item.class?item.class:'w110'" v-if="categoryIdA" size="small" v-model="categoryIdB" clearable filterable placeholder="二级分类" value-key="id">
+            <el-option v-for="sub in options.goodsCategoryB" :key="sub.id" :label="sub.title" :value="sub" :class="item.class"></el-option>
+          </el-select>
         </template>
         <template v-else-if="item.type === 'datetime'">
           <el-date-picker :style="{width:'200px'}" size="small" v-model="item.value" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" :placeholder="item.placeholder"></el-date-picker>
@@ -24,7 +34,7 @@
           <el-input :style="item.width? item.width : 'width:180px'" clearable v-model.trim="item.value" size="small" @keyup.enter.native="sendSearchParams" :placeholder="item.placeholder"></el-input>
         </template>
         <template v-if="item.type === 'multiple-date'">
-          <el-date-picker v-model="item.value" value-format="yyyy-MM-dd" type="daterange" size="small" range-separator="至" :start-placeholder="item.placeholder1" :end-placeholder="item.placeholder2"></el-date-picker>
+          <el-date-picker :clearable="!item.isClearable" v-model="item.value" value-format="yyyy-MM-dd" type="daterange" size="small" range-separator="至" :start-placeholder="item.placeholder1" :end-placeholder="item.placeholder2"></el-date-picker>
         </template>
         <template v-else-if="item.type === 'search'">
           <el-button type="primary" size="small" @click="sendSearchParams">{{item.name}}</el-button>
@@ -61,6 +71,9 @@
 </template>
 
 <script>
+import { fecthGoodsClass } from '@/api/goodsList.js'
+import { listToTrees } from '@/utils/listToTrees.js'
+
 export default {
   name: 'SearchBar',
   props: {
@@ -72,13 +85,42 @@ export default {
       type: Boolean,
       default: true
     },
+    goodsCategory: { // 是否加载商品分类
+      type: String,
+      default: ''
+    },
     rightVisible: { // 是否需要显示右边区域按钮 默认显示
       type: Boolean,
       default: true
     }
   },
+  data() {
+    return {
+      categoryIdA: null,
+      categoryIdB: null,
+      options: {
+        goodsCategoryA: [],
+        goodsCategoryB: []
+      }
+    }
+  },
+  mounted() {
+    const { fetchGoodsClass, goodsCategory } = this
+    if (goodsCategory) fetchGoodsClass()
+  },
   methods: {
+    fetchGoodsClass() {
+      fecthGoodsClass().then(({ data }) => {
+        if (!Array.isArray(data) && data.length <= 0) return
+        this.options.goodsCategoryA = listToTrees(data)
+      }).catch(e => {
+        this.$message({ type: 'error', message: e.msg })
+      })
+    },
     clickReset() {
+      this.categoryIdA = null
+      this.categoryIdB = null
+      this.options.goodsCategoryB = []
       if (this.data.length > 0 && this.data[0] && this.data[0].length > 0) {
         const items = this.data[0]
         for (let i = 0; i < items.length; i++) {
@@ -92,7 +134,17 @@ export default {
       }
       this.$emit('reset')
     },
+    selectChange(item) {
+      this.categoryIdB = null
+      this.options.goodsCategoryB = []
+      if (item) {
+        this.options.goodsCategoryB = item.children
+      } else {
+        this.options.goodsCategoryB = []
+      }
+    },
     sendSearchParams() {
+      const { goodsCategory, categoryIdA, categoryIdB } = this
       const params = {}
       if (this.data.length > 0 && this.data[0] && this.data[0].length > 0) {
         const items = this.data[0]
@@ -112,6 +164,9 @@ export default {
           } else if (item['type'] === 'search') {
             break
           }
+        }
+        if (goodsCategory) {
+          params[goodsCategory] = categoryIdB ? categoryIdB.id : (categoryIdA ? categoryIdA.id : null)
         }
       }
       this.$emit('search', params)

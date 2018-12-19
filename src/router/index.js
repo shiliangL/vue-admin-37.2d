@@ -67,6 +67,19 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/allReports',
+    component: Layout,
+    name: 'allReports',
+    meta: {
+      title: 'allReports',
+      icon: 'component'
+    },
+    children: [
+      { path: 'salesStatistics', component: _import('allReports/salesStatistics/index'), name: 'salesStatistics', meta: { title: 'salesStatistics', noCache: true }},
+      { path: 'ProcurementTotal', component: _import('allReports/ProcurementTotal/index'), name: 'ProcurementTotal', meta: { title: 'ProcurementTotal', noCache: true }}
+    ]
+  },
+  {
     path: '/promotion',
     component: Layout,
     name: 'promotion',

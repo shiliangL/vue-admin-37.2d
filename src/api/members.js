@@ -46,14 +46,7 @@ export function resetKey(id) {
   })
 }
 // staffType
-// 0: 普通管理员
-// 1: 配送人员
-// 2: 采购员
-// 3: 仓管员
-// 4: 分拣员
-// 5: 打包员
-// 6: 供应链主管
-// 7: 客户经理
+// 帐号类型(0: 普通管理员, 1: 配送人员, 2: 采购员, 3: 仓管员, 4: 分拣员, 5: 打包员, 6: 供应链主管, 7: 客户经理, 8: 验货员, 9: 客服人员, 10: 供应商, 11: 财务)
 export function fecthMemberSelect(params) {
   return request({
     url: 'cmm/workbenchUser/querySelect',

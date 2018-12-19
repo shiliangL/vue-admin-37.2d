@@ -360,3 +360,19 @@ ol {
     margin-bottom: 0px;
   }
 }
+
+.search-title{
+  font-size: 14px;
+}
+
+.total-bar{
+  font-size: 14px;
+  width: 100%;
+  padding: 4px;
+  padding-right: 20px;
+  text-align: right;
+  background-color: white;
+  .number{
+    font-size: 16px;
+  }
+}
