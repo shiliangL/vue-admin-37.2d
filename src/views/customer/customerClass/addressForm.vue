@@ -120,9 +120,9 @@ export default {
       const address = this.addressForm.address.split(',') || []
       if (SSQ.length && address.length) {
         this.idsArr = [
-          { id: SSQ[0], title: address[0] },
-          { id: SSQ[1], title: address[1] },
-          { id: SSQ[2], title: address[2] },
+          { id: SSQ[0] },
+          { id: SSQ[1] },
+          { id: SSQ[2] },
           address[address.length - 1]
         ]
       }
@@ -138,10 +138,11 @@ export default {
       }
     },
     selectAddress(item) {
+      this.isChange = 1
       if (item) {
         if (item.province && item.city && item.area && item.address) {
           this.addressForm.addessIds = `${item.province.id},${item.city.id},${item.area.id}`
-          this.addressForm.address = `${item.province.title},${item.city.title},${item.area.title},${item.address}`
+          this.addressForm.address = item.province.title ? `${item.province.title}${item.city.title}${item.area.title}${item.address}` : `${item.address}`
           this.addressForm.addressArrt = `验证通过`
         } else {
           this.addressForm.addressArrt = null
@@ -153,9 +154,14 @@ export default {
     clickToConfirm() {
       this.$refs['addressForm'].validate((valid) => {
         if (valid) {
+          if (!this.isChange) {
+            this.dialogVisible = false
+            return
+          }
           const { tableData } = this
           const addressFormcp = JSON.parse(JSON.stringify(this.addressForm))
           if (this.isUpdate) {
+            debugger
             if (Array.isArray(tableData) && tableData.length > 0) {
               for (const item of tableData) {
                 if (item.isClick) {

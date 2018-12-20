@@ -258,7 +258,7 @@ export default {
         if (item.province && item.city && item.area && item.address) {
           this.form.addressArrt = `验证通过`
           this.form.shopAddressEntity.addessIds = `${item.province.id},${item.city.id},${item.area.id}`
-          this.form.shopAddressEntity.address = `${item.province.title},${item.city.title},${item.area.title},${item.address}`
+          this.form.shopAddressEntity.address = item.province.title ? `${item.province.title}${item.city.title}${item.area.title}${item.address}` : `${item.address}`
         }
       } else {
         this.form.addressArrt = null
@@ -281,9 +281,9 @@ export default {
 
             if (SSQ.length && address.length) {
               this.idsArr = [
-                { id: SSQ[0], title: address[0] },
-                { id: SSQ[1], title: address[1] },
-                { id: SSQ[2], title: address[2] },
+                { id: SSQ[0] },
+                { id: SSQ[1] },
+                { id: SSQ[2] },
                 address[address.length - 1]
               ]
             }
@@ -305,5 +305,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+.portraitId{
+  img{
+    min-height: 76px;
+    width: 100%;
+    overflow: hidden;
+  }
+}
 </style>

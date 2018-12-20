@@ -36,7 +36,7 @@ export function update(data) {
 export function updateCustomerStatus(params) {
   return request({
     url: 'cmm/customer/updateCustomerStatus',
-    method: 'get',
+    method: 'post',
     params
   })
 }

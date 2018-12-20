@@ -128,7 +128,6 @@ export default {
     },
     fetchOptions() {
       fetchOptions().then(({ data }) => {
-        console.log(data, 'xx')
         const category = []
         const relation = []
 

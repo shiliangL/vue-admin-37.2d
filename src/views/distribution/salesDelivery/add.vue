@@ -119,9 +119,9 @@
                         </el-col>
                         <el-col :xs="24" :sm="10" :md="8" :lg="6" v-if="form.receiverFlag===1">
                           <el-form-item label="照片:">
-                            <div class="car" v-if="form.photos">
-                              <img :src="item" v-for="(item,index) in form.photos" :key="index" alt="">
-                            </div>
+                            <span class="car" v-if="form.photos" v-for="(item,index) in form.photos" :key="index">
+                              <img :src="item" alt="">
+                            </span>
                             <!-- <span v-cloak>{{form.photos}}</span> -->
                           </el-form-item>
                         </el-col>
@@ -533,7 +533,9 @@ export default {
       fetchDetail(data).then(({ data }) => {
         if (!data) return
         this.form = Object.assign(this.form, data)
-        this.form.photos = this.form.photos ? this.form.photos.join(',') : []
+        this.form.photos = this.form.photos ? this.form.photos.split(',') : []
+        console.log(this.form.photos, 'xxx')
+
         this.table.data = data.saleDtails.rows
         this.pagination.total = data.saleDtails.total
       }).catch(e => {
@@ -708,8 +710,10 @@ export default {
 
 	.car{
 		cursor: pointer;
-		width: 60px;
-		height: 60px;
+		width: 90px;
+		height: 90px;
+    display: inline-block;
+    margin-left: 10px;
     border-radius: 4px;
     overflow: hidden;
     border: 1px solid #d9d9d9;
