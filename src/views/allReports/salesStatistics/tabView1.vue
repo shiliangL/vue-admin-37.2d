@@ -11,6 +11,7 @@
 
     <table-contain :height.sync="table.maxHeight">
         <!-- show-summary
+        测试+tag
         :summary-method="getSummary" -->
       <el-table
         :data="table.data"
