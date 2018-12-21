@@ -1,5 +1,6 @@
 <template>
   <div class="clearfix AddressSelect">
+    <!-- {{form.province}} -->
     	<el-select size="small" :style="{width}" filterable v-model="form.province" value-key="id" @change="selectChange($event,0)">
 					<el-option v-for="sub in options.province"
             :key="sub.id"
@@ -7,6 +8,7 @@
             :value="sub">
           </el-option>
 			</el-select>
+      <!-- {{form.city}} -->
     	<el-select size="small" :style="{width}" filterable v-model="form.city" value-key="id" @change="selectChange($event,1)">
 					<el-option v-for="sub in options.city"
             :key="sub.id"
@@ -14,6 +16,8 @@
             :value="sub">
           </el-option>
 			</el-select>
+      <!-- {{form.area}} -->
+
     	<el-select size="small" :style="{width}" filterable v-model="form.area" value-key="id" @change="selectChange($event,2)">
 					<el-option v-for="sub in options.area"
             :key="sub.id"
@@ -93,6 +97,60 @@ export default {
         this.$emit('change', this.form)
       } else {
         this.$emit('change', null)
+      }
+    },
+    getNames() {
+      const provinceObj = this.form.province
+      const cityObj = this.form.city
+      const areaObj = this.form.area
+      const { province, city, area } = this.options
+      if (provinceObj && cityObj && areaObj) {
+        const data = {}
+        if (provinceObj.title) {
+          // 修改过了
+          data.province = provinceObj
+          data.city = cityObj
+          data.area = areaObj
+          // data.address = `${provinceObj.title}${cityObj.title}${areaObj.title}${this.form.address}`
+          data.address = `${this.form.address}`
+        } else {
+          // 没有修改
+          data.address = `${this.form.address}`
+          if (Array.isArray(province)) {
+            for (let i = 0; i < province.length; i++) {
+              const element = province[i]
+              if (provinceObj.id === element.id) {
+                data.province = element
+                break
+              }
+            }
+          }
+
+          if (Array.isArray(city)) {
+            for (let i = 0; i < city.length; i++) {
+              const element = city[i]
+              if (cityObj.id === element.id) {
+                data.city = element
+                break
+              }
+            }
+          }
+
+          if (Array.isArray(area)) {
+            for (let i = 0; i < area.length; i++) {
+              const element = area[i]
+              if (areaObj.id === element.id) {
+                data.area = element
+                break
+              }
+            }
+          }
+        }
+        // const { province, city, area } = this.options
+        // console.log(province, city, area, '地址')
+        // console.log(provinceObj, cityObj, areaObj, '地址')
+        console.log(data, '地址xx')
+        this.$emit('change', data)
       }
     }
   },

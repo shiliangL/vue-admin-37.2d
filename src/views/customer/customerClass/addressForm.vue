@@ -6,6 +6,7 @@
         <div class="add-bar clearfix">
           <el-button class="right"  type="primary" size="small" @click.stop="clickToAdd" v-show="isAddView"> 添加 </el-button>
         </div>
+
         <el-table :data="tableData" slot="table" size="small" style="width: 100%;" highlight-current-row>
           <el-table-column prop="createdOn" label="是否默认" align="center">
             <template slot-scope="scope" align="center">
@@ -18,9 +19,16 @@
           <el-table-column prop="address" label="收货地址" align="center"></el-table-column>
           <el-table-column align="center" label="操作"  v-if="isAddView">
             <template slot-scope="scope" align="center">
-              <el-button type="text" size="mini" @click.stop="clickToSet(scope.$index,scope.row)">设置为默认</el-button>
-              <el-button type="text" size="mini" @click.stop="clickToEdit(scope.$index,scope.row)">编辑</el-button>
-              <el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index, scope.row)">删除</el-button>
+              <template v-if="scope.row.type===0">
+                <el-tooltip content=" 您可以到'基本信息'的地址中维护' " placement="top" effect="light">
+                  <i class="el-icon-info"></i>
+                </el-tooltip>
+              </template>
+              <template v-else>
+                <el-button type="text" size="mini" @click.stop="clickToSet(scope.$index,scope.row)">设置为默认</el-button>
+                <el-button type="text" size="mini" @click.stop="clickToEdit(scope.$index,scope.row)">编辑</el-button>
+                <el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index, scope.row)">删除</el-button>
+              </template>
             </template>
           </el-table-column>
         </el-table>
@@ -46,7 +54,7 @@
           </div>
             <el-form-item label="地址:" label-width="67px" prop="addressArrt" :rules="rules.input">
               <el-input size="small" v-model.trim="addressForm.addressArrt" style="width:180px;display: none;"></el-input>
-              <AddressSelect width="130px" :ids="idsArr" @change="selectAddress"/>
+              <AddressSelect width="130px" ref="AddressSelect" :ids="idsArr" @change="selectAddress"/>
             </el-form-item>
         </el-form>
         <div class="footer-block">
@@ -79,6 +87,7 @@ export default {
   },
   data() {
     return {
+      isChange: 0,
       dialogVisible: false,
       tableData: [],
       idsArr: [],
@@ -128,6 +137,10 @@ export default {
       }
     },
     clickToDelete(index, item) {
+      if (item.type === 0) {
+        this.$message({ type: 'warning', message: '该地址无法删除,您可以到"个人信息中维护" ' })
+        return
+      }
       if (this.tableData.length === 1) {
         this.$message({ type: 'warning', message: '收货地址不能为空' })
         return
@@ -158,10 +171,10 @@ export default {
             this.dialogVisible = false
             return
           }
+          this.$refs['AddressSelect'].getNames()
           const { tableData } = this
           const addressFormcp = JSON.parse(JSON.stringify(this.addressForm))
           if (this.isUpdate) {
-            debugger
             if (Array.isArray(tableData) && tableData.length > 0) {
               for (const item of tableData) {
                 if (item.isClick) {
@@ -183,7 +196,7 @@ export default {
               addessIds: addressFormcp.addessIds,
               address: addressFormcp.address,
               status: addressFormcp.status,
-              type: 0
+              type: 1
             })
           }
           this.dialogVisible = false
@@ -194,6 +207,7 @@ export default {
       })
     },
     reset() {
+      this.isChange = 0
       this.idsArr = []
       this.isUpdate = false
       this.isUpdateIndex = null

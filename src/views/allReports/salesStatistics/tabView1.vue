@@ -3,7 +3,7 @@
     <search-bar
       ref="searchBar"
       :data="searchBarData"
-      @add="showAdd"
+      @clickBtn="showAdd"
       @search="searchAction"
       @reset="reset">
       <span class="search-title" slot="title">销售订单创建日期: </span>
@@ -56,8 +56,10 @@ export default {
         { type: 'search', name: '查询' },
         { type: 'reset', name: '重置' }
       ],
-      [{ type: 'add', name: '导出' }]],
-      countTotal: null
+      [{ type: 'button', name: '导出' }]],
+      countTotal: null,
+      exportLoading: false
+
     }
   },
   mounted() {
@@ -93,8 +95,31 @@ export default {
       })
       return sums
     },
-    showAdd() {
-      console.log('导出')
+    showAdd(item) {
+      this.exportLoading = true
+      if (!this.exportLoading) return
+      let url = 'cmm/scmSalesOrder/exportFileCountHomeByTime?'
+      const data = {
+        ...item
+      }
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          const element = data[key]
+          if (element || element === 0) {
+            url += `${key}=${element}&`
+          }
+        }
+      }
+      const a = document.createElement('a')
+      document.body.appendChild(a)
+      a.href = url
+      a.target = '_blank'
+      a.click()
+      setTimeout(() => {
+        document.body.removeChild(a)
+      }, 100)
+      this.exportLoading = false
+      this.$message({ type: 'success', message: '数据导出成功' })
     },
     reset() {
       const util = new Util()

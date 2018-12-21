@@ -52,7 +52,7 @@
               <el-button type="primary" size="small" @click="clickAdd">{{item.name}}</el-button>
             </template>
             <template v-if="item.type === 'button'">
-              <el-button :style="item.style ? item.style : null" size="small" @click="clickBtn(item)">{{item.name}}</el-button>
+              <el-button type="primary" :style="item.style ? item.style : null" size="small" @click="clickBtn(item)">{{item.name}}</el-button>
             </template>
             <template v-else-if="item.type === 'more'">
               <el-dropdown trigger="click" @command="clickCommand">
@@ -175,6 +175,7 @@ export default {
       this.$emit('add')
     },
     clickBtn(item) {
+      const { goodsCategory, categoryIdA, categoryIdB } = this
       const params = {}
       if (this.data.length > 0 && this.data[0] && this.data[0].length > 0) {
         const items = this.data[0]
@@ -194,6 +195,9 @@ export default {
           } else if (item['type'] === 'search') {
             break
           }
+        }
+        if (goodsCategory) {
+          params[goodsCategory] = categoryIdB ? categoryIdB.id : (categoryIdA ? categoryIdA.id : null)
         }
       }
       this.$emit('clickBtn', params)
