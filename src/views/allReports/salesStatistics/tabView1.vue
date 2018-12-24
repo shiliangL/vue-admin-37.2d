@@ -29,7 +29,7 @@
         <el-table-column prop="orderNumber" label="有效订单下单单数" align="center"></el-table-column>
         <el-table-column prop="orderSum" label="销售订单下单金额" align="center"></el-table-column>
         <el-table-column prop="orderFinalSum" label="销售订单实际金额" align="center"></el-table-column>
-        <el-table-column prop="orderExchangeSum" label="销售换货金额" align="center"></el-table-column>
+        <!-- <el-table-column prop="orderExchangeSum" label="销售换货金额" align="center"></el-table-column> -->
         <el-table-column prop="orderRetrunSum" label="销售退货金额" align="center"></el-table-column>
         <el-table-column prop="orderPaymentAmount" label="应收销售金额" align="center"></el-table-column>
       </el-table>
@@ -135,7 +135,7 @@ export default {
       countHomeByTime(data).then(({ data }) => {
         if (Array.isArray(data.list)) {
           this.table.data = data.list
-          this.countTotal = data.countTotal
+          this.countTotal = data.countTotal ? (data.countTotal).toFixed(2) : 0
         }
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })

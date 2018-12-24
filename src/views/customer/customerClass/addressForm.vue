@@ -20,6 +20,7 @@
           <el-table-column align="center" label="操作"  v-if="isAddView">
             <template slot-scope="scope" align="center">
               <template v-if="scope.row.type===0">
+                <el-button type="text" size="mini" @click.stop="clickToSet(scope.$index,scope.row)">设置为默认</el-button>
                 <el-tooltip content=" 您可以到'基本信息'的地址中维护' " placement="top" effect="light">
                   <i class="el-icon-info"></i>
                 </el-tooltip>

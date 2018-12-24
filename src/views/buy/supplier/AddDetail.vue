@@ -165,7 +165,16 @@
               <el-table-column prop="operator" label="入库操作人" align="center"></el-table-column>
               <el-table-column prop="auditStatus" label="采购退/换货状态" align="center">
                 <template slot-scope="scope" align="center">
-                  <span v-cloak> {{scope.row.returnState | filterStatus }} </span>
+                  <template v-if="scope.row.returnType === 1">
+                    <!-- 退货 -->
+                    <el-tag size="small" type="warning" v-if="scope.row.returnStatus ===0">退货进行中</el-tag>
+                    <el-tag size="small" v-if="scope.row.returnStatus ===1">退货已完成</el-tag>
+                  </template>
+                  <template v-if="scope.row.returnType === 2">
+                    <!-- 换货 -->
+                    <el-tag size="small" type="warning" v-if="scope.row.returnStatus ===0">换货进行中</el-tag>
+                    <el-tag size="small" v-if="scope.row.returnStatus ===1">换货已完成</el-tag>
+                  </template>
                 </template>
               </el-table-column>
 

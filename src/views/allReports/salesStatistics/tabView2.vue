@@ -134,7 +134,7 @@ export default {
       countHomeByGoods(data).then(({ data }) => {
         if (Array.isArray(data.list)) {
           this.table.data = data.list
-          this.countTotal = data.countTotal
+          this.countTotal = data.countTotal ? (data.countTotal).toFixed(2) : 0
         }
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })

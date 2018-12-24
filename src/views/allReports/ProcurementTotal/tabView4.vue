@@ -140,7 +140,7 @@ export default {
       fetchSupplierDimension(data).then(({ data }) => {
         if (Array.isArray(data.purchaseCountList)) {
           this.table.data = data.purchaseCountList
-          this.countTotal = data.countPurchaseAmountPayable
+          this.countTotal = data.countPurchaseAmountPayable ? (data.countPurchaseAmountPayable).toFixed(2) : 0
         }
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })

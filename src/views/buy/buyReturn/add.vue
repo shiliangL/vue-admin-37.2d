@@ -70,28 +70,13 @@
                 <div class="row-content info">
                   <el-row>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item :label="data.type===0? '退货数量':'换货数量'">
+                      <el-form-item :label="data.type===0? '退货申请数量':'换货申请数量'">
                         <span v-cloak>{{form.returnsQuantity}}</span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item :label="data.type===0? '退货金额':'换货金额'">
                        <span v-cloak>{{form.returnsSum}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="应付款金额:">
-                        <span v-cloak>{{form.amountPayable}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="未支付金额:">
-                        <span v-cloak>{{form.unpaidAmount}}</span>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="已支付金额:">
-                        <span v-cloak>{{form.amountPaid}}</span>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
@@ -105,6 +90,24 @@
                       </el-form-item>
                     </el-col>
 
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="应付款金额:">
+                        <span v-cloak>{{form.amountPayable}}</span>
+                      </el-form-item>
+                    </el-col>
+
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="已支付金额:">
+                        <span v-cloak>{{form.amountPaid}}</span>
+                      </el-form-item>
+                    </el-col>
+
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="未支付金额:">
+                        <span v-cloak>{{form.unpaidAmount}}</span>
+                      </el-form-item>
+                    </el-col>
+
                   </el-row>
                 </div>
             </div>
@@ -113,7 +116,7 @@
             <div class="row-item">
               <div class="row-title">供应商信息（无信息则是自采）</div>
 
-              <div class="row-content">
+              <div class="row-content" v-if="form.supplierName">
                 <!-- 表格 -->
                   <el-table :data="form.address" slot="table" :size="table.size" style="width: 100%;" highlight-current-row>
                     <el-table-column prop="supplierName" label="供应商名称" align="center"></el-table-column>
@@ -122,6 +125,9 @@
                     <el-table-column prop="supplierMobile" label="联系电话" align="center"></el-table-column>
                     <el-table-column prop="supplierAddress" label="供应商地址" align="center"></el-table-column>
                   </el-table>
+              </div>
+              <div v-else class="noData">
+                <span class="el-table__empty-text"> 暂无数据 </span>
               </div>
             </div>
 
@@ -191,11 +197,11 @@ export default {
         'amountPayable': null,
         'amountPaid': null,
         'unpaidAmount': null,
-        'supplierName': '供应商张三',
-        'supplierLoginName': '张三',
-        'supplierContacts': '联系人张三',
-        'supplierMobile': '13380353512',
-        'supplierAddress': '北京市直辖区东城区string',
+        'supplierName': null,
+        'supplierLoginName': null,
+        'supplierContacts': null,
+        'supplierMobile': null,
+        'supplierAddress': null,
         address: [],
         table: []
       }
@@ -266,5 +272,12 @@ export default {
   .el-form-item{
     margin-bottom: 0px;
   }
+}
+.noData{
+  margin-top: 10px;
+  text-align: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #ebeef5;
+  border-top: 1px solid #ebeef5;
 }
 </style>

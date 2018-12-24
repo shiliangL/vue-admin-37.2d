@@ -97,7 +97,7 @@
               </div>
             </div>
 
-            <div class="row-item">
+            <!-- <div class="row-item">
               <div class="row-title">资金账户信息</div>
               <div class="row-content">
                 <el-row>
@@ -125,7 +125,7 @@
                   </el-col>
                 </el-row>
               </div>
-            </div>
+            </div> -->
 
             <div class="row-item">
               <div class="row-title">工商信息</div>

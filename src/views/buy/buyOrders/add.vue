@@ -79,32 +79,43 @@
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="实际采购金额:">
-                       <span v-cloak>{{form.finalSum}}</span>
+                      <el-form-item label="原实际采购总额:">
+                        <span v-cloak>{{form.finalSum}}</span>
                       </el-form-item>
                     </el-col>
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="采购订单金额(不含退/换货):">
+                       <span v-cloak>{{form.actualMoney}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="采购退/换货原采购金额:">
+                        <span v-cloak>{{form.returnSurplusMoney}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="采购退/换货剩余金额:">
+                        <span v-cloak>{{form.returnPrimaryMoney}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                      <el-form-item label="应付采购金额:">
+                        <span v-cloak>{{form.purchaseAmountPayable}}</span>
+                      </el-form-item>
+                    </el-col>
+
                     <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="采购退货金额:">
                        <span v-cloak>{{form.amountlSum}}</span>
                       </el-form-item>
                     </el-col> -->
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="应付采购款金额:">
-                        <span v-cloak>{{form.amountlSum}}</span>
-                      </el-form-item>
-                    </el-col>
-
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
-                      <el-form-item label="采购退款:">
-                        <!-- <span v-cloak>{{form.待后台提供}}</span> -->
-                      </el-form-item>
-                    </el-col>
 
                     <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="未支付采购金额:">
                         <span v-cloak>{{form.orderNo}}</span>
                       </el-form-item>
                     </el-col> -->
+
                     <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="已支付采购金额:">
                         <span v-cloak>{{form.createTime}}</span>
@@ -275,7 +286,11 @@ export default {
 
         purchaseSum: null,
         finalSum: null,
-        amountlSum: null,
+        actualMoney: null,
+        returnSurplusMoney: null,
+        returnPrimaryMoney: null,
+        purchaseAmountPayable: null,
+
         table: []
       },
       rules: {},
