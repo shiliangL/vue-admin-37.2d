@@ -27,8 +27,12 @@
         </el-table-column>
         <el-table-column prop="productName" label="商品名称" align="center"></el-table-column>
         <el-table-column prop="categoryName" label="商品分类" align="center"></el-table-column>
-        <el-table-column prop="unitTitle" label="基本单位" align="center"></el-table-column>
+
+        <el-table-column prop="actualMoney" label="采购订单金额(不含退/换货)" align="center"></el-table-column>
+        <el-table-column prop="returnPrimaryMoney" label="采购退/换货原采购金额" align="center"></el-table-column>
+        <el-table-column prop="returnSurplusMoney" label="采购退/换货剩余金额" align="center"></el-table-column>
         <el-table-column prop="purchaseAmountPayable" label="应付采购金额" align="center"></el-table-column>
+
       </el-table>
 
       <div class="footer-block" slot="footer">

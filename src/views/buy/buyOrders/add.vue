@@ -190,7 +190,7 @@
                     <el-table-column prop="purchasePrice" label="实际采购单价" align="center"></el-table-column>
                     <el-table-column prop="realQuantity" label="实际采购量" align="center"></el-table-column>
                     <el-table-column prop="sum" label="实际采购金额" align="center"></el-table-column>
-                    <el-table-column prop="warehouseTime" label="入库时间" align="center"></el-table-column>
+                    <el-table-column prop="warehouseTime" label="入库时间" width="90" align="center"></el-table-column>
                     <el-table-column prop="quantity" label="实际入库量" align="center"></el-table-column>
                     <el-table-column prop="operator" label="入库操作人" align="center"></el-table-column>
                     <el-table-column prop="" label="采购退/换货状态" align="center">
@@ -210,6 +210,7 @@
                     <el-table-column prop="" width="120" label="操作" align="center">
                       <template slot-scope="scope" align="center">
                         <template v-if="scope.row.noClick">
+                          <!-- whetherCreateStockOrder -->
                           <el-button type="text" style="color:red" size="mini" @click.stop="handlerClick(scope.$index,scope.row,1)">退货</el-button>
                           <el-button type="text" size="mini" @click.stop="handlerClick(scope.$index,scope.row,2)">换货</el-button>
                         </template>
@@ -403,7 +404,14 @@ export default {
       tableDetail(data).then(({ data }) => {
         if (Array.isArray(data.rows)) {
           for (const item of data.rows) {
-            // whetherCreateStockOrder 1标识已经生成入库单
+            // whetherCreateStockOrder 1标识已经生成入库单 就不能操作了
+
+            // if (item.whetherCreateStockOrder === 1) {
+            //   item.noClick = false
+            // } else {
+            //   item.noClick = true
+            // }
+
             if (item.whetherCreateStockOrder === 0 && item.returnStatus !== 0) {
               item.noClick = true
             } else {
