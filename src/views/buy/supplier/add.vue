@@ -228,7 +228,7 @@
 
                 <div class="right">
                   <div class="left">
-                    <el-button v-if="supplierName" type="primary" size="small"> 供应商名称:  {{ supplierName }} </el-button>
+                    <el-button v-if="supplierName" type="text"> 供应商名称:  {{ supplierName }} </el-button>
                   </div>
                 </div>
               </div>

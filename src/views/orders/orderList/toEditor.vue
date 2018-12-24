@@ -43,7 +43,14 @@
 
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
 									<el-form-item label="要求送达日期:" prop="sendTime.sendDate" :rules="rules.select">
-                      <el-date-picker style="width:160px" value-format="yyyy-MM-dd" size="small" v-model="form.sendTime.sendDate" type="date"> </el-date-picker>
+                      <el-date-picker
+                        style="width:160px"
+                        size="small"
+                        :picker-options="pickerOptions"
+                        value-format="yyyy-MM-dd"
+                        type="date"
+                        v-model="form.sendTime.sendDate">
+                      </el-date-picker>
 									</el-form-item>
 								</el-col>
 								<el-col :xs="24" :sm="10" :md="8" :lg="6">
@@ -78,7 +85,7 @@
                       <span v-cloak v-if="form.ship"> {{form.ship[0].factTime}} </span>
 									</el-form-item>
 								</el-col>
- 
+
               </el-row>
 						</div>
 				</div>
@@ -103,7 +110,7 @@
 				<!-- 费用信息 -->
  				<div class="row-item">
           <div class="row-title"> 费用信息 </div>
-  				<div class="row-content"> 
+  				<div class="row-content">
 						<el-row>
 							<el-col :xs="24" :sm="10" :md="8" :lg="8">
 								<el-form-item label="下单金额:" >
@@ -152,7 +159,7 @@
 										<span v-cloak>{{form.amountPay}}</span>
 								</el-form-item>
 							</el-col>
-							
+
 							<el-col :xs="24" :sm="10" :md="8" :lg="8">
 								<el-form-item label="未支付金额:" >
 										<span v-cloak>{{unpaidAmount}}</span>
@@ -178,7 +185,7 @@
 										<span v-cloak>{{form.scmOrder.tradeNo}}</span>
 								</el-form-item>
 							</el-col>
-              
+
    					</el-row>
 					</div>
         </div>
@@ -197,8 +204,8 @@
 					<div class="row-content">
 						<div class="add-bar">
                 <el-form-item label="商品:" label-width="50px">
-                  <SearchBox style="width:180px" keyName="title" isGoods 
-                   nameLabel="商品" codeLabel="类别" tableCode="categoryName" 
+                  <SearchBox style="width:180px" keyName="title" isGoods
+                   nameLabel="商品" codeLabel="类别" tableCode="categoryName"
                   :isRelativeUp="{ type: true, key: form.scmOrder?form.scmOrder.categoryId: null, keyName:'groupId' }"
                   requestUrl="productInfo/listProductInfo" v-model="addGood.goodsDTO"></SearchBox>
                 </el-form-item>
@@ -240,16 +247,16 @@
               <el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index, scope.row)">删除</el-button>
 								</template>
 							</el-table-column>
-								
+
 						</el-table>
- 
+
             <!-- 分页 -->
             <div class="footer-block">
               <span class="page" v-cloak> 共 {{form.saleDtails.length}} 条</span>
             </div>
 					</div>
 				</div>
-				
+
 
 			</el-form>
 
@@ -345,6 +352,12 @@ export default {
         amountPay: 0,
         unpaidAmount: 0,
         paidAmount: 0
+      },
+      pickerOptions: {
+        disabledDate(time) {
+          const data = new Date()
+          return time.getTime() < (data.getTime()) - 8.64e7
+        }
       },
       addGood: {
         goodsDTO: null,

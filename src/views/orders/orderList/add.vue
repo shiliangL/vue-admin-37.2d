@@ -55,10 +55,12 @@
 
                       <el-col :xs="24" :sm="10" :md="8" :lg="6">
                         <el-form-item label="要求送达日期:" prop="shopTime.sendDate" :rules="rules.select">
-                          	<el-date-picker :style="{width:'180px'}" size="small" 
+                          	<el-date-picker
+                              :style="{width:'180px'}"
+                              size="small"
                               :picker-options="pickerOptions"
-                              v-model="Addform.shopTime.sendDate" 
-                              value-format="yyyy-MM-dd" type="date" 
+                              v-model="Addform.shopTime.sendDate"
+                              value-format="yyyy-MM-dd" type="date"
                               placeholder="要求送达日期"></el-date-picker>
                         </el-form-item>
                         <!-- :picker-options="pickerOptions" -->
@@ -75,7 +77,7 @@
                           </div>
                         </el-col>
 
-      
+
                     </el-row>
                   </div>
               </div>
@@ -103,7 +105,7 @@
                     <div class="row-content">
                       <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 2}" placeholder="请输入内容" v-model.trim="Addform.remark" />
                     </div>
-              </div>  
+              </div>
 
               <!--商品信息-->
               <div class="row-item">
@@ -111,8 +113,8 @@
                 <div class="row-content">
                   <div class="add-bar">
                      <el-form-item label="商品:" label-width="50px">
-                        <SearchBox style="width:180px" keyName="title" isGoods 
-                          nameLabel="商品" codeLabel="类别" tableCode="categoryName" 
+                        <SearchBox style="width:180px" keyName="title" isGoods
+                          nameLabel="商品" codeLabel="类别" tableCode="categoryName"
                           :isRelativeUp="{ type: true, key: customerDTO?customerDTO.categoryId: null, keyName:'groupId' }"
                           requestUrl="productInfo/listProductInfo" v-model="addGood.goodsDTO"></SearchBox>
                      </el-form-item>
@@ -151,16 +153,16 @@
                         <el-button type="text" style="color:red" size="mini" @click.stop="clickToDelete(scope.$index, scope.row)">删除</el-button>
                       </template>
                     </el-table-column>
-                      
+
                   </el-table>
-      
+
                   <!-- 分页 -->
                   <div class="footer-block">
                     <span class="page" v-cloak> 共 {{Addform.saleDtails.length}} 条</span>
                   </div>
                 </div>
               </div>
-              
+
             </el-form>
 
           </template>
@@ -191,10 +193,10 @@
               </div>
             </div>
           </el-dialog>
-          
+
         </div>
       </div>
- 
+
     </el-dialog>
   </div>
 </template>
