@@ -387,6 +387,12 @@ export default {
     fecthDetailById() {
       if (!this.data.obj.id) return
       Detail({ id: this.data.obj.id }).then(({ data }) => {
+        data.purchaseSum = data.purchaseSum ? (data.purchaseSum).toFixed(2) : 0
+        data.finalSum = data.finalSum ? (data.finalSum).toFixed(2) : 0
+        data.actualMoney = data.actualMoney ? (data.actualMoney).toFixed(2) : 0
+        data.returnSurplusMoney = data.returnSurplusMoney ? (data.returnSurplusMoney).toFixed(2) : 0
+        data.returnPrimaryMoney = data.returnPrimaryMoney ? (data.returnPrimaryMoney).toFixed(2) : 0
+        data.purchaseAmountPayable = data.purchaseAmountPayable ? (data.purchaseAmountPayable).toFixed(2) : 0
         this.form = Object.assign(this.form, data)
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })

@@ -96,7 +96,7 @@
                       </el-form-item>
                     </el-col>
 
-                    <el-col :xs="24" :sm="10" :md="8" :lg="6">
+                    <!-- <el-col :xs="24" :sm="10" :md="8" :lg="6">
                       <el-form-item label="已支付金额:">
                         <span v-cloak>{{form.amountPaid}}</span>
                       </el-form-item>
@@ -106,7 +106,7 @@
                       <el-form-item label="未支付金额:">
                         <span v-cloak>{{form.unpaidAmount}}</span>
                       </el-form-item>
-                    </el-col>
+                    </el-col> -->
 
                   </el-row>
                 </div>
@@ -224,6 +224,12 @@ export default {
     fecthDetailById() {
       if (!this.data.obj.id) return
       fetchDetail({ id: this.data.obj.id }).then(({ data }) => {
+        data.returnsQuantity = data.returnsQuantity ? (data.returnsQuantity).toFixed(2) : 0
+        data.returnsSum = data.returnsSum ? (data.returnsSum).toFixed(2) : 0
+        data.finalQuantity = data.finalQuantity ? (data.finalQuantity).toFixed(2) : 0
+        data.sum = data.sum ? (data.sum).toFixed(2) : 0
+        data.amountPayable = data.amountPayable ? (data.amountPayable).toFixed(2) : 0
+
         this.form = Object.assign(this.form, data)
         this.form.address = [data] || []
       }).catch(e => {
