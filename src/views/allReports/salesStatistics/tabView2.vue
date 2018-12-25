@@ -135,6 +135,9 @@ export default {
         if (Array.isArray(data.list)) {
           this.table.data = data.list
           this.countTotal = data.countTotal ? (data.countTotal).toFixed(2) : 0
+        } else {
+          this.table.data = []
+          this.countTotal = 0
         }
       }).catch(e => {
         this.$message({ type: 'error', message: e.msg })

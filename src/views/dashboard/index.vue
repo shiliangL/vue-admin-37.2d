@@ -250,7 +250,7 @@ export default {
         salesOrders: [
           { title: '待配送', unit: '个', number: 0, path: '/distribution/salesDelivery' },
           { title: '配送中', unit: '个', number: 0, path: '/distribution/salesDelivery' },
-          { title: '退/换换', unit: '个', number: 0, path: '/distribution/salesDelivery' }
+          { title: '退换货', unit: '个', number: 0, path: '/distribution/salesDelivery' }
         ],
         salesOrdersChange: [
           { title: '待配送', unit: '个', number: 0, path: '/distribution/salesDelivery' },
