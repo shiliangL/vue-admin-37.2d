@@ -57,12 +57,12 @@
       <!-- 弹层 -->
       <add v-if="add.visiable" v-model="add.visiable" :data="add.data" @add="refrehList" @edit="refrehList"></add>
 
-      <div id="salesDelivery" v-if="PrintData.customerTitle" style="font-size: 12px;width:100%;text-align:center;">
+      <div id="salesDelivery" v-if="PrintData.customerTitle" style="font-size: 16px;width:100%;text-align:center;">
 
         <table id="table1" style="width:100%;margin-bottom: 6px;">
            <thead>
               <tr>
-                <th width="10%" style="font-weight: 400;font-size: 14px"> 厨满满商城销售订单商品清单 </th>
+                <th width="10%" style="font-weight: 400;font-size: 18px"> 厨满满商城销售订单商品清单 </th>
               </tr>
            </thead>
         </table>

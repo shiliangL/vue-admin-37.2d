@@ -115,8 +115,8 @@
 
                 <el-col :xs="24" :sm="10" :md="8" :lg="8">
                   <el-form-item label="修改订单:">
-                    <span v-if="settingForm.orderBeginTime">
-                      下单当天 {{ settingForm.orderBeginTime }} 前
+                    <span v-if="settingForm.orderEndTime">
+                      下单当天 {{ settingForm.orderEndTime }} 前
                     </span>
                     <!-- <span v-cloak>{{form.brandName}}</span> -->
                   </el-form-item>

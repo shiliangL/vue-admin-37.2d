@@ -148,10 +148,10 @@ export default {
       this.dialogVisible = false
     },
     clickToDelete(index, item) {
-      if (this.table.data.length === 1) {
-        this.$message({ type: 'warning', message: '不能清空数据' })
-        return
-      }
+      // if (this.table.data.length === 1) {
+      //   this.$message({ type: 'warning', message: '不能清空数据' })
+      //   return
+      // }
       this.$confirm('是否确定删除?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
